@@ -35,7 +35,7 @@ const SignIn = () => {
     if (isLoggedIn) {
       router.push("/");
     }
-  }, [isLoggedIn]);
+  }, [isLoggedIn, router]);
 
   // Function to toggle password visibility
   const togglePasswordVisibility = () => {
