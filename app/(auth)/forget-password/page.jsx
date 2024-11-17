@@ -4,11 +4,24 @@ import Image from "next/image";
 import { sendPasswordResetEmail } from "firebase/auth";
 import { auth } from "../../firebase/firebaseConfig";
 import Logo from "../../Lookvisa.png";
+import getToken from "@/utils/getToken";
 
 const ForgetPassword = () => {
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  useEffect(() => {
+    const token = getToken();
+    setIsLoggedIn(!!token);
+  }, []);
+
+  useEffect(() => {
+    if (isLoggedIn) {
+      router.push("/");
+    }
+  }, [isLoggedIn]);
 
   const handlePasswordReset = async (e) => {
     e.preventDefault();

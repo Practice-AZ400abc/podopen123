@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { FcGoogle } from "react-icons/fc";
 import { FaFacebookF, FaApple, FaEye, FaEyeSlash } from "react-icons/fa";
 import { useRouter } from "next/navigation";
@@ -8,13 +8,13 @@ import Link from "next/link";
 import { auth } from "../../firebase/firebaseConfig";
 import {
   signInWithEmailAndPassword,
-  sendEmailVerification,
   signInWithPopup,
   GoogleAuthProvider,
   linkWithCredential,
   getAuth,
   fetchSignInMethodsForEmail,
 } from "firebase/auth";
+import getToken from "@/utils/getToken";
 
 const SignIn = () => {
   const router = useRouter();
@@ -24,6 +24,18 @@ const SignIn = () => {
   const [email, setEmail] = useState(""); // Email state
   const [password, setPassword] = useState(""); // Password state
   const [error, setError] = useState(""); // State to handle error messages
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  useEffect(() => {
+    const token = getToken();
+    setIsLoggedIn(!!token);
+  }, []);
+
+  useEffect(() => {
+    if (isLoggedIn) {
+      router.push("/");
+    }
+  }, [isLoggedIn]);
 
   // Function to toggle password visibility
   const togglePasswordVisibility = () => {

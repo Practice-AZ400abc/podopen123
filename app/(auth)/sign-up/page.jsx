@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react"; // Import useState for state management
+import { useEffect, useState } from "react"; // Import useState for state management
 import { FcGoogle } from "react-icons/fc";
 import { FaFacebookF, FaApple, FaEye, FaEyeSlash } from "react-icons/fa";
 import Link from "next/link";
@@ -14,6 +14,7 @@ import {
   fetchSignInMethodsForEmail,
 } from "firebase/auth";
 import { auth } from "../../firebase/firebaseConfig";
+import getToken from "@/utils/getToken";
 
 export default function Signup() {
   const router = useRouter();
@@ -25,6 +26,18 @@ export default function Signup() {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [error, setError] = useState(null); // State for error messages
   const [loading, setLoading] = useState(false); // State for loading status
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  useEffect(() => {
+    const token = getToken();
+    setIsLoggedIn(!!token);
+  }, []);
+
+  useEffect(() => {
+    if (isLoggedIn) {
+      router.push("/");
+    }
+  }, [isLoggedIn]);
 
   const togglePasswordVisibility = () => {
     setPasswordVisible(!passwordVisible);
@@ -82,7 +95,7 @@ export default function Signup() {
 
       setLoading(false);
       alert("Sign-up successful! Please verify your email before signing in.");
-      router.push("/auth/sign-in");
+      router.push("/sign-in");
     } catch (err) {
       console.error(err);
       setError(err.message || "An error occurred during sign-up.");
