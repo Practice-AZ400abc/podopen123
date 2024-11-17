@@ -37,7 +37,7 @@ export default function Signup() {
     if (isLoggedIn) {
       router.push("/");
     }
-  }, [isLoggedIn]);
+  }, [isLoggedIn, router]);
 
   const togglePasswordVisibility = () => {
     setPasswordVisible(!passwordVisible);
