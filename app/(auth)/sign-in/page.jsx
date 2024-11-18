@@ -2,27 +2,26 @@
 
 import { useState, useEffect } from "react";
 import { FcGoogle } from "react-icons/fc";
-import { FaFacebookF, FaApple, FaEye, FaEyeSlash } from "react-icons/fa";
+import { FaFacebookF } from "react-icons/fa";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { auth } from "../../firebase/firebaseConfig";
 import {
-  signInWithEmailAndPassword,
   signInWithPopup,
   GoogleAuthProvider,
+  FacebookAuthProvider,
   linkWithCredential,
   getAuth,
   fetchSignInMethodsForEmail,
 } from "firebase/auth";
+import handleSocialAuth from "@/utils/handleSocialAuth";
 import getToken from "@/utils/getToken";
 
 const SignIn = () => {
   const router = useRouter();
 
   const [selectedForm, setSelectedForm] = useState("Investor"); // Track which form is selected
-  const [passwordVisible, setPasswordVisible] = useState(false); // State to manage password visibility
   const [email, setEmail] = useState(""); // Email state
-  const [password, setPassword] = useState(""); // Password state
   const [error, setError] = useState(""); // State to handle error messages
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
@@ -37,118 +36,28 @@ const SignIn = () => {
     }
   }, [isLoggedIn, router]);
 
-  // Function to toggle password visibility
-  const togglePasswordVisibility = () => {
-    setPasswordVisible(!passwordVisible);
-  };
-
-  // Handle login for form submission
-  const handleLogin = async (e) => {
+  const validateEmail = async (e) => {
     e.preventDefault();
     setError("");
 
     try {
-      const userCredential = await signInWithEmailAndPassword(auth, email, password);
-      const user = userCredential.user;
-
-      // Generate JWT by hitting the backend endpoint
-      const response = await fetch("/api/token", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          firebaseUid: user.uid,
-        }),
+      if (!email) {
+        setError("Please enter an email address.");
+        return;
+      }
+      const isRegistered = await fetch(`/api/users?email=${email}`, {
+        method: "GET",
       });
 
-      if (!response.ok) throw new Error("Failed to generate token.");
-
-      const { token } = await response.json();
-
-      // Store the token in localStorage
-      localStorage.setItem("token", token);
-
-      alert("Sign-in successful!");
-      router.push("/");
-    } catch (err) {
-      setError(err.message || "An error occurred during login.");
-    }
-  };
-
-  const handleSocialAuth = async (provider) => {
-    try {
-      const result = await signInWithPopup(auth, provider);
-      const user = result.user;
-      const email = user.email;
-
-      // Get Firebase Auth instance
-      const firebaseAuth = getAuth();
-
-      // Check if email is already associated with email/password sign-in
-      const existingSignInMethods = await fetchSignInMethodsForEmail(
-        firebaseAuth,
-        email
-      );
-
-      if (existingSignInMethods.includes("password")) {
-        // If the email is already registered with email/password, link the social provider with the existing account
-        const credential = provider.credentialFromResult(result);
-        await linkWithCredential(user, credential);
-
-        alert("Account linked successfully with your social provider!");
-      } else {
-        // New user, handle social sign-up as usual
-        const role = selectedForm; // Investor or Seeker (or any other role you may have)
-        const response = await fetch("/api/users", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            firebaseUid: user.uid,
-            email: user.email,
-            role,
-            completedProfile: false, // Or any other profile logic you may have
-          }),
-        });
-
-        if (!response.ok) {
-          throw new Error("Failed to save user to MongoDB.");
-        }
-
-        const data = await response.json();
-        console.log("User created in MongoDB:", data);
-
-        alert("Sign-up successful!");
+      if (!isRegistered.ok) {
+        setError("Email address is not registered.");
+        return;
       }
 
-      // Generate JWT from backend
-      const generateToken = await fetch("/api/auth/generate-token", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          firebaseUid: user.uid,
-          email: user.email,
-        }),
-      });
-
-      if (!generateToken.ok) throw new Error("Failed to generate token.");
-
-      const { token } = await generateToken.json();
-
-      // Store token in localStorage
-      localStorage.setItem("token", token);
-
-      // Redirect the user after successful sign-in or sign-up
-      router.push("/");
+      localStorage.setItem("email", email);
+      router.push("/sign-in/password");
     } catch (err) {
-      console.error("Error during social authentication: ", err);
-      setError(
-        err.message || "An error occurred during social sign-in/sign-up."
-      );
+      setError(err.message || "An error occurred during email validation.");
     }
   };
 
@@ -183,7 +92,7 @@ const SignIn = () => {
 
         {/* Conditionally render the form based on selectedForm */}
         {selectedForm === "Investor" ? (
-          <form onSubmit={handleLogin}>
+          <form onSubmit={validateEmail}>
             {" "}
             {/* Use onSubmit instead of onClick */}
             <div className="flex flex-col">
@@ -195,7 +104,6 @@ const SignIn = () => {
                 onChange={(e) => setEmail(e.target.value)} // Bind email to state
               />
             </div>
-
             <button
               type="submit" // Make sure this is a submit button
               className="flex items-center justify-center text-center w-full p-2 bg-blue-500 text-white font-bold rounded-[5px] mt-5"
@@ -231,15 +139,17 @@ const SignIn = () => {
                 <FcGoogle />
                 <h1 className="text-white">Continue with Google</h1>
               </button>
-              <button className="flex gap-5 items-center w-[80%] p-3 bg-blue-500 text-white rounded-full mx-auto justify-center">
+              <button
+                className="flex gap-5 items-center w-[80%] p-3 bg-blue-500 text-white rounded-full mx-auto justify-center"
+                onClick={() => handleSocialAuth(new FacebookAuthProvider())}
+              >
                 <FaFacebookF />
                 <h1>Continue with Facebook</h1>
               </button>
-
             </div>
           </form>
         ) : (
-          <form onSubmit={handleLogin}>
+          <form onSubmit={validateEmail}>
             {" "}
             {/* Use onSubmit instead of onClick */}
             <div className="flex flex-col">
@@ -251,7 +161,6 @@ const SignIn = () => {
                 onChange={(e) => setEmail(e.target.value)} // Bind email to state
               />
             </div>
-
             <div className="flex gap-2 mt-5 items-center ">
               <input
                 className="w-3 h-3 bg-black rounded-full"

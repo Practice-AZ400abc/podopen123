@@ -1,7 +1,7 @@
 "use client";
 import { useEffect, useState } from "react"; // Import useState for state management
 import { FcGoogle } from "react-icons/fc";
-import { FaFacebookF, FaApple, FaEye, FaEyeSlash } from "react-icons/fa";
+import { FaFacebookF, FaEye, FaEyeSlash } from "react-icons/fa";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import {
@@ -9,12 +9,14 @@ import {
   sendEmailVerification,
   signInWithPopup,
   GoogleAuthProvider,
+  FacebookAuthProvider,
   linkWithCredential,
   getAuth,
   fetchSignInMethodsForEmail,
 } from "firebase/auth";
 import { auth } from "../../firebase/firebaseConfig";
 import getToken from "@/utils/getToken";
+import handleSocialAuth from "@/utils/handleSocialAuth";
 
 export default function Signup() {
   const router = useRouter();
@@ -103,82 +105,6 @@ export default function Signup() {
     }
   };
 
-  const handleSocialAuth = async (provider) => {
-    try {
-      const result = await signInWithPopup(auth, provider);
-      const user = result.user;
-      const email = user.email;
-
-      // Get Firebase Auth instance
-      const firebaseAuth = getAuth();
-
-      // Check if email is already associated with email/password sign-in
-      const existingSignInMethods = await fetchSignInMethodsForEmail(
-        firebaseAuth,
-        email
-      );
-
-      if (existingSignInMethods.includes("password")) {
-        // If the email is already registered with email/password, link the social provider with the existing account
-        const credential = provider.credentialFromResult(result);
-        await linkWithCredential(user, credential);
-
-        alert("Account linked successfully with your social provider!");
-      } else {
-        // New user, handle social sign-up as usual
-        const role = selectedForm; // Investor or Seeker (or any other role you may have)
-        const response = await fetch("/api/users", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            firebaseUid: user.uid,
-            email: user.email,
-            role,
-            completedProfile: false, // Or any other profile logic you may have
-          }),
-        });
-
-        if (!response.ok) {
-          throw new Error("Failed to save user to MongoDB.");
-        }
-
-        const data = await response.json();
-        console.log("User created in MongoDB:", data);
-
-        alert("Sign-up successful!");
-      }
-
-      // Generate JWT from backend
-      const generateToken = await fetch("/api/auth/generate-token", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          firebaseUid: user.uid,
-          email: user.email,
-        }),
-      });
-
-      if (!generateToken.ok) throw new Error("Failed to generate token.");
-
-      const { token } = await generateToken.json();
-
-      // Store token in localStorage
-      localStorage.setItem("token", token);
-
-      // Redirect the user after successful sign-in or sign-up
-      router.push("/");
-    } catch (err) {
-      console.error("Error during social authentication: ", err);
-      setError(
-        err.message || "An error occurred during social sign-in/sign-up."
-      );
-    }
-  };
-
   return (
     <div className=" h-[100vh] max-xl:h-screen  flex items-center justify-center">
       <div className="p-5 bg-slate-900 rounded-lg w-[90%]  sm:w-[90%]  md:max-w-[400px] lg:max-w-[500px] mx-auto">
@@ -239,7 +165,9 @@ export default function Signup() {
           </div>
 
           <div className="flex flex-col mt-5 relative">
-            <label className="font-semibold text-sm text-white">Confirm Password</label>
+            <label className="font-semibold text-sm text-white">
+              Confirm Password
+            </label>
             <input
               className=" rounded-[5px] p-1 mt-2 outline-blue-200 bg-slate-800 "
               type={passwordVisible ? "text" : "password"}
@@ -278,11 +206,13 @@ export default function Signup() {
               <FcGoogle />
               <h1 className="text-white">Continue with Google</h1>
             </button>
-            <button className="flex gap-5 items-center w-[80%] p-3 bg-blue-600 text-white rounded-full mx-auto justify-center">
+            <button
+              className="flex gap-5 items-center w-[80%] p-3 bg-blue-600 text-white rounded-full mx-auto justify-center"
+              onClick={() => handleSocialAuth(new FacebookAuthProvider())}
+            >
               <FaFacebookF />
               <h1>Continue with Facebook</h1>
             </button>
-
           </div>
         )}
       </div>
