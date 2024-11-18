@@ -46,11 +46,11 @@ const SignIn = () => {
   const handleLogin = async (e) => {
     e.preventDefault();
     setError("");
-  
+
     try {
       const userCredential = await signInWithEmailAndPassword(auth, email, password);
       const user = userCredential.user;
-  
+
       // Generate JWT by hitting the backend endpoint
       const response = await fetch("/api/token", {
         method: "POST",
@@ -61,14 +61,14 @@ const SignIn = () => {
           firebaseUid: user.uid,
         }),
       });
-  
+
       if (!response.ok) throw new Error("Failed to generate token.");
-  
+
       const { token } = await response.json();
-  
+
       // Store the token in localStorage
       localStorage.setItem("token", token);
-  
+
       alert("Sign-in successful!");
       router.push("/");
     } catch (err) {
@@ -153,10 +153,10 @@ const SignIn = () => {
   };
 
   return (
-    <div className="bg-white h-[80vh] max-xl:h-screen bg-gray-50 flex items-center justify-center">
-      <div className="p-5 bg-white rounded-lg w-[90%] border sm:w-[90%]  md:max-w-[400px] lg:max-w-[500px] mx-auto">
+    <div className=" h-[80vh] max-xl:h-screen  flex items-center justify-center">
+      <div className="p-5 bg-slate-900  rounded-lg w-[90%]  sm:w-[90%]  md:max-w-[400px] lg:max-w-[500px] mx-auto">
         {/* Radio buttons to select between Investor and Seeker */}
-        <div className="flex justify-center gap-4 mb-5">
+        <div className="flex justify-center gap-4 mb-5 text-white">
           <label className="flex items-center">
             <input
               type="radio"
@@ -164,7 +164,7 @@ const SignIn = () => {
               value="Investor"
               checked={selectedForm === "Investor"}
               onChange={() => setSelectedForm("Investor")}
-              className="mr-2"
+              className="mr-2 text-white"
             />
             Investor Sign In
           </label>
@@ -187,30 +187,15 @@ const SignIn = () => {
             {" "}
             {/* Use onSubmit instead of onClick */}
             <div className="flex flex-col">
-              <label className="font-semibold text-sm">Email</label>
+              <label className="font-semibold text-sm text-white">Email</label>
               <input
-                className="bg-gray-50 rounded-[5px] p-1 mt-2 outline-blue-200"
+                className="bg-slate-800 rounded-[5px] p-1 mt-2 text-white"
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)} // Bind email to state
               />
             </div>
-            <div className="flex flex-col mt-5 relative">
-              <label className="font-semibold text-sm">Password</label>
-              <input
-                className="bg-gray-50 rounded-[5px] p-1 mt-2 outline-blue-200"
-                type={passwordVisible ? "text" : "password"} // Conditionally render input type
-                value={password}
-                onChange={(e) => setPassword(e.target.value)} // Bind password to state
-              />
-              <button
-                type="button"
-                onClick={togglePasswordVisibility}
-                className="absolute right-3 top-9 text-sm font-semibold text-blue-500"
-              >
-                {passwordVisible ? <FaEye /> : <FaEyeSlash />}
-              </button>
-            </div>
+
             <button
               type="submit" // Make sure this is a submit button
               className="flex items-center justify-center text-center w-full p-2 bg-blue-500 text-white font-bold rounded-[5px] mt-5"
@@ -240,20 +225,17 @@ const SignIn = () => {
             </div>
             <div className="flex flex-col gap-5 w-[90%] m-auto mt-5">
               <button
-                className="flex gap-5 items-center w-[80%] p-3 border-black rounded-full mx-auto border justify-center"
+                className="flex gap-5 items-center w-[80%] p-3 border-white rounded-full mx-auto border justify-center"
                 onClick={() => handleSocialAuth(new GoogleAuthProvider())}
               >
                 <FcGoogle />
-                <h1>Continue with Google</h1>
+                <h1 className="text-white">Continue with Google</h1>
               </button>
-              {/* <button className="flex gap-5 items-center w-[80%] p-3 bg-blue-500 text-white rounded-full mx-auto justify-center">
+              <button className="flex gap-5 items-center w-[80%] p-3 bg-blue-500 text-white rounded-full mx-auto justify-center">
                 <FaFacebookF />
                 <h1>Continue with Facebook</h1>
               </button>
-              <button className="flex gap-5 items-center w-[80%] p-3 bg-black text-white border-black rounded-full mx-auto justify-center">
-                <FaApple color="white" />
-                <h1>Continue with Apple</h1>
-              </button> */}
+
             </div>
           </form>
         ) : (
@@ -261,30 +243,15 @@ const SignIn = () => {
             {" "}
             {/* Use onSubmit instead of onClick */}
             <div className="flex flex-col">
-              <label className="font-semibold text-sm">Email</label>
+              <label className="font-semibold text-sm text-white">Email</label>
               <input
-                className="bg-gray-50 rounded-[5px] p-1 mt-2 outline-blue-200"
+                className="bg-slate-800 rounded-[5px] p-1 mt-2 text-white"
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)} // Bind email to state
               />
             </div>
-            <div className="flex flex-col mt-5 relative">
-              <label className="font-semibold text-sm">Password</label>
-              <input
-                className="bg-gray-50 rounded-[5px] p-1 mt-2 outline-blue-200"
-                type={passwordVisible ? "text" : "password"} // Conditionally render input type
-                value={password}
-                onChange={(e) => setPassword(e.target.value)} // Bind password to state
-              />
-              <button
-                type="button"
-                onClick={togglePasswordVisibility}
-                className="absolute right-3 top-9 text-sm font-semibold text-blue-500"
-              >
-                {passwordVisible ? <FaEye /> : <FaEyeSlash />}
-              </button>
-            </div>
+
             <div className="flex gap-2 mt-5 items-center ">
               <input
                 className="w-3 h-3 bg-black rounded-full"

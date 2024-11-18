@@ -180,13 +180,13 @@ export default function Signup() {
   };
 
   return (
-    <div className="bg-white h-[80vh] max-xl:h-screen bg-gray-50 flex items-center justify-center">
-      <div className="p-5 bg-white rounded-lg w-[90%] border sm:w-[90%]  md:max-w-[400px] lg:max-w-[500px] mx-auto">
+    <div className=" h-[100vh] max-xl:h-screen  flex items-center justify-center">
+      <div className="p-5 bg-slate-900 rounded-lg w-[90%]  sm:w-[90%]  md:max-w-[400px] lg:max-w-[500px] mx-auto">
         <h1 className="text-sm text-gray-400 text-center">
           Are you a Visa Investor or Seeker?
         </h1>
         {/* Radio buttons to select between Investor and Seeker */}
-        <div className="flex justify-center gap-4 mb-5">
+        <div className="flex justify-center gap-4 mb-5 text-white">
           <label className="flex items-center">
             <input
               type="radio"
@@ -194,7 +194,7 @@ export default function Signup() {
               value="Investor"
               checked={selectedForm === "Investor"}
               onChange={() => setSelectedForm("Investor")}
-              className="mr-2"
+              className="mr-2 "
             />
             Investor
           </label>
@@ -214,18 +214,18 @@ export default function Signup() {
         {/* Conditionally render the form based on selectedForm */}
         <form onSubmit={handleRegister}>
           <div className="flex flex-col">
-            <label className="font-semibold text-sm">Email</label>
+            <label className="font-semibold text-sm text-white">Email</label>
             <input
-              className="bg-gray-50 rounded-[5px] p-1 mt-2 outline-blue-200"
+              className="bg-gray-50 rounded-[5px] p-1 mt-2 outline-blue-200 bg-slate-800 "
               type="email"
               onChange={(e) => setEmail(e.target.value)}
             />
           </div>
 
           <div className="flex flex-col mt-5 relative">
-            <label className="font-semibold text-sm">Password</label>
+            <label className="font-semibold text-sm text-white">Password</label>
             <input
-              className="bg-gray-50 rounded-[5px] p-1 mt-2 outline-blue-200"
+              className="bg-gray-50 rounded-[5px] p-1 mt-2 outline-blue-200 bg-slate-800 "
               type={passwordVisible ? "text" : "password"}
               onChange={(e) => setPassword(e.target.value)}
             />
@@ -239,9 +239,9 @@ export default function Signup() {
           </div>
 
           <div className="flex flex-col mt-5 relative">
-            <label className="font-semibold text-sm">Confirm Password</label>
+            <label className="font-semibold text-sm text-white">Confirm Password</label>
             <input
-              className="bg-gray-50 rounded-[5px] p-1 mt-2 outline-blue-200"
+              className=" rounded-[5px] p-1 mt-2 outline-blue-200 bg-slate-800 "
               type={passwordVisible ? "text" : "password"}
               onChange={(e) => setConfirmPassword(e.target.value)}
             />
@@ -272,20 +272,17 @@ export default function Signup() {
         {selectedForm === "Investor" && (
           <div className="mt-5 flex flex-col items-center justify-center gap-5">
             <button
-              className="flex gap-5 items-center w-[80%] p-3 border-black rounded-full mx-auto border justify-center"
+              className="flex gap-5 items-center w-[80%] p-3 border-white rounded-full mx-auto border justify-center"
               onClick={() => handleSocialAuth(new GoogleAuthProvider())}
             >
               <FcGoogle />
-              <h1>Continue with Google</h1>
+              <h1 className="text-white">Continue with Google</h1>
             </button>
-            {/* <button className="flex gap-5 items-center w-[80%] p-3 bg-blue-500 text-white rounded-full mx-auto justify-center">
+            <button className="flex gap-5 items-center w-[80%] p-3 bg-blue-600 text-white rounded-full mx-auto justify-center">
               <FaFacebookF />
               <h1>Continue with Facebook</h1>
             </button>
-            <button className="flex gap-5 items-center w-[80%] p-3 bg-black text-white border-black rounded-full mx-auto justify-center">
-              <FaApple color="white" />
-              <h1>Continue with Apple</h1>
-            </button> */}
+
           </div>
         )}
       </div>

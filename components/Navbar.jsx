@@ -26,14 +26,14 @@ const Navbar = () => {
   }, []);
 
   return (
-    <div className="w-full bg-gray-50 border-b">
+    <div className="w-full bg-slate-900	">
       <div className="container mx-auto flex items-center h-[70px] justify-between px-4  ">
         <div className="flex gap-10 items-center">
           <Link href="/">
             <Image src={Logo} alt="Lookvisa" width={150} />
           </Link>
           {/* Navbar */}
-          <ul className="flex gap-10 items-center max-md:hidden font-semibold text-sm">
+          <ul className="flex gap-10 items-center max-md:hidden font-semibold text-sm text-white">
             {/* navlink */}
             <Link href="/">Home</Link>
             <Link href="/">How it Works</Link>
@@ -57,13 +57,13 @@ const Navbar = () => {
             <div className="flex gap-5 items-center max-md:hidden">
               <Link
                 href="/sign-up"
-                className="border border-black text-black hover:bg-black hover:text-white px-6 py-3 rounded-full font-bold"
+                className="border-blue-500 border text-white hover:text-blue-500 px-6 py-3 rounded-full font-bold"
               >
-                Sign up
+                Signup
               </Link>
               <Link
                 href="/sign-in"
-                className="bg-blue-500 text-white hover:bg-blue-300 px-6 py-3 rounded-full font-bold"
+                className="bg-blue-500 text-white hover:bg-blue-300 hover:text-black px-6 py-3 rounded-full font-bold"
               >
                 Login
               </Link>
