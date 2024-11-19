@@ -75,8 +75,6 @@ const EnterPassword = () => {
 
       // Store the token in localStorage
       localStorage.setItem("token", token);
-
-      alert("Sign-in successful!");
       localStorage.removeItem("email");
       router.push("/");
     } catch (error) {

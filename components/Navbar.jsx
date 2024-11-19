@@ -16,18 +16,34 @@ import getToken from "@/utils/getToken";
 const Navbar = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
+  // Update login status when token changes
+  const updateLoginStatus = () => {
+    const token = getToken();
+    setIsLoggedIn(!!token);
+  };
+
   const handleLogout = () => {
     localStorage.removeItem("token");
+    updateLoginStatus(); // Update login status after logout
   };
 
   useEffect(() => {
-    const token = getToken();
-    setIsLoggedIn(!!token);
+    updateLoginStatus(); // Initial check
+
+    // Add event listener for changes in `localStorage`
+    const handleStorageChange = () => {
+      updateLoginStatus();
+    };
+
+    window.addEventListener("storage", handleStorageChange);
+    return () => {
+      window.removeEventListener("storage", handleStorageChange);
+    };
   }, []);
 
   return (
-    <div className="w-full bg-slate-900	">
-      <div className="container mx-auto flex items-center h-[70px] justify-between px-4  ">
+    <div className="w-full bg-slate-900">
+      <div className="container mx-auto flex items-center h-[70px] justify-between px-4">
         <div className="flex gap-10 items-center">
           <Link href="/">
             <Image src={Logo} alt="Lookvisa" width={150} />
@@ -42,33 +58,29 @@ const Navbar = () => {
           </ul>
         </div>
         {isLoggedIn ? (
-          <>
-            <div className="flex gap-5 items-center max-md:hidden">
-              <button
-                className="border border-black text-black hover:bg-black hover:text-white px-6 py-3 rounded-full font-bold"
-                onClick={handleLogout}
-              >
-                Logout
-              </button>
-            </div>
-          </>
+          <div className="flex gap-5 items-center max-md:hidden">
+            <button
+              className="border border-black text-black hover:bg-black hover:text-white px-6 py-3 rounded-full font-bold"
+              onClick={handleLogout}
+            >
+              Logout
+            </button>
+          </div>
         ) : (
-          <>
-            <div className="flex gap-5 items-center max-md:hidden">
-              <Link
-                href="/sign-up"
-                className="border-blue-500 border text-white hover:text-blue-500 px-6 py-3 rounded-full font-bold"
-              >
-                Signup
-              </Link>
-              <Link
-                href="/sign-in"
-                className="bg-blue-500 text-white hover:bg-blue-300 hover:text-black px-6 py-3 rounded-full font-bold"
-              >
-                Login
-              </Link>
-            </div>
-          </>
+          <div className="flex gap-5 items-center max-md:hidden">
+            <Link
+              href="/sign-up"
+              className="border-blue-500 border text-white hover:text-blue-500 px-6 py-3 rounded-full font-bold"
+            >
+              Signup
+            </Link>
+            <Link
+              href="/sign-in"
+              className="bg-blue-500 text-white hover:bg-blue-300 hover:text-black px-6 py-3 rounded-full font-bold"
+            >
+              Login
+            </Link>
+          </div>
         )}
 
         <div className="md:hidden">
@@ -87,20 +99,16 @@ const Navbar = () => {
                 <Link href="/">Pricing</Link>
                 <Link href="/">Blogs</Link>
                 {isLoggedIn ? (
-                  <>
-                    <button
-                      className="border border-black text-black hover:bg-black hover:text-white px-6 py-3 rounded-full font-bold"
-                      onClick={handleLogout}
-                    >
-                      Logout
-                    </button>
-                  </>
+                  <button
+                    className="border border-white text-white hover:bg-black hover:text-white px-6 py-3 rounded-full font-bold"
+                    onClick={handleLogout}
+                  >
+                    Logout
+                  </button>
                 ) : (
-                  <>
-                    <Link href="/sign-in" className="text-blue-400 font-bold">
-                      Log in
-                    </Link>
-                  </>
+                  <Link href="/sign-in" className="text-blue-400 font-bold">
+                    Log in
+                  </Link>
                 )}
               </ul>
             </SheetContent>

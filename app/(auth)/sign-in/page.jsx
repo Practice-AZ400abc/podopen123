@@ -16,6 +16,7 @@ import {
 } from "firebase/auth";
 import handleSocialAuth from "@/utils/handleSocialAuth";
 import getToken from "@/utils/getToken";
+import { Loader } from "lucide-react";
 
 const SignIn = () => {
   const router = useRouter();
@@ -24,6 +25,7 @@ const SignIn = () => {
   const [email, setEmail] = useState(""); // Email state
   const [error, setError] = useState(""); // State to handle error messages
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const token = getToken();
@@ -39,7 +41,7 @@ const SignIn = () => {
   const validateEmail = async (e) => {
     e.preventDefault();
     setError("");
-
+    setLoading(true)
     try {
       if (!email) {
         setError("Please enter an email address.");
@@ -55,6 +57,8 @@ const SignIn = () => {
       }
 
       localStorage.setItem("email", email);
+      setLoading(false)
+
       router.push("/sign-in/password");
     } catch (err) {
       setError(err.message || "An error occurred during email validation.");
@@ -98,7 +102,9 @@ const SignIn = () => {
             <div className="flex flex-col">
               <label className="font-semibold text-sm text-white">Email</label>
               <input
-                className="bg-slate-800 rounded-[5px] p-1 mt-2 text-white"
+                disabled={loading}
+
+                className="bg-slate-800 rounded-[5px] p-1 mt-2 text-white font-bold"
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)} // Bind email to state
@@ -108,7 +114,12 @@ const SignIn = () => {
               type="submit" // Make sure this is a submit button
               className="flex items-center justify-center text-center w-full p-2 bg-blue-500 text-white font-bold rounded-[5px] mt-5"
             >
-              Sign In as Investor
+
+              {loading ? (
+                <Loader />// Replace with a spinner component if needed
+              ) : (
+                `Sign Up as investor`
+              )}
             </button>
             <div className="w-full flex items-center justify-between mt-5">
               <div className="flex items-center gap-3 text-sm text-gray-500">
@@ -155,6 +166,8 @@ const SignIn = () => {
             <div className="flex flex-col">
               <label className="font-semibold text-sm text-white">Email</label>
               <input
+                disabled={loading}
+
                 className="bg-slate-800 rounded-[5px] p-1 mt-2 text-white"
                 type="email"
                 value={email}
@@ -174,7 +187,11 @@ const SignIn = () => {
               type="submit" // Make sure this is a submit button
               className="flex items-center justify-center text-center w-full p-2 bg-blue-500 text-white font-bold rounded-[5px] mt-5"
             >
-              Sign In as Visa Seeker
+               {loading ? (
+                <Loader />// Replace with a spinner component if needed
+              ) : (
+                `Sign Up as Visa Seeker`
+              )}
             </button>
             <div className="flex items-center w-full justify-between gap-2 mt-5">
               <div className="flex items-center gap-2">

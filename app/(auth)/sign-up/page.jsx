@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useState } from "react"; // Import useState for state management
+import { useEffect, useState } from "react";
 import { FcGoogle } from "react-icons/fc";
 import { FaFacebookF, FaEye, FaEyeSlash } from "react-icons/fa";
 import Link from "next/link";
@@ -7,28 +7,26 @@ import { useRouter } from "next/navigation";
 import {
   createUserWithEmailAndPassword,
   sendEmailVerification,
-  signInWithPopup,
   GoogleAuthProvider,
   FacebookAuthProvider,
-  linkWithCredential,
-  getAuth,
-  fetchSignInMethodsForEmail,
 } from "firebase/auth";
 import { auth } from "../../firebase/firebaseConfig";
 import getToken from "@/utils/getToken";
 import handleSocialAuth from "@/utils/handleSocialAuth";
+import { Loader } from "lucide-react";
 
 export default function Signup() {
   const router = useRouter();
 
-  const [selectedForm, setSelectedForm] = useState("Investor"); // Track which form is selected
-  const [passwordVisible, setPasswordVisible] = useState(false); // State to manage password visibility
-  const [email, setEmail] = useState(""); // Email state
-  const [password, setPassword] = useState(""); // Password state
+  const [selectedForm, setSelectedForm] = useState("Investor");
+  const [passwordVisible, setPasswordVisible] = useState(false);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const [error, setError] = useState(null); // State for error messages
-  const [loading, setLoading] = useState(false); // State for loading status
+  const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [showTooltip, setShowTooltip] = useState(false);
 
   useEffect(() => {
     const token = getToken();
@@ -44,17 +42,33 @@ export default function Signup() {
   const togglePasswordVisibility = () => {
     setPasswordVisible(!passwordVisible);
   };
+  const passwordValidation = {
+    minLength: password.length >= 9,
+    maxLength: password.length <= 32,
+    hasUpperCase: /[A-Z]/.test(password),
+    hasLowerCase: /[a-z]/.test(password),
+    hasNumber: /\d/.test(password),
+    hasSpecialChar: /[^A-Za-z0-9\s]/.test(password), // Matches any non-alphanumeric, non-whitespace character
+  };
+  
+
+  const isPasswordValid = Object.values(passwordValidation).every((v) => v);
 
   const handleRegister = async (e) => {
     e.preventDefault();
 
-    // Validate form data
     if (!email || !password || !confirmPassword) {
       setError("All fields are required.");
       return;
     }
+
     if (password !== confirmPassword) {
       setError("Passwords do not match.");
+      return;
+    }
+
+    if (!isPasswordValid) {
+      setError("Password does not meet the required criteria.");
       return;
     }
 
@@ -62,19 +76,12 @@ export default function Signup() {
     setLoading(true);
 
     try {
-      // Create user in Firebase
-      const userCredential = await createUserWithEmailAndPassword(
-        auth,
-        email,
-        password
-      );
+      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
       const firebaseUser = userCredential.user;
 
-      // Send email verification
       await sendEmailVerification(firebaseUser);
 
-      // Save user to MongoDB via API route using Fetch
-      const role = selectedForm; // Investor or Seeker
+      const role = selectedForm;
       const response = await fetch("/api/users", {
         method: "POST",
         headers: {
@@ -92,9 +99,6 @@ export default function Signup() {
         throw new Error("Failed to save user to MongoDB.");
       }
 
-      const data = await response.json();
-      console.log("User created in MongoDB:", data);
-
       setLoading(false);
       alert("Sign-up successful! Please verify your email before signing in.");
       router.push("/sign-in");
@@ -106,12 +110,9 @@ export default function Signup() {
   };
 
   return (
-    <div className=" h-[100vh] max-xl:h-screen  flex items-center justify-center">
-      <div className="p-5 bg-slate-900 rounded-lg w-[90%]  sm:w-[90%]  md:max-w-[400px] lg:max-w-[500px] mx-auto">
-        <h1 className="text-sm text-gray-400 text-center">
-          Are you a Visa Investor or Seeker?
-        </h1>
-        {/* Radio buttons to select between Investor and Seeker */}
+    <div className="h-[100vh] flex items-center justify-center">
+      <div className="p-5 bg-slate-900 rounded-lg w-[90%] sm:w-[90%] md:max-w-[400px] lg:max-w-[500px] mx-auto">
+        <h1 className="text-sm text-gray-400 text-center">Are you a Visa Investor or Seeker?</h1>
         <div className="flex justify-center gap-4 mb-5 text-white">
           <label className="flex items-center">
             <input
@@ -120,7 +121,7 @@ export default function Signup() {
               value="Investor"
               checked={selectedForm === "Investor"}
               onChange={() => setSelectedForm("Investor")}
-              className="mr-2 "
+              className="mr-2"
             />
             Investor
           </label>
@@ -137,23 +138,26 @@ export default function Signup() {
           </label>
         </div>
 
-        {/* Conditionally render the form based on selectedForm */}
         <form onSubmit={handleRegister}>
           <div className="flex flex-col">
             <label className="font-semibold text-sm text-white">Email</label>
             <input
-              className="bg-gray-50 rounded-[5px] p-1 mt-2 outline-blue-200 bg-slate-800 "
+              disabled={loading}
+              className="text-white font-bold rounded-[5px] p-1 mt-2 outline-blue-200 bg-slate-800"
               type="email"
               onChange={(e) => setEmail(e.target.value)}
             />
           </div>
 
-          <div className="flex flex-col mt-5 relative">
+          <div className="relative flex flex-col mt-5">
             <label className="font-semibold text-sm text-white">Password</label>
             <input
-              className="bg-gray-50 rounded-[5px] p-1 mt-2 outline-blue-200 bg-slate-800 "
+              disabled={loading}
+              className="text-white font-bold rounded-[5px] p-1 mt-2 outline-blue-200 bg-slate-800"
               type={passwordVisible ? "text" : "password"}
               onChange={(e) => setPassword(e.target.value)}
+              onFocus={() => setShowTooltip(true)}
+              onBlur={() => setShowTooltip(false)}
             />
             <button
               type="button"
@@ -162,41 +166,57 @@ export default function Signup() {
             >
               {passwordVisible ? <FaEye /> : <FaEyeSlash />}
             </button>
+
+            {showTooltip && (
+              <div className="absolute top-14 z-10 bg-white w-[300px] rounded-[5px] p-3">
+                <h1 className="text-sm font-semibold">A password must contain:</h1>
+                <ul className="ml-5">
+                  {Object.entries(passwordValidation).map(([key, valid], idx) => (
+                    <li
+                      key={idx}
+                      className={`list-disc text-sm font-bold ${
+                        valid ? "text-green-500" : "text-black"
+                      }`}
+                    >
+                      {key === "minLength" && "At least 9 characters"}
+                      {key === "maxLength" && "Not more than 32 characters"}
+                      {key === "hasUpperCase" && "An uppercase letter"}
+                      {key === "hasLowerCase" && "A lowercase letter"}
+                      {key === "hasNumber" && "A number"}
+                      {key === "hasSpecialChar" && "A special character such as @, £, or &"}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
           </div>
 
-          <div className="flex flex-col mt-5 relative">
-            <label className="font-semibold text-sm text-white">
-              Confirm Password
-            </label>
+          <div className="flex flex-col mt-5">
+            <label className="font-semibold text-sm text-white">Confirm Password</label>
             <input
-              className=" rounded-[5px] p-1 mt-2 outline-blue-200 bg-slate-800 "
+              disabled={loading}
+              className="text-white font-bold rounded-[5px] p-1 mt-2 outline-blue-200 bg-slate-800"
               type={passwordVisible ? "text" : "password"}
               onChange={(e) => setConfirmPassword(e.target.value)}
             />
-            <button
-              type="button"
-              onClick={togglePasswordVisibility}
-              className="absolute right-3 top-9 text-sm font-semibold text-blue-500"
-            >
-              {passwordVisible ? <FaEye /> : <FaEyeSlash />}
-            </button>
           </div>
-
-          <button className="flex items-center justify-center text-center w-full p-2 bg-blue-500 text-white font-bold rounded-[5px] mt-5">
-            Sign Up as {selectedForm}
+          <button
+            className="flex items-center justify-center w-full p-2 bg-blue-500 text-white font-bold rounded-[5px] mt-5"
+            disabled={loading}
+          >
+            {loading ? <Loader /> : `Sign Up as ${selectedForm}`}
           </button>
         </form>
 
         <div className="w-full flex items-center justify-between mt-5">
           <div className="flex items-center gap-3 text-sm text-gray-500">
-            <h1>Already have an Account ?</h1>
+            <h1>Already have an Account?</h1>
             <Link href={"/sign-in"} className="text-blue-500 underline">
               Sign in
             </Link>
           </div>
         </div>
 
-        {/* Social login buttons */}
         {selectedForm === "Investor" && (
           <div className="mt-5 flex flex-col items-center justify-center gap-5">
             <button
