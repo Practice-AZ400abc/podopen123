@@ -112,6 +112,7 @@ export default function Signup() {
   return (
     <div className="h-[100vh] flex items-center justify-center">
       <div className="p-5 bg-slate-900 rounded-lg w-[90%] sm:w-[90%] md:max-w-[400px] lg:max-w-[500px] mx-auto">
+        <h1 className="text-4xl text-white text-center mb-10">Sign up</h1>
         <h1 className="text-sm text-gray-400 text-center">Are you a Visa Investor or Seeker?</h1>
         <div className="flex justify-center gap-4 mb-5 text-white">
           <label className="flex items-center">
@@ -204,7 +205,7 @@ export default function Signup() {
             className="flex items-center justify-center w-full p-2 bg-blue-500 text-white font-bold rounded-[5px] mt-5"
             disabled={loading}
           >
-            {loading ? <Loader /> : `Sign Up as ${selectedForm}`}
+            {loading ? <Loader /> : `Sign up as ${selectedForm}`}
           </button>
         </form>
 
@@ -217,7 +218,7 @@ export default function Signup() {
           </div>
         </div>
 
-        {selectedForm === "Investor" && (
+        {selectedForm === "Seeker" && (
           <div className="mt-5 flex flex-col items-center justify-center gap-5">
             <button
               className="flex gap-5 items-center w-[80%] p-3 border-white rounded-full mx-auto border justify-center"

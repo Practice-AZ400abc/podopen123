@@ -49,12 +49,16 @@ const Navbar = () => {
             <Image src={Logo} alt="Lookvisa" width={150} />
           </Link>
           {/* Navbar */}
-          <ul className="flex gap-10 items-center max-md:hidden font-semibold text-sm text-white">
+          <ul className="flex gap-10 items-center max-md:hidden font-regular text-[13px] text-white">
             {/* navlink */}
             <Link href="/">Home</Link>
             <Link href="/">How it Works</Link>
             <Link href="/">Pricing</Link>
             <Link href="/">Blogs</Link>
+            <Link href="/privacy">Privacy Policy</Link>
+            <Link href="/OurStory">Our Story</Link>
+
+
           </ul>
         </div>
         {isLoggedIn ? (

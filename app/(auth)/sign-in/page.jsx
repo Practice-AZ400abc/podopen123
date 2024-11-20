@@ -68,6 +68,8 @@ const SignIn = () => {
   return (
     <div className=" h-[80vh] max-xl:h-screen  flex items-center justify-center">
       <div className="p-5 bg-slate-900  rounded-lg w-[90%]  sm:w-[90%]  md:max-w-[400px] lg:max-w-[500px] mx-auto">
+      <h1 className="text-4xl text-white text-center mb-10">Sign in</h1>
+        
         {/* Radio buttons to select between Investor and Seeker */}
         <div className="flex justify-center gap-4 mb-5 text-white">
           <label className="flex items-center">
@@ -95,7 +97,7 @@ const SignIn = () => {
         </div>
 
         {/* Conditionally render the form based on selectedForm */}
-        {selectedForm === "Investor" ? (
+        {selectedForm === "Seeker" ? (
           <form onSubmit={validateEmail}>
             {" "}
             {/* Use onSubmit instead of onClick */}
@@ -118,7 +120,7 @@ const SignIn = () => {
               {loading ? (
                 <Loader />// Replace with a spinner component if needed
               ) : (
-                `Sign Up as investor`
+                `Login as investor`
               )}
             </button>
             <div className="w-full flex items-center justify-between mt-5">

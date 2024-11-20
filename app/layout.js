@@ -1,18 +1,6 @@
-import localFont from "next/font/local";
+
 import "./globals.css";
 import Navbar from "../components/Navbar";
-
-const geistSans = localFont({
-  src: "./fonts/GeistVF.woff",
-  variable: "--font-geist-sans",
-  weight: "100 900",
-});
-
-const geistMono = localFont({
-  src: "./fonts/GeistMonoVF.woff",
-  variable: "--font-geist-mono",
-  weight: "100 900",
-});
 
 export const metadata = {
   title: "Lookvisa – Immigrant Visa Investors connect with investor seekers",
@@ -31,7 +19,7 @@ export default function RootLayout({ children }) {
         <title>{metadata.title}</title>
       </head>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={` antialiased`}
       >
         <Navbar />
         {children}
