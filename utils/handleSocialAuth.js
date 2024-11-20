@@ -45,7 +45,7 @@ const handleSocialAuth = async (provider) => {
         body: JSON.stringify({
           firebaseUid: user.uid,
           email: user.email,
-          role: "Investor",
+          role: "Seeker",
           completedProfile: false,
         }),
       });
