@@ -1,6 +1,7 @@
 
 import "./globals.css";
 import Navbar from "../components/Navbar";
+import { Toaster } from "react-hot-toast";
 
 export const metadata = {
   title: "Lookvisa – Immigrant Visa Investors connect with investor seekers",
@@ -21,6 +22,7 @@ export default function RootLayout({ children }) {
       <body
         className={` antialiased`}
       >
+        <Toaster/>
         <Navbar />
         {children}
       </body>

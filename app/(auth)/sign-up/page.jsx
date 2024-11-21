@@ -14,6 +14,7 @@ import { auth } from "../../firebase/firebaseConfig";
 import getToken from "@/utils/getToken";
 import handleSocialAuth from "@/utils/handleSocialAuth";
 import { Loader } from "lucide-react";
+import toast from "react-hot-toast";
 
 export default function Signup() {
   const router = useRouter();
@@ -64,6 +65,8 @@ export default function Signup() {
 
     if (password !== confirmPassword) {
       setError("Passwords do not match.");
+      toast.error("Password and Confirm Password must match!")
+      setConfirmPassword("")
       return;
     }
 
@@ -100,10 +103,10 @@ export default function Signup() {
       }
 
       setLoading(false);
-      alert("Sign-up successful! Please verify your email before signing in.");
+      toast.success("Signed up successfully! Please check your email for Confirmation")
       router.push("/sign-in");
     } catch (err) {
-      console.error(err);
+      console.log(err);
       setError(err.message || "An error occurred during sign-up.");
       setLoading(false);
     }
@@ -113,7 +116,7 @@ export default function Signup() {
     <div className="h-[100vh] flex items-center justify-center">
       <div className="p-5 bg-slate-900 rounded-lg w-[90%] sm:w-[90%] md:max-w-[400px] lg:max-w-[500px] mx-auto">
         <h1 className="text-4xl text-white text-center mb-10">Sign up</h1>
-        <h1 className="text-sm text-gray-400 text-center">Are you a Visa Investor or Seeker?</h1>
+        <h1 className="text-sm text-gray-400 text-center mb-5">Are you a ?</h1>
         <div className="flex justify-center gap-4 mb-5 text-white">
           <label className="flex items-center">
             <input
@@ -124,7 +127,7 @@ export default function Signup() {
               onChange={() => setSelectedForm("Investor")}
               className="mr-2"
             />
-            Investor
+            immigrant investor
           </label>
           <label className="flex items-center">
             <input
@@ -135,7 +138,7 @@ export default function Signup() {
               onChange={() => setSelectedForm("Seeker")}
               className="mr-2"
             />
-            Seeker
+            Visa Seeker
           </label>
         </div>
 
@@ -218,7 +221,7 @@ export default function Signup() {
           </div>
         </div>
 
-        {selectedForm === "Seeker" && (
+        {selectedForm === "Investor" && (
           <div className="mt-5 flex flex-col items-center justify-center gap-5">
             <button
               className="flex gap-5 items-center w-[80%] p-3 border-white rounded-full mx-auto border justify-center"
