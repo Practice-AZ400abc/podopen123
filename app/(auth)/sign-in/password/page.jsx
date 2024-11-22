@@ -3,7 +3,10 @@
 import { useEffect, useState, useContext } from "react";
 import Link from "next/link";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
-import { signInWithEmailAndPassword } from "firebase/auth";
+import {
+  signInWithEmailAndPassword,
+  sendEmailVerification,
+} from "firebase/auth";
 import { auth } from "../../../firebase/firebaseConfig";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
@@ -54,6 +57,13 @@ const EnterPassword = () => {
       );
       const user = userCredential.user;
 
+      // Check if the email is verified
+      if (!user.emailVerified) {
+        await sendEmailVerification(user);
+        toast.error("Please verify your email before logging in.");
+        return; // Stop further processing if email is not verified
+      }
+
       const response = await fetch("/api/token", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -70,11 +80,11 @@ const EnterPassword = () => {
       const { token } = await response.json();
       localStorage.setItem("token", token);
       localStorage.removeItem("email");
-      toast.success("You are logged in Successfully!");
+      toast.success("You are logged in successfully!");
       login();
       router.push("/");
-    } catch (error) {
-      setError("Please enter a valid password");
+    } catch (err) {
+      setError(err.message);
       toast.error("Please enter a valid password");
     } finally {
       setLoading(false);

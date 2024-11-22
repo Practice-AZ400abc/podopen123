@@ -47,31 +47,32 @@ export default function Signup() {
 
   const handleRegister = async (e) => {
     e.preventDefault();
-
+  
     if (!email || !password || !confirmPassword) {
       setError("All fields are required.");
       return;
     }
-
+  
     if (password !== confirmPassword) {
       setError("Passwords do not match.");
       return;
     }
-
+  
     if (!isPasswordValid) {
       setError("Password does not meet the required criteria.");
       return;
     }
-
+  
     setError(null);
     setLoading(true);
-
+  
     try {
       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
       const firebaseUser = userCredential.user;
-
+  
+      // Send email verification link to the user
       await sendEmailVerification(firebaseUser);
-
+  
       const role = selectedForm;
       const response = await fetch("/api/users", {
         method: "POST",
@@ -85,11 +86,11 @@ export default function Signup() {
           completedProfile: false,
         }),
       });
-
+  
       if (!response.ok) {
         throw new Error("Failed to save user to MongoDB.");
       }
-
+  
       setLoading(false);
       router.push("/sign-in"); // Redirect to sign-in page after successful signup
     } catch (err) {
@@ -98,6 +99,7 @@ export default function Signup() {
       setLoading(false);
     }
   };
+  
 
   return (
     <div className="h-[100vh] flex items-center justify-center">

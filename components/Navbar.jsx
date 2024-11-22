@@ -37,7 +37,13 @@ const Navbar = () => {
           </ul>
         </div>
         {isLoggedIn ? (
-          <div>
+          <div className="flex gap-5 items-center max-md:hidden">
+            <button
+              className="border border-black text-black hover:bg-black hover:text-white px-6 py-3 rounded-full font-bold"
+              onClick={logout}
+            >
+              Logout
+            </button>
             <UserCircle height={40} width={40} />
           </div>
         ) : (
@@ -60,7 +66,11 @@ const Navbar = () => {
         <div className="md:hidden">
           <Sheet>
             <SheetTrigger className="p-3 bg-blue-400 rounded-full">
-              <RiMenuLine size={20} color="white" />
+              {isLoggedIn ? (
+                <UserCircle />
+              ) : (
+                <RiMenuLine size={20} color="white" />
+              )}
             </SheetTrigger>
             <SheetContent className="bg-white">
               <SheetHeader>
@@ -75,7 +85,7 @@ const Navbar = () => {
                 {isLoggedIn ? (
                   <button
                     className="border border-black text-black hover:bg-black hover:text-white px-6 py-3 rounded-full font-bold"
-                    onClick={logout} // Call logout from AuthContext
+                    onClick={logout}
                   >
                     Logout
                   </button>

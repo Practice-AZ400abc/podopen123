@@ -7,26 +7,18 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { toast } from "react-hot-toast";
 import { GoogleAuthProvider, FacebookAuthProvider } from "firebase/auth";
+import { auth } from "@/app/firebase/firebaseConfig";
 import handleSocialAuth from "@/utils/handleSocialAuth";
-import getToken from "@/utils/getToken";
 import { Loader } from "lucide-react";
 import { AuthContext } from "@/components/AuthProvider"; // Adjust the path
 
 const SignIn = () => {
-  const { isLoggedIn, login } = useContext(AuthContext); // Access `isLoggedIn` and `login` from context
+  const { isLoggedIn } = useContext(AuthContext); // Access `isLoggedIn` and `login` from context
   const router = useRouter();
 
   const [email, setEmail] = useState(""); // Email state
   const [error, setError] = useState(""); // State to handle error messages
   const [loading, setLoading] = useState(false);
-
-  useEffect(() => {
-    // Check for token and log in if it exists
-    const token = getToken();
-    if (token) {
-      login();
-    }
-  }, [login]);
 
   useEffect(() => {
     // Redirect if user is logged in
@@ -46,21 +38,24 @@ const SignIn = () => {
         return;
       }
 
-      const isRegistered = await fetch(`/api/users?email=${email}`, {
+      // Fetch user details from your MongoDB
+      const userResponse = await fetch(`/api/users?email=${email}`, {
         method: "GET",
       });
 
-      if (!isRegistered.ok) {
+      if (!userResponse.ok) {
         toast.error("Email address is not registered!");
         setEmail("");
         setLoading(false);
         return;
       }
 
+      // Store email in localStorage and proceed
       localStorage.setItem("email", email);
       setLoading(false);
       router.push("/sign-in/password");
     } catch (err) {
+      console.error(err);
       toast.error(err.message || "An error occurred during email validation.");
       setLoading(false);
     }
@@ -110,18 +105,14 @@ const SignIn = () => {
         <div className="flex flex-col gap-5 w-[90%] m-auto mt-5">
           <button
             className="flex gap-5 items-center w-[80%] p-3 border-white rounded-full mx-auto border justify-center"
-            onClick={() =>
-              handleSocialAuth(new GoogleAuthProvider(), login)
-            }
+            onClick={() => handleSocialAuth(new GoogleAuthProvider(), login)}
           >
             <FcGoogle />
             <h1 className="text-white">Continue with Google</h1>
           </button>
           <button
             className="flex gap-5 items-center w-[80%] p-3 bg-blue-500 text-white rounded-full mx-auto justify-center"
-            onClick={() =>
-              handleSocialAuth(new FacebookAuthProvider(), login)
-            }
+            onClick={() => handleSocialAuth(new FacebookAuthProvider(), login)}
           >
             <FaFacebookF />
             <h1>Continue with Facebook</h1>
