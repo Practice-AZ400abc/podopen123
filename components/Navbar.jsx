@@ -39,12 +39,12 @@ const Navbar = () => {
         {isLoggedIn ? (
           <div className="flex gap-5 items-center max-md:hidden">
             <button
-              className="border border-black text-black hover:bg-black hover:text-white px-6 py-3 rounded-full font-bold"
+              className="border border-white text-white hover:border-none hover:bg-blue-500 hover:text-white px-6 py-3 rounded-full font-bold"
               onClick={logout}
             >
               Logout
             </button>
-            <UserCircle height={40} width={40} />
+            <UserCircle height={40} width={40} color="white"/>
           </div>
         ) : (
           <div className="flex gap-5 items-center max-md:hidden">
