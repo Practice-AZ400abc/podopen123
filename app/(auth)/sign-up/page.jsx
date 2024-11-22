@@ -13,6 +13,7 @@ import {
 import { auth } from "../../firebase/firebaseConfig";
 import { AuthContext } from "@/components/AuthProvider"; // Import AuthContext
 import handleSocialAuth from "@/utils/handleSocialAuth";
+import toast from "react-hot-toast";
 
 export default function Signup() {
   const router = useRouter();
@@ -60,6 +61,7 @@ export default function Signup() {
     }
 
     if (password !== confirmPassword) {
+      toast.error("password & confirm password should be same!")
       setError("Passwords do not match.");
       return;
     }
