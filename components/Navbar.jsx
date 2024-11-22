@@ -1,5 +1,6 @@
 "use client";
-import React, { useState, useEffect } from "react";
+
+import React, { useContext } from "react";
 import Logo from "../app/Lookvisa.png";
 import Image from "next/image";
 import Link from "next/link";
@@ -11,35 +12,11 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet"; // Added SheetHeader and SheetTitle
-import getToken from "@/utils/getToken";
+import { AuthContext } from "@/components/AuthProvider"; // Import AuthContext
+import { UserCircle } from "lucide-react";
 
 const Navbar = () => {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-
-  // Update login status when token changes
-  const updateLoginStatus = () => {
-    const token = getToken();
-    setIsLoggedIn(!!token);
-  };
-
-  const handleLogout = () => {
-    localStorage.removeItem("token");
-    updateLoginStatus(); // Update login status after logout
-  };
-
-  useEffect(() => {
-    updateLoginStatus(); // Initial check
-
-    // Add event listener for changes in `localStorage`
-    const handleStorageChange = () => {
-      updateLoginStatus();
-    };
-
-    window.addEventListener("storage", handleStorageChange);
-    return () => {
-      window.removeEventListener("storage", handleStorageChange);
-    };
-  }, []);
+  const { isLoggedIn, logout } = useContext(AuthContext); // Use AuthContext
 
   return (
     <div className="w-full bg-slate-900">
@@ -57,18 +34,11 @@ const Navbar = () => {
             <Link href="/">Blogs</Link>
             <Link href="/privacy">Privacy Policy</Link>
             <Link href="/OurStory">Our Story</Link>
-
-
           </ul>
         </div>
         {isLoggedIn ? (
-          <div className="flex gap-5 items-center max-md:hidden">
-            <button
-              className="border border-black text-black hover:bg-black hover:text-white px-6 py-3 rounded-full font-bold"
-              onClick={handleLogout}
-            >
-              Logout
-            </button>
+          <div>
+            <UserCircle height={40} width={40} />
           </div>
         ) : (
           <div className="flex gap-5 items-center max-md:hidden">
@@ -104,8 +74,8 @@ const Navbar = () => {
                 <Link href="/">Blogs</Link>
                 {isLoggedIn ? (
                   <button
-                    className="border border-white text-white hover:bg-black hover:text-white px-6 py-3 rounded-full font-bold"
-                    onClick={handleLogout}
+                    className="border border-black text-black hover:bg-black hover:text-white px-6 py-3 rounded-full font-bold"
+                    onClick={logout} // Call logout from AuthContext
                   >
                     Logout
                   </button>

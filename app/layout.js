@@ -1,6 +1,6 @@
-
 import "./globals.css";
 import Navbar from "../components/Navbar";
+import { AuthProvider } from "@/components/AuthProvider"; // Ensure the correct path
 import { Toaster } from "react-hot-toast";
 
 export const metadata = {
@@ -19,12 +19,12 @@ export default function RootLayout({ children }) {
         <meta name="keywords" content={metadata.keywords} />
         <title>{metadata.title}</title>
       </head>
-      <body
-        className={` antialiased`}
-      >
-        <Toaster/>
-        <Navbar />
-        {children}
+      <body className="antialiased">
+        <AuthProvider>
+          <Toaster />
+          <Navbar />
+          {children}
+        </AuthProvider>
       </body>
     </html>
   );

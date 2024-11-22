@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import { FcGoogle } from "react-icons/fc";
 import { FaFacebookF, FaEye, FaEyeSlash } from "react-icons/fa";
 import Link from "next/link";
@@ -7,17 +7,13 @@ import { useRouter } from "next/navigation";
 import {
   createUserWithEmailAndPassword,
   sendEmailVerification,
-  GoogleAuthProvider,
-  FacebookAuthProvider,
 } from "firebase/auth";
 import { auth } from "../../firebase/firebaseConfig";
-import getToken from "@/utils/getToken";
-import handleSocialAuth from "@/utils/handleSocialAuth";
-import { Loader } from "lucide-react";
-import toast from "react-hot-toast";
+import { AuthContext } from "@/components/AuthProvider"; // Import AuthContext
 
 export default function Signup() {
   const router = useRouter();
+  const { isLoggedIn } = useContext(AuthContext); // Access isLoggedIn
 
   const [selectedForm, setSelectedForm] = useState("Investor");
   const [passwordVisible, setPasswordVisible] = useState(false);
@@ -26,32 +22,26 @@ export default function Signup() {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [showTooltip, setShowTooltip] = useState(false);
 
   useEffect(() => {
-    const token = getToken();
-    setIsLoggedIn(!!token);
-  }, []);
-
-  useEffect(() => {
     if (isLoggedIn) {
-      router.push("/");
+      router.push("/"); // Redirect to home page if already logged in
     }
   }, [isLoggedIn, router]);
 
   const togglePasswordVisibility = () => {
     setPasswordVisible(!passwordVisible);
   };
+
   const passwordValidation = {
     minLength: password.length >= 9,
     maxLength: password.length <= 32,
     hasUpperCase: /[A-Z]/.test(password),
     hasLowerCase: /[a-z]/.test(password),
     hasNumber: /\d/.test(password),
-    hasSpecialChar: /[^A-Za-z0-9\s]/.test(password), // Matches any non-alphanumeric, non-whitespace character
+    hasSpecialChar: /[^A-Za-z0-9\s]/.test(password),
   };
-  
 
   const isPasswordValid = Object.values(passwordValidation).every((v) => v);
 
@@ -65,8 +55,6 @@ export default function Signup() {
 
     if (password !== confirmPassword) {
       setError("Passwords do not match.");
-      toast.error("Password and Confirm Password must match!")
-      setConfirmPassword("")
       return;
     }
 
@@ -103,8 +91,7 @@ export default function Signup() {
       }
 
       setLoading(false);
-      toast.success("Signed up successfully! Please check your email for Confirmation")
-      router.push("/sign-in");
+      router.push("/sign-in"); // Redirect to sign-in page after successful signup
     } catch (err) {
       console.log(err);
       setError(err.message || "An error occurred during sign-up.");
@@ -143,6 +130,7 @@ export default function Signup() {
         </div>
 
         <form onSubmit={handleRegister}>
+          {/* Email and Password Fields */}
           <div className="flex flex-col">
             <label className="font-semibold text-sm text-white">Email</label>
             <input
@@ -208,7 +196,7 @@ export default function Signup() {
             className="flex items-center justify-center w-full p-2 bg-blue-500 text-white font-bold rounded-[5px] mt-5"
             disabled={loading}
           >
-            {loading ? <Loader /> : `Sign up as ${selectedForm}`}
+            {loading ? "Loading..." : `Sign up as ${selectedForm}`}
           </button>
         </form>
 
@@ -225,14 +213,14 @@ export default function Signup() {
           <div className="mt-5 flex flex-col items-center justify-center gap-5">
             <button
               className="flex gap-5 items-center w-[80%] p-3 border-white rounded-full mx-auto border justify-center"
-              onClick={() => handleSocialAuth(new GoogleAuthProvider())}
+              onClick={() => handleSocialAuth(new GoogleAuthProvider(), login)}
             >
               <FcGoogle />
               <h1 className="text-white">Continue with Google</h1>
             </button>
             <button
               className="flex gap-5 items-center w-[80%] p-3 bg-blue-600 text-white rounded-full mx-auto justify-center"
-              onClick={() => handleSocialAuth(new FacebookAuthProvider())}
+              onClick={() => handleSocialAuth(new FacebookAuthProvider(), login)}
             >
               <FaFacebookF />
               <h1>Continue with Facebook</h1>
