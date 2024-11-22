@@ -1,46 +1,41 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import Link from "next/link";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
-import { signInWithEmailAndPassword } from "firebase/auth";
+import {
+  signInWithEmailAndPassword,
+  sendEmailVerification,
+} from "firebase/auth";
 import { auth } from "../../../firebase/firebaseConfig";
-import getToken from "@/utils/getToken";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
+import { AuthContext } from "@/components/AuthProvider"; // Adjust the import as needed
 
 const EnterPassword = () => {
   const router = useRouter();
+  const { isLoggedIn, login } = useContext(AuthContext); // Get the login function and user from context
 
   const [email, setEmail] = useState("");
   const [error, setError] = useState("");
-  const [passwordVisible, setPasswordVisible] = useState(false); // State to manage password visibility
-  const [password, setPassword] = useState(""); // Password state
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [loading, setLoading] = useState(true)
-
-  useEffect(() => {
-    const token = getToken();
-    setIsLoggedIn(!!token);
-  }, []);
+  const [passwordVisible, setPasswordVisible] = useState(false);
+  const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     if (isLoggedIn) {
-      router.push("/");
+      router.push("/"); // If already logged in, redirect to home
     }
   }, [isLoggedIn, router]);
 
   useEffect(() => {
-    const email = localStorage.getItem("email");
-
-    if (!email) {
-      router.push("/login");
+    const storedEmail = localStorage.getItem("email");
+    if (!storedEmail) {
+      router.push("/sign-in");
     }
+    setEmail(storedEmail);
+  }, [router]);
 
-    setEmail(email);
-  }, [email, router]);
-
-  // Function to toggle password visibility
   const togglePasswordVisibility = () => {
     setPasswordVisible(!passwordVisible);
   };
@@ -52,6 +47,8 @@ const EnterPassword = () => {
       toast.error("Password is required");
       return;
     }
+
+    setLoading(true);
     try {
       const userCredential = await signInWithEmailAndPassword(
         auth,
@@ -60,39 +57,46 @@ const EnterPassword = () => {
       );
       const user = userCredential.user;
 
-      // Generate JWT by hitting the backend endpoint
+      // Check if the email is verified
+      if (!user.emailVerified) {
+        await sendEmailVerification(user);
+        toast.error("Please verify your email before logging in.");
+        return; // Stop further processing if email is not verified
+      }
+
       const response = await fetch("/api/token", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           firebaseUid: user.uid,
+          email: user.email,
+          role: user.role,
+          completedProfile: user.completedProfile,
         }),
       });
 
       if (!response.ok) throw new Error("Failed to generate token.");
 
       const { token } = await response.json();
-
-      // Store the token in localStorage
-      toast.success("You are logged in Successfully!")
       localStorage.setItem("token", token);
       localStorage.removeItem("email");
+      toast.success("You are logged in successfully!");
+      login();
       router.push("/");
-    } catch (error) {
-      setError("Please enter a valid password");
+    } catch (err) {
+      setError(err.message);
       toast.error("Please enter a valid password");
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
-    <div className=" h-screen flex flex-col items-center justify-center">
+    <div className="h-screen flex flex-col items-center justify-center">
       <div className="p-5 bg-slate-900 rounded-lg w-[90%] sm:w-[90%] md:max-w-[400px] lg:max-w-[500px] mx-auto">
         <h1 className="text-4xl text-white text-center mb-10">Password</h1>
-
         <div className="mt-2">
-          <form onSubmit={handleLogin} className="">
+          <form onSubmit={handleLogin}>
             <div className="flex flex-col">
               <label className="font-semibold text-white text-sm">
                 Please enter Password
@@ -105,7 +109,7 @@ const EnterPassword = () => {
                   type={passwordVisible ? "text" : "password"}
                   onChange={(e) => {
                     setPassword(e.target.value);
-                    setError(""); // Clear the error when user starts typing
+                    setError("");
                   }}
                   placeholder="Enter your password"
                   required
@@ -122,8 +126,9 @@ const EnterPassword = () => {
             <button
               type="submit"
               className="flex items-center justify-center text-center w-full p-2 bg-blue-500 text-white font-bold rounded-md mt-5"
+              disabled={loading}
             >
-              Log in
+              {loading ? "Logging in..." : "Log in"}
             </button>
           </form>
         </div>
