@@ -51,9 +51,7 @@ export default function Signup() {
 
   const handleRegister = async (e) => {
     e.preventDefault();
-    console.log(email)
-    console.log(password)
-    console.log(confirmPassword)
+
 
     if (!email || !password || !confirmPassword) {
       setError("All fields are required.");
@@ -100,9 +98,10 @@ export default function Signup() {
       });
 
       if (!response.ok) {
+        toast.error("Email already exists. Please Signup with different email!");
         throw new Error("Failed to save user to MongoDB.");
       }
-
+      toast.success("Confirmation Email has been sent to your email!");
       setLoading(false);
       router.push("/sign-in"); // Redirect to sign-in page after successful signup
     } catch (err) {
