@@ -105,14 +105,14 @@ const SignIn = () => {
         <div className="flex flex-col gap-5 w-[90%] m-auto mt-5">
           <button
             className="flex gap-5 items-center w-[80%] p-3 border-white rounded-full mx-auto border justify-center"
-            onClick={() => handleSocialAuth(new GoogleAuthProvider(), login)}
+            onClick={() => handleSocialAuth(new GoogleAuthProvider())}
           >
             <FcGoogle />
             <h1 className="text-white">Continue with Google</h1>
           </button>
           <button
             className="flex gap-5 items-center w-[80%] p-3 bg-blue-500 text-white rounded-full mx-auto justify-center"
-            onClick={() => handleSocialAuth(new FacebookAuthProvider(), login)}
+            onClick={() => handleSocialAuth(new FacebookAuthProvider())}
           >
             <FaFacebookF />
             <h1>Continue with Facebook</h1>

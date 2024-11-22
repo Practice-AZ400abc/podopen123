@@ -2,7 +2,7 @@ import { signInWithPopup, fetchSignInMethodsForEmail, linkWithCredential, Google
 import { auth } from "@/app/firebase/firebaseConfig";
 
 // Utility function to handle social login
-const handleSocialAuth = async (provider, login) => {
+const handleSocialAuth = async (provider) => {
   try {
     // Perform social sign-in with Firebase
     const result = await signInWithPopup(auth, provider);
@@ -67,6 +67,8 @@ const handleSocialAuth = async (provider, login) => {
       body: JSON.stringify({
         firebaseUid: user.uid,
         email: user.email,
+        role: user.role,
+        completedProfile: user.completedProfile,
       }),
     });
 
@@ -76,7 +78,6 @@ const handleSocialAuth = async (provider, login) => {
 
     const { token } = await tokenResponse.json();
     localStorage.setItem("token", token);
-    login(); // Update login state using the context
 
     return { token };
   } catch (error) {

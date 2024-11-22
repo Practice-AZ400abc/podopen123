@@ -7,9 +7,12 @@ import { useRouter } from "next/navigation";
 import {
   createUserWithEmailAndPassword,
   sendEmailVerification,
+  GoogleAuthProvider,
+  FacebookAuthProvider,
 } from "firebase/auth";
 import { auth } from "../../firebase/firebaseConfig";
 import { AuthContext } from "@/components/AuthProvider"; // Import AuthContext
+import handleSocialAuth from "@/utils/handleSocialAuth";
 
 export default function Signup() {
   const router = useRouter();
@@ -47,32 +50,39 @@ export default function Signup() {
 
   const handleRegister = async (e) => {
     e.preventDefault();
-  
+    console.log(email)
+    console.log(password)
+    console.log(confirmPassword)
+
     if (!email || !password || !confirmPassword) {
       setError("All fields are required.");
       return;
     }
-  
+
     if (password !== confirmPassword) {
       setError("Passwords do not match.");
       return;
     }
-  
+
     if (!isPasswordValid) {
       setError("Password does not meet the required criteria.");
       return;
     }
-  
+
     setError(null);
     setLoading(true);
-  
+
     try {
-      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+      const userCredential = await createUserWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
       const firebaseUser = userCredential.user;
-  
+
       // Send email verification link to the user
       await sendEmailVerification(firebaseUser);
-  
+
       const role = selectedForm;
       const response = await fetch("/api/users", {
         method: "POST",
@@ -86,11 +96,11 @@ export default function Signup() {
           completedProfile: false,
         }),
       });
-  
+
       if (!response.ok) {
         throw new Error("Failed to save user to MongoDB.");
       }
-  
+
       setLoading(false);
       router.push("/sign-in"); // Redirect to sign-in page after successful signup
     } catch (err) {
@@ -99,7 +109,6 @@ export default function Signup() {
       setLoading(false);
     }
   };
-  
 
   return (
     <div className="h-[100vh] flex items-center justify-center">
@@ -163,30 +172,37 @@ export default function Signup() {
 
             {showTooltip && (
               <div className="absolute top-14 z-10 bg-white w-[300px] rounded-[5px] p-3">
-                <h1 className="text-sm font-semibold">A password must contain:</h1>
+                <h1 className="text-sm font-semibold">
+                  A password must contain:
+                </h1>
                 <ul className="ml-5">
-                  {Object.entries(passwordValidation).map(([key, valid], idx) => (
-                    <li
-                      key={idx}
-                      className={`list-disc text-sm font-bold ${
-                        valid ? "text-green-500" : "text-black"
-                      }`}
-                    >
-                      {key === "minLength" && "At least 9 characters"}
-                      {key === "maxLength" && "Not more than 32 characters"}
-                      {key === "hasUpperCase" && "An uppercase letter"}
-                      {key === "hasLowerCase" && "A lowercase letter"}
-                      {key === "hasNumber" && "A number"}
-                      {key === "hasSpecialChar" && "A special character such as @, £, or &"}
-                    </li>
-                  ))}
+                  {Object.entries(passwordValidation).map(
+                    ([key, valid], idx) => (
+                      <li
+                        key={idx}
+                        className={`list-disc text-sm font-bold ${
+                          valid ? "text-green-500" : "text-black"
+                        }`}
+                      >
+                        {key === "minLength" && "At least 9 characters"}
+                        {key === "maxLength" && "Not more than 32 characters"}
+                        {key === "hasUpperCase" && "An uppercase letter"}
+                        {key === "hasLowerCase" && "A lowercase letter"}
+                        {key === "hasNumber" && "A number"}
+                        {key === "hasSpecialChar" &&
+                          "A special character such as @, £, or &"}
+                      </li>
+                    )
+                  )}
                 </ul>
               </div>
             )}
           </div>
 
           <div className="flex flex-col mt-5">
-            <label className="font-semibold text-sm text-white">Confirm Password</label>
+            <label className="font-semibold text-sm text-white">
+              Confirm Password
+            </label>
             <input
               disabled={loading}
               className="text-white font-bold rounded-[5px] p-1 mt-2 outline-blue-200 bg-slate-800"
@@ -195,6 +211,7 @@ export default function Signup() {
             />
           </div>
           <button
+            type="submit"
             className="flex items-center justify-center w-full p-2 bg-blue-500 text-white font-bold rounded-[5px] mt-5"
             disabled={loading}
           >
@@ -215,14 +232,14 @@ export default function Signup() {
           <div className="mt-5 flex flex-col items-center justify-center gap-5">
             <button
               className="flex gap-5 items-center w-[80%] p-3 border-white rounded-full mx-auto border justify-center"
-              onClick={() => handleSocialAuth(new GoogleAuthProvider(), login)}
+              onClick={() => handleSocialAuth(new GoogleAuthProvider())}
             >
               <FcGoogle />
               <h1 className="text-white">Continue with Google</h1>
             </button>
             <button
               className="flex gap-5 items-center w-[80%] p-3 bg-blue-600 text-white rounded-full mx-auto justify-center"
-              onClick={() => handleSocialAuth(new FacebookAuthProvider(), login)}
+              onClick={() => handleSocialAuth(new FacebookAuthProvider())}
             >
               <FaFacebookF />
               <h1>Continue with Facebook</h1>
