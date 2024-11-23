@@ -69,6 +69,7 @@ const handleSocialAuth = async (provider) => {
         email: user.email,
         role: user.role,
         completedProfile: user.completedProfile,
+        emailVerified: true,
       }),
     });
 

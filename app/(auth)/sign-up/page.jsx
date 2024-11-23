@@ -6,7 +6,6 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import {
   createUserWithEmailAndPassword,
-  sendEmailVerification,
   GoogleAuthProvider,
   FacebookAuthProvider,
 } from "firebase/auth";
@@ -52,7 +51,7 @@ export default function Signup() {
   const handleRegister = async (e) => {
     e.preventDefault();
 
-
+    // Basic validations
     if (!email || !password || !confirmPassword) {
       setError("All fields are required.");
       return;
@@ -73,16 +72,11 @@ export default function Signup() {
     setLoading(true);
 
     try {
-      const userCredential = await createUserWithEmailAndPassword(
-        auth,
-        email,
-        password
-      );
+      // Create user in Firebase
+      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
       const firebaseUser = userCredential.user;
 
-      // Send email verification link to the user
-      await sendEmailVerification(firebaseUser);
-
+      // Save user to MongoDB with emailVerified set to false
       const role = selectedForm;
       const response = await fetch("/api/users", {
         method: "POST",
@@ -94,13 +88,33 @@ export default function Signup() {
           email: firebaseUser.email,
           role,
           completedProfile: false,
+          emailVerified: false, // Email verification status is false initially
         }),
       });
 
       if (!response.ok) {
-        toast.error("Email already exists. Please Signup with different email!");
+        toast.error("Email already exists. Please Signup with a different email!");
         throw new Error("Failed to save user to MongoDB.");
       }
+
+      // After user is saved to MongoDB, send verification email
+      const emailVerificationResponse = await fetch("/api/send-email", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email: firebaseUser.email,
+          action: "verify", // Action type is 'verify' for email verification
+        }),
+      });
+
+      if (!emailVerificationResponse.ok) {
+        toast.error("Failed to send email verification.");
+        throw new Error("Failed to send email verification.");
+      }
+
+      // Display success message and redirect to sign-in page
       toast.success("Confirmation Email has been sent to your email!");
       setLoading(false);
       router.push("/sign-in"); // Redirect to sign-in page after successful signup

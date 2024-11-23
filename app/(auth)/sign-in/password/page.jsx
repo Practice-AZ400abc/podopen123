@@ -5,7 +5,6 @@ import Link from "next/link";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import {
   signInWithEmailAndPassword,
-  sendEmailVerification,
 } from "firebase/auth";
 import { auth } from "../../../firebase/firebaseConfig";
 import { useRouter } from "next/navigation";
@@ -56,14 +55,7 @@ const EnterPassword = () => {
         password
       );
       const user = userCredential.user;
-
-      // Check if the email is verified
-      if (!user.emailVerified) {
-        await sendEmailVerification(user);
-        toast.error("Please verify your email before logging in.");
-        return; // Stop further processing if email is not verified
-      }
-
+      
       const response = await fetch("/api/token", {
         method: "POST",
         headers: { "Content-Type": "application/json" },

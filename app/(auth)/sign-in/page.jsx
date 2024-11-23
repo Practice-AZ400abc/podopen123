@@ -28,38 +28,66 @@ const SignIn = () => {
   }, [isLoggedIn, router]);
 
   const validateEmail = async (e) => {
-    e.preventDefault();
-    setError("");
-    setLoading(true);
-    try {
-      if (!email) {
-        toast.error("Please enter a valid email address!");
-        setLoading(false);
-        return;
-      }
+  e.preventDefault();
+  setError("");
+  setLoading(true);
+  try {
+    if (!email) {
+      toast.error("Please enter a valid email address!");
+      setLoading(false);
+      return;
+    }
 
-      // Fetch user details from your MongoDB
-      const userResponse = await fetch(`/api/users?email=${email}`, {
-        method: "GET",
+    // Fetch user details from your MongoDB based on the email
+    const userResponse = await fetch(`/api/users?email=${email}`, {
+      method: "GET",
+    });
+
+    const userData = await userResponse.json();
+
+    if (!userResponse.ok) {
+      toast.error("Email address is not registered!");
+      setEmail("");
+      setLoading(false);
+      return;
+    }
+
+    // Check if the email is verified
+    if (!userData.emailVerified) {
+      // If email is not verified, send a verification email
+      const emailVerificationResponse = await fetch("/api/send-email", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email: userData.email,
+          action: "verify",
+        }),
       });
 
-      if (!userResponse.ok) {
-        toast.error("Email address is not registered!");
-        setEmail("");
+      if (!emailVerificationResponse.ok) {
+        toast.error("Failed to send verification email.");
         setLoading(false);
         return;
       }
 
-      // Store email in localStorage and proceed
-      localStorage.setItem("email", email);
+      toast.error("A verification email has been sent. Please verify your email to proceed.");
       setLoading(false);
-      router.push("/sign-in/password");
-    } catch (err) {
-      console.error(err);
-      toast.error(err.message || "An error occurred during email validation.");
-      setLoading(false);
+      return;
     }
-  };
+
+    // If the email is verified, proceed to the password reset page
+    localStorage.setItem("email", email);
+    setLoading(false);
+    router.push("/sign-in/password");
+
+  } catch (err) {
+    console.error(err);
+    toast.error(err.message || "An error occurred during email validation.");
+    setLoading(false);
+  }
+};
 
   return (
     <div className="h-[80vh] max-xl:h-screen flex items-center justify-center">

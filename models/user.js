@@ -18,6 +18,11 @@ const UserSchema = new Schema(
       required: true,
       default: false,
     },
+    emailVerified: {
+      type: Boolean,
+      required: true,
+      default: false,
+    },
     role: {
       type: String,
       enum: ["Investor", "Seeker"],
@@ -28,6 +33,12 @@ const UserSchema = new Schema(
       type: String,
       unique: true,
       required: true,
+    },
+    authToken: {
+      type: String,
+    },
+    authTokenExpiry: {
+      type: Date,
     },
   },
   {

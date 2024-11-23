@@ -1,7 +1,5 @@
 "use client";
 import { useState, useEffect, useContext } from "react";
-import Image from "next/image";
-import { sendPasswordResetEmail } from "firebase/auth";
 import { auth } from "../../firebase/firebaseConfig";
 import Logo from "../../Lookvisa.png";
 import Link from "next/link";
@@ -27,9 +25,37 @@ const ForgetPassword = () => {
     setMessage("");
     setError("");
     try {
-      await sendPasswordResetEmail(auth, email);
-      setMessage("Password reset email sent! Check your inbox.");
+      const emailRegistered = await fetch(`/api/users?email=${email}`, {
+        method: "GET",
+      });
+
+      if (!emailRegistered.ok) {
+        setError("Email address is not registered!");
+        setEmail("");
+        return;
+      }
+
+      const passwordResetResponse = await fetch("/api/send-email", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email,
+          action: "reset",
+        }),
+      });
+
+      if (!passwordResetResponse.ok) {
+        toast.error("Failed to send email verification.");
+        throw new Error("Failed to send email verification.");
+      }
+
+      toast.success("Password reset email has been sent to your email!");
+      setLoading(false);
+      router.push("/sign-in");
     } catch (err) {
+      console.log(err);
       setError("Failed to send password reset email. Please try again.");
     }
   };

@@ -1,8 +1,6 @@
 "use client";
 
-import { confirmPasswordReset } from "firebase/auth";
-import { auth } from "@/app/firebase/firebaseConfig";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useState, useEffect } from "react";
 
 const ResetPassword = () => {
@@ -10,18 +8,18 @@ const ResetPassword = () => {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [error, setError] = useState("");
   const [message, setMessage] = useState("");
-  const [oobCode, setOobCode] = useState(null); // State for the reset code
   const router = useRouter();
+  const searchParams = useSearchParams(); // Get URL parameters
+
+  // Retrieve the token from the URL query parameters
+  const token = searchParams.get("token");
+  console.log(token);
 
   useEffect(() => {
-    // Access window object safely inside useEffect
-    const queryCode = new URLSearchParams(window.location.search).get("oobCode");
-    if (!queryCode) {
-      setError("Invalid or expired reset link.");
-    } else {
-      setOobCode(queryCode); // Store the oobCode in state
+    if (!token) {
+      setError("Invalid or expired link.");
     }
-  }, []);
+  }, [token]);
 
   const handleResetPassword = async (e) => {
     e.preventDefault();
@@ -31,21 +29,35 @@ const ResetPassword = () => {
       return;
     }
 
-    if (!oobCode) {
-      setError("Invalid or expired reset link.");
-      return;
-    }
-
     try {
-      // Confirm the password reset
-      await confirmPasswordReset(auth, oobCode, password);
+      setError("");
+      setMessage("");
+
+      // Send the reset request to your backend
+      const response = await fetch("/api/reset-password", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          token,
+          password,
+        }),
+      });
+
+      if (!response.ok) {
+        const data = await response.json();
+        setError(data.message || "Something went wrong.");
+        return;
+      }
+
       setMessage("Password reset successful.");
-      // Redirect user to login page after a successful reset
+      // Redirect to login page after success
       setTimeout(() => {
         router.push("/sign-in");
       }, 2000);
-    } catch (error) {
-      setError("Error resetting password: " + error.message);
+    } catch (err) {
+      setError(err.message || "An error occurred during password reset.");
     }
   };
 
@@ -60,21 +72,23 @@ const ResetPassword = () => {
         </p>
 
         <div className="mt-2">
-          <form onSubmit={handleResetPassword} className="">
+          <form onSubmit={handleResetPassword}>
             <div className="flex flex-col">
-              <label className="font-semibold text-white text-sm">Enter New Password</label>
+              <label className="font-semibold text-white text-sm">
+                Enter New Password
+              </label>
               <input
                 className="bg-slate-800 text-white rounded-md p-1 mt-2 outline-blue-200"
                 type="password"
-                autoComplete="false"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
               />
-              <label className="font-semibold text-white text-sm mt-5">Re-Enter New Password</label>
+              <label className="font-semibold text-white text-sm mt-5">
+                Re-Enter New Password
+              </label>
               <input
                 className="bg-slate-800 text-white rounded-md p-1 mt-2 outline-blue-200"
                 type="password"
-                autoComplete="false"
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
               />
