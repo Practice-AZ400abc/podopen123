@@ -7,6 +7,9 @@ import toast from "react-hot-toast";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 const ResetPassword = () => {
+  
+  const router = useRouter();
+  const searchParams = useSearchParams();
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [error, setError] = useState("");
@@ -16,8 +19,6 @@ const ResetPassword = () => {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false); // For confirm password visibility
   const [showTooltip, setShowTooltip] = useState(false); // Tooltip visibility
 
-  const router = useRouter();
-  const searchParams = useSearchParams();
 
   // Retrieve the token from the URL query parameters
   const token = searchParams.get("token");
