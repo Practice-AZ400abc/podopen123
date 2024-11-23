@@ -44,7 +44,7 @@ const VerifyEmail = () => {
     <div className="h-[50vh] flex flex-col items-center justify-center">
      <div className="bg-slate-900 p-4 rounded-md text-blue-500 ">
      <h1 className="text-2xl font-bold">Email Verification</h1>
-      <p className="text-center text-white text-sm">{message}Email has been Verified</p>
+      <p className="text-center text-white text-sm">{message}</p>
 
       {isVerified && (
         <div className="mt-4">
