@@ -10,6 +10,7 @@ import { auth } from "../../../firebase/firebaseConfig";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 import { AuthContext } from "@/components/AuthProvider"; // Adjust the import as needed
+import { Loader } from "lucide-react";
 
 const EnterPassword = () => {
   const router = useRouter();
@@ -120,7 +121,7 @@ const EnterPassword = () => {
               className="flex items-center justify-center text-center w-full p-2 bg-blue-500 text-white font-bold rounded-md mt-5"
               disabled={loading}
             >
-              {loading ? "Logging in..." : "Log in"}
+              {loading ?  <Loader className="animate-spin" size={18} /> : "Log in"}
             </button>
           </form>
         </div>

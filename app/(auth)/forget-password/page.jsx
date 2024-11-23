@@ -3,15 +3,17 @@ import { useState, useEffect, useContext } from "react";
 import { auth } from "../../firebase/firebaseConfig";
 import Logo from "../../Lookvisa.png";
 import Link from "next/link";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, Loader } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { AuthContext } from "@/components/AuthProvider"; // Import the AuthContext
+import toast from "react-hot-toast";
 
 const ForgetPassword = () => {
   const { isLoggedIn } = useContext(AuthContext); // Access isLoggedIn from context
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false); // Track loading state
   const router = useRouter(); // For navigation
 
   useEffect(() => {
@@ -24,6 +26,7 @@ const ForgetPassword = () => {
     e.preventDefault();
     setMessage("");
     setError("");
+    setLoading(true); // Start loading
     try {
       const emailRegistered = await fetch(`/api/users?email=${email}`, {
         method: "GET",
@@ -32,6 +35,7 @@ const ForgetPassword = () => {
       if (!emailRegistered.ok) {
         setError("Email address is not registered!");
         setEmail("");
+        setLoading(false); // Stop loading
         return;
       }
 
@@ -47,21 +51,23 @@ const ForgetPassword = () => {
       });
 
       if (!passwordResetResponse.ok) {
-        toast.error("Failed to send email verification.");
         throw new Error("Failed to send email verification.");
       }
 
+      // If email was sent successfully
       toast.success("Password reset email has been sent to your email!");
-      setLoading(false);
+      setMessage("Password reset email sent successfully!");
+      setLoading(false); // Stop loading
       router.push("/sign-in");
     } catch (err) {
-      console.log(err);
+      console.error(err);
       setError("Failed to send password reset email. Please try again.");
+      setLoading(false); // Stop loading
     }
   };
 
   return (
-    <div className=" h-screen  flex flex-col items-center justify-center">
+    <div className="h-screen flex flex-col items-center justify-center">
       <div className="p-5 bg-slate-900 rounded-lg w-[90%] sm:w-[90%] md:max-w-[400px] lg:max-w-[500px] mx-auto">
         <h1 className="text-center font-semibold text-2xl text-white">
           Forget Password?
@@ -79,13 +85,17 @@ const ForgetPassword = () => {
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
+                disabled={loading} // Disable input during loading
               />
             </div>
             <button
-              className="flex items-center justify-center text-center w-full p-2 bg-blue-500 text-white font-bold  rounded-md mt-5"
+              className={`flex items-center justify-center text-center w-full text-white p-2 font-bold rounded-md mt-5 ${
+                loading ? "bg-blue-400" : "bg-blue-500"
+              }`}
               type="submit"
+              disabled={loading} // Disable button during loading
             >
-              Reset password
+              {loading ? <Loader /> : "Reset password"} {/* Show loading text */}
             </button>
           </form>
           {message && <p className="text-green-500 text-sm mt-2">{message}</p>}
