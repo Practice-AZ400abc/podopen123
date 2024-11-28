@@ -50,32 +50,32 @@ export default function Signup() {
 
   const handleRegister = async (e) => {
     e.preventDefault();
-
+  
     // Basic validations
     if (!email || !password || !confirmPassword) {
       setError("All fields are required.");
       return;
     }
-
+  
     if (password !== confirmPassword) {
-      toast.error("password & confirm password should be same!")
+      toast.error("Password & confirm password should be the same!");
       setError("Passwords do not match.");
       return;
     }
-
+  
     if (!isPasswordValid) {
       setError("Password does not meet the required criteria.");
       return;
     }
-
+  
     setError(null);
     setLoading(true);
-
+  
     try {
-      // Create user in Firebase
+      // Attempt to create the user in Firebase
       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
       const firebaseUser = userCredential.user;
-
+  
       // Save user to MongoDB with emailVerified set to false
       const role = selectedForm;
       const response = await fetch("/api/users", {
@@ -88,16 +88,20 @@ export default function Signup() {
           email: firebaseUser.email,
           role,
           completedProfile: false,
-          emailVerified: false, // Email verification status is false initially
+          emailVerified: false,
         }),
       });
-
+  
       if (!response.ok) {
-        toast.error("Email already exists. Please Signup with a different email!");
+        if (response.status === 409) { // Conflict status for existing user
+          toast.error("This email account is already registered with this platform. You can login or reset your password if needed.");
+        } else {
+          toast.error("Failed to save user to the database.");
+        }
         throw new Error("Failed to save user to MongoDB.");
       }
-
-      // After user is saved to MongoDB, send verification email
+  
+      // Send verification email
       const emailVerificationResponse = await fetch("/api/send-email", {
         method: "POST",
         headers: {
@@ -105,25 +109,34 @@ export default function Signup() {
         },
         body: JSON.stringify({
           email: firebaseUser.email,
-          action: "verify", // Action type is 'verify' for email verification
+          action: "verify",
         }),
       });
-
+  
       if (!emailVerificationResponse.ok) {
         toast.error("Failed to send email verification.");
         throw new Error("Failed to send email verification.");
       }
-
-      // Display success message and redirect to sign-in page
-      toast.success("Confirmation Email has been sent to your email!");
+  
+      // Display success message and redirect
+      toast.success("A confirmation email has been sent to your email!");
       setLoading(false);
-      router.push("/sign-in"); // Redirect to sign-in page after successful signup
+      router.push("/sign-in");
     } catch (err) {
       console.log(err);
+  
+      if (err.code === "auth/email-already-in-use") {
+        // Firebase-specific error for an already registered email
+        toast.error("This email account is already registered with this platform. You can login or reset your password if needed.");
+      } else {
+        toast.error(err.message || "An error occurred during sign-up.");
+      }
+  
       setError(err.message || "An error occurred during sign-up.");
       setLoading(false);
     }
   };
+  
 
   return (
     <div className="h-[100vh] flex items-center justify-center">
@@ -140,7 +153,7 @@ export default function Signup() {
               onChange={() => setSelectedForm("Investor")}
               className="mr-2"
             />
-            immigrant investor
+            Investor Seeker
           </label>
           <label className="flex items-center">
             <input
@@ -170,6 +183,7 @@ export default function Signup() {
           <div className="relative flex flex-col mt-5">
             <label className="font-semibold text-sm text-white">Password</label>
             <input
+            maxLength={20}
               disabled={loading}
               className="text-white font-bold rounded-[5px] p-1 mt-2 outline-blue-200 bg-slate-800"
               type={passwordVisible ? "text" : "password"}
@@ -219,6 +233,8 @@ export default function Signup() {
               Confirm Password
             </label>
             <input
+            maxLength={20}
+
               disabled={loading}
               className="text-white font-bold rounded-[5px] p-1 mt-2 outline-blue-200 bg-slate-800"
               type={passwordVisible ? "text" : "password"}

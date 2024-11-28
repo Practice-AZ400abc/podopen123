@@ -118,9 +118,6 @@ const SignIn = () => {
                 Sign up
               </Link>
             </div>
-            <Link href="/forget-password" className="text-blue-500 underline">
-              Forgot Password?
-            </Link>
           </div>
         </form>
 
