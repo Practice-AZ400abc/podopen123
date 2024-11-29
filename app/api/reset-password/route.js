@@ -1,9 +1,10 @@
 import jwt from "jsonwebtoken";
 import { auth } from "@/app/firebase/firebaseAdminConfig";
+import User from "@/models/user";
 
 export const POST = async (req) => {
   try {
-    const body = await req.json()
+    const body = await req.json();
     const { token, password } = body;
     console.log(req.body);
     console.log(token);
@@ -25,6 +26,13 @@ export const POST = async (req) => {
     const userRecord = await auth.getUserByEmail(decodedToken.email);
 
     await auth.updateUser(userRecord.uid, { password });
+
+    const dbUser = await User.findOne({ email: decodedToken.email });
+
+    dbUser.authToken = null;
+    dbUser.authTokenExpiry = null;
+
+    await dbUser.save();
 
     return new Response(
       JSON.stringify({ message: "Password reset successfully" }),

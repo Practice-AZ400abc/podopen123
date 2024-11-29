@@ -1,14 +1,17 @@
-import { signInWithPopup, fetchSignInMethodsForEmail, linkWithCredential, GoogleAuthProvider, FacebookAuthProvider } from "firebase/auth";
+import {
+  signInWithPopup,
+  fetchSignInMethodsForEmail,
+  linkWithCredential,
+  GoogleAuthProvider,
+  FacebookAuthProvider,
+} from "firebase/auth";
 import { auth } from "@/app/firebase/firebaseConfig";
 
-// Utility function to handle social login
 const handleSocialAuth = async (provider) => {
   try {
-    // Perform social sign-in with Firebase
     const result = await signInWithPopup(auth, provider);
     const user = result.user;
 
-    // Check if user exists in MongoDB
     const checkUserResponse = await fetch(`/api/users?email=${user.email}`, {
       method: "GET",
     });
@@ -21,7 +24,6 @@ const handleSocialAuth = async (provider) => {
         user.email
       );
 
-      // Link social account to existing user with a password
       if (existingSignInMethods.includes("password")) {
         const credential =
           provider instanceof GoogleAuthProvider
@@ -35,7 +37,6 @@ const handleSocialAuth = async (provider) => {
         console.log("User already exists, no linking required.");
       }
     } else if (checkUserResponse.status === 404) {
-      // Create a new user in MongoDB
       const newUserResponse = await fetch("/api/users", {
         method: "POST",
         headers: {
@@ -45,7 +46,10 @@ const handleSocialAuth = async (provider) => {
           firebaseUid: user.uid,
           email: user.email,
           role: "Seeker",
+          emailVerified: true,
           completedProfile: false,
+          authMethod:
+            provider instanceof GoogleAuthProvider ? "google" : "facebook",
         }),
       });
 
@@ -58,7 +62,6 @@ const handleSocialAuth = async (provider) => {
       throw new Error("Failed to check user existence.");
     }
 
-    // Generate a token and log the user in
     const tokenResponse = await fetch("/api/token", {
       method: "POST",
       headers: {

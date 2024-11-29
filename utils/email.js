@@ -1,4 +1,5 @@
 import nodemailer from "nodemailer";
+import path from "path";
 
 const transporter = nodemailer.createTransport({
   host: process.env.EMAIL_HOST,
@@ -10,13 +11,14 @@ const transporter = nodemailer.createTransport({
   },
 });
 
-export const sendEmail = async ({ fromEmail, to, subject, html }) => {
+export const sendEmail = async ({ fromEmail, to, subject, html, attachments }) => {
   try {
     const info = await transporter.sendMail({
       from: `"${fromEmail}" <${fromEmail}>`,
       to,
       subject,
       html,
+      attachments,
     });
 
     console.log("Email sent successfully:", info.messageId);
@@ -43,7 +45,7 @@ export const sendActionEmail = async (email, action, token) => {
         <table width="100%" border="0" cellpadding="0" cellspacing="0" style="background-color: #1e293b; border-radius: 8px; overflow: hidden;">
           <tr>
             <td style="padding: 20px; text-align: center; color: #ffffff;">
-              
+              <img src="cid:logo" alt="Lookvisa Logo" style="max-width: 150px; margin-bottom: 20px;" />
               <h1 style="margin: 0; font-size: 24px; font-weight: bold;">Welcome to <span style="color: #60a5fa;">Lookvisa</span></h1>
               <p>Thanks for signing up!</p>
               <hr>
@@ -77,6 +79,13 @@ export const sendActionEmail = async (email, action, token) => {
       </div>
 
       `,
+      attachments: [
+        {
+          filename: "Lookvisa.png",
+          path: path.resolve("./app/Lookvisa.png"),
+          cid: "logo",
+        },
+      ],
     },
     reset: {
       subject: "Reset Your Password",
@@ -86,7 +95,7 @@ export const sendActionEmail = async (email, action, token) => {
         <table width="100%" border="0" cellpadding="0" cellspacing="0" style="background-color: #1e293b; border-radius: 8px; overflow: hidden;">
           <tr>
             <td style="padding: 20px; text-align: center; color: #ffffff;">
-              
+              <img src="cid:logo" alt="Lookvisa Logo" style="max-width: 150px; margin-bottom: 20px;" />
               <h1 style="margin: 0; font-size: 24px; font-weight: bold;"> <span style="color: #60a5fa;">Lookvisa</span></h1>
               <p>Password Reset</p>
               <hr>
@@ -106,6 +115,13 @@ export const sendActionEmail = async (email, action, token) => {
         </table>
       </div>
       `,
+      attachments: [
+        {
+          filename: "Lookvisa.png",
+          path: path.resolve("./app/Lookvisa.png"),
+          cid: "logo",
+        },
+      ],
     },
   };
 

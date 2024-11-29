@@ -18,6 +18,7 @@ const SignIn = () => {
 
   const [email, setEmail] = useState(""); // Email state
   const [error, setError] = useState(""); // State to handle error messages
+  const [emailNotVerified, setEmailNotVerified] = useState(false); // State to handle
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
@@ -28,66 +29,80 @@ const SignIn = () => {
   }, [isLoggedIn, router]);
 
   const validateEmail = async (e) => {
-  e.preventDefault();
-  setError("");
-  setLoading(true);
-  try {
-    if (!email) {
-      toast.error("Please enter a valid email address!");
-      setLoading(false);
-      return;
-    }
-
-    // Fetch user details from your MongoDB based on the email
-    const userResponse = await fetch(`/api/users?email=${email}`, {
-      method: "GET",
-    });
-
-    const userData = await userResponse.json();
-
-    if (!userResponse.ok) {
-      toast.error("Email address is not registered!");
-      setEmail("");
-      setLoading(false);
-      return;
-    }
-
-    // Check if the email is verified
-    if (!userData.emailVerified) {
-      // If email is not verified, send a verification email
-      const emailVerificationResponse = await fetch("/api/send-email", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          email: userData.email,
-          action: "verify",
-        }),
-      });
-
-      if (!emailVerificationResponse.ok) {
-        toast.error("Failed to send verification email.");
+    e.preventDefault();
+    setError("");
+    setLoading(true);
+    try {
+      if (!email) {
+        toast.error("Please enter a valid email address!");
         setLoading(false);
         return;
       }
 
-      toast.error("A verification email has been sent. Please verify your email to proceed.");
+      // Fetch user details from your MongoDB based on the email
+      const userResponse = await fetch(`/api/users?email=${email}`, {
+        method: "GET",
+      });
+
+      const userData = await userResponse.json();
+      console.log(userData);
+
+      if (!userResponse.ok) {
+        toast.error("Email address is not registered!");
+        setEmail("");
+        setLoading(false);
+        return;
+      }
+
+      if (userData.authMethod !== "credentials") {
+        toast.error(
+          `This email address is registered with ${userData.authMethod}, kindly login with ${userData.authMethod} using this email`
+        );
+        setLoading(false);
+        return;
+      }
+
+      // Check if the email is verified
+      if (!userData.emailVerified) {
+        setEmailNotVerified(true);
+        setLoading(false);
+        return;
+      }
+
+      // If the email is verified, proceed to the password reset page
+      localStorage.setItem("email", email);
+      setLoading(false);
+      router.push("/sign-in/password");
+    } catch (err) {
+      console.error(err);
+      toast.error(err.message || "An error occurred during email validation.");
+      setLoading(false);
+    }
+  };
+
+  const resendVerificationEmail = async () => {
+    const emailVerificationResponse = await fetch("/api/send-email", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        email: email,
+        action: "verify",
+      }),
+    });
+
+    if (!emailVerificationResponse.ok) {
+      toast.error("Failed to send verification email.");
       setLoading(false);
       return;
     }
 
-    // If the email is verified, proceed to the password reset page
-    localStorage.setItem("email", email);
+    toast.error(
+      "A verification email has been sent. Please verify your email to proceed."
+    );
     setLoading(false);
-    router.push("/sign-in/password");
-
-  } catch (err) {
-    console.error(err);
-    toast.error(err.message || "An error occurred during email validation.");
-    setLoading(false);
-  }
-};
+  };
 
   return (
     <div className="h-[80vh] max-xl:h-screen flex items-center justify-center">
@@ -144,6 +159,34 @@ const SignIn = () => {
           </button>
         </div>
       </div>
+
+      {/* Popup for email verification */}
+      {emailNotVerified && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white p-5 rounded-lg shadow-md w-[90%] sm:max-w-[400px]">
+            <h2 className="text-center font-semibold text-lg text-black">
+              Email Not Verified
+            </h2>
+            <p className="text-center text-gray-600 text-sm mt-2">
+              Please verify your email address to proceed. Click the button
+              below to resend the verification email.
+            </p>
+            <button
+              className="mt-5 bg-blue-500 text-white font-bold py-2 px-4 rounded w-full"
+              onClick={resendVerificationEmail}
+              disabled={loading}
+            >
+              {loading ? <Loader /> : "Resend Verification Email"}
+            </button>
+            <button
+              className="mt-3 text-gray-600 underline text-sm w-full"
+              onClick={() => setEmailNotVerified(false)}
+            >
+              Cancel
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

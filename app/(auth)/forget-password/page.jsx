@@ -54,8 +54,6 @@ const ForgetPassword = () => {
         throw new Error("Failed to send email verification.");
       }
 
-      // If email was sent successfully
-      toast.success("Password reset email has been sent to your email!");
       setMessage("Password reset email sent successfully!");
       setLoading(false); // Stop loading
       router.push("/sign-in");

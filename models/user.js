@@ -34,6 +34,11 @@ const UserSchema = new Schema(
       unique: true,
       required: true,
     },
+    authMethod: {
+      type: String,
+      required: true,
+      enum: ["credentials", "google", "facebook"],
+    },
     authToken: {
       type: String,
     },
