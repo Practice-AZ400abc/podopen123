@@ -55,8 +55,7 @@ const ForgetPassword = () => {
       }
 
       setMessage("Password reset email sent successfully!");
-      setLoading(false); // Stop loading
-      router.push("/sign-in");
+      setLoading(false);
     } catch (err) {
       console.error(err);
       setError("Failed to send password reset email. Please try again.");
