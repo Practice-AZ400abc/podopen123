@@ -107,98 +107,111 @@ const SignIn = () => {
     setLoading(false);
   };
 
+  const signInWithSocials = async (provider) => {
+    await handleSocialAuth(provider);
+    router.push("/");
+  };
+
   return (
-   <div className="mx-auto container">
-     <div className="flex w-full justify-between items-center max-md:hidden h-[100px]">
-   <Link href={"/"}>
-   <Image src={Logo} alt="Lookvisa" width={120} className=""/>
-   </Link>
-    {/* <Link href={"/sign-in"} className="underline flex items-center gap-4  text-center p-2">Login to your Account <ArrowRight size={15}/> </Link> */}
-    </div>
-    <div className="h-[80vh] max-xl:h-screen flex items-center justify-center">
-      <div className="p-5  rounded-lg w-[90%] sm:w-[90%] md:max-w-[400px] lg:max-w-[500px] mx-auto">
-        <h1 className="text-4xl text-black text-center mb-3">Sign in</h1>
-        <p className=" mb-4 text-center">Please enter your credentails</p>
-        <form onSubmit={validateEmail}>
-          <div className="flex flex-col">
-            <label className="font-semibold text-sm text-black">Email</label>
-            <input
-              disabled={loading}
-              className="border rounded-[5px] p-1 mt-2 text-black font-bold"
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-            />
+    <div className="mx-auto container">
+      <div className="flex w-full justify-between items-center max-md:hidden h-[100px]">
+        <Link href={"/"}>
+          <Image src={Logo} alt="Lookvisa" width={120} className="" />
+        </Link>
+        {/* <Link href={"/sign-in"} className="underline flex items-center gap-4  text-center p-2">Login to your Account <ArrowRight size={15}/> </Link> */}
+      </div>
+      <div className="h-[80vh] max-xl:h-screen flex items-center justify-center">
+        <div className="p-5  rounded-lg w-[90%] sm:w-[90%] md:max-w-[400px] lg:max-w-[500px] mx-auto">
+          <h1 className="text-4xl text-black text-center mb-3">Sign in</h1>
+          <p className=" mb-4 text-center">Please enter your credentails</p>
+          <form onSubmit={validateEmail}>
+            <div className="flex flex-col">
+              <label className="font-semibold text-sm text-black">Email</label>
+              <input
+                disabled={loading}
+                className="border rounded-[5px] p-1 mt-2 text-black font-bold"
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+              />
+            </div>
+            <button
+              type="submit"
+              className="flex items-center justify-center text-center w-full p-2 bg-black text-white font-bold rounded-[5px] mt-5"
+            >
+              {loading ? (
+                <Loader className="animate-spin" size={18} />
+              ) : (
+                "Continue"
+              )}
+            </button>
+            <div className="w-full flex items-center justify-between mt-5">
+              <div className="flex items-center gap-3 text-sm text-gray-500">
+                <h1>Don't have an Account?</h1>
+                <Link href="/sign-up" className="text-black underline">
+                  Sign up
+                </Link>
+              </div>
+            </div>
+          </form>
+
+          <div className="mt-5 flex items-center justify-center">
+            <hr className="flex-1 bg-gray-200" />
+            <h1 className="text-center text-gray-500 text-sm mx-3">or</h1>
+            <hr className="flex-1 bg-gray-200" />
           </div>
-          <button
-            type="submit"
-            className="flex items-center justify-center text-center w-full p-2 bg-black text-white font-bold rounded-[5px] mt-5"
-          >
-            {loading ? <Loader className="animate-spin" size={18}/> : "Continue"}
-          </button>
-          <div className="w-full flex items-center justify-between mt-5">
-            <div className="flex items-center gap-3 text-sm text-gray-500">
-              <h1>Don't have an Account?</h1>
-              <Link href="/sign-up" className="text-black underline">
-                Sign up
-              </Link>
+
+          <div className="flex flex-col gap-5 w-[90%] m-auto mt-5">
+            <button
+              className="flex gap-5 items-center w-[80%] p-3 border rounded-full mx-auto  justify-center"
+              onClick={() => signInWithSocials(new GoogleAuthProvider())}
+            >
+              <FcGoogle />
+              <h1 className="text-black">Continue with Google</h1>
+            </button>
+            <button
+              className="flex gap-5 items-center w-[80%] p-3 bg-blue-500 text-white rounded-full mx-auto justify-center"
+              onClick={() => signInWithSocials(new FacebookAuthProvider())}
+            >
+              <FaFacebookF />
+              <h1>Continue with Facebook</h1>
+            </button>
+          </div>
+        </div>
+
+        {/* Popup for email verification */}
+        {emailNotVerified && (
+          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+            <div className="bg-white p-5 rounded-lg shadow-md w-[90%] sm:max-w-[400px]">
+              <h2 className="text-center font-semibold text-lg text-black">
+                Email Not Verified
+              </h2>
+              <p className="text-center text-gray-600 text-sm mt-2">
+                Please verify your email address to proceed. Click the button
+                below to resend the verification email.
+              </p>
+              <button
+                className="mt-5 bg-blue-500 text-white font-bold py-2 px-4 rounded w-full"
+                onClick={resendVerificationEmail}
+                disabled={loading}
+              >
+                {loading ? (
+                  <Loader className="animate-spin" size={18} />
+                ) : (
+                  "Resend Verification Email"
+                )}
+              </button>
+              <button
+                className="mt-3 text-gray-600 underline text-sm w-full"
+                onClick={() => setEmailNotVerified(false)}
+              >
+                Cancel
+              </button>
             </div>
           </div>
-        </form>
-
-        <div className="mt-5 flex items-center justify-center">
-          <hr className="flex-1 bg-gray-200" />
-          <h1 className="text-center text-gray-500 text-sm mx-3">or</h1>
-          <hr className="flex-1 bg-gray-200" />
-        </div>
-
-        <div className="flex flex-col gap-5 w-[90%] m-auto mt-5">
-          <button
-            className="flex gap-5 items-center w-[80%] p-3 border rounded-full mx-auto  justify-center"
-            onClick={() => handleSocialAuth(new GoogleAuthProvider())}
-          >
-            <FcGoogle />
-            <h1 className="text-black">Continue with Google</h1>
-          </button>
-          <button
-            className="flex gap-5 items-center w-[80%] p-3 bg-blue-500 text-white rounded-full mx-auto justify-center"
-            onClick={() => handleSocialAuth(new FacebookAuthProvider())}
-          >
-            <FaFacebookF />
-            <h1>Continue with Facebook</h1>
-          </button>
-        </div>
+        )}
       </div>
-
-      {/* Popup for email verification */}
-      {emailNotVerified && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white p-5 rounded-lg shadow-md w-[90%] sm:max-w-[400px]">
-            <h2 className="text-center font-semibold text-lg text-black">
-              Email Not Verified
-            </h2>
-            <p className="text-center text-gray-600 text-sm mt-2">
-              Please verify your email address to proceed. Click the button
-              below to resend the verification email.
-            </p>
-            <button
-              className="mt-5 bg-blue-500 text-white font-bold py-2 px-4 rounded w-full"
-              onClick={resendVerificationEmail}
-              disabled={loading}
-            >
-              {loading ? <Loader className="animate-spin" size={18} /> : "Resend Verification Email"}
-            </button>
-            <button
-              className="mt-3 text-gray-600 underline text-sm w-full"
-              onClick={() => setEmailNotVerified(false)}
-            >
-              Cancel
-            </button>
-          </div>
-        </div>
-      )}
     </div>
-   </div>
   );
 };
 
