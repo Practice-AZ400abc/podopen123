@@ -3,7 +3,7 @@ import { useState, useEffect, useContext } from "react";
 import { auth } from "../../firebase/firebaseConfig";
 import Logo from "../../Lookvisa.png";
 import Link from "next/link";
-import { ArrowLeft, Loader } from "lucide-react";
+import { ArrowLeft, Fingerprint, Loader } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { AuthContext } from "@/components/AuthProvider"; // Import the AuthContext
 import toast from "react-hot-toast";
@@ -64,21 +64,29 @@ const ForgetPassword = () => {
   };
 
   return (
-    <div className="h-screen flex flex-col items-center justify-center">
-      <div className="p-5 bg-slate-900 rounded-lg w-[90%] sm:w-[90%] md:max-w-[400px] lg:max-w-[500px] mx-auto">
-        <h1 className="text-center font-semibold text-2xl text-white">
+    <div className="h-[70vh] flex flex-col items-center justify-center">
+      <div className="p-5  rounded-lg w-[90%] sm:w-[90%] md:max-w-[400px] lg:max-w-[500px] mx-auto">
+        <div className="w-full items-center justify-center">
+        <div className="rounded-sm p-2   flex items-center justify-center">
+        <div className="rounded-sm p-2 border  flex items-center justify-center">
+        <Fingerprint />
+        </div>
+        </div>
+        </div>
+       
+        <h1 className="text-center font-semibold text-2xl text-black">
           Forget Password?
         </h1>
-        <p className="text-center font-semibold text-sm text-gray-500 mt-2">
+        <p className="text-center font-semibold text-sm text-black mt-2">
           No worries, we'll send you reset instructions.
         </p>
 
         <div className="mt-2">
           <form onSubmit={handlePasswordReset} className="">
             <div className="flex flex-col">
-              <label className="font-semibold text-white text-sm">Email</label>
+              <label className="font-semibold text-black text-sm">Email</label>
               <input
-                className="bg-slate-800 text-white rounded-md p-1 mt-2 outline-blue-200"
+                className="border text-white rounded-md p-1 mt-2 outline-blue-200"
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
@@ -87,12 +95,12 @@ const ForgetPassword = () => {
             </div>
             <button
               className={`flex items-center justify-center text-center w-full text-white p-2 font-bold rounded-md mt-5 ${
-                loading ? "bg-blue-400" : "bg-blue-500"
+                loading ? "bg-slate-800" : "bg-black"
               }`}
               type="submit"
               disabled={loading} // Disable button during loading
             >
-              {loading ? <Loader /> : "Reset password"} {/* Show loading text */}
+              {loading ? <Loader className="animate-spin" size={18} /> : "Reset password"} {/* Show loading text */}
             </button>
           </form>
           {message && <p className="text-green-500 text-sm mt-2">{message}</p>}
@@ -101,7 +109,7 @@ const ForgetPassword = () => {
       </div>
 
       <Link
-        className="mt-5 text-gray-500 underline flex items-center justify-center gap-2"
+        className="mt-5 text-black underline flex items-center justify-center gap-2"
         href={"/sign-in"}
       >
         <ArrowLeft size={15} /> Back to login

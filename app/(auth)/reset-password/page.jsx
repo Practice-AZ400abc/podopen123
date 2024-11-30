@@ -91,9 +91,11 @@ const ResetPassword = () => {
   };
 
   return (
-    <div className="h-screen flex flex-col items-center justify-center">
-      <div className="p-5 bg-slate-900 rounded-lg w-[90%] sm:w-[90%] md:max-w-[400px] lg:max-w-[500px] mx-auto">
-        <h1 className="text-center font-semibold text-2xl text-white">
+    <div className="h-[70vh] flex flex-col items-center justify-center">
+      
+      <div className="p-5  rounded-lg w-[90%] sm:w-[90%] md:max-w-[400px] lg:max-w-[500px] mx-auto">
+        
+        <h1 className="text-center font-semibold text-2xl text-black">
           Reset Password
         </h1>
         <p className="text-center font-semibold text-sm text-gray-500 mt-2">
@@ -103,12 +105,12 @@ const ResetPassword = () => {
         <div className="mt-2 relative">
           <form onSubmit={handleResetPassword}>
             <div className="flex flex-col">
-              <label className="font-semibold text-white text-sm">
+              <label className="font-semibold text-black text-sm">
                 Enter New Password
               </label>
               <div className="flex w-full items-center relative">
                 <input
-                  className="bg-slate-800 w-full text-white rounded-md p-1 mt-2 outline-blue-200"
+                  className="border w-full text-black rounded-md p-1 mt-2 outline-blue-200"
                   type={showPassword ? "text" : "password"}
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
@@ -117,7 +119,7 @@ const ResetPassword = () => {
                 />
                 <button
                   type="button"
-                  className="absolute right-2 top-4 text-blue-500"
+                  className="absolute right-2 top-4 text-black"
                   onClick={() => setShowPassword(!showPassword)}
                 >
                   {showPassword ? <FaEye /> : <FaEyeSlash />}
@@ -151,19 +153,19 @@ const ResetPassword = () => {
                   </ul>
                 </div>
               )}
-              <label className="font-semibold text-white text-sm mt-5">
-                Re-Enter New Password
+              <label className="font-semibold text-black text-sm mt-5">
+                Re-enter New Password
               </label>
               <div className="flex w-full items-center relative">
                 <input
-                  className="bg-slate-800 w-full text-white rounded-md p-1 mt-2 outline-blue-200"
+                  className="border w-full text-black rounded-md p-1 mt-2 outline-blue-200"
                   type={showConfirmPassword ? "text" : "password"}
                   value={confirmPassword}
                   onChange={(e) => setConfirmPassword(e.target.value)}
                 />
                 <button
                   type="button"
-                  className="absolute right-2 top-4 text-blue-500"
+                  className="absolute right-2 top-4 text-black"
                   onClick={() => setShowConfirmPassword(!showConfirmPassword)}
                 >
                   {showConfirmPassword ? <FaEye /> : <FaEyeSlash />}
@@ -172,7 +174,7 @@ const ResetPassword = () => {
             </div>
             <button
               className={`flex items-center justify-center text-center w-full p-2 font-bold rounded-md mt-5 text-white ${
-                loading ? "bg-blue-400" : "bg-blue-500"
+                loading ? "bg-slate-800" : "bg-black"
               }`}
               type="submit"
               disabled={loading}

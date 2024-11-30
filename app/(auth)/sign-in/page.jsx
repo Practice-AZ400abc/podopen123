@@ -9,8 +9,11 @@ import { toast } from "react-hot-toast";
 import { GoogleAuthProvider, FacebookAuthProvider } from "firebase/auth";
 import { auth } from "@/app/firebase/firebaseConfig";
 import handleSocialAuth from "@/utils/handleSocialAuth";
-import { Loader } from "lucide-react";
+import { ArrowRight, Loader } from "lucide-react";
+import Logo from "../../Lookvisa.png";
+
 import { AuthContext } from "@/components/AuthProvider"; // Adjust the path
+import Image from "next/image";
 
 const SignIn = () => {
   const { isLoggedIn } = useContext(AuthContext); // Access `isLoggedIn` and `login` from context
@@ -105,16 +108,23 @@ const SignIn = () => {
   };
 
   return (
+   <div className="mx-auto container">
+     <div className="flex w-full justify-between items-center max-md:hidden h-[100px]">
+   <Link href={"/"}>
+   <Image src={Logo} alt="Lookvisa" width={120} className=""/>
+   </Link>
+    {/* <Link href={"/sign-in"} className="underline flex items-center gap-4  text-center p-2">Login to your Account <ArrowRight size={15}/> </Link> */}
+    </div>
     <div className="h-[80vh] max-xl:h-screen flex items-center justify-center">
-      <div className="p-5 bg-slate-900 rounded-lg w-[90%] sm:w-[90%] md:max-w-[400px] lg:max-w-[500px] mx-auto">
-        <h1 className="text-4xl text-white text-center mb-10">Sign in</h1>
-
+      <div className="p-5  rounded-lg w-[90%] sm:w-[90%] md:max-w-[400px] lg:max-w-[500px] mx-auto">
+        <h1 className="text-4xl text-black text-center mb-3">Sign in</h1>
+        <p className=" mb-4 text-center">Please enter your credentails</p>
         <form onSubmit={validateEmail}>
           <div className="flex flex-col">
-            <label className="font-semibold text-sm text-white">Email</label>
+            <label className="font-semibold text-sm text-black">Email</label>
             <input
               disabled={loading}
-              className="bg-slate-800 rounded-[5px] p-1 mt-2 text-white font-bold"
+              className="border rounded-[5px] p-1 mt-2 text-black font-bold"
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
@@ -122,14 +132,14 @@ const SignIn = () => {
           </div>
           <button
             type="submit"
-            className="flex items-center justify-center text-center w-full p-2 bg-blue-500 text-white font-bold rounded-[5px] mt-5"
+            className="flex items-center justify-center text-center w-full p-2 bg-black text-white font-bold rounded-[5px] mt-5"
           >
-            {loading ? <Loader /> : "Login"}
+            {loading ? <Loader className="animate-spin" size={18}/> : "Continue"}
           </button>
           <div className="w-full flex items-center justify-between mt-5">
             <div className="flex items-center gap-3 text-sm text-gray-500">
               <h1>Don't have an Account?</h1>
-              <Link href="/sign-up" className="text-blue-500 underline">
+              <Link href="/sign-up" className="text-black underline">
                 Sign up
               </Link>
             </div>
@@ -144,11 +154,11 @@ const SignIn = () => {
 
         <div className="flex flex-col gap-5 w-[90%] m-auto mt-5">
           <button
-            className="flex gap-5 items-center w-[80%] p-3 border-white rounded-full mx-auto border justify-center"
+            className="flex gap-5 items-center w-[80%] p-3 border rounded-full mx-auto  justify-center"
             onClick={() => handleSocialAuth(new GoogleAuthProvider())}
           >
             <FcGoogle />
-            <h1 className="text-white">Continue with Google</h1>
+            <h1 className="text-black">Continue with Google</h1>
           </button>
           <button
             className="flex gap-5 items-center w-[80%] p-3 bg-blue-500 text-white rounded-full mx-auto justify-center"
@@ -176,7 +186,7 @@ const SignIn = () => {
               onClick={resendVerificationEmail}
               disabled={loading}
             >
-              {loading ? <Loader /> : "Resend Verification Email"}
+              {loading ? <Loader className="animate-spin" size={18} /> : "Resend Verification Email"}
             </button>
             <button
               className="mt-3 text-gray-600 underline text-sm w-full"
@@ -188,6 +198,7 @@ const SignIn = () => {
         </div>
       )}
     </div>
+   </div>
   );
 };
 
