@@ -49,7 +49,7 @@ const Navbar = () => {
           </Link>
           <ul className="flex gap-10 items-center max-md:hidden font-regular text-[16px] text-black">
             <Link href="/">Home</Link>
-            <Link href="/">How it Works</Link>
+            <Link href="/howItWorks">How it Works</Link>
             <Link href="/">Pricing</Link>
             <Link href="/">Blogs</Link>
             <Link href="/privacy">Privacy Policy</Link>
