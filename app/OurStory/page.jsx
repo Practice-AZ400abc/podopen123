@@ -1,13 +1,15 @@
+"use client"
 import React from 'react'
 import Illustration from "../../assets/Illustration.jpg"
 import Growth from "../../assets/Growth.jpg"
 import Airoplane from "../../assets/Airoplane.jpg"
-
 import Image from 'next/image'
 import { AlertCircle, Globe, ReceiptIcon, Settings } from 'lucide-react'
+
 const OurStory = () => {
+  
   return (
-    <div className="mx-auto container">
+    <div className="mx-auto container"   >
       <div className='flex h-[70vh] flex-col md:flex-row items-center justify-between rounded-md w-full mt-10'>
         <div className=' rounded-md p-4  max-w-[700px] text-black '>
           <h1 className='text-green-400 font-bold '>
@@ -65,31 +67,31 @@ const OurStory = () => {
           <p className='text-center text-white max-w-[600px]'>LookVisa.com is revolutionizing the way immigrant investors connect with suitable investment projects worldwide. We've streamlined the process, making it easier than ever to find and invest in projects that align with your goals. By leveraging our platform, you can:</p>
         </div>
 
-        <div className='grid grid-cols-1 md:grid-cols-4 w-full place-content-evenly md:ml-20'>
-          <div className='flex flex-col gap-2 max-w-[240px]' >
+        <div className='flex w-full items-center justify-center flex-wrap mb-4'>
+          <div className='flex flex-col items-center justify-center gap-2 max-w-[340px]' >
             <Globe size={30} className='text-white' />
             <h1 className='text-white font-bold'>Access a Global Network</h1>
-            <p className='text-gray-50'>Explore a diverse range of investment opportunities across multiple countries.
+            <p className='text-gray-50 text-center'>Explore a diverse range of investment opportunities across multiple countries.
             </p>
           </div>
-          <div className='flex flex-col gap-2  max-w-[240px]' >
+          <div className='flex flex-col items-center justify-center gap-2  max-w-[340px]' >
             <Settings size={30} className='text-white' />
             <h1 className='text-white font-bold'>Simplify the Process</h1>
-            <p className='text-gray-50'>Cut through the red tape and expedite the visa application process.
+            <p className='text-gray-50  text-center'>Cut through the red tape and expedite the visa application process.
 
             </p>
           </div>
-          <div className='flex flex-col gap-2  max-w-[240px] ' >
+          <div className='flex flex-col items-center justify-center gap-2  max-w-[340px] ' >
             <AlertCircle size={30} className='text-white' />
             <h1 className='text-white font-bold'>Minimize Risk</h1>
-            <p className='text-gray-50'>Invest in thoroughly vetted projects with experienced developers and proven track records.
+            <p className='text-gray-50  text-center'>Invest in thoroughly vetted projects with experienced developers and proven track records.
 
             </p>
           </div>
-          <div className='flex flex-col gap-2  max-w-[240px]' >
+          <div className='flex flex-col items-center justify-center gap-2  max-w-[340px]' >
             <ReceiptIcon size={30} className='text-white' />
             <h1 className='text-white font-bold'>	Maximize Returns</h1>
-            <p className='text-gray-50'>Benefit from potential capital appreciation and immigration perks.
+            <p className='text-gray-50  text-center'>Benefit from potential capital appreciation and immigration perks.
             </p>
           </div>
 

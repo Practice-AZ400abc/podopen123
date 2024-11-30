@@ -41,7 +41,7 @@ const Navbar = () => {
   }, []);
 
   return (
-    <div className="w-full border-b border-gray-200">
+    <div className="w-full border-b border-gray-200 bg-white z-10 sticky">
       <div className="container mx-auto flex items-center h-[70px] justify-between px-4">
         <div className="flex gap-10 items-center">
           <Link href="/">
@@ -52,7 +52,7 @@ const Navbar = () => {
             <Link href="/howItWorks">How it Works</Link>
             <Link href="/">Pricing</Link>
             <Link href="/">Blogs</Link>
-            <Link href="/privacy">Privacy Policy</Link>
+            <Link href="/PrivacyPolicy">Privacy Policy</Link>
             <Link href="/OurStory">Our Story</Link>
           </ul>
         </div>
