@@ -6,17 +6,17 @@ import { RiProfileLine } from 'react-icons/ri';
 const HowtoStart = () => {
   const steps = [
     {
-      icon: <RiProfileLine size={30} className='text-white' />, // Replace with an actual icon component, e.g., <IconComponent />
+      icon: <RiProfileLine size={40} className='text-white' />, // Replace with an actual icon component, e.g., <IconComponent />
       title: ' Immigrant Investor Profile',
       description: 'List your profile for FREE in our platform for the countries and projects that you want to immigrate to with an investor visa.',
     },
     {
-      icon: <ListCheck size={30} className='text-white'  />,
+      icon: <ListCheck size={40} className='text-white'  />,
       title: 'Investor Seekers Listings',
       description: 'List the projects (i.e. construction, hospitality) that require funding from immigrant investors.',
     },
     {
-      icon: <SearchCheckIcon  size={30} className='text-white'/>,
+      icon: <SearchCheckIcon  size={40} className='text-white'/>,
       title: ' Investor Seekers Find Investors',
       description: 'Search for and identify immigrant investors in our platform willing to fund your project in your chosen country. LookVisa brings you immigrant investors from all over the world.',
     },
