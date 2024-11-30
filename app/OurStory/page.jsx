@@ -65,7 +65,7 @@ const OurStory = () => {
           <p className='text-center text-white max-w-[600px]'>LookVisa.com is revolutionizing the way immigrant investors connect with suitable investment projects worldwide. We've streamlined the process, making it easier than ever to find and invest in projects that align with your goals. By leveraging our platform, you can:</p>
         </div>
 
-        <div className='grid grid-cols-4 w-full place-content-evenly md:ml-20'>
+        <div className='grid grid-cols-1 md:grid-cols-4 w-full place-content-evenly md:ml-20'>
           <div className='flex flex-col gap-2 max-w-[240px]' >
             <Globe size={30} className='text-white' />
             <h1 className='text-white font-bold'>Access a Global Network</h1>
