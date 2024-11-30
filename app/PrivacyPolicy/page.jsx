@@ -7,7 +7,7 @@ const PrivacyPolicy = () => {
     return (
         <div className='mx-auto container'  >
             {/* Heading */}
-            <div className='w-full flex items-center justify-center gap-2 flex-col h-[20vh] mb-100'>
+            <div className='w-full flex items-center justify-center gap-2 flex-col h-[20vh] mb-100 p-4'>
                 <h1 className='text-[44px] uppercase font-semibold'>Privacy Policy</h1>
                 <p>Update at <span className='font-bold'>December 2024</span></p>
             </div>
