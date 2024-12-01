@@ -113,6 +113,7 @@ const ResetPassword = () => {
                   className="border w-full text-black rounded-md p-1 mt-2 outline-blue-200"
                   type={showPassword ? "text" : "password"}
                   value={password}
+                  maxLength={20}
                   onChange={(e) => setPassword(e.target.value)}
                   onFocus={() => setShowTooltip(true)}
                   onBlur={() => setShowTooltip(false)}
@@ -158,6 +159,7 @@ const ResetPassword = () => {
               </label>
               <div className="flex w-full items-center relative">
                 <input
+                 maxLength={20}
                   className="border w-full text-black rounded-md p-1 mt-2 outline-blue-200"
                   type={showConfirmPassword ? "text" : "password"}
                   value={confirmPassword}

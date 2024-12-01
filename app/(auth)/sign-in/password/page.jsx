@@ -99,6 +99,7 @@ const EnterPassword = () => {
                   className={`text-black rounded-[5px] p-1 mt-2 outline-blue-200 w-full border ${
                     error ? "outline-red-500" : ""
                   }`}
+                  maxLength={20}
                   type={passwordVisible ? "text" : "password"}
                   onChange={(e) => {
                     setPassword(e.target.value);
