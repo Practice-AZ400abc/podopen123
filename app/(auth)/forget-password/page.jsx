@@ -54,7 +54,7 @@ const ForgetPassword = () => {
         throw new Error("Failed to send email verification.");
       }
 
-      setMessage("Password reset email sent successfully!");
+      setMessage("A password reset link has been sent to reset your password. Please check your inbox and spam folder to reset your password.");
       setLoading(false);
     } catch (err) {
       console.error(err);

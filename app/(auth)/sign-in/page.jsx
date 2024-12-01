@@ -48,8 +48,7 @@ const SignIn = () => {
       });
 
       const userData = await userResponse.json();
-      console.log(userData);
-
+    
       if (!userResponse.ok) {
         toast.error("Email address is not registered!");
         setEmail("");
@@ -101,7 +100,7 @@ const SignIn = () => {
       return;
     }
 
-    toast.error(
+    toast.success(
       "A verification email has been sent. Please verify your email to proceed."
     );
     setLoading(false);
