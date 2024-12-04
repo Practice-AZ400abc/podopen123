@@ -165,7 +165,12 @@ export default function Signup() {
   return (
     <div className="mx-auto container">
       <div className="flex w-full justify-between items-center max-md:hidden h-[100px]">
+      <Link
+          href={"/"}
+          className="underline flex items-center gap-4  text-center p-2"
+        >
         <Image src={Logo} alt="Lookvisa" width={120} className="" />
+        </Link>
         <Link
           href={"/sign-in"}
           className="underline flex items-center gap-4  text-center p-2"
@@ -192,7 +197,7 @@ export default function Signup() {
                 onChange={() => setSelectedForm("Investor")}
                 className="mr-2"
               />
-              Investor Seeker
+              Visa Sponsor
             </label>
             <label className="flex items-center">
               <input
@@ -306,7 +311,7 @@ export default function Signup() {
             </div>
           </div>
 
-          {selectedForm === "Investor" && (
+          {selectedForm === "Seeker" && (
             <div className="mt-5 flex flex-col items-center justify-center gap-5">
               <button
                 className="flex gap-5 items-center w-[80%] p-3 border rounded-full mx-auto  justify-center"
