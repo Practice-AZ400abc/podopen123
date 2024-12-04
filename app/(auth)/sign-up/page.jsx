@@ -18,6 +18,7 @@ import toast from "react-hot-toast";
 import { ArrowLeft, ArrowRight, Loader } from "lucide-react";
 import Image from "next/image";
 
+
 export default function Signup() {
   const router = useRouter();
   const { isLoggedIn } = useContext(AuthContext); // Access isLoggedIn
@@ -31,6 +32,7 @@ export default function Signup() {
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
   const [showTooltip, setShowTooltip] = useState(false);
+  const [showModal, setShowModal] = useState(false);
 
   useEffect(() => {
     if (isLoggedIn) {
@@ -138,8 +140,9 @@ export default function Signup() {
 
       // Display success message and redirect
       setMessage("A confirmation email has been sent to your email!");
+      setShowModal(true);
       setLoading(false);
-      router.push("/sign-in");
+      // router.push("/sign-in");
     } catch (err) {
       console.log(err);
 
@@ -165,6 +168,7 @@ export default function Signup() {
   return (
     <div className="mx-auto container">
       <div className="flex w-full justify-between items-center max-md:hidden h-[100px]">
+     
       <Link
           href={"/"}
           className="underline flex items-center gap-4  text-center p-2"
@@ -339,6 +343,25 @@ export default function Signup() {
           </Link>
         </div>
       </div>
+      {showModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
+          <div className="bg-white rounded-lg p-5 max-w-md w-full text-center">
+            <h2 className="text-xl font-bold mb-4">Email Sent</h2>
+            <p className="text-sm mb-4">
+              An email has been sent to confirm your account. Please check your inbox to proceed.
+            </p>
+            <button
+              onClick={() => {
+                setShowModal(false);
+                router.push("/sign-in"); // Redirect to home
+              }}
+              className="px-4 py-2 bg-black text-white rounded"
+            >
+              Continue
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
