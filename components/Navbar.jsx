@@ -69,11 +69,19 @@ const Navbar = () => {
             />
             {/* Logout Div */}
             {showLogout && (
-              <div className="absolute top-12 bg-white shadow-md px-8 py-2 flex items-center gap-2">
-                <LogOut size={14} />
-                <button onClick={logout} className="text-black">
-                  Logout
-                </button>
+              <div className="absolute top-[120%] right-0  bg-slate-800 shadow-md px-8 py-2 rounded-md flex items-center gap-2">
+                <div className="flex flex-col gap-2">
+                  <ul className="flex flex-col items-start gap-2 text-white">
+                    <Link href={"/profile"} >Profile</Link>
+                  </ul>
+                  <div className="flex gap-2 items-center ">
+
+                    <button onClick={logout} className="text-white">
+                      Logout
+                    </button>
+                    <LogOut size={14} color="white" />
+                  </div>
+                </div>
               </div>
             )}
           </div>
@@ -103,8 +111,27 @@ const Navbar = () => {
                 className="rounded-full"
                 width={40}
                 height={40}
+                onClick={toggleLogout}
               />
+              {/* Logout Div */}
+              {showLogout && (
+              <div className="absolute top-[120%] right-0  bg-slate-800 shadow-md px-8 py-2 rounded-md flex items-center gap-2">
+                <div className="flex flex-col gap-2">
+                  <ul className="flex flex-col items-start gap-2 text-white">
+                    <Link href={"/profile"} >Profile</Link>
+                  </ul>
+                  <div className="flex gap-2 items-center ">
+
+                    <button onClick={logout} className="text-white">
+                      Logout
+                    </button>
+                    <LogOut size={14} color="white" />
+                  </div>
+                </div>
+              </div>
+            )}
             </div>
+
           ) : (
             ""
           )}

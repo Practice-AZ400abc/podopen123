@@ -1,7 +1,8 @@
 import React from 'react';
 import Card from '@/components/Card';
-import { ListCheck, SearchCheckIcon, Star } from 'lucide-react';
+import { ArrowRight, ListCheck, SearchCheckIcon, Star } from 'lucide-react';
 import { RiProfileLine } from 'react-icons/ri';
+import Link from 'next/link';
 
 const HowtoStart = () => {
   const steps = [
@@ -25,10 +26,10 @@ const HowtoStart = () => {
   return (
     <div className="mx-auto container ">
       <div className="flex flex-col items-left md:items-center justify-center w-full  px-8 py-4">
-        <h1 className="font-semibold text-blue-500 text-2xl">How to Start</h1>
-        <p style={{lineHeight:"50px"}} className="text-lg md:text-[44px] font-bold max-w-[800px] md:leading-10 md:text-center md:mt-10 md:mb-5">
+      <h1 className="font-semibold text-blue-500 text-2xl">How to Start</h1>
+        <p style={{lineHeight:"50px"}} className="text-lg md:text-[44px] font-bold max-w-[800px] md:leading-10 md:text-center md:mt-5 md:mb-5">
           We’re making finding and funding projects with Investor Visas Simple
-        </p>''
+        </p>
         <span>
           Get an immigrant investor visa and fund your investment projects in three simple steps.
         </span>
@@ -42,6 +43,9 @@ const HowtoStart = () => {
             />
           ))}
         </div>
+        <Link href={"/"} className='flex mt-10 gap-2 hover:gap-4 transition-all text-lg items-center p-2 bg-blue-400  text-white rounded-md hover:bg-blue-500'>Become Invester
+        <ArrowRight size={16}/>
+        </Link>
       </div>
     </div>
   );
