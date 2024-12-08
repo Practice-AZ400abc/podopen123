@@ -45,6 +45,17 @@ const UserSchema = new Schema(
     authTokenExpiry: {
       type: Date,
     },
+
+    //investor seeker profile fields
+    avatarURL: {
+      type: String,
+    },
+    companyName: {
+      type: String,
+    },
+    websiteURL: {
+      type: String,
+    },
   },
   {
     timestamps: true,

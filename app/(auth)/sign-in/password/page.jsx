@@ -3,9 +3,7 @@
 import { useEffect, useState, useContext } from "react";
 import Link from "next/link";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
-import {
-  signInWithEmailAndPassword,
-} from "firebase/auth";
+import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../../../firebase/firebaseConfig";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
@@ -56,7 +54,7 @@ const EnterPassword = () => {
         password
       );
       const user = userCredential.user;
-      
+
       const response = await fetch("/api/token", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -75,7 +73,12 @@ const EnterPassword = () => {
       localStorage.removeItem("email");
       toast.success("You are logged in successfully!");
       login();
-      router.push("/");
+
+      if (!user.completedProfile) {
+        router.push("/profile");
+      } else {
+        router.push("/");
+      }
     } catch (err) {
       setError(err.message);
       toast.error("Please enter a valid password");
@@ -105,7 +108,6 @@ const EnterPassword = () => {
                     setPassword(e.target.value);
                     setError("");
                   }}
-              
                   required
                 />
                 <button
@@ -122,7 +124,11 @@ const EnterPassword = () => {
               className="flex items-center justify-center text-center w-full p-2 bg-black text-white font-bold rounded-md mt-5"
               disabled={loading}
             >
-              {loading ?  <Loader className="animate-spin" size={18} /> : "Sign in"}
+              {loading ? (
+                <Loader className="animate-spin" size={18} />
+              ) : (
+                "Sign in"
+              )}
             </button>
           </form>
         </div>
