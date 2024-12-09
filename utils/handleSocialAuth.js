@@ -70,9 +70,6 @@ const handleSocialAuth = async (provider) => {
       body: JSON.stringify({
         firebaseUid: user.uid,
         email: user.email,
-        role: user.role,
-        completedProfile: user.completedProfile,
-        emailVerified: true,
       }),
     });
 
@@ -81,9 +78,20 @@ const handleSocialAuth = async (provider) => {
     }
 
     const { token } = await tokenResponse.json();
+
+    const userProfileResponse = await fetch(`/api/users?email=${user.email}`, {
+      method: "GET",
+    });
+
+    if (!userProfileResponse.ok) {
+      throw new Error("Failed to fetch user profile.");
+    }
+
+    const userProfile = await userProfileResponse.json();
+
     localStorage.setItem("token", token);
 
-    return { token };
+    return { token, completedProfile: userProfile.completedProfile };
   } catch (error) {
     console.error("Error in handleSocialAuth:", error);
     return {
@@ -91,5 +99,6 @@ const handleSocialAuth = async (provider) => {
     };
   }
 };
+
 
 export default handleSocialAuth;

@@ -107,9 +107,25 @@ const SignIn = () => {
   };
 
   const signInWithSocials = async (provider) => {
-    await handleSocialAuth(provider);
-    router.push("/");
+    try {
+      const result = await handleSocialAuth(provider);
+  
+      if (result.error) {
+        toast.error(result.error);
+        return;
+      }
+  
+      if (result.completedProfile) {
+        router.push("/");
+      } else {
+        router.push("/profile");
+      }
+    } catch (error) {
+      console.error("Error in social sign-in:", error);
+      toast.error("An error occurred during sign-in. Please try again.");
+    }
   };
+  
 
   return (
     <div className="mx-auto container">
