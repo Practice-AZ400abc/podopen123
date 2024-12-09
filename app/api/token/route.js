@@ -21,6 +21,7 @@ export const POST = async (req) => {
         email: user.email,
         role: user.role,
         completedProfile: user.completedProfile,
+        avatarURL: user.avatarURL || null,
       },
       secret,
       { expiresIn: "7d" }

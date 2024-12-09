@@ -16,7 +16,7 @@ import { AuthContext } from "@/components/AuthProvider"; // Adjust the path
 import Image from "next/image";
 
 const SignIn = () => {
-  const { isLoggedIn } = useContext(AuthContext); // Access `isLoggedIn` and `login` from context
+  const { isLoggedIn, login } = useContext(AuthContext); // Access `isLoggedIn` and `login` from context
   const router = useRouter();
 
   const [email, setEmail] = useState(""); // Email state
@@ -115,6 +115,7 @@ const SignIn = () => {
         return;
       }
   
+      login(result.token)
       if (result.completedProfile) {
         router.push("/");
       } else {

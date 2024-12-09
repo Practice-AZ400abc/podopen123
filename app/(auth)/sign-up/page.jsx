@@ -18,10 +18,9 @@ import toast from "react-hot-toast";
 import { ArrowLeft, ArrowRight, Loader } from "lucide-react";
 import Image from "next/image";
 
-
 export default function Signup() {
   const router = useRouter();
-  const { isLoggedIn } = useContext(AuthContext); // Access isLoggedIn
+  const { isLoggedIn, login } = useContext(AuthContext); // Access isLoggedIn
 
   const [selectedForm, setSelectedForm] = useState("Investor");
   const [passwordVisible, setPasswordVisible] = useState(false);
@@ -163,12 +162,13 @@ export default function Signup() {
   const signInWithSocials = async (provider) => {
     try {
       const result = await handleSocialAuth(provider);
-  
+
       if (result.error) {
         toast.error(result.error);
         return;
       }
-  
+
+      login(result.token);
       // Check completedProfile status and redirect accordingly
       if (result.completedProfile) {
         router.push("/");
@@ -180,17 +180,15 @@ export default function Signup() {
       toast.error("An error occurred during sign-in. Please try again.");
     }
   };
-  
 
   return (
     <div className="mx-auto container">
       <div className="flex w-full justify-between items-center max-md:hidden h-[100px]">
-     
-      <Link
+        <Link
           href={"/"}
           className="underline flex items-center gap-4  text-center p-2"
         >
-        <Image src={Logo} alt="Lookvisa" width={120} className="" />
+          <Image src={Logo} alt="Lookvisa" width={120} className="" />
         </Link>
         <Link
           href={"/sign-in"}
@@ -365,7 +363,8 @@ export default function Signup() {
           <div className="bg-white rounded-lg p-5 max-w-md w-full text-center">
             <h2 className="text-xl font-bold mb-4">Email Sent</h2>
             <p className="text-sm mb-4">
-              An email has been sent to confirm your account. Please check your inbox to proceed.
+              An email has been sent to confirm your account. Please check your
+              inbox to proceed.
             </p>
             <button
               onClick={() => {

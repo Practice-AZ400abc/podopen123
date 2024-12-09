@@ -15,11 +15,26 @@ import {
 } from "@/components/ui/sheet";
 import { AuthContext } from "@/components/AuthProvider";
 import { LogOut } from "lucide-react";
+import { jwtDecode } from "jwt-decode"; // Import jwt-decode to decode the token
 
 const Navbar = () => {
-  const { isLoggedIn, logout } = useContext(AuthContext);
+  const { isLoggedIn, logout, token } = useContext(AuthContext); // Get the token from AuthContext
   const [showLogout, setShowLogout] = useState(false);
   const profileRef = useRef(null); // Ref for the profile image and dropdown
+
+  // Function to decode the token and get the avatarURL
+  const getAvatarURLFromToken = () => {
+    if (!token) return null;
+    try {
+      const decoded = jwtDecode(token); // Decode the JWT
+      return decoded.avatarURL || null; // Return the avatarURL if present
+    } catch (error) {
+      console.error("Error decoding token:", error);
+      return null;
+    }
+  };
+
+  const avatarURL = getAvatarURLFromToken(); // Get the avatarURL
 
   const toggleLogout = () => setShowLogout((prev) => !prev);
 
@@ -57,10 +72,13 @@ const Navbar = () => {
           </ul>
         </div>
         {isLoggedIn ? (
-          <div ref={profileRef} className="relative flex gap-5 items-center max-md:hidden">
+          <div
+            ref={profileRef}
+            className="relative flex gap-5 items-center max-md:hidden"
+          >
             {/* Profile Image */}
             <Image
-              src={profile}
+              src={avatarURL || profile} // Use the avatarURL if available, otherwise use the default image
               alt="Profile"
               className="rounded-full cursor-pointer"
               width={40}
@@ -69,13 +87,12 @@ const Navbar = () => {
             />
             {/* Logout Div */}
             {showLogout && (
-              <div className="absolute top-[120%] right-0  bg-slate-800 shadow-md px-8 py-2 rounded-md flex items-center gap-2">
+              <div className="absolute top-[120%] right-0 bg-slate-800 shadow-md px-8 py-2 rounded-md flex items-center gap-2">
                 <div className="flex flex-col gap-2">
                   <ul className="flex flex-col items-start gap-2 text-white">
-                    <Link href={"/profile"} >Profile</Link>
+                    <Link href={"/profile"}>Profile</Link>
                   </ul>
                   <div className="flex gap-2 items-center ">
-
                     <button onClick={logout} className="text-white">
                       Logout
                     </button>
@@ -89,7 +106,7 @@ const Navbar = () => {
           <div className="flex gap-5 items-center max-md:hidden">
             <Link
               href="/sign-up"
-              className=" text-black px-6 py-3 rounded-full font-bold"
+              className="text-black px-6 py-3 rounded-full font-bold"
             >
               Become Visa Investor
             </Link>
@@ -106,7 +123,7 @@ const Navbar = () => {
           {isLoggedIn ? (
             <div className="flex gap-5 items-center relative">
               <Image
-                src={profile}
+                src={avatarURL || profile} // Use the avatarURL if available, otherwise use the default image
                 alt="Profile"
                 className="rounded-full"
                 width={40}
@@ -115,23 +132,21 @@ const Navbar = () => {
               />
               {/* Logout Div */}
               {showLogout && (
-              <div className="absolute top-[120%] right-0  bg-slate-800 shadow-md px-8 py-2 rounded-md flex items-center gap-2">
-                <div className="flex flex-col gap-2">
-                  <ul className="flex flex-col items-start gap-2 text-white">
-                    <Link href={"/profile"} >Profile</Link>
-                  </ul>
-                  <div className="flex gap-2 items-center ">
-
-                    <button onClick={logout} className="text-white">
-                      Logout
-                    </button>
-                    <LogOut size={14} color="white" />
+                <div className="absolute top-[120%] right-0 bg-slate-800 shadow-md px-8 py-2 rounded-md flex items-center gap-2">
+                  <div className="flex flex-col gap-2">
+                    <ul className="flex flex-col items-start gap-2 text-white">
+                      <Link href={"/profile"}>Profile</Link>
+                    </ul>
+                    <div className="flex gap-2 items-center ">
+                      <button onClick={logout} className="text-white">
+                        Logout
+                      </button>
+                      <LogOut size={14} color="white" />
+                    </div>
                   </div>
                 </div>
-              </div>
-            )}
+              )}
             </div>
-
           ) : (
             ""
           )}
@@ -157,7 +172,10 @@ const Navbar = () => {
                     Logout
                   </button>
                 ) : (
-                  <Link href="/sign-in" className="text-blue-400 font-bold text-[18px]">
+                  <Link
+                    href="/sign-in"
+                    className="text-blue-400 font-bold text-[18px]"
+                  >
                     Log in
                   </Link>
                 )}

@@ -60,9 +60,6 @@ const EnterPassword = () => {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           firebaseUid: user.uid,
-          email: user.email,
-          role: user.role,
-          completedProfile: user.completedProfile,
         }),
       });
 
@@ -72,7 +69,7 @@ const EnterPassword = () => {
       localStorage.setItem("token", token);
       localStorage.removeItem("email");
       toast.success("You are logged in successfully!");
-      login();
+      login(token);
 
       if (!user.completedProfile) {
         router.push("/profile");

@@ -8,9 +8,10 @@ import { AuthContext } from "@/components/AuthProvider";
 import { useToast } from "@/hooks/use-toast";
 import AvatarUpload from "@/components/uploadAvater";
 import ProfileForm from "@/components/profile-form";
+import { jwtDecode } from "jwt-decode"; // Import jwt-decode to extract data from the token
 
 const SeekerProfile = () => {
-  const { email, token, login, isLoggedIn } = useContext(AuthContext); // `login` to update the token
+  const { token, login, isLoggedIn } = useContext(AuthContext); // `login` to update the token
   const [user, setUser] = useState(null);
   const { toast } = useToast();
   const [profile, setProfile] = useState({
@@ -22,6 +23,20 @@ const SeekerProfile = () => {
   const [isLoading, setIsLoading] = useState(false);
 
   const router = useRouter();
+
+  // Decode token to get the user's email
+  const getEmailFromToken = () => {
+    if (!token) return null;
+    try {
+      const decoded = jwtDecode(token); // Decode the token
+      return decoded.email; // Extract email from the payload
+    } catch (error) {
+      console.error("Error decoding token:", error);
+      return null;
+    }
+  };
+
+  const email = getEmailFromToken();
 
   useEffect(() => {
     if (!isLoggedIn) {
@@ -123,7 +138,7 @@ const SeekerProfile = () => {
       }
 
       const { token: newToken } = await tokenResponse.json();
-      login(newToken, email); // Update the token in AuthContext
+      login(newToken); // Update the token in AuthContext
 
       toast({
         title: "Profile Updated",
