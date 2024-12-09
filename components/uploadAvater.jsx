@@ -21,7 +21,7 @@ const AvatarUpload = ({ imageUrl, name, onImageChange }) => {
   return (
     <div className="relative group cursor-pointer" onClick={handleClick}>
       <Avatar className="h-32 w-32">
-        <AvatarImage src={imageUrl} alt={name} />
+        <AvatarImage src={imageUrl} alt={name} className="object-cover"/>
         <AvatarFallback>{name.charAt(0)}</AvatarFallback>
       </Avatar>
       <div className="absolute inset-0 flex items-center justify-center bg-black/50 rounded-full opacity-0 group-hover:opacity-100 transition-opacity">
