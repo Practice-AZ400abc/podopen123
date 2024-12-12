@@ -81,7 +81,7 @@ const Navbar = () => {
             <Image
               src={avatarURL || profile} // Use the avatarURL if available, otherwise use the default image
               alt="Profile"
-              className="rounded-full cursor-pointer"
+              className="rounded-full h-10 w-10 object-cover cursor-pointer"
               width={40}
               height={40}
               onClick={toggleLogout} // Toggle visibility on click

@@ -8,33 +8,23 @@ import { Separator } from "@/components/ui/separator";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Badge } from "@/components/ui/badge";
 import { Search, MapPin, MessageSquare } from "lucide-react";
+import { COUNTRIES, COUNTRY_CODES, INDUSTRIES, INVESTMENT_RANGES, RELOCATION_TIMEFRAMES } from "@/lib/constants";
 
 export default function SearchPage() {
   const [location, setLocation] = useState("");
   const [keywords, setKeywords] = useState("");
 
-  const jobs = [
+  const Listings = [
     {
       id: 1,
-      title: "Senior Full Stack Python Engineer",
-      company: "Tech Corp",
-      location: "Jersey City, NJ",
+      FirstName: "Faizan",
+      lastName: "Haider",
+      location: "Canada",
       isNew: true,
       postedDate: "2 days ago",
-      skills: ["Python", "Full Stack", "React"],
-      description: "Looking for an experienced Python developer...",
+      Comment: "Are you looking for Visa...",
     },
-    {
-      id: 2,
-      title: "Python Developer",
-      company: "Software Solutions",
-      location: "New York, NY",
-      isNew: false,
-      postedDate: "5 days ago",
-      skills: ["Python", "Django", "PostgreSQL"],
-      description: "Join our dynamic team of developers...",
-    },
-    // Add more mock jobs as needed
+  
   ];
 
   return (
@@ -62,7 +52,7 @@ export default function SearchPage() {
                 </div>
                 <Button className="bg-blue-600 hover:bg-blue-700">
                   <Search className="w-4 h-4 mr-2" />
-                  Find jobs
+                  Search Investor
                 </Button>
               </div>
             </div>
@@ -75,40 +65,112 @@ export default function SearchPage() {
           {/* Filters */}
           <div className="col-span-3">
             <Card className="p-4">
-              <h2 className="font-semibold mb-4">Filters</h2>
+              <h2 className="font-semibold mb-4">Apply Filters</h2>
               <div className="space-y-4">
                 <div>
-                  <h3 className="text-sm font-medium mb-2">Date posted</h3>
+
                   <div className="space-y-2">
-                    <div className="flex items-center">
-                      <Checkbox id="last24" />
-                      <label htmlFor="last24" className="ml-2 text-sm">Last 24 hours</label>
+                    <div>
+                      <h3 className="text-sm font-medium mb-2">Country of Nationality</h3>
+                      <select name="" id="" className="w-full border p-2">
+                        {COUNTRIES.map((country) => (
+                          <option className="text-sm font-medium mb-2" key={country} value={country}>
+                            {country}
+                          </option>
+                        ))}
+                      </select>
                     </div>
-                    <div className="flex items-center">
-                      <Checkbox id="last3" />
-                      <label htmlFor="last3" className="ml-2 text-sm">Last 3 days</label>
+                    <div>
+                      <h3 className="text-sm font-medium mb-2">Dual citizenship</h3>
+                      <select name="" id="" className="w-full border p-2" defaultValue={"Select"}>
+                        <option value="yes">Yes</option>
+                        <option value="yes">No</option>
+                      </select>
                     </div>
-                    <div className="flex items-center">
-                      <Checkbox id="last7" />
-                      <label htmlFor="last7" className="ml-2 text-sm">Last 7 days</label>
+                    <div>
+                      <h3 className="text-sm font-medium mb-2"> Networth (in usd dollars) </h3>
+                      <select name="" id="" className="w-full border p-2">
+                        {INVESTMENT_RANGES.map((range) => (
+                          <option className="text-sm font-medium mb-2" key={range} value={range}>
+                            {range}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+                    <div>
+                      <h3 className="text-sm font-medium mb-2"> Liquid assets (cash or cash equivalents in usd dollars) </h3>
+                      <select name="" id="" className="w-full border p-2">
+                        {INVESTMENT_RANGES.map((range) => (
+                          <option className="text-sm font-medium mb-2" key={range} value={range}>
+                            {range}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+                    <div>
+                      <h3 className="text-sm font-medium mb-2">Industry to invest </h3>
+                      <select name="" id="" className="w-full border p-2">
+                        {INDUSTRIES.map((industry) => (
+                          <option className="text-sm font-medium mb-2" key={industry} value={industry}>
+                            {industry}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+                    <div>
+                      <h3 className="text-sm font-medium mb-2">Amount willing to invest (in USD dollars) </h3>
+                      <select name="" id="" className="w-full border p-2">
+                        {INVESTMENT_RANGES.map((investment) => (
+                          <option className="text-sm font-medium mb-2" key={investment} value={investment}>
+                            {investment}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+                    <div>
+                      <h3 className="text-sm font-medium mb-2">Country to relocate to (where you seek visa) </h3>
+                      <select name="" id="" className="w-full border p-2">
+                        {COUNTRIES.map((country) => (
+                          <option className="text-sm font-medium mb-2" key={country} value={country}>
+                            {country}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+                    <div>
+                      <h3 className="text-sm font-medium mb-2"> Timetable to relocate</h3>
+                      <select name="" id="" className="w-full border p-2">
+                        {RELOCATION_TIMEFRAMES.map((timeframe) => (
+                          <option className="text-sm font-medium mb-2" key={timeframe} value={timeframe}>
+                            {timeframe}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+                    <div>
+                      <h3 className="text-sm font-medium mb-2">  Can you provide evidence of your liquid assets?</h3>
+                      <select name="" id="" className="w-full border p-2">
+                        <option value="yes">Yes</option>
+                        <option value="no">No</option>
+                      </select>
                     </div>
                   </div>
                 </div>
                 <Separator />
                 <div>
-                  <h3 className="text-sm font-medium mb-2">Experience Level</h3>
+                  <h3 className="text-sm font-medium mb-2">Sort by</h3>
                   <div className="space-y-2">
                     <div className="flex items-center">
                       <Checkbox id="entry" />
-                      <label htmlFor="entry" className="ml-2 text-sm">Entry Level</label>
+                      <label htmlFor="entry" className="ml-2 text-sm">high net worth to lowest net worth</label>
                     </div>
                     <div className="flex items-center">
                       <Checkbox id="mid" />
-                      <label htmlFor="mid" className="ml-2 text-sm">Mid Level</label>
+                      <label htmlFor="mid" className="ml-2 text-sm"> highest lowest amount to invest</label>
                     </div>
                     <div className="flex items-center">
                       <Checkbox id="senior" />
-                      <label htmlFor="senior" className="ml-2 text-sm">Senior Level</label>
+                      <label htmlFor="senior" className="ml-2 text-sm">Country of nationality</label>
                     </div>
                   </div>
                 </div>
@@ -119,29 +181,23 @@ export default function SearchPage() {
           {/* Job Listings */}
           <div className="col-span-9">
             <div className="space-y-4">
-              {jobs.map((job) => (
-                <Card key={job.id} className="p-4 hover:shadow-md transition-shadow">
+              {Listings.map((Listing) => (
+                <Card key={Listing.id} className="p-4 hover:shadow-md transition-shadow">
                   <div className="flex justify-between items-start">
                     <div>
                       <h2 className="text-xl font-semibold text-blue-600 hover:underline cursor-pointer">
-                        {job.title}
+                        {Listing.FirstName} {Listing.lastName}
                       </h2>
-                      <p className="text-gray-600 mt-1">{job.company}</p>
+                     
                       <div className="flex items-center gap-2 text-gray-500 mt-1">
                         <MapPin className="w-4 h-4" />
-                        <span>{job.location}</span>
+                        <span>{Listing.location}</span>
                       </div>
-                      <div className="flex gap-2 mt-3">
-                        {job.skills.map((skill) => (
-                          <Badge key={skill} variant="secondary">
-                            {skill}
-                          </Badge>
-                        ))}
-                      </div>
-                      <p className="text-gray-600 mt-3">{job.description}</p>
+                      
+                      <p className="text-gray-600 mt-3">{Listing.Comment}</p>
                       <div className="flex items-center gap-4 mt-4">
-                        <span className="text-gray-500 text-sm">{job.postedDate}</span>
-                        {job.isNew && (
+                        <span className="text-gray-500 text-sm">{Listing.postedDate}</span>
+                        {Listing.isNew && (
                           <Badge className="bg-green-500">New</Badge>
                         )}
                       </div>
