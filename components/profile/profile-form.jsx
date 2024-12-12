@@ -227,7 +227,9 @@ export function ProfileForm({ onSubmit, isSubmitting, defaultValues }) {
 
         {/* Contact Information */}
         {/* Add similar form fields for telegram, whatsapp, and phone numbers */}
-        <FormField
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 ">{/* Investment Information */}
+        <div className="flex items-center gap-8">
+      <FormField
           control={form.control}
           name="telegram"
           render={({ field }) => (
@@ -239,7 +241,7 @@ export function ProfileForm({ onSubmit, isSubmitting, defaultValues }) {
                   defaultCountry="US"
                   value={field.value}
                   onChange={field.onChange}
-                  className="phone-input" // Optional: Add custom styles if needed
+                  className="phone-input w-full" // Optional: Add custom styles if needed
                   placeholder="Enter phone number"
                 />
               </FormControl>
@@ -252,7 +254,7 @@ export function ProfileForm({ onSubmit, isSubmitting, defaultValues }) {
           name="whatsapp"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>whatsapp Number</FormLabel>
+              <FormLabel>Whatsapp Number</FormLabel>
               <FormControl>
                 <PhoneInput
                   international
@@ -272,7 +274,7 @@ export function ProfileForm({ onSubmit, isSubmitting, defaultValues }) {
           name="phoneNumber"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Telegram Number</FormLabel>
+              <FormLabel>Phone Number</FormLabel>
               <FormControl>
                 <PhoneInput
                   international
@@ -287,7 +289,7 @@ export function ProfileForm({ onSubmit, isSubmitting, defaultValues }) {
             </FormItem>
           )}
         />
-        {/* Investment Information */}
+      </div>
         <FormField
           control={form.control}
           name="industryToInvest"
@@ -311,7 +313,9 @@ export function ProfileForm({ onSubmit, isSubmitting, defaultValues }) {
               <FormMessage />
             </FormItem>
           )}
-        />
+        /></div>
+      
+        
         <FormField
           control={form.control}
           name="investmentAmount"
