@@ -247,7 +247,7 @@ export function ProfileForm({ onSubmit, isSubmitting, defaultValues }) {
             </FormItem>
           )}
         />
-         <FormField
+        <FormField
           control={form.control}
           name="whatsapp"
           render={({ field }) => (
@@ -267,7 +267,7 @@ export function ProfileForm({ onSubmit, isSubmitting, defaultValues }) {
             </FormItem>
           )}
         />
-         <FormField
+        <FormField
           control={form.control}
           name="phoneNumber"
           render={({ field }) => (
@@ -306,6 +306,102 @@ export function ProfileForm({ onSubmit, isSubmitting, defaultValues }) {
                       {industry}
                     </SelectItem>
                   ))}
+                </SelectContent>
+              </Select>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="investmentAmount"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Amount willing to invest (in USD dollars)</FormLabel>
+              <Select onValueChange={field.onChange} defaultValue={field.value}>
+                <FormControl>
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select Amount" />
+                  </SelectTrigger>
+                </FormControl>
+                <SelectContent>
+                  {INVESTMENT_RANGES.map((range) => (
+                    <SelectItem key={range} value={range}>
+                      {range}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        {/* countries to relocate */}
+
+        <FormField
+          control={form.control}
+          name="countriesForVisa"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Country to relocate to (where you seek visa) </FormLabel>
+              <Select onValueChange={field.onChange} defaultValue={field.value}>
+                <FormControl>
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select country" />
+                  </SelectTrigger>
+                </FormControl>
+                <SelectContent>
+                  {COUNTRIES.map((country) => (
+                    <SelectItem key={country} value={country}>
+                      {country}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name="relocationTimeframe"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Timetable to relocate</FormLabel>
+              <Select onValueChange={field.onChange} defaultValue={field.value}>
+                <FormControl>
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select a timeframe" />
+                  </SelectTrigger>
+                </FormControl>
+                <SelectContent>
+                  {RELOCATION_TIMEFRAMES.map((range) => (
+                    <SelectItem key={range} value={range}>
+                      {range}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="relocationTimeframe"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Can you provide evidence of your liquid assets?</FormLabel>
+              <Select onValueChange={field.onChange} value={field.value}>
+                <FormControl>
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select" />
+                  </SelectTrigger>
+                </FormControl>
+                <SelectContent>
+                  <SelectItem value="yes">Yes</SelectItem>
+                  <SelectItem value="no">No</SelectItem>
                 </SelectContent>
               </Select>
               <FormMessage />
