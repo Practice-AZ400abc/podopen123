@@ -43,6 +43,8 @@ const profileSchema = z.object({
   countriesForVisa: z.array(z.string()).min(1).max(4),
   relocationTimeframe: z.string(),
   canProvideLiquidityEvidence: z.boolean(),
+  instagram: z.string().min(1).max(80),
+  linkedin: z.string().min(1).max(80),
   comments: z.string().max(90).optional(),
   isPublic: z.boolean()
 });
@@ -228,7 +230,7 @@ export function ProfileForm({ onSubmit, isSubmitting, defaultValues }) {
         {/* Contact Information */}
         {/* Add similar form fields for telegram, whatsapp, and phone numbers */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 ">{/* Investment Information */}
-        <div className="flex items-center gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
       <FormField
           control={form.control}
           name="telegram"
@@ -290,6 +292,9 @@ export function ProfileForm({ onSubmit, isSubmitting, defaultValues }) {
           )}
         />
       </div>
+
+
+      
         <FormField
           control={form.control}
           name="industryToInvest"
@@ -316,7 +321,8 @@ export function ProfileForm({ onSubmit, isSubmitting, defaultValues }) {
         /></div>
       
         
-        <FormField
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 ">
+      <FormField
           control={form.control}
           name="investmentAmount"
           render={({ field }) => (
@@ -366,8 +372,10 @@ export function ProfileForm({ onSubmit, isSubmitting, defaultValues }) {
             </FormItem>
           )}
         />
+      </div>
 
-        <FormField
+       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 ">
+       <FormField
           control={form.control}
           name="relocationTimeframe"
           render={({ field }) => (
@@ -412,6 +420,36 @@ export function ProfileForm({ onSubmit, isSubmitting, defaultValues }) {
             </FormItem>
           )}
         />
+       </div>
+       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <FormField
+            control={form.control}
+            name="instagram"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Instagram ID link</FormLabel>
+                <FormControl>
+                  <Input {...field}  placeholder="Enter Link" maxLength={25} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name="linkedin"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Linkedin Profile link</FormLabel>
+                <FormControl>
+                  <Input {...field} placeholder="Enter Link"  maxLength={45} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        </div>
 
         {/* Comments */}
         <FormField
