@@ -9,6 +9,13 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Badge } from "@/components/ui/badge";
 import { Search, MapPin, MessageSquare, Building, Flag } from "lucide-react";
 import { COUNTRIES, COUNTRY_CODES, INDUSTRIES, INVESTMENT_RANGES, RELOCATION_TIMEFRAMES } from "@/lib/constants";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 export default function SearchPage() {
   const [location, setLocation] = useState("");
@@ -29,7 +36,7 @@ export default function SearchPage() {
       Telegram:"+1846328239",
       Whatsapp:"+1846328239",
       PhoneNumber:"+1846328239",
-      IndustryToInvest:"construction",
+      IndustryToInvest:"Construction",
       AmountWillingToInvest:"$1 Million to $5 Million Dollers",
       Evidence:"Yes",
       InstagramIDlink:"http://localhost:3000/search",
@@ -48,22 +55,21 @@ export default function SearchPage() {
             <div className="flex-1">
               <div className="flex gap-2">
                 <div className="flex-1">
-                  <Input
-                    placeholder="Job title, keywords, or company"
-                    value={keywords}
-                    onChange={(e) => setKeywords(e.target.value)}
-                    className="w-full"
-                  />
+                <Select>
+              <SelectTrigger>
+                <SelectValue placeholder="Investor Desired Country" />
+              </SelectTrigger>
+              <SelectContent>
+                {COUNTRIES.map((country) => (
+                  <SelectItem key={country} value={country}>
+                    {country}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
                 </div>
-                <div className="flex-1">
-                  <Input
-                    placeholder="City, state, or zip code"
-                    value={location}
-                    onChange={(e) => setLocation(e.target.value)}
-                    className="w-full"
-                  />
-                </div>
-                <Button className="bg-blue-600 hover:bg-blue-700">
+              
+                <Button className="bg-blue-600 hover:bg-blue-700 ">
                   <Search className="w-4 h-4 mr-2" />
                   Search Investor
                 </Button>
