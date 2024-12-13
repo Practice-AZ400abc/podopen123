@@ -46,10 +46,10 @@ const Navbar = () => {
       }
     };
 
-    // Attach the event listener to the document
+   
     document.addEventListener("mousedown", handleClickOutside);
 
-    // Cleanup the event listener on unmount
+ 
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
@@ -109,13 +109,13 @@ const Navbar = () => {
               href="/sign-up"
               className="text-black px-6 py-3 rounded-full font-bold"
             >
-              Become Visa Investor
+              Become Visa Sponser
             </Link>
             <Link
               href="/sign-in"
               className="bg-blue-300 hover:bg-blue-300 text-black px-6 py-3 rounded-sm font-bold"
             >
-              Login As Visa Seeker
+              Login
             </Link>
           </div>
         )}
