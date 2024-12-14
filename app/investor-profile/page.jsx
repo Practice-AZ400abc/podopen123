@@ -1,47 +1,33 @@
 "use client";
 
 import { useToast } from "@/hooks/use-toast";
-import { jwtDecode } from "jwt-decode";
 import React, { useContext, useState, useEffect } from "react";
 import { AuthContext } from "@/components/AuthProvider";
 import { useRouter } from "next/navigation";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ProfileForm } from "@/components/profile/profile-form";
+import { jwtDecode } from "jwt-decode";
 
 export default function ProfilePage() {
-  const { token, isLoggedIn } = useContext(AuthContext);
+  const { token, isLoggedIn } = useContext(AuthContext); // Use AuthContext for auth state
   const [user, setUser] = useState(null); // Store user data
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { toast } = useToast();
   const router = useRouter();
 
   // Decode token to extract email and role
-  const getDecodedToken = () => {
-    if (!token) return null;
-    try {
-      return jwtDecode(token);
-    } catch (error) {
-      console.error("Error decoding token:", error);
-      return null;
-    }
-  };
-
-  const decodedToken = getDecodedToken();
+  const decodedToken = token ? jwtDecode(token) : null;
   const email = decodedToken?.email || null;
   const role = decodedToken?.role || null;
 
-  // Redirect if not logged in or wrong role
+  // Redirect if not logged in or incorrect role
   useEffect(() => {
     if (!isLoggedIn) {
-      router.push("/");
-    }
-  }, [isLoggedIn, router]);
-
-  useEffect(() => {
-    if (role === "Seeker") {
+      router.push("/"); // Redirect to home if not logged in
+    } else if (role === "Seeker") {
       router.push("/profile");
     }
-  }, [role, router]);
+  }, [isLoggedIn]);
 
   // Fetch user's profile data
   useEffect(() => {
@@ -81,6 +67,7 @@ export default function ProfilePage() {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify(formData),
       });
