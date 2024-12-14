@@ -36,6 +36,19 @@ const SeekerProfile = () => {
     }
   };
 
+  const getRoleFromToken = () => {
+    if (!token) return null;
+    try {
+      const decoded = jwtDecode(token); // Decode the token
+      return decoded.role; // Extract role from the payload
+    } catch (error) {
+      console.error("Error decoding token:", error);
+      return null;
+    }
+  };
+
+  const role = getRoleFromToken();
+
   const email = getEmailFromToken();
 
   useEffect(() => {
@@ -43,6 +56,12 @@ const SeekerProfile = () => {
       router.push("/");
     }
   }, [isLoggedIn, router]);
+
+  useEffect(() => {
+    if (role === "Investor") {
+      router.push("/investor-profile");
+    }
+  }, [role]);
 
   // Fetch user's existing profile data
   useEffect(() => {

@@ -46,15 +46,81 @@ const UserSchema = new Schema(
       type: Date,
     },
 
-    //investor seeker profile fields
+    // Shared fields for both roles
     avatarURL: {
       type: String,
     },
+
+    // Seeker-specific fields
     companyName: {
       type: String,
     },
     websiteURL: {
       type: String,
+    },
+
+    // Investor-specific fields
+    firstName: {
+      type: String,
+    },
+    lastName: {
+      type: String,
+    },
+    countryOfBirth: {
+      type: String,
+    },
+    nationality: {
+      type: String,
+    },
+    dualCitizenship: {
+      type: Boolean,
+      default: false,
+    },
+    netWorth: {
+      type: String,
+    },
+    liquidAssets: {
+      type: String,
+    },
+    telegram: {
+      type: String,
+    },
+    whatsapp: {
+      type: String,
+    },
+    phone: {
+      type: String,
+    },
+    industryToInvest: {
+      type: String,
+    },
+    investmentAmount: {
+      type: String,
+    },
+    countriesForVisa: {
+      type: [String],
+      default: [],
+    },
+    relocationTimeframe: {
+      type: String,
+    },
+    canProvideLiquidityEvidence: {
+      type: Boolean,
+      default: false,
+    },
+    instagram: {
+      type: String,
+    },
+    linkedin: {
+      type: String,
+    },
+    comments: {
+      type: String,
+      maxlength: 90,
+    },
+    isPublic: {
+      type: Boolean,
+      default: false,
     },
   },
   {
