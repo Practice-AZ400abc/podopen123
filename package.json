@@ -42,6 +42,7 @@
     "react-international-phone": "^4.3.0",
     "react-phone-number-input": "^3.4.10",
     "react-remove-scroll": "^2.6.0",
+    "react-select": "^5.9.0",
     "tailwind-merge": "^2.5.4",
     "tailwindcss-animate": "^1.0.7",
     "zod": "^3.24.1"

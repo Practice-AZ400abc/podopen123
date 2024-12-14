@@ -1,21 +1,33 @@
 "use client";
+
 import React, { useState } from "react";
 import Image from "next/image";
 import profile from "@/assets/profile.png";
 import InputField from "../input-field";
-import { COUNTRIES, INDUSTRIES, INVESTMENT_RANGES, RELOCATION_TIMEFRAMES } from "@/lib/constants";
+import {
+  COUNTRIES,
+  INDUSTRIES,
+  INVESTMENT_RANGES,
+  RELOCATION_TIMEFRAMES,
+} from "@/lib/constants";
+import { PhoneInput } from "react-international-phone";
+import "react-international-phone/style.css";
+import ReactSelect from "react-select";
 
-import { PhoneInput } from 'react-international-phone';
-import 'react-international-phone/style.css';
+// Define options for the countries dropdown
+const countryOptions = COUNTRIES.map((country) => ({
+  value: country,
+  label: country,
+}));
 
-const Profile = () => {
-  const [avatar, setAvatar] = useState(""); // Stores the uploaded avatar URL
+const Profile = ({ email }) => {
+  const [avatarURL, setAvatarURL] = useState(""); // Stores the uploaded avatar URL
   const [uploading, setUploading] = useState(false); // Tracks upload state
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [countryOfBirth, setCountryOfBirth] = useState("");
   const [nationality, setNationality] = useState("");
-  const [dualCitizenship, setDualCitizenship] = useState("");
+  const [dualCitizenship, setDualCitizenship] = useState(false);
   const [netWorth, setNetWorth] = useState("");
   const [liquidAssets, setLiquidAssets] = useState("");
   const [telegram, setTelegram] = useState("");
@@ -25,10 +37,17 @@ const Profile = () => {
   const [investmentAmount, setInvestmentAmount] = useState("");
   const [countriesForVisa, setCountriesForVisa] = useState([]);
   const [relocationTimeframe, setRelocationTimeframe] = useState("");
-  const [canProvideLiquidityEvidence, setCanProvideLiquidityEvidence] = useState("");
+  const [canProvideLiquidityEvidence, setCanProvideLiquidityEvidence] =
+    useState(false);
   const [instagram, setInstagram] = useState("");
   const [linkedin, setLinkedin] = useState("");
   const [comments, setComments] = useState("");
+
+  const handleCountriesForVisaChange = (selectedOptions) => {
+    const selectedCountries = selectedOptions ? selectedOptions.map(option => option.value) : [];
+    setCountriesForVisa(selectedCountries);
+  };
+
 
   // Function to upload an image to Cloudinary
   const uploadToCloudinary = async (file) => {
@@ -61,7 +80,7 @@ const Profile = () => {
 
     const uploadedImageUrl = await uploadToCloudinary(file);
     if (uploadedImageUrl) {
-      setAvatar(uploadedImageUrl);
+      setAvatarURL(uploadedImageUrl);
     } else {
       alert("Image upload failed. Please try again.");
     }
@@ -73,7 +92,8 @@ const Profile = () => {
 
     // Collect all form data
     const formData = {
-      avatar,
+      email,
+      avatarURL,
       firstName,
       lastName,
       countryOfBirth,
@@ -94,13 +114,8 @@ const Profile = () => {
       comments,
     };
 
-    // For now, log the data. Replace this with an API call or other logic as needed.
-    console.log("Form Data Submitted:", formData);
-
-    // Example: Submit data to an API endpoint
-    /*
-    fetch("/api/profile", {
-      method: "POST",
+    fetch("/api/edit-profile", {
+      method: "PUT",
       headers: {
         "Content-Type": "application/json",
       },
@@ -116,35 +131,31 @@ const Profile = () => {
       .catch((error) => {
         console.error("Error submitting profile:", error);
       });
-    */
   };
 
   return (
-    <div className="container mx-auto p-2 flex items-center justify-center ">
-      <form className="mt-10 w-full flex justify-evenly flex-col md:flex-row" onSubmit={handleSubmit}>
-
-
-        <div className="flex flex-col items-center">
-          {/* Avatar Section */}
-          <div className="relative">
-            <Image
-              src={avatar || profile} // Show uploaded avatar or default image
-              alt="Profile Avatar"
-              width={80}
-              height={80}
-              className="h-40 w-40 rounded-full object-cover"
-            />
-            {uploading && (
-              <div className="absolute inset-0 flex items-center justify-center bg-gray-500 bg-opacity-50 rounded-full">
-                <span className="text-white text-sm">Uploading...</span>
-              </div>
-            )}
-          </div>
-
-          {/* File Input for Image Upload */}
+    <div className="container mx-auto px-4 py-6">
+      <form
+        onSubmit={handleSubmit}
+        className="bg-white p-6 rounded-lg shadow-md flex flex-col gap-6"
+      >
+        {/* Avatar Section */}
+        <div className="flex items-center flex-col gap-4">
+          <Image
+            src={avatarURL || profile} // Show uploaded avatar or default image
+            alt="Profile Avatar"
+            width={120}
+            height={120}
+            className="h-40 w-40 rounded-full object-cover"
+          />
+          {uploading && (
+            <div className="absolute inset-0 flex items-center justify-center bg-gray-500 bg-opacity-50 rounded-full">
+              <span className="text-white text-sm">Uploading...</span>
+            </div>
+          )}
           <label
             htmlFor="avatarUpload"
-            className="mt-4 cursor-pointer px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+            className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 cursor-pointer"
           >
             Upload Avatar
           </label>
@@ -156,9 +167,9 @@ const Profile = () => {
             onChange={handleFileChange}
           />
         </div>
-        {/* Dynamic Input Fields */}
-        <div>
-        <div className="grid grid-col1-1 gap-4 md:grid-cols-2 mt-10">
+
+        {/* Personal Information */}
+        <section className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <InputField
             label="First Name"
             id="firstName"
@@ -171,14 +182,10 @@ const Profile = () => {
             value={lastName}
             onChange={(e) => setLastName(e.target.value)}
           />
-        </div>
-        <div className="grid grid-col1-1 gap-4 md:grid-cols-2 mt-4">
           <select
-            name=""
-            id=""
-            className="bg-gray-50 h-12 p-2 rounded-md border border-gray-300"
             onChange={(e) => setCountryOfBirth(e.target.value)}
-            defaultValue="" // Sets the default selected value to the placeholder
+            defaultValue=""
+            className="bg-gray-50 h-12 p-2 rounded-md border border-gray-300"
           >
             <option value="" disabled>
               Country of Birth
@@ -190,11 +197,9 @@ const Profile = () => {
             ))}
           </select>
           <select
-            name=""
-            id=""
-            className="bg-gray-50 h-12 p-2 rounded-md border border-gray-300"
             onChange={(e) => setNationality(e.target.value)}
-            defaultValue="" // Sets the default selected value to the placeholder
+            defaultValue=""
+            className="bg-gray-50 h-12 p-2 rounded-md border border-gray-300"
           >
             <option value="" disabled>
               Nationality
@@ -205,29 +210,52 @@ const Profile = () => {
               </option>
             ))}
           </select>
-        </div>
-        {/* citizen and  */}
-        <div className="grid grid-col1-1 gap-4 md:grid-cols-2 mt-4">
+          <div className="flex items-center gap-2">
+            <input
+              type="checkbox"
+              id="dualCitizenship"
+              checked={dualCitizenship}
+              onChange={(e) => setDualCitizenship(e.target.checked)}
+              className="h-5 w-5 cursor-pointer"
+            />
+            <label htmlFor="dualCitizenship" className="cursor-pointer">
+              Do you have dual citizenship?
+            </label>
+          </div>
+          <div>
+            <label className="block text-sm font-medium mb-2">Countries for Visa</label>
+            <ReactSelect
+              isMulti
+              options={countryOptions}
+              value={countryOptions.filter(option => countriesForVisa.includes(option.value))}
+              onChange={handleCountriesForVisaChange}
+              className="react-select-container"
+              classNamePrefix="react-select"
+              placeholder="Select countries"
+            />
+          </div>
           <select
-            name=""
-            id=""
+            onChange={(e) => setRelocationTimeframe(e.target.value)}
+            defaultValue=""
             className="bg-gray-50 h-12 p-2 rounded-md border border-gray-300"
-            onChange={(e) => setCountryOfBirth(e.target.value)}
-            defaultValue="" // Sets the default selected value to the placeholder
           >
             <option value="" disabled>
-              Dual Citizenship
+              Relocation Timespan
             </option>
-            <option>Yes</option>
-            <option>No</option>
-
+            {RELOCATION_TIMEFRAMES.map((timespan, index) => (
+              <option key={index} value={timespan}>
+                {timespan}
+              </option>
+            ))}
           </select>
+        </section>
+
+        {/* Financial Details */}
+        <section className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <select
-            name=""
-            id=""
-            className="bg-gray-50 h-12 p-2 rounded-md border border-gray-300"
             onChange={(e) => setNetWorth(e.target.value)}
-            defaultValue="" // Sets the default selected value to the placeholder
+            defaultValue=""
+            className="bg-gray-50 h-12 p-2 rounded-md border border-gray-300"
           >
             <option value="" disabled>
               Net Worth (USD)
@@ -238,15 +266,10 @@ const Profile = () => {
               </option>
             ))}
           </select>
-        </div>
-        {/*  */}
-        <div className="grid grid-col1-1 gap-4 md:grid-cols-2 mt-4">
           <select
-            name=""
-            id=""
-            className="bg-gray-50 h-12 p-2 rounded-md border border-gray-300"
             onChange={(e) => setLiquidAssets(e.target.value)}
-            defaultValue="" // Sets the default selected value to the placeholder
+            defaultValue=""
+            className="bg-gray-50 h-12 p-2 rounded-md border border-gray-300"
           >
             <option value="" disabled>
               Liquid Assets (USD)
@@ -258,34 +281,41 @@ const Profile = () => {
             ))}
           </select>
           <select
-            name=""
-            id=""
-            className="bg-gray-50 h-12 p-2 rounded-md border border-gray-300"
             onChange={(e) => setIndustryToInvest(e.target.value)}
-            defaultValue="" // Sets the default selected value to the placeholder
+            defaultValue=""
+            className="bg-gray-50 h-12 p-2 rounded-md border border-gray-300"
           >
             <option value="" disabled>
               Industry To Invest
             </option>
-            {INDUSTRIES.map((range, index) => (
-              <option key={index} value={range}>
-                {range}
+            {INDUSTRIES.map((industry, index) => (
+              <option key={index} value={industry}>
+                {industry}
               </option>
             ))}
           </select>
-        </div>
-
-        {/*  */}
-        <div className="grid grid-col1-1 gap-4 md:grid-cols-2 mt-4">
+          <div className="flex items-center gap-2">
+            <input
+              type="checkbox"
+              id="canProvideLiquidityEvidence"
+              checked={canProvideLiquidityEvidence}
+              onChange={(e) => setCanProvideLiquidityEvidence(e.target.checked)}
+              className="h-5 w-5 cursor-pointer"
+            />
+            <label
+              htmlFor="canProvideLiquidityEvidence"
+              className="cursor-pointer"
+            >
+              Can provide liquidity evidence?
+            </label>
+          </div>
           <select
-            name=""
-            id=""
-            className="bg-gray-50 h-12 p-2 rounded-md border border-gray-300"
             onChange={(e) => setInvestmentAmount(e.target.value)}
-            defaultValue="" // Sets the default selected value to the placeholder
+            defaultValue=""
+            className="bg-gray-50 h-12 p-2 rounded-md border border-gray-300"
           >
             <option value="" disabled>
-              Amount willing to invest (in USD dollars)
+              Amount willing to invest (USD)
             </option>
             {INVESTMENT_RANGES.map((range, index) => (
               <option key={index} value={range}>
@@ -293,87 +323,28 @@ const Profile = () => {
               </option>
             ))}
           </select>
-          <select
-            name=""
-            id=""
-            className="bg-gray-50 h-12 p-2 rounded-md border border-gray-300"
-            onChange={(e) => setCountriesForVisa(e.target.value)}
-            defaultValue="" // Sets the default selected value to the placeholder
-          >
-            <option value="" disabled>
-              Country to relocate to (where you seek visa)
-            </option>
-            {COUNTRIES.map((country, index) => (
-              <option key={index} value={country}>
-                {country}
-              </option>
-            ))}
-          </select>
-        </div>
+        </section>
 
-        {/*  */}
-        <div className="grid grid-col1-1 gap-4 md:grid-cols-2 mt-4">
-          <select
-            name=""
-            id=""
-            className="bg-gray-50 h-12 p-2 rounded-md border border-gray-300"
-            onChange={(e) => setRelocationTimeframe(e.target.value)}
-            defaultValue="" // Sets the default selected value to the placeholder
-          >
-            <option value="" disabled>
-              Timetable to Relocate
-            </option>
-            {RELOCATION_TIMEFRAMES.map((range, index) => (
-              <option key={index} value={range}>
-                {range}
-              </option>
-            ))}
-          </select>
-          <select
-            name=""
-            id=""
-            className="bg-gray-50 h-12 p-2 rounded-md border border-gray-300"
-            onChange={(e) => setCanProvideLiquidityEvidence(e.target.value)}
-            defaultValue="" // Sets the default selected value to the placeholder
-          >
-            <option value="" disabled>
-              Can you provide evidence of your liquid assets?
-            </option>
-            <option>Yes</option>
-            <option>No</option>
-
-          </select>
-
-        </div>
-
-        <div className="grid grid-col1-1 gap-4 md:grid-cols-2 mt-4">
+        {/* Social Profiles */}
+        <section className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <InputField
-            label="Add Instagram Profile Link"
-            id="Instagram"
+            label="Instagram Profile"
+            id="instagram"
             value={instagram}
             onChange={(e) => setInstagram(e.target.value)}
           />
           <InputField
-            label="Add Linkedin Profile Link"
-            id="Linkedin"
+            label="LinkedIn Profile"
+            id="linkedin"
             value={linkedin}
             onChange={(e) => setLinkedin(e.target.value)}
           />
-        </div>
+        </section>
 
-
-
-       
-        <div className="flex flex-col gap-2 mt-4">
-
-          <textarea className="min-h-[200px] p-2 bg-gray-50 rounded-lg border border-gray-300" name="" id="" value={" Comment"} onChange={(e) => setComments(e.target.value)}></textarea>
-        </div>
-        {/* Add other input fields similarly */}
-
-
-        <div className="flex gap-4 mt-4 justify-evenly">
+        {/* Contact Info */}
+        <section className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <div className="flex items-center gap-2">
-            <label htmlFor="">Telegram</label>
+            <label>Telegram</label>
             <PhoneInput
               defaultCountry="ua"
               value={telegram}
@@ -381,30 +352,38 @@ const Profile = () => {
             />
           </div>
           <div className="flex items-center gap-2">
-            <label htmlFor="">Whatsapp</label>
+            <label>WhatsApp</label>
             <PhoneInput
               defaultCountry="ua"
               value={whatsapp}
-              onChange={(phone) => setWhatsapp(e.target.value)}
+              onChange={(phone) => setWhatsapp(phone)}
             />
           </div>
           <div className="flex items-center gap-2">
-            <label htmlFor="">Phone</label>
+            <label>Phone</label>
             <PhoneInput
               defaultCountry="ua"
-              value={whatsapp}
-              onChange={(phone) => setWhatsapp(e.target.value)}
+              value={phone}
+              onChange={(phone) => setPhone(phone)}
             />
           </div>
-        </div> 
-         
+        </section>
+
+        {/* Additional Comments */}
+        <textarea
+          className="min-h-[200px] p-2 bg-gray-50 rounded-lg border border-gray-300"
+          placeholder="Add comments or notes..."
+          value={comments}
+          onChange={(e) => setComments(e.target.value)}
+        ></textarea>
+
+        {/* Submit Button */}
         <button
           type="submit"
-          className="mt-4 px-6 py-2 bg-blue-400 text-white rounded-lg hover:bg-blue-700"
+          className="mt-4 px-6 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-700"
         >
-          Save
+          Save Profile
         </button>
-        </div>
       </form>
     </div>
   );
