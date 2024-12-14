@@ -136,7 +136,7 @@ const Navbar = () => {
                 <div className="absolute top-[120%] right-0 bg-slate-800 shadow-md px-8 py-2 rounded-md flex items-center gap-2">
                   <div className="flex flex-col gap-2">
                     <ul className="flex flex-col items-start gap-2 text-white">
-                      <Link href={"/profile"}>Profile</Link>
+                      <Link href={"/investor-profile"}>Profile</Link>
                     </ul>
                     <div className="flex gap-2 items-center ">
                       <button onClick={logout} className="text-white">

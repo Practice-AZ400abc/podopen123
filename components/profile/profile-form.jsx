@@ -1,87 +1,36 @@
 "use client";
+import React, { useState } from "react";
+import Image from "next/image";
+import profile from "@/assets/profile.png";
+import InputField from "../input-field";
+import { COUNTRIES, INDUSTRIES, INVESTMENT_RANGES, RELOCATION_TIMEFRAMES } from "@/lib/constants";
 
-import { useForm } from "react-hook-form";
-import { useState } from "react";
-import { zodResolver } from "@hookform/resolvers/zod";
-import * as z from "zod";
-import { Button } from "@/components/ui/button";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { Switch } from "@/components/ui/switch";
-import { Textarea } from "@/components/ui/textarea";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import {
-  COUNTRIES,
-  COUNTRY_CODES,
-  INDUSTRIES,
-  INVESTMENT_RANGES,
-  RELOCATION_TIMEFRAMES,
-} from "@/lib/constants";
-import PhoneInput from "react-phone-number-input";
-import "react-phone-number-input/style.css"; // Import styles for PhoneInput
+import { PhoneInput } from 'react-international-phone';
+import 'react-international-phone/style.css';
 
-const MAX_FILE_SIZE = 1024 * 1024; // 1MB
-const ACCEPTED_IMAGE_TYPES = ["image/jpeg", "image/png"];
+const Profile = () => {
+  const [avatar, setAvatar] = useState(""); // Stores the uploaded avatar URL
+  const [uploading, setUploading] = useState(false); // Tracks upload state
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [countryOfBirth, setCountryOfBirth] = useState("");
+  const [nationality, setNationality] = useState("");
+  const [dualCitizenship, setDualCitizenship] = useState("");
+  const [netWorth, setNetWorth] = useState("");
+  const [liquidAssets, setLiquidAssets] = useState("");
+  const [telegram, setTelegram] = useState("");
+  const [whatsapp, setWhatsapp] = useState("");
+  const [phone, setPhone] = useState("");
+  const [industryToInvest, setIndustryToInvest] = useState("");
+  const [investmentAmount, setInvestmentAmount] = useState("");
+  const [countriesForVisa, setCountriesForVisa] = useState([]);
+  const [relocationTimeframe, setRelocationTimeframe] = useState("");
+  const [canProvideLiquidityEvidence, setCanProvideLiquidityEvidence] = useState("");
+  const [instagram, setInstagram] = useState("");
+  const [linkedin, setLinkedin] = useState("");
+  const [comments, setComments] = useState("");
 
-const profileSchema = z.object({
-  avatar: z.any().optional(),
-  firstName: z.string().min(1).max(25),
-  lastName: z.string().min(1).max(45),
-  countryOfBirth: z.string(),
-  nationality: z.string(),
-  dualCitizenship: z.boolean(),
-  netWorth: z.string(),
-  liquidAssets: z.string(),
-  telegram: z
-    .object({
-      countryCode: z.string().optional(),
-      number: z.string().max(15).optional(),
-    })
-    .optional(),
-  whatsapp: z
-    .object({
-      countryCode: z.string().optional(),
-      number: z.string().max(15).optional(),
-    })
-    .optional(),
-  phone: z
-    .object({
-      countryCode: z.string().optional(),
-      number: z.string().max(15).optional(),
-    })
-    .optional(),
-  industryToInvest: z.string(),
-  investmentAmount: z.string(),
-  countriesForVisa: z.array(z.string()).min(1).max(4),
-  relocationTimeframe: z.string(),
-  canProvideLiquidityEvidence: z.boolean(),
-  instagram: z.string().min(1).max(80),
-  linkedin: z.string().min(1).max(80),
-  comments: z.string().max(90).optional(),
-  isPublic: z.boolean(),
-});
-
-export function ProfileForm({ onSubmit, isSubmitting, defaultValues }) {
-  const [uploading, setUploading] = useState(false);
-  const form = useForm({
-    resolver: zodResolver(profileSchema),
-    defaultValues,
-  });
-
+  // Function to upload an image to Cloudinary
   const uploadToCloudinary = async (file) => {
     setUploading(true);
     try {
@@ -105,491 +54,360 @@ export function ProfileForm({ onSubmit, isSubmitting, defaultValues }) {
     }
   };
 
+  // Handles file input change
+  const handleFileChange = async (event) => {
+    const file = event.target.files[0];
+    if (!file) return;
+
+    const uploadedImageUrl = await uploadToCloudinary(file);
+    if (uploadedImageUrl) {
+      setAvatar(uploadedImageUrl);
+    } else {
+      alert("Image upload failed. Please try again.");
+    }
+  };
+
+  // Handle form submission
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    // Collect all form data
+    const formData = {
+      avatar,
+      firstName,
+      lastName,
+      countryOfBirth,
+      nationality,
+      dualCitizenship,
+      netWorth,
+      liquidAssets,
+      telegram,
+      whatsapp,
+      phone,
+      industryToInvest,
+      investmentAmount,
+      countriesForVisa,
+      relocationTimeframe,
+      canProvideLiquidityEvidence,
+      instagram,
+      linkedin,
+      comments,
+    };
+
+    // For now, log the data. Replace this with an API call or other logic as needed.
+    console.log("Form Data Submitted:", formData);
+
+    // Example: Submit data to an API endpoint
+    /*
+    fetch("/api/profile", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(formData),
+    })
+      .then((response) => {
+        if (response.ok) {
+          alert("Profile submitted successfully!");
+        } else {
+          alert("Error submitting profile. Please try again.");
+        }
+      })
+      .catch((error) => {
+        console.error("Error submitting profile:", error);
+      });
+    */
+  };
+
   return (
-    <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-        {/* Avatar Upload */}
-        <FormField
-          control={form.control}
-          name="avatar"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Profile Picture</FormLabel>
-              <FormControl>
-                <div className="flex items-center gap-4">
-                  <Avatar className="w-20 h-20">
-                    <AvatarImage src={field.value} alt="Avatar" />
-                    <AvatarFallback>Avatar</AvatarFallback>
-                  </Avatar>
-                  <Input
-                    type="file"
-                    accept="image/jpeg,image/png"
-                    onChange={async (e) => {
-                      const file = e.target.files?.[0];
-                      if (!file) return;
+    <div className="container mx-auto p-2 flex items-center justify-center ">
+      <form className="mt-10 w-full flex justify-evenly flex-col md:flex-row" onSubmit={handleSubmit}>
 
-                      if (file.size > MAX_FILE_SIZE) {
-                        alert("File size exceeds 1MB");
-                        return;
-                      }
 
-                      if (!ACCEPTED_IMAGE_TYPES.includes(file.type)) {
-                        alert(
-                          "Invalid file type. Only JPEG and PNG are allowed."
-                        );
-                        return;
-                      }
-
-                      // Upload to Cloudinary
-                      const avatarURL = await uploadToCloudinary(file);
-                      if (avatarURL) {
-                        form.setValue("avatar", avatarURL, {
-                          shouldValidate: true,
-                        });
-                      }
-                    }}
-                  />
-                </div>
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-
-        {/* Basic Information */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <FormField
-            control={form.control}
-            name="firstName"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>First Name</FormLabel>
-                <FormControl>
-                  <Input {...field} maxLength={25} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-
-          <FormField
-            control={form.control}
-            name="lastName"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Last Name</FormLabel>
-                <FormControl>
-                  <Input {...field} maxLength={45} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-        </div>
-
-        {/* Country Information */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <FormField
-            control={form.control}
-            name="countryOfBirth"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Country of Birth</FormLabel>
-                <Select
-                  onValueChange={field.onChange}
-                  defaultValue={field.value}
-                >
-                  <FormControl>
-                    <SelectTrigger>
-                      <SelectValue placeholder="Select country" />
-                    </SelectTrigger>
-                  </FormControl>
-                  <SelectContent>
-                    {COUNTRIES.map((country) => (
-                      <SelectItem key={country} value={country}>
-                        {country}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-
-          <FormField
-            control={form.control}
-            name="nationality"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Nationality</FormLabel>
-                <Select
-                  onValueChange={field.onChange}
-                  defaultValue={field.value}
-                >
-                  <FormControl>
-                    <SelectTrigger>
-                      <SelectValue placeholder="Select nationality" />
-                    </SelectTrigger>
-                  </FormControl>
-                  <SelectContent>
-                    {COUNTRIES.map((country) => (
-                      <SelectItem key={country} value={country}>
-                        {country}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-        </div>
-
-        {/* Financial Information */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <FormField
-            control={form.control}
-            name="netWorth"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Net Worth (USD)</FormLabel>
-                <Select
-                  onValueChange={field.onChange}
-                  defaultValue={field.value}
-                >
-                  <FormControl>
-                    <SelectTrigger>
-                      <SelectValue placeholder="Select net worth range" />
-                    </SelectTrigger>
-                  </FormControl>
-                  <SelectContent>
-                    {INVESTMENT_RANGES.map((range) => (
-                      <SelectItem key={range} value={range}>
-                        {range}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-
-          <FormField
-            control={form.control}
-            name="liquidAssets"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Liquid Assets (USD)</FormLabel>
-                <Select
-                  onValueChange={field.onChange}
-                  defaultValue={field.value}
-                >
-                  <FormControl>
-                    <SelectTrigger>
-                      <SelectValue placeholder="Select liquid assets range" />
-                    </SelectTrigger>
-                  </FormControl>
-                  <SelectContent>
-                    {INVESTMENT_RANGES.map((range) => (
-                      <SelectItem key={range} value={range}>
-                        {range}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-        </div>
-
-        {/* Contact Information */}
-        {/* Add similar form fields for telegram, whatsapp, and phone numbers */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 ">
-          {/* Investment Information */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <FormField
-              control={form.control}
-              name="telegram"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Telegram Number</FormLabel>
-                  <FormControl>
-                    <PhoneInput
-                      international
-                      defaultCountry="US"
-                      value={field.value}
-                      onChange={field.onChange}
-                      className="phone-input w-full" // Optional: Add custom styles if needed
-                      placeholder="Enter phone number"
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
+        <div className="flex flex-col items-center">
+          {/* Avatar Section */}
+          <div className="relative">
+            <Image
+              src={avatar || profile} // Show uploaded avatar or default image
+              alt="Profile Avatar"
+              width={80}
+              height={80}
+              className="h-40 w-40 rounded-full object-cover"
             />
-            <FormField
-              control={form.control}
-              name="whatsapp"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Whatsapp Number</FormLabel>
-                  <FormControl>
-                    <PhoneInput
-                      international
-                      defaultCountry="US"
-                      value={field.value}
-                      onChange={field.onChange}
-                      className="phone-input" // Optional: Add custom styles if needed
-                      placeholder="Enter phone number"
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="phoneNumber"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Phone Number</FormLabel>
-                  <FormControl>
-                    <PhoneInput
-                      international
-                      defaultCountry="US"
-                      value={field.value}
-                      onChange={field.onChange}
-                      className="phone-input" // Optional: Add custom styles if needed
-                      placeholder="Enter phone number"
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+            {uploading && (
+              <div className="absolute inset-0 flex items-center justify-center bg-gray-500 bg-opacity-50 rounded-full">
+                <span className="text-white text-sm">Uploading...</span>
+              </div>
+            )}
           </div>
 
-          <FormField
-            control={form.control}
-            name="industryToInvest"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Industry to Invest</FormLabel>
-                <Select
-                  onValueChange={field.onChange}
-                  defaultValue={field.value}
-                >
-                  <FormControl>
-                    <SelectTrigger>
-                      <SelectValue placeholder="Select industry" />
-                    </SelectTrigger>
-                  </FormControl>
-                  <SelectContent>
-                    {INDUSTRIES.map((industry) => (
-                      <SelectItem key={industry} value={industry}>
-                        {industry}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-                <FormMessage />
-              </FormItem>
-            )}
+          {/* File Input for Image Upload */}
+          <label
+            htmlFor="avatarUpload"
+            className="mt-4 cursor-pointer px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+          >
+            Upload Avatar
+          </label>
+          <input
+            type="file"
+            id="avatarUpload"
+            accept="image/*"
+            className="hidden"
+            onChange={handleFileChange}
+          />
+        </div>
+        {/* Dynamic Input Fields */}
+        <div>
+        <div className="grid grid-col1-1 gap-4 md:grid-cols-2 mt-10">
+          <InputField
+            label="First Name"
+            id="firstName"
+            value={firstName}
+            onChange={(e) => setFirstName(e.target.value)}
+          />
+          <InputField
+            label="Last Name"
+            id="lastName"
+            value={lastName}
+            onChange={(e) => setLastName(e.target.value)}
+          />
+        </div>
+        <div className="grid grid-col1-1 gap-4 md:grid-cols-2 mt-4">
+          <select
+            name=""
+            id=""
+            className="bg-gray-50 h-12 p-2 rounded-md border border-gray-300"
+            onChange={(e) => setCountryOfBirth(e.target.value)}
+            defaultValue="" // Sets the default selected value to the placeholder
+          >
+            <option value="" disabled>
+              Country of Birth
+            </option>
+            {COUNTRIES.map((country, index) => (
+              <option key={index} value={country}>
+                {country}
+              </option>
+            ))}
+          </select>
+          <select
+            name=""
+            id=""
+            className="bg-gray-50 h-12 p-2 rounded-md border border-gray-300"
+            onChange={(e) => setNationality(e.target.value)}
+            defaultValue="" // Sets the default selected value to the placeholder
+          >
+            <option value="" disabled>
+              Nationality
+            </option>
+            {COUNTRIES.map((country, index) => (
+              <option key={index} value={country}>
+                {country}
+              </option>
+            ))}
+          </select>
+        </div>
+        {/* citizen and  */}
+        <div className="grid grid-col1-1 gap-4 md:grid-cols-2 mt-4">
+          <select
+            name=""
+            id=""
+            className="bg-gray-50 h-12 p-2 rounded-md border border-gray-300"
+            onChange={(e) => setCountryOfBirth(e.target.value)}
+            defaultValue="" // Sets the default selected value to the placeholder
+          >
+            <option value="" disabled>
+              Dual Citizenship
+            </option>
+            <option>Yes</option>
+            <option>No</option>
+
+          </select>
+          <select
+            name=""
+            id=""
+            className="bg-gray-50 h-12 p-2 rounded-md border border-gray-300"
+            onChange={(e) => setNetWorth(e.target.value)}
+            defaultValue="" // Sets the default selected value to the placeholder
+          >
+            <option value="" disabled>
+              Net Worth (USD)
+            </option>
+            {INVESTMENT_RANGES.map((range, index) => (
+              <option key={index} value={range}>
+                {range}
+              </option>
+            ))}
+          </select>
+        </div>
+        {/*  */}
+        <div className="grid grid-col1-1 gap-4 md:grid-cols-2 mt-4">
+          <select
+            name=""
+            id=""
+            className="bg-gray-50 h-12 p-2 rounded-md border border-gray-300"
+            onChange={(e) => setLiquidAssets(e.target.value)}
+            defaultValue="" // Sets the default selected value to the placeholder
+          >
+            <option value="" disabled>
+              Liquid Assets (USD)
+            </option>
+            {INVESTMENT_RANGES.map((range, index) => (
+              <option key={index} value={range}>
+                {range}
+              </option>
+            ))}
+          </select>
+          <select
+            name=""
+            id=""
+            className="bg-gray-50 h-12 p-2 rounded-md border border-gray-300"
+            onChange={(e) => setIndustryToInvest(e.target.value)}
+            defaultValue="" // Sets the default selected value to the placeholder
+          >
+            <option value="" disabled>
+              Industry To Invest
+            </option>
+            {INDUSTRIES.map((range, index) => (
+              <option key={index} value={range}>
+                {range}
+              </option>
+            ))}
+          </select>
+        </div>
+
+        {/*  */}
+        <div className="grid grid-col1-1 gap-4 md:grid-cols-2 mt-4">
+          <select
+            name=""
+            id=""
+            className="bg-gray-50 h-12 p-2 rounded-md border border-gray-300"
+            onChange={(e) => setInvestmentAmount(e.target.value)}
+            defaultValue="" // Sets the default selected value to the placeholder
+          >
+            <option value="" disabled>
+              Amount willing to invest (in USD dollars)
+            </option>
+            {INVESTMENT_RANGES.map((range, index) => (
+              <option key={index} value={range}>
+                {range}
+              </option>
+            ))}
+          </select>
+          <select
+            name=""
+            id=""
+            className="bg-gray-50 h-12 p-2 rounded-md border border-gray-300"
+            onChange={(e) => setCountriesForVisa(e.target.value)}
+            defaultValue="" // Sets the default selected value to the placeholder
+          >
+            <option value="" disabled>
+              Country to relocate to (where you seek visa)
+            </option>
+            {COUNTRIES.map((country, index) => (
+              <option key={index} value={country}>
+                {country}
+              </option>
+            ))}
+          </select>
+        </div>
+
+        {/*  */}
+        <div className="grid grid-col1-1 gap-4 md:grid-cols-2 mt-4">
+          <select
+            name=""
+            id=""
+            className="bg-gray-50 h-12 p-2 rounded-md border border-gray-300"
+            onChange={(e) => setRelocationTimeframe(e.target.value)}
+            defaultValue="" // Sets the default selected value to the placeholder
+          >
+            <option value="" disabled>
+              Timetable to Relocate
+            </option>
+            {RELOCATION_TIMEFRAMES.map((range, index) => (
+              <option key={index} value={range}>
+                {range}
+              </option>
+            ))}
+          </select>
+          <select
+            name=""
+            id=""
+            className="bg-gray-50 h-12 p-2 rounded-md border border-gray-300"
+            onChange={(e) => setCanProvideLiquidityEvidence(e.target.value)}
+            defaultValue="" // Sets the default selected value to the placeholder
+          >
+            <option value="" disabled>
+              Can you provide evidence of your liquid assets?
+            </option>
+            <option>Yes</option>
+            <option>No</option>
+
+          </select>
+
+        </div>
+
+        <div className="grid grid-col1-1 gap-4 md:grid-cols-2 mt-4">
+          <InputField
+            label="Add Instagram Profile Link"
+            id="Instagram"
+            value={instagram}
+            onChange={(e) => setInstagram(e.target.value)}
+          />
+          <InputField
+            label="Add Linkedin Profile Link"
+            id="Linkedin"
+            value={linkedin}
+            onChange={(e) => setLinkedin(e.target.value)}
           />
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 ">
-          <FormField
-            control={form.control}
-            name="investmentAmount"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Amount willing to invest (in USD dollars)</FormLabel>
-                <Select
-                  onValueChange={field.onChange}
-                  defaultValue={field.value}
-                >
-                  <FormControl>
-                    <SelectTrigger>
-                      <SelectValue placeholder="Select Amount" />
-                    </SelectTrigger>
-                  </FormControl>
-                  <SelectContent>
-                    {INVESTMENT_RANGES.map((range) => (
-                      <SelectItem key={range} value={range}>
-                        {range}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          {/* countries to relocate */}
 
-          <FormField
-            control={form.control}
-            name="countriesForVisa"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>
-                  Country to relocate to (where you seek visa){" "}
-                </FormLabel>
-                <Select
-                  onValueChange={field.onChange}
-                  defaultValue={field.value}
-                >
-                  <FormControl>
-                    <SelectTrigger>
-                      <SelectValue placeholder="Select country" />
-                    </SelectTrigger>
-                  </FormControl>
-                  <SelectContent>
-                    {COUNTRIES.map((country) => (
-                      <SelectItem key={country} value={country}>
-                        {country}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+
+       
+        <div className="flex flex-col gap-2 mt-4">
+
+          <textarea className="min-h-[200px] p-2 bg-gray-50 rounded-lg border border-gray-300" name="" id="" value={" Comment"} onChange={(e) => setComments(e.target.value)}></textarea>
         </div>
+        {/* Add other input fields similarly */}
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 ">
-          <FormField
-            control={form.control}
-            name="relocationTimeframe"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Timetable to relocate</FormLabel>
-                <Select
-                  onValueChange={field.onChange}
-                  defaultValue={field.value}
-                >
-                  <FormControl>
-                    <SelectTrigger>
-                      <SelectValue placeholder="Select a timeframe" />
-                    </SelectTrigger>
-                  </FormControl>
-                  <SelectContent>
-                    {RELOCATION_TIMEFRAMES.map((range) => (
-                      <SelectItem key={range} value={range}>
-                        {range}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="relocationTimeframe"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>
-                  Can you provide evidence of your liquid assets?
-                </FormLabel>
-                <Select onValueChange={field.onChange} value={field.value}>
-                  <FormControl>
-                    <SelectTrigger>
-                      <SelectValue placeholder="Select" />
-                    </SelectTrigger>
-                  </FormControl>
-                  <SelectContent>
-                    <SelectItem value="yes">Yes</SelectItem>
-                    <SelectItem value="no">No</SelectItem>
-                  </SelectContent>
-                </Select>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+
+        <div className="flex gap-4 mt-4 justify-evenly">
+          <div className="flex items-center gap-2">
+            <label htmlFor="">Telegram</label>
+            <PhoneInput
+              defaultCountry="ua"
+              value={telegram}
+              onChange={(phone) => setTelegram(phone)}
+            />
+          </div>
+          <div className="flex items-center gap-2">
+            <label htmlFor="">Whatsapp</label>
+            <PhoneInput
+              defaultCountry="ua"
+              value={whatsapp}
+              onChange={(phone) => setWhatsapp(e.target.value)}
+            />
+          </div>
+          <div className="flex items-center gap-2">
+            <label htmlFor="">Phone</label>
+            <PhoneInput
+              defaultCountry="ua"
+              value={whatsapp}
+              onChange={(phone) => setWhatsapp(e.target.value)}
+            />
+          </div>
+        </div> 
+         
+        <button
+          type="submit"
+          className="mt-4 px-6 py-2 bg-blue-400 text-white rounded-lg hover:bg-blue-700"
+        >
+          Save
+        </button>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <FormField
-            control={form.control}
-            name="instagram"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Instagram ID link</FormLabel>
-                <FormControl>
-                  <Input {...field} placeholder="Enter Link" maxLength={25} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-
-          <FormField
-            control={form.control}
-            name="linkedin"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Linkedin Profile link</FormLabel>
-                <FormControl>
-                  <Input {...field} placeholder="Enter Link" maxLength={45} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-        </div>
-
-        {/* Comments */}
-        <FormField
-          control={form.control}
-          name="comments"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Comments</FormLabel>
-              <FormControl>
-                <div className="relative">
-                  <Textarea {...field} maxLength={90} className="pr-16" />
-                  <span className="absolute bottom-2 right-2 text-sm text-muted-foreground">
-                    {field.value?.length || 0}/90
-                  </span>
-                </div>
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-
-        {/* Profile Visibility */}
-        <FormField
-          control={form.control}
-          name="isPublic"
-          render={({ field }) => (
-            <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4">
-              <div className="space-y-0.5">
-                <FormLabel className="text-base">Public Profile</FormLabel>
-                <div className="text-sm text-muted-foreground">
-                  Make your profile visible to potential sponsors
-                </div>
-              </div>
-              <FormControl>
-                <Switch
-                  checked={field.value}
-                  onCheckedChange={field.onChange}
-                />
-              </FormControl>
-            </FormItem>
-          )}
-        />
-
-        <Button type="submit" disabled={isSubmitting}>
-          {isSubmitting ? "Saving..." : "Save Profile"}
-        </Button>
       </form>
-    </Form>
+    </div>
   );
-}
+};
+
+export default Profile;
