@@ -36,7 +36,6 @@ export const PUT = async (req) => {
         }
 
         if (targetUser.role === "Investor") {
-            console.log(body)
             const {
                 avatarURL,
                 firstName,
