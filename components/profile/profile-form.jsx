@@ -13,6 +13,8 @@ import {
 import { PhoneInput } from "react-international-phone";
 import "react-international-phone/style.css";
 import ReactSelect from "react-select";
+import toast from "react-hot-toast";
+import { useRouter } from "next/navigation";
 
 // Define options for the countries dropdown
 const countryOptions = COUNTRIES.map((country) => ({
@@ -21,6 +23,7 @@ const countryOptions = COUNTRIES.map((country) => ({
 }));
 
 const Profile = ({ email }) => {
+  const router = useRouter();
   const [avatarURL, setAvatarURL] = useState(""); // Stores the uploaded avatar URL
   const [uploading, setUploading] = useState(false); // Tracks upload state
   const [firstName, setFirstName] = useState("");
@@ -169,9 +172,10 @@ const Profile = ({ email }) => {
     })
       .then((response) => {
         if (response.ok) {
-          alert("Profile submitted successfully!");
+          toast.success("Profile submitted successfully!");
+          router.push("/")
         } else {
-          alert("Error submitting profile. Please try again.");
+          toast.error("Error submitting profile. Please try again.");
         }
       })
       .catch((error) => {
