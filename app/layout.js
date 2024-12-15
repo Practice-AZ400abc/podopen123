@@ -2,6 +2,7 @@
 
 import "./globals.css";
 import Navbar from "../components/Navbar";
+import SuspenseProvider from "@/components/SuspenseProvider";
 import { AuthProvider } from "@/components/AuthProvider"; // Ensure the correct path
 import { Toaster } from "react-hot-toast";
 import { usePathname } from "next/navigation"; // Correct way to access current route in app directory
@@ -26,12 +27,14 @@ export default function RootLayout({ children }) {
         <title>Lookvisa – Immigrant Visa Investors connect with investor seekers</title>
       </head>
       <body className="antialiased">
-        <AuthProvider>
-          <Toaster />
-          {/* Conditionally render Navbar */}
-          {!noNavbarRoutes.includes(pathname) && <Navbar />}
-          {children}
-        </AuthProvider>
+        <SuspenseProvider>
+          <AuthProvider>
+            <Toaster />
+            {/* Conditionally render Navbar */}
+            {!noNavbarRoutes.includes(pathname) && <Navbar />}
+            {children}
+          </AuthProvider>
+        </ SuspenseProvider >
       </body>
     </html>
   );
