@@ -210,26 +210,17 @@ const Profile = ({ email }) => {
               </option>
             ))}
           </select>
-          <div className="flex items-center gap-2">
-            <input
-              type="checkbox"
-              id="dualCitizenship"
-              checked={dualCitizenship}
-              onChange={(e) => setDualCitizenship(e.target.checked)}
-              className="h-5 w-5 cursor-pointer"
-            />
-            <label htmlFor="dualCitizenship" className="cursor-pointer">
-              Do you have dual citizenship?
-            </label>
-          </div>
-          <div>
-            <label className="block text-sm font-medium mb-2">Countries for Visa</label>
+
+        </section>
+        <div className="flex items-center justify-center w-full gap-9 ">
+          <div className="w-full">
+            <label className="block text-sm font-medium mb-2 ">Countries for Visa</label>
             <ReactSelect
               isMulti
               options={countryOptions}
               value={countryOptions.filter(option => countriesForVisa.includes(option.value))}
               onChange={handleCountriesForVisaChange}
-              className="react-select-container"
+              className="react-select-container "
               classNamePrefix="react-select"
               placeholder="Select countries"
             />
@@ -237,7 +228,7 @@ const Profile = ({ email }) => {
           <select
             onChange={(e) => setRelocationTimeframe(e.target.value)}
             defaultValue=""
-            className="bg-gray-50 h-12 p-2 rounded-md border border-gray-300"
+            className="bg-gray-50 h-12 w-full p-2 rounded-md border border-gray-300"
           >
             <option value="" disabled>
               Relocation Timespan
@@ -248,7 +239,8 @@ const Profile = ({ email }) => {
               </option>
             ))}
           </select>
-        </section>
+        </div>
+
 
         {/* Financial Details */}
         <section className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -294,21 +286,7 @@ const Profile = ({ email }) => {
               </option>
             ))}
           </select>
-          <div className="flex items-center gap-2">
-            <input
-              type="checkbox"
-              id="canProvideLiquidityEvidence"
-              checked={canProvideLiquidityEvidence}
-              onChange={(e) => setCanProvideLiquidityEvidence(e.target.checked)}
-              className="h-5 w-5 cursor-pointer"
-            />
-            <label
-              htmlFor="canProvideLiquidityEvidence"
-              className="cursor-pointer"
-            >
-              Can provide liquidity evidence?
-            </label>
-          </div>
+
           <select
             onChange={(e) => setInvestmentAmount(e.target.value)}
             defaultValue=""
@@ -341,8 +319,45 @@ const Profile = ({ email }) => {
           />
         </section>
 
+
+        <div className="flex gap-10 items-center">
+          <div className="flex items-center gap-2">
+            <input
+              type="checkbox"
+              id="canProvideLiquidityEvidence"
+              checked={canProvideLiquidityEvidence}
+              onChange={(e) => setCanProvideLiquidityEvidence(e.target.checked)}
+              className="h-5 w-5 cursor-pointer"
+            />
+            <label
+              htmlFor="canProvideLiquidityEvidence"
+              className="cursor-pointer"
+            >
+              Can provide liquidity evidence?
+            </label>
+          </div>
+          <div className="flex items-center gap-2">
+            <input
+              type="checkbox"
+              id="dualCitizenship"
+              checked={dualCitizenship}
+              onChange={(e) => setDualCitizenship(e.target.checked)}
+              className="h-5 w-5 cursor-pointer"
+            />
+            <label htmlFor="dualCitizenship" className="cursor-pointer">
+              Do you have dual citizenship?
+            </label>
+          </div>
+        </div>
+        {/* Additional Comments */}
+        <textarea
+          className="min-h-[200px] p-2 bg-gray-50 rounded-lg border border-gray-300"
+          placeholder="Add comments or notes..."
+          value={comments}
+          onChange={(e) => setComments(e.target.value)}
+        ></textarea>
         {/* Contact Info */}
-        <section className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <section className="grid grid-cols-1 md:grid-cols-3 gap-2">
           <div className="flex items-center gap-2">
             <label>Telegram</label>
             <PhoneInput
@@ -368,15 +383,6 @@ const Profile = ({ email }) => {
             />
           </div>
         </section>
-
-        {/* Additional Comments */}
-        <textarea
-          className="min-h-[200px] p-2 bg-gray-50 rounded-lg border border-gray-300"
-          placeholder="Add comments or notes..."
-          value={comments}
-          onChange={(e) => setComments(e.target.value)}
-        ></textarea>
-
         {/* Submit Button */}
         <button
           type="submit"
