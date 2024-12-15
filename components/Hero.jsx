@@ -13,12 +13,12 @@ const Hero = () => {
                 </h1>
                 <p className='text-gray-200 text-center '>Let us introduce you through our platform to immigrant investors from multiple countries who ca provide funding and capital for your projects within a few hours.
                 </p>
-                <Button className="bg-blue-600 w-1/2 mx-auto hover:bg-blue-700">
-                  <Link className='flex items-center gap-2 ' href={"/search"}>
+                <Link className=' ' href={"/search"}>
+                <Button className="bg-blue-600 hover:bg-blue-500 w-full">
                   Find Investor
                   <Search />
+               </Button>
                 </Link>
-                </Button>
             </div>
         </div>
     )

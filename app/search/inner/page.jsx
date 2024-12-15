@@ -239,8 +239,8 @@ export default function SearchPage() {
                       </div>
                     </div>
                     <Button variant="outline" className="whitespace-nowrap">
-                      <Flag className="w-4 h-4 mr-2" />
-                      View Full Listing
+                      <MessageSquare className="w-4 h-4 mr-2" />
+                     Message
                     </Button>
                   </div>
                 </Card>
