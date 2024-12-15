@@ -8,7 +8,7 @@ import { Card } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Badge } from "@/components/ui/badge";
-import { MapPin, Building, MessageSquare } from "lucide-react";
+import { MapPin, Building, MessageSquare, Baby } from "lucide-react";
 import {
   INDUSTRIES,
   INVESTMENT_RANGES,
@@ -31,7 +31,9 @@ export default function SearchPage() {
     try {
       const response = await fetch(`/api/search/investor?country=${country}`);
       const data = await response.json();
-      setInvestors(data); // Set fetched data
+      setInvestors(data);
+
+      console.log(data)
     } catch (error) {
       console.error("Error fetching investors:", error);
     } finally {
@@ -161,6 +163,10 @@ export default function SearchPage() {
                           <div className="flex items-center gap-2">
                             <MapPin className="w-4 h-4" />
                             <span>{investor.nationality}</span>
+                          </div>
+                          <div className="flex items-center gap-2">
+                          <Baby className="w-4 h-4" />
+                          <span>{investor.countryOfBirth}</span>
                           </div>
                           <div className="flex items-center gap-2">
                             <Building className="w-4 h-4" />
