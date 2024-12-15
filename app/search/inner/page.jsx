@@ -9,7 +9,11 @@ import { Separator } from "@/components/ui/separator";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Badge } from "@/components/ui/badge";
 import { MapPin, Building, MessageSquare } from "lucide-react";
-import { INDUSTRIES, INVESTMENT_RANGES, RELOCATION_TIMEFRAMES } from "@/lib/constants";
+import {
+  INDUSTRIES,
+  INVESTMENT_RANGES,
+  RELOCATION_TIMEFRAMES,
+} from "@/lib/constants";
 
 export default function SearchPage() {
   const searchParams = useSearchParams(); // Get query params from the URL
@@ -156,22 +160,16 @@ export default function SearchPage() {
                         <div className="flex gap-4 mt-2">
                           <div className="flex items-center gap-2">
                             <MapPin className="w-4 h-4" />
-                            <span>{investor.location}</span>
+                            <span>{investor.nationality}</span>
                           </div>
                           <div className="flex items-center gap-2">
                             <Building className="w-4 h-4" />
-                            <span>{investor.industry}</span>
+                            <span>{investor.industryToInvest}</span>
                           </div>
                         </div>
-                        <p className="text-gray-600 mt-3">{investor.comment}</p>
-                        <div className="flex items-center gap-4 mt-4">
-                          <span className="text-gray-500 text-sm">
-                            Posted: {investor.postedDate}
-                          </span>
-                          {investor.isNew && (
-                            <Badge className="bg-green-500">New</Badge>
-                          )}
-                        </div>
+                        <p className="text-gray-600 mt-3">
+                          {investor.comments}
+                        </p>
                       </div>
                       <Button variant="outline">
                         <MessageSquare className="w-4 h-4 mr-2" />
