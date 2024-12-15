@@ -230,7 +230,7 @@ const Profile = ({ email }) => {
           />
           <select
             onChange={(e) => setCountryOfBirth(e.target.value)}
-            defaultValue=""
+            defaultValue={countryOfBirth}
             className="bg-gray-50 h-12 p-2 rounded-md border border-gray-300"
           >
             <option value="" disabled>
@@ -244,7 +244,7 @@ const Profile = ({ email }) => {
           </select>
           <select
             onChange={(e) => setNationality(e.target.value)}
-            defaultValue=""
+            defaultValue={nationality}
             className="bg-gray-50 h-12 p-2 rounded-md border border-gray-300"
           >
             <option value="" disabled>
@@ -276,7 +276,7 @@ const Profile = ({ email }) => {
           </div>
           <select
             onChange={(e) => setRelocationTimeframe(e.target.value)}
-            defaultValue=""
+            defaultValue={relocationTimeframe}
             className="bg-gray-50 h-12 w-full p-2 rounded-md border border-gray-300"
           >
             <option value="" disabled>
@@ -294,7 +294,7 @@ const Profile = ({ email }) => {
         <section className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <select
             onChange={(e) => setNetWorth(e.target.value)}
-            defaultValue=""
+            defaultValue={netWorth}
             className="bg-gray-50 h-12 p-2 rounded-md border border-gray-300"
           >
             <option value="" disabled>
@@ -308,7 +308,7 @@ const Profile = ({ email }) => {
           </select>
           <select
             onChange={(e) => setLiquidAssets(e.target.value)}
-            defaultValue=""
+            defaultValue={liquidAssets}
             className="bg-gray-50 h-12 p-2 rounded-md border border-gray-300"
           >
             <option value="" disabled>
@@ -322,7 +322,7 @@ const Profile = ({ email }) => {
           </select>
           <select
             onChange={(e) => setIndustryToInvest(e.target.value)}
-            defaultValue=""
+            defaultValue={industryToInvest}
             className="bg-gray-50 h-12 p-2 rounded-md border border-gray-300"
           >
             <option value="" disabled>
@@ -337,7 +337,7 @@ const Profile = ({ email }) => {
 
           <select
             onChange={(e) => setInvestmentAmount(e.target.value)}
-            defaultValue=""
+            defaultValue={investmentAmount}
             className="bg-gray-50 h-12 p-2 rounded-md border border-gray-300"
           >
             <option value="" disabled>
