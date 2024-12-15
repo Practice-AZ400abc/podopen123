@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import profile from "@/assets/profile.png";
 import InputField from "../input-field";
@@ -44,10 +44,56 @@ const Profile = ({ email }) => {
   const [comments, setComments] = useState("");
 
   const handleCountriesForVisaChange = (selectedOptions) => {
-    const selectedCountries = selectedOptions ? selectedOptions.map(option => option.value) : [];
+    const selectedCountries = selectedOptions
+      ? selectedOptions.map((option) => option.value)
+      : [];
     setCountriesForVisa(selectedCountries);
   };
 
+  useEffect(() => {
+    const fetchProfile = async () => {
+      try {
+        const response = await fetch(`/api/users?email=${email}`, {
+          method: "GET",
+        });
+        if (!response.ok) throw new Error("Failed to fetch profile data");
+
+        const data = await response.json();
+
+        // Set form fields with default values from the fetched data
+        setAvatarURL(data.avatarURL || "");
+        setFirstName(data.firstName || "");
+        setLastName(data.lastName || "");
+        setCountryOfBirth(data.countryOfBirth || "");
+        setNationality(data.nationality || "");
+        setDualCitizenship(data.dualCitizenship || false);
+        setNetWorth(data.netWorth || "");
+        setLiquidAssets(data.liquidAssets || "");
+        setTelegram(data.telegram || "");
+        setWhatsapp(data.whatsapp || "");
+        setPhone(data.phone || "");
+        setIndustryToInvest(data.industryToInvest || "");
+        setInvestmentAmount(data.investmentAmount || "");
+        setCountriesForVisa(data.countriesForVisa || []);
+        setRelocationTimeframe(data.relocationTimeframe || "");
+        setCanProvideLiquidityEvidence(
+          data.canProvideLiquidityEvidence || false
+        );
+        setInstagram(data.instagram || "");
+        setLinkedin(data.linkedin || "");
+        setComments(data.comments || "");
+      } catch (error) {
+        console.error("Error fetching profile:", error);
+        toast({
+          title: "Error",
+          description: "Failed to load profile data.",
+          variant: "destructive",
+        });
+      }
+    };
+
+    if (email) fetchProfile();
+  }, []);
 
   // Function to upload an image to Cloudinary
   const uploadToCloudinary = async (file) => {
@@ -92,7 +138,7 @@ const Profile = ({ email }) => {
 
     // Collect all form data
     const formData = {
-      email,
+      email: email || null,
       avatarURL,
       firstName,
       lastName,
@@ -210,15 +256,18 @@ const Profile = ({ email }) => {
               </option>
             ))}
           </select>
-
         </section>
         <div className="flex items-center justify-center w-full gap-9 ">
           <div className="w-full">
-            <label className="block text-sm font-medium mb-2 ">Countries for Visa</label>
+            <label className="block text-sm font-medium mb-2 ">
+              Countries for Visa
+            </label>
             <ReactSelect
               isMulti
               options={countryOptions}
-              value={countryOptions.filter(option => countriesForVisa.includes(option.value))}
+              value={countryOptions.filter((option) =>
+                countriesForVisa.includes(option.value)
+              )}
               onChange={handleCountriesForVisaChange}
               className="react-select-container "
               classNamePrefix="react-select"
@@ -240,7 +289,6 @@ const Profile = ({ email }) => {
             ))}
           </select>
         </div>
-
 
         {/* Financial Details */}
         <section className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -318,7 +366,6 @@ const Profile = ({ email }) => {
             onChange={(e) => setLinkedin(e.target.value)}
           />
         </section>
-
 
         <div className="flex gap-10 items-center">
           <div className="flex items-center gap-2">
