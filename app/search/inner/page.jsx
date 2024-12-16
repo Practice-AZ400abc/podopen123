@@ -155,28 +155,48 @@ export default function SearchPage() {
                     className="p-4 hover:shadow-md transition-shadow"
                   >
                     <div className="flex justify-between items-start">
-                      <div>
-                        <h2 className="text-xl font-semibold text-blue-600">
-                          {investor.firstName} {investor.lastName}
-                        </h2>
-                        <div className="flex gap-4 mt-2">
-                          <div className="flex items-center gap-2">
-                            <MapPin className="w-4 h-4" />
-                            <span>{investor.nationality}</span>
-                          </div>
-                          <div className="flex items-center gap-2">
-                          <Baby className="w-4 h-4" />
-                          <span>{investor.countryOfBirth}</span>
-                          </div>
-                          <div className="flex items-center gap-2">
-                            <Building className="w-4 h-4" />
-                            <span>{investor.industryToInvest}</span>
-                          </div>
-                        </div>
-                        <p className="text-gray-600 mt-3">
-                          {investor.comments}
-                        </p>
+                     <div className="grid grid-cols-2 items-center gap-5 ">
+                     <div className="flex gap-2">
+                        <h1 className="text-sm text-blue-500">Country of Nationality </h1>
+                        <p> {investor.nationality}</p>
                       </div>
+                      <div className="flex gap-2">
+                        <h1 className="text-sm text-blue-500">Dual Citizenship </h1>
+                        <p> {investor.dualCitizenship == true ? "Yes" : "No"}</p>
+                      </div>
+                      <div className="flex gap-2">
+                        <h1 className="text-sm text-blue-500">Dual Citizenship </h1>
+                        <p> {investor.dualCitizenship == true ? "Yes" : "No"}</p>
+                      </div>
+                      <div className="flex gap-2">
+                        <h1 className="text-sm text-blue-500">Networth </h1>
+                        <p> {investor.netWorth}</p>
+                      </div>
+                      <div className="flex gap-2">
+                        <h1 className="text-sm text-blue-500">Liquid Assets </h1>
+                        <p> {investor.liquidAssets}</p>
+                      </div>
+                      <div className="flex gap-2">
+                        <h1 className="text-sm text-blue-500">Industry to invest</h1>
+                        <p> {investor.industryToInvest}</p>
+                      </div>
+                      <div className="flex gap-2">
+                        <h1 className="text-sm text-blue-500">Amount willing to invest</h1>
+                        <p> {investor.investmentAmount}</p>
+                      </div>
+                      <div className="flex gap-2">
+                        <h1 className="text-sm text-blue-500">Country to Relocate</h1>
+                        <p> {investor.relocationCountry}</p>
+                      </div>
+                      <div className="flex gap-2">
+                        <h1 className="text-sm text-blue-500">Time to Relocate</h1>
+                        <p> {investor.relocationTimeframe}</p>
+                      </div>
+                      <div className="flex gap-2">
+                        <h1 className="text-sm text-blue-500">can you provide evidence of liquid assets </h1>
+                        <p> {investor.canProvideLiquidityEvidence == true ? "Yes" : "No"}</p>
+                      </div>
+                     </div>
                       <Button variant="outline">
                         <MessageSquare className="w-4 h-4 mr-2" />
                         Message

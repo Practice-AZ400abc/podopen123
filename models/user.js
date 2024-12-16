@@ -104,6 +104,9 @@ const UserSchema = new Schema(
     relocationTimeframe: {
       type: String,
     },
+    relocationCountry: {
+      type: String,
+    },
     canProvideLiquidityEvidence: {
       type: Boolean,
       default: false,

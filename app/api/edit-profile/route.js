@@ -52,6 +52,7 @@ export const PUT = async (req) => {
                 investmentAmount,
                 countriesForVisa,
                 relocationTimeframe,
+                relocationCountry,
                 canProvideLiquidityEvidence,
                 instagram,
                 linkedin,
@@ -84,6 +85,7 @@ export const PUT = async (req) => {
             targetUser.investmentAmount = investmentAmount;
             targetUser.countriesForVisa = countriesForVisa;
             targetUser.relocationTimeframe = relocationTimeframe;
+            targetUser.relocationCountry = relocationCountry;
             targetUser.canProvideLiquidityEvidence = canProvideLiquidityEvidence || false;
             targetUser.instagram = instagram;
             targetUser.linkedin = linkedin;

@@ -40,6 +40,7 @@ const Profile = ({ email }) => {
   const [investmentAmount, setInvestmentAmount] = useState("");
   const [countriesForVisa, setCountriesForVisa] = useState([]);
   const [relocationTimeframe, setRelocationTimeframe] = useState("");
+  const [relocationCountry, setRelocationCountry] = useState("");
   const [canProvideLiquidityEvidence, setCanProvideLiquidityEvidence] =
     useState(false);
   const [instagram, setInstagram] = useState("");
@@ -157,6 +158,7 @@ const Profile = ({ email }) => {
       investmentAmount,
       countriesForVisa,
       relocationTimeframe,
+      relocationCountry,
       canProvideLiquidityEvidence,
       instagram,
       linkedin,
@@ -262,22 +264,7 @@ const Profile = ({ email }) => {
           </select>
         </section>
         <div className="flex items-center justify-center w-full gap-9 ">
-          <div className="w-full">
-            <label className="block text-sm font-medium mb-2 ">
-              Countries for Visa
-            </label>
-            <ReactSelect
-              isMulti
-              options={countryOptions}
-              value={countryOptions.filter((option) =>
-                countriesForVisa.includes(option.value)
-              )}
-              onChange={handleCountriesForVisaChange}
-              className="react-select-container "
-              classNamePrefix="react-select"
-              placeholder="Select countries"
-            />
-          </div>
+          
           <select
             onChange={(e) => setRelocationTimeframe(e.target.value)}
             defaultValue={relocationTimeframe}
@@ -289,6 +276,20 @@ const Profile = ({ email }) => {
             {RELOCATION_TIMEFRAMES.map((timespan, index) => (
               <option key={index} value={timespan}>
                 {timespan}
+              </option>
+            ))}
+          </select>
+          <select
+            onChange={(e) => setRelocationCountry(e.target.value)}
+            defaultValue={relocationCountry}
+            className="bg-gray-50 h-12 w-full p-2 rounded-md border border-gray-300"
+          >
+            <option value="" disabled>
+            Country to Relocate to
+            </option>
+            {COUNTRIES.map((country, index) => (
+              <option key={index} value={country}>
+                {country}
               </option>
             ))}
           </select>
@@ -370,7 +371,22 @@ const Profile = ({ email }) => {
             onChange={(e) => setLinkedin(e.target.value)}
           />
         </section>
-
+        <div className="w-full">
+            <label className="block text-sm font-medium mb-2 ">
+              Countries for Visa
+            </label>
+            <ReactSelect
+              isMulti
+              options={countryOptions}
+              value={countryOptions.filter((option) =>
+                countriesForVisa.includes(option.value)
+              )}
+              onChange={handleCountriesForVisaChange}
+              className="react-select-container "
+              classNamePrefix="react-select"
+              placeholder="Select countries"
+            />
+          </div>
         <div className="flex gap-10 items-center">
           <div className="flex items-center gap-2">
             <input
