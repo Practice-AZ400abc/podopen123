@@ -26,6 +26,8 @@ export default function SearchPage() {
     relocationTimeframe: "",
   });
 
+  const [sortOption, setSortOption] = useState(""); // State for sorting
+
   const fetchInvestors = async () => {
     setLoading(true);
     try {
@@ -33,7 +35,7 @@ export default function SearchPage() {
       const data = await response.json();
       setInvestors(data);
 
-      console.log(data)
+      console.log(data);
     } catch (error) {
       console.error("Error fetching investors:", error);
     } finally {
@@ -43,7 +45,8 @@ export default function SearchPage() {
 
   const applyFilters = () => {
     // Filter investors based on selected filters
-    let filtered = investors;
+    let filtered = [...investors];
+
     if (filters.netWorth) {
       filtered = filtered.filter((inv) => inv.netWorth === filters.netWorth);
     }
@@ -55,6 +58,18 @@ export default function SearchPage() {
         (inv) => inv.relocationTimeframe === filters.relocationTimeframe
       );
     }
+
+    // Apply sorting based on the selected option
+    if (sortOption === "netWorthDesc") {
+      filtered.sort((a, b) => b.netWorth - a.netWorth);
+    } else if (sortOption === "netWorthAsc") {
+      filtered.sort((a, b) => a.netWorth - b.netWorth);
+    } else if (sortOption === "investmentDesc") {
+      filtered.sort((a, b) => b.investmentAmount - a.investmentAmount);
+    } else if (sortOption === "investmentAsc") {
+      filtered.sort((a, b) => a.investmentAmount - b.investmentAmount);
+    }
+
     return filtered;
   };
 
@@ -62,11 +77,15 @@ export default function SearchPage() {
     setFilters((prev) => ({ ...prev, [key]: value }));
   };
 
+  const handleSortChange = (option) => {
+    setSortOption(option); // Update sorting option
+  };
+
   useEffect(() => {
     if (country) fetchInvestors(); // Fetch investors when the country changes
   }, [country]);
 
-  const filteredInvestors = applyFilters(); // Apply filters to fetched data
+  const filteredInvestors = applyFilters(); // Apply filters and sorting to fetched data
 
   return (
     <div className="min-h-screen w-full bg-gray-50">
@@ -127,7 +146,10 @@ export default function SearchPage() {
                     className="w-full border p-2"
                     value={filters.relocationTimeframe}
                     onChange={(e) =>
-                      handleFilterChange("relocationTimeframe", e.target.value)
+                      handleFilterChange(
+                        "relocationTimeframe",
+                        e.target.value
+                      )
                     }
                   >
                     <option value="">All</option>
@@ -137,6 +159,56 @@ export default function SearchPage() {
                       </option>
                     ))}
                   </select>
+                </div>
+
+                <h2 className="font-semibold mb-4">Sort By</h2>
+                <div className="flex items-center gap-2">
+                  <input
+                    type="radio"
+                    name="sort"
+                    value="netWorthDesc"
+                    onChange={() => handleSortChange("netWorthDesc")}
+                    checked={sortOption === "netWorthDesc"}
+                  />
+                  <label className="ml-2 text-sm">
+                    High net worth to Lowest net worth
+                  </label>
+                </div>
+                <div className="flex items-center gap-2">
+                  <input
+                    type="radio"
+                    name="sort"
+                    value="netWorthAsc"
+                    onChange={() => handleSortChange("netWorthAsc")}
+                    checked={sortOption === "netWorthAsc"}
+                  />
+                  <label className="ml-2 text-sm">
+                    Lowest net worth to highest net worth
+                  </label>
+                </div>
+                <div className="flex items-center gap-2">
+                  <input
+                    type="radio"
+                    name="sort"
+                    value="investmentDesc"
+                    onChange={() => handleSortChange("investmentDesc")}
+                    checked={sortOption === "investmentDesc"}
+                  />
+                  <label className="ml-2 text-sm">
+                    Investment Amount high to low
+                  </label>
+                </div>
+                <div className="flex items-center gap-2">
+                  <input
+                    type="radio"
+                    name="sort"
+                    value="investmentAsc"
+                    onChange={() => handleSortChange("investmentAsc")}
+                    checked={sortOption === "investmentAsc"}
+                  />
+                  <label className="ml-2 text-sm">
+                    Investment Amount low to high
+                  </label>
                 </div>
               </div>
               <Separator />
@@ -206,7 +278,7 @@ export default function SearchPage() {
                 ))}
               </div>
             ) : (
-              <p>No investors found for {country}.</p>
+              <p>No investors found.</p>
             )}
           </div>
         </div>
