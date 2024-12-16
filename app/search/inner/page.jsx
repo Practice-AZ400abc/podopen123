@@ -14,6 +14,7 @@ import {
   INVESTMENT_RANGES,
   RELOCATION_TIMEFRAMES,
 } from "@/lib/constants";
+import Link from "next/link";
 
 export default function SearchPage() {
   const searchParams = useSearchParams(); // Get query params from the URL
@@ -269,10 +270,12 @@ export default function SearchPage() {
                         <p> {investor.canProvideLiquidityEvidence == true ? "Yes" : "No"}</p>
                       </div>
                      </div>
+                     <Link href={"/sign-in"}>
                       <Button variant="outline">
                         <MessageSquare className="w-4 h-4 mr-2" />
                         Message
                       </Button>
+                      </Link>
                     </div>
                   </Card>
                 ))}
