@@ -1,6 +1,7 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
+import { AuthContext } from "@/components/AuthProvider";
 import Image from "next/image";
 import profile from "@/assets/profile.png";
 import InputField from "../input-field";
@@ -22,9 +23,10 @@ const countryOptions = COUNTRIES.map((country) => ({
   label: country,
 }));
 
-const Profile = ({ email }) => {
-  const router = useRouter();
+const Profile = ({ token }) => {
   const [avatarURL, setAvatarURL] = useState(""); // Stores the uploaded avatar URL
+  const [companyName, setCompanyName] = useState(""); // Stores the company name
+  const [websiteURL, setWebsiteURL] = useState(""); // Stores the website URL
   const [uploading, setUploading] = useState(false); // Tracks upload state
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
@@ -46,6 +48,21 @@ const Profile = ({ email }) => {
   const [instagram, setInstagram] = useState("");
   const [linkedin, setLinkedin] = useState("");
   const [comments, setComments] = useState("");
+  const [isPublic, setIsPublic] = useState(false);
+
+  // Decode token to extract email and role
+  const getDecodedToken = () => {
+    if (!token) return null;
+    try {
+      return jwtDecode(token);
+    } catch (error) {
+      console.error("Error decoding token:", error);
+      return null;
+    }
+  };
+
+  const decodedToken = getDecodedToken();
+  const email = decodedToken?.user.email || null;
 
   const handleCountriesForVisaChange = (selectedOptions) => {
     const selectedCountries = selectedOptions
@@ -68,6 +85,8 @@ const Profile = ({ email }) => {
         setAvatarURL(data.avatarURL || "");
         setFirstName(data.firstName || "");
         setLastName(data.lastName || "");
+        setCompanyName(data.companyName || "");
+        setWebsiteURL(data.websiteURL || "");
         setCountryOfBirth(data.countryOfBirth || "");
         setNationality(data.nationality || "");
         setDualCitizenship(data.dualCitizenship || false);
@@ -86,6 +105,7 @@ const Profile = ({ email }) => {
         setInstagram(data.instagram || "");
         setLinkedin(data.linkedin || "");
         setComments(data.comments || "");
+        setIsPublic(data.isPublic || false);
       } catch (error) {
         console.error("Error fetching profile:", error);
         toast({
@@ -146,6 +166,8 @@ const Profile = ({ email }) => {
       avatarURL,
       firstName,
       lastName,
+      companyName,
+      websiteURL,
       countryOfBirth,
       nationality,
       dualCitizenship,
@@ -163,13 +185,12 @@ const Profile = ({ email }) => {
       instagram,
       linkedin,
       comments,
+      isPublic,
     };
 
     fetch("/api/edit-profile", {
       method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-      },
+      headers: { Authorization: `Bearer ${token}` },
       body: JSON.stringify(formData),
     })
       .then((response) => {
@@ -233,6 +254,18 @@ const Profile = ({ email }) => {
             id="lastName"
             value={lastName}
             onChange={(e) => setLastName(e.target.value)}
+          />
+          <InputField
+            label="Company Name"
+            id="companyName"
+            value={companyName}
+            onChange={(e) => setCompanyName(e.target.value)}
+          />
+          <InputField
+            label="Website URL"
+            id="websiteURL"
+            value={websiteURL}
+            onChange={(e) => setWebsiteURL(e.target.value)}
           />
           <select
             onChange={(e) => setCountryOfBirth(e.target.value)}
@@ -414,6 +447,15 @@ const Profile = ({ email }) => {
             <label htmlFor="dualCitizenship" className="cursor-pointer">
               Do you have dual citizenship?
             </label>
+          </div>
+          <div className="flex items-center gap-2">
+            <label className="text-sm font-medium">Public Profile</label>
+            <input
+              type="checkbox"
+              checked={isPublic}
+              onChange={(e) => setIsPublic(e.target.checked)}
+              className="h-5 w-5 cursor-pointer"
+            />
           </div>
         </div>
         {/* Additional Comments */}

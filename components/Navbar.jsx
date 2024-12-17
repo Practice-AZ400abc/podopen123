@@ -27,7 +27,7 @@ const Navbar = () => {
     if (!token) return null;
     try {
       const decoded = jwtDecode(token); // Decode the JWT
-      return decoded.avatarURL || null; // Return the avatarURL if present
+      return decoded.user.avatarURL || null; // Return the avatarURL if present
     } catch (error) {
       console.error("Error decoding token:", error);
       return null;
@@ -38,7 +38,7 @@ const Navbar = () => {
     if (!token) return null;
     try {
       const decoded = jwtDecode(token); // Decode the JWT
-      return decoded.role || null; // Return the avatarURL if present
+      return decoded.user.role || null; // Return the avatarURL if present
     } catch (error) {
       console.error("Error decoding token:", error);
       return null;
@@ -149,7 +149,7 @@ const Navbar = () => {
                     <ul className="flex flex-col items-start gap-2 text-white">
                       <Link
                         href={
-                          role === "Investor" ? "/investor-profile" : "/profile"
+                          role === "Visa Investor" ? "/profile" : "/seeker-profile"
                         }
                       >
                         Profile

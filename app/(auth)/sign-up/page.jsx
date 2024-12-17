@@ -211,9 +211,9 @@ export default function Signup() {
               <input
                 type="radio"
                 name="role"
-                value="Investor"
-                checked={selectedForm === "Investor"}
-                onChange={() => setSelectedForm("Investor")}
+                value="Visa Sponsor"
+                checked={selectedForm === "Visa Sponsor"}
+                onChange={() => setSelectedForm("Visa Sponsor")}
                 className="mr-2"
               />
               Visa Sponsor
@@ -222,9 +222,9 @@ export default function Signup() {
               <input
                 type="radio"
                 name="role"
-                value="Seeker"
-                checked={selectedForm === "Seeker"}
-                onChange={() => setSelectedForm("Seeker")}
+                value="Visa Seeker"
+                checked={selectedForm === "Visa Seeker"}
+                onChange={() => setSelectedForm("Visa Seeker")}
                 className="mr-2"
               />
               Visa Seeker

@@ -25,9 +25,9 @@ const UserSchema = new Schema(
     },
     role: {
       type: String,
-      enum: ["Investor", "Seeker"],
+      enum: ["Visa Sponsor", "Visa Seeker"],
       required: true,
-      default: "Investor",
+      default: "Visa Sponsor",
     },
     firebaseUid: {
       type: String,
@@ -51,15 +51,7 @@ const UserSchema = new Schema(
       type: String,
     },
 
-    // Seeker-specific fields
-    companyName: {
-      type: String,
-    },
-    websiteURL: {
-      type: String,
-    },
-
-    // Investor-specific fields
+    // Visa seeker fields
     firstName: {
       type: String,
     },

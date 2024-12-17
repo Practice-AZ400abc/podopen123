@@ -29,7 +29,7 @@ const SeekerProfile = () => {
     if (!token) return null;
     try {
       const decoded = jwtDecode(token); // Decode the token
-      return decoded.email; // Extract email from the payload
+      return decoded.user.email; // Extract email from the payload
     } catch (error) {
       console.error("Error decoding token:", error);
       return null;
@@ -40,7 +40,7 @@ const SeekerProfile = () => {
     if (!token) return null;
     try {
       const decoded = jwtDecode(token); // Decode the token
-      return decoded.role; // Extract role from the payload
+      return decoded.user.role; // Extract role from the payload
     } catch (error) {
       console.error("Error decoding token:", error);
       return null;
@@ -58,8 +58,8 @@ const SeekerProfile = () => {
   }, [isLoggedIn, router]);
 
   useEffect(() => {
-    if (role === "Investor") {
-      router.push("/investor-profile");
+    if (role === "Visa Seeker") {
+      router.push("/seeker-profile");
     }
   }, [role]);
 

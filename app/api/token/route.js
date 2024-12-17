@@ -17,11 +17,7 @@ export const POST = async (req) => {
 
     const token = sign(
       {
-        name: user.name || null,
-        email: user.email,
-        role: user.role,
-        completedProfile: user.completedProfile,
-        avatarURL: user.avatarURL || null,
+        user,
       },
       secret,
       { expiresIn: "7d" }

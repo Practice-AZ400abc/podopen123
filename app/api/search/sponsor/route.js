@@ -15,7 +15,7 @@ export const GET = async (req) => {
 
         await connectToDB();
 
-        const investors = await User.find({ role: "Investor", countriesForVisa: { $in: [country] }, public: true });
+        const investors = await User.find({ role: "Visa Sponsor", countriesForVisa: { $in: [country] }, isPublic: true });
 
         if (investors) {
             return new Response(JSON.stringify(investors), { status: 200 });

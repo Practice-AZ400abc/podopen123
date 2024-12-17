@@ -22,8 +22,7 @@ const InvestorProfile = () => {
   };
 
   const decodedToken = getDecodedToken();
-  const email = decodedToken?.email || null;
-  const role = decodedToken?.role || null;
+  const role = decodedToken?.user.role || null;
 
   // Redirect if not logged in or wrong role
   useEffect(() => {
@@ -33,14 +32,14 @@ const InvestorProfile = () => {
   }, [isLoggedIn, router]);
 
   useEffect(() => {
-    if (role === "Seeker") {
+    if (role === "Visa Investor") {
       router.push("/profile");
     }
   }, [role, router]);
 
   return (
     <div className="mx-auto container">
-      <ProfileForm email={email} />
+      <ProfileForm token={token} />
     </div>
   );
 };

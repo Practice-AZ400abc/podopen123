@@ -1,10 +1,43 @@
 import User from "@/models/user";
 import { connectToDB } from "@/utils/database";
+import jwt from 'jsonwebtoken'
+
+const JWT_SECRET = process.env.JWT_SECRET;
+
+const verifyToken = (req) => {
+    try {
+        const authHeader = req.headers.get("authorization");
+        if (!authHeader) {
+            throw new Error("No authorization header");
+        }
+
+        const token = authHeader.split(" ")[1];
+        if (!token) {
+            throw new Error("No token provided");
+        }
+
+        const decoded = jwt.verify(token, JWT_SECRET);
+        return decoded;
+    } catch (error) {
+        console.error("JWT verification failed:", error.message);
+        return null;
+    }
+};
 
 export const PUT = async (req) => {
     try {
         const body = await req.json();
         const { email } = body;
+        const decodedToken = verifyToken(req);
+        const user = decodedToken.user;
+
+        if (!decodedToken) {
+            return new Response(JSON.stringify({ message: "Unauthorized" }), { status: 401 });
+        }
+
+        if (user.email !== email) {
+            return new Response(JSON.stringify({ message: "Unauthorized" }), { status: 401 });
+        }
 
         if (!email) {
             return new Response(JSON.stringify({ message: "Email is required." }), { status: 400 });
@@ -17,27 +50,15 @@ export const PUT = async (req) => {
             return new Response(JSON.stringify({ message: "User not found." }), { status: 404 });
         }
 
-        if (targetUser.role === "Seeker") {
-            const { avatarURL, companyName, websiteURL } = body;
-
-            if (!avatarURL || !companyName || !websiteURL) {
-                return new Response(
-                    JSON.stringify({ message: "Avatar URL, company name, and website URL are required." }),
-                    { status: 400 }
-                );
-            }
-
-            targetUser.avatarURL = avatarURL;
-            targetUser.companyName = companyName;
-            targetUser.websiteURL = websiteURL;
-            targetUser.completedProfile = true;
-
-            await targetUser.save();
+        if (targetUser.role === "Visa Sponsoer") {
+            console.log(body);
         }
 
-        if (targetUser.role === "Investor") {
+        if (targetUser.role === "Visa Seeker") {
             const {
                 avatarURL,
+                websiteURL,
+                cmopanyName,
                 firstName,
                 lastName,
                 countryOfBirth,
@@ -71,6 +92,8 @@ export const PUT = async (req) => {
 
             // Update user profile fields
             targetUser.avatarURL = avatarURL || targetUser.avatarURL;
+            targetUser.websiteURL = websiteURL;
+            targetUser.companyName = cmopanyName;
             targetUser.firstName = firstName;
             targetUser.lastName = lastName;
             targetUser.countryOfBirth = countryOfBirth;
