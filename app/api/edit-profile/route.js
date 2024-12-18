@@ -58,7 +58,7 @@ export const PUT = async (req) => {
             const {
                 avatarURL,
                 websiteURL,
-                cmopanyName,
+                companyName,
                 firstName,
                 lastName,
                 countryOfBirth,
@@ -81,19 +81,34 @@ export const PUT = async (req) => {
                 isPublic,
             } = body;
 
-            if (!firstName || !lastName || !netWorth || !investmentAmount || !industryToInvest || !countriesForVisa?.length) {
+            if (!avatarURL ||
+                !websiteURL ||
+                !companyName ||
+                !firstName ||
+                !lastName ||
+                !countryOfBirth ||
+                !nationality ||
+                !netWorth ||
+                !liquidAssets ||
+                !industryToInvest ||
+                !investmentAmount ||
+                !countriesForVisa ||
+                !relocationTimeframe ||
+                !relocationCountry ||
+                !instagram ||
+                !linkedin ||
+                !comments) {
                 return new Response(
                     JSON.stringify({
-                        message: "Required fields are missing: first name, last name, net worth, investment amount, industry, or countries.",
+                        message: "Required fields are missing.",
                     }),
                     { status: 400 }
                 );
             }
 
-            // Update user profile fields
-            targetUser.avatarURL = avatarURL || targetUser.avatarURL;
+            targetUser.avatarURL = avatarURL;
             targetUser.websiteURL = websiteURL;
-            targetUser.companyName = cmopanyName;
+            targetUser.companyName = companyName;
             targetUser.firstName = firstName;
             targetUser.lastName = lastName;
             targetUser.countryOfBirth = countryOfBirth;
@@ -112,7 +127,7 @@ export const PUT = async (req) => {
             targetUser.canProvideLiquidityEvidence = canProvideLiquidityEvidence || false;
             targetUser.instagram = instagram;
             targetUser.linkedin = linkedin;
-            targetUser.comments = comments || "";
+            targetUser.comments = comments;
             targetUser.isPublic = isPublic || false;
             targetUser.completedProfile = true;
 

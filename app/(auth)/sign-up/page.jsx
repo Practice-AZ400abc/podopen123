@@ -330,7 +330,7 @@ export default function Signup() {
             </div>
           </div>
 
-          {selectedForm === "Seeker" && (
+          {selectedForm === "Visa Seeker" && (
             <div className="mt-5 flex flex-col items-center justify-center gap-5">
               <button
                 className="flex gap-5 items-center w-[80%] p-3 border rounded-full mx-auto  justify-center"
