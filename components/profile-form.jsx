@@ -64,7 +64,7 @@ const ProfileForm = ({ token, login }) => {
     instagram: "",
     linkedin: "",
     comments: "",
-    isPublic: true,
+    isPublic: false,
   });
 
   const handleCountriesForVisaChange = (selectedOptions) => {
@@ -114,7 +114,7 @@ const ProfileForm = ({ token, login }) => {
           instagram: user.instagram ? user.instagram : "",
           linkedin: user.linkedin ? user.linkedin : "",
           comments: user.comments ? user.comments : "",
-          isPublic: user.isPublic ? user.isPublic : true,
+          isPublic: user.isPublic ? user.isPublic : false,
         });
       } catch (error) {
         console.error("Error fetching profile:", error);
@@ -480,7 +480,7 @@ const ProfileForm = ({ token, login }) => {
               onChange={(e) =>
                 setFormData((prev) => ({
                   ...prev,
-                  canProvideLiquidityEvidence: e.target.value,
+                  canProvideLiquidityEvidence: e.target.checked,
                 }))
               }
               className="h-5 w-5 cursor-pointer"
@@ -500,7 +500,7 @@ const ProfileForm = ({ token, login }) => {
               onChange={(e) =>
                 setFormData((prev) => ({
                   ...prev,
-                  dualCitizenship: e.target.value,
+                  dualCitizenship: e.target.checked,
                 }))
               }
               className="h-5 w-5 cursor-pointer"
@@ -515,7 +515,7 @@ const ProfileForm = ({ token, login }) => {
               type="checkbox"
               checked={formData.isPublic}
               onChange={(e) =>
-                setFormData((prev) => ({ ...prev, isPublic: e.target.value }))
+                setFormData((prev) => ({ ...prev, isPublic: e.target.checked }))
               }
               className="h-5 w-5 cursor-pointer"
             />
