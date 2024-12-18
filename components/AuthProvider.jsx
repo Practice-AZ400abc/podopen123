@@ -3,12 +3,14 @@
 import React, { createContext, useState, useEffect } from "react";
 import { auth } from "@/app/firebase/firebaseConfig";
 import { onAuthStateChanged, signOut } from "firebase/auth";
+import { jwtDecode } from "jwt-decode";
 
 // Create the AuthContext
 export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [user, setUser] = useState(null); // User object for authenticated user
   const [token, setToken] = useState(null);
 
   // Check authentication state on initial load
@@ -17,6 +19,8 @@ export const AuthProvider = ({ children }) => {
     if (storedToken) {
       setIsLoggedIn(true);
       setToken(storedToken);
+      setUser(jwtDecode(storedToken));
+      localStorage.setItem("user", user);
     }
 
     const unsubscribe = onAuthStateChanged(auth, (user) => {
@@ -25,6 +29,7 @@ export const AuthProvider = ({ children }) => {
       } else {
         setIsLoggedIn(false);
         setToken(null);
+        setUser(null);
       }
     });
 
@@ -34,7 +39,9 @@ export const AuthProvider = ({ children }) => {
   // Login function
   const login = (jwt) => {
     setToken(jwt);
+    setUser(jwtDecode(jwt));
     localStorage.setItem("token", jwt);
+    localStorage.setItem("user", jwtDecode(jwt));
     setIsLoggedIn(true);
   };
 
@@ -42,8 +49,10 @@ export const AuthProvider = ({ children }) => {
   const logout = async () => {
     try {
       setToken(null);
+      setUser(null);
       setIsLoggedIn(false);
       localStorage.removeItem("token");
+      localStorage.removeItem("user");
       await signOut(auth); // Optionally handle Firebase logout
     } catch (error) {
       console.error("Error logging out:", error);
@@ -58,7 +67,7 @@ export const AuthProvider = ({ children }) => {
 
   return (
     <AuthContext.Provider
-      value={{ isLoggedIn, token, login, logout, refreshToken }}
+      value={{ isLoggedIn, token, user, login, logout, refreshToken }}
     >
       {children}
     </AuthContext.Provider>

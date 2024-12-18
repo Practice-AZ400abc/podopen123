@@ -1,29 +1,15 @@
 "use client";
 
-import ProfileForm from "@/components/profile-form";
-import { jwtDecode } from "jwt-decode";
-import React, { useContext, useState, useEffect } from "react";
-import { AuthContext } from "@/components/AuthProvider";
 import { useRouter } from "next/navigation";
+import React, { useEffect, useContext } from "react";
+import "react-international-phone/style.css";
+import { AuthContext } from "@/components/AuthProvider";
+import ProfileForm from "@/components/profile-form";
 
-const InvestorProfile = () => {
-  const { token, isLoggedIn } = useContext(AuthContext);
+const ProfilePage = () => {
+  const { token, isLoggedIn, login } = useContext(AuthContext);
   const router = useRouter();
 
-  // Decode token to extract email and role
-  const getDecodedToken = () => {
-    if (!token) return null;
-    try {
-      return jwtDecode(token);
-    } catch (error) {
-      console.error("Error decoding token:", error);
-      return null;
-    }
-  };
-
-  const decodedToken = getDecodedToken();
-
-  // Redirect if not logged in or wrong role
   useEffect(() => {
     if (!isLoggedIn) {
       router.push("/");
@@ -32,9 +18,9 @@ const InvestorProfile = () => {
 
   return (
     <div className="mx-auto container">
-      <ProfileForm token={token} />
+      <ProfileForm token={token} login={login} />
     </div>
   );
 };
 
-export default InvestorProfile;
+export default ProfilePage;

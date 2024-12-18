@@ -27,25 +27,12 @@ const Navbar = () => {
     if (!token) return null;
     try {
       const decoded = jwtDecode(token); // Decode the JWT
-      return decoded.user.avatarURL || null; // Return the avatarURL if present
+      return decoded.avatarURL || null; // Return the avatarURL if present
     } catch (error) {
       console.error("Error decoding token:", error);
       return null;
     }
   };
-
-  const getRoleFromToken = () => {
-    if (!token) return null;
-    try {
-      const decoded = jwtDecode(token); // Decode the JWT
-      return decoded.user.role || null; // Return the avatarURL if present
-    } catch (error) {
-      console.error("Error decoding token:", error);
-      return null;
-    }
-  };
-
-  const role = getRoleFromToken(); // Get the user's role
 
   const avatarURL = getAvatarURLFromToken(); // Get the avatarURL
 

@@ -14,7 +14,6 @@ import { PhoneInput } from "react-international-phone";
 import "react-international-phone/style.css";
 import ReactSelect from "react-select";
 import toast from "react-hot-toast";
-import { AuthContext } from "@/components/AuthProvider";
 import { jwtDecode } from "jwt-decode";
 
 // Define options for the countries dropdown
@@ -23,55 +22,56 @@ const countryOptions = COUNTRIES.map((country) => ({
   label: country,
 }));
 
-const Profile = ({ token }) => {
-  const { login } = useContext(AuthContext);
-  const [avatarURL, setAvatarURL] = useState(""); // Stores the uploaded avatar URL
-  const [companyName, setCompanyName] = useState(""); // Stores the company name
-  const [websiteURL, setWebsiteURL] = useState(""); // Stores the website URL
-  const [uploading, setUploading] = useState(false); // Tracks upload state
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [countryOfBirth, setCountryOfBirth] = useState("");
-  const [nationality, setNationality] = useState("");
-  const [dualCitizenship, setDualCitizenship] = useState(false);
-  const [netWorth, setNetWorth] = useState("");
-  const [liquidAssets, setLiquidAssets] = useState("");
-  const [telegram, setTelegram] = useState("");
-  const [whatsapp, setWhatsapp] = useState("");
-  const [phone, setPhone] = useState("");
-  const [industryToInvest, setIndustryToInvest] = useState("");
-  const [investmentAmount, setInvestmentAmount] = useState("");
-  const [countriesForVisa, setCountriesForVisa] = useState([]);
-  const [relocationTimeframe, setRelocationTimeframe] = useState("");
-  const [relocationCountry, setRelocationCountry] = useState("");
-  const [canProvideLiquidityEvidence, setCanProvideLiquidityEvidence] =
-    useState(false);
-  const [instagram, setInstagram] = useState("");
-  const [linkedin, setLinkedin] = useState("");
-  const [comments, setComments] = useState("");
-  const [isPublic, setIsPublic] = useState(false);
+const ProfileForm = ({ token, login }) => {
+  const [uploading, setUploading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
-  const [firebaseUid, setFirebaseUid] = useState("");
-
-  // Decode token to extract email and role
-  const getDecodedToken = () => {
-    if (!token) return null;
-    try {
-      return jwtDecode(token);
-    } catch (error) {
-      console.error("Error decoding token:", error);
-      return null;
+  const getEmailFromToken = () => {
+    if (token) {
+      return jwtDecode(token).email;
     }
   };
+  const email = getEmailFromToken();
 
-  const decodedToken = getDecodedToken();
-  const email = decodedToken?.user.email || null;
+  const getFirebaseUidFromToken = () => {
+    if (token) {
+      return jwtDecode(token).firebaseUid;
+    }
+  };
+  const firebaseUid = getFirebaseUidFromToken();
+
+  const [formData, setFormData] = useState({
+    email: "",
+    avatarURL: "",
+    firstName: "",
+    lastName: "",
+    companyName: "",
+    websiteURL: "",
+    countryOfBirth: "",
+    nationality: "",
+    dualCitizenship: false,
+    netWorth: "",
+    liquidAssets: "",
+    telegram: "",
+    whatsapp: "",
+    phone: "",
+    industryToInvest: "",
+    investmentAmount: "",
+    countriesForVisa: [],
+    relocationTimeframe: "",
+    relocationCountry: "",
+    canProvideLiquidityEvidence: false,
+    instagram: "",
+    linkedin: "",
+    comments: "",
+    isPublic: true,
+  });
 
   const handleCountriesForVisaChange = (selectedOptions) => {
     const selectedCountries = selectedOptions
       ? selectedOptions.map((option) => option.value)
       : [];
-    setCountriesForVisa(selectedCountries);
+    setFormData((prev) => ({ ...prev, countriesForVisa: selectedCountries }));
   };
 
   useEffect(() => {
@@ -82,42 +82,45 @@ const Profile = ({ token }) => {
         });
         if (!response.ok) throw new Error("Failed to fetch profile data");
 
-        const data = await response.json();
+        const user = await response.json();
 
-        // Set form fields with default values from the fetched data
-        setAvatarURL(data.avatarURL || "");
-        setFirstName(data.firstName || "");
-        setLastName(data.lastName || "");
-        setCompanyName(data.companyName || "");
-        setWebsiteURL(data.websiteURL || "");
-        setCountryOfBirth(data.countryOfBirth || "");
-        setNationality(data.nationality || "");
-        setDualCitizenship(data.dualCitizenship || false);
-        setNetWorth(data.netWorth || "");
-        setLiquidAssets(data.liquidAssets || "");
-        setTelegram(data.telegram || "");
-        setWhatsapp(data.whatsapp || "");
-        setPhone(data.phone || "");
-        setIndustryToInvest(data.industryToInvest || "");
-        setInvestmentAmount(data.investmentAmount || "");
-        setCountriesForVisa(data.countriesForVisa || []);
-        setRelocationTimeframe(data.relocationTimeframe || "");
-        setCanProvideLiquidityEvidence(
-          data.canProvideLiquidityEvidence || false
-        );
-        setInstagram(data.instagram || "");
-        setLinkedin(data.linkedin || "");
-        setComments(data.comments || "");
-        setIsPublic(data.isPublic || false);
-
-        setFirebaseUid(data.firebaseUid);
+        setFormData({
+          email: user.email ? user.email : "",
+          avatarURL: user.avatarURL ? user.avatarURL : "",
+          firstName: user.firstName ? user.firstName : "",
+          lastName: user.lastName ? user.lastName : "",
+          companyName: user.companyName ? user.companyName : "",
+          websiteURL: user.websiteURL ? user.websiteURL : "",
+          countryOfBirth: user.countryOfBirth ? user.countryOfBirth : "",
+          nationality: user.nationality ? user.nationality : "",
+          dualCitizenship: user.dualCitizenship ? user.dualCitizenship : false,
+          netWorth: user.netWorth ? user.netWorth : "",
+          liquidAssets: user.liquidAssets ? user.liquidAssets : "",
+          telegram: user.telegram ? user.telegram : "",
+          whatsapp: user.whatsapp ? user.whatsapp : "",
+          phone: user.phone ? user.phone : "",
+          industryToInvest: user.industryToInvest ? user.industryToInvest : "",
+          investmentAmount: user.investmentAmount ? user.investmentAmount : "",
+          countriesForVisa: user.countriesForVisa ? user.countriesForVisa : [],
+          relocationTimeframe: user.relocationTimeframe
+            ? user.relocationTimeframe
+            : "",
+          relocationCountry: user.relocationCountry
+            ? user.relocationCountry
+            : "",
+          canProvideLiquidityEvidence: user.canProvideLiquidityEvidence
+            ? user.canProvideLiquidityEvidence
+            : false,
+          instagram: user.instagram ? user.instagram : "",
+          linkedin: user.linkedin ? user.linkedin : "",
+          comments: user.comments ? user.comments : "",
+          isPublic: user.isPublic ? user.isPublic : true,
+        });
       } catch (error) {
         console.error("Error fetching profile:", error);
-        toast({
-          title: "Error",
-          description: "Failed to load profile data.",
-          variant: "destructive",
-        });
+        toast.error(error.message);
+      } finally {
+        setIsLoading(false);
       }
     };
 
@@ -155,7 +158,7 @@ const Profile = ({ token }) => {
 
     const uploadedImageUrl = await uploadToCloudinary(file);
     if (uploadedImageUrl) {
-      setAvatarURL(uploadedImageUrl);
+      setFormData((prev) => ({ ...prev, avatarURL: uploadedImageUrl }));
     } else {
       alert("Image upload failed. Please try again.");
     }
@@ -164,34 +167,6 @@ const Profile = ({ token }) => {
   // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    // Collect all form data
-    const formData = {
-      email: email || null,
-      avatarURL,
-      firstName,
-      lastName,
-      companyName,
-      websiteURL,
-      countryOfBirth,
-      nationality,
-      dualCitizenship,
-      netWorth,
-      liquidAssets,
-      telegram,
-      whatsapp,
-      phone,
-      industryToInvest,
-      investmentAmount,
-      countriesForVisa,
-      relocationTimeframe,
-      relocationCountry,
-      canProvideLiquidityEvidence,
-      instagram,
-      linkedin,
-      comments,
-      isPublic,
-    };
 
     try {
       const updateResponse = await fetch("/api/edit-profile", {
@@ -203,6 +178,8 @@ const Profile = ({ token }) => {
       if (!updateResponse.ok) {
         throw new Error("Failed to update profile");
       }
+
+      const updatedUser = await updateResponse.json();
 
       // Refresh the token with updated `profileCompleted` state
       const tokenResponse = await fetch("/api/token", {
@@ -220,10 +197,14 @@ const Profile = ({ token }) => {
 
       toast.success("Your profile has been successfully updated.");
     } catch (error) {
-      toast.error(error);
+      toast.error(error.message);
       throw new Error(error);
     }
   };
+
+  if (isLoading) {
+    return <div className="flex items-center justify-center">Loading...</div>;
+  }
 
   return (
     <div className="container mx-auto px-4 py-6">
@@ -234,7 +215,7 @@ const Profile = ({ token }) => {
         {/* Avatar Section */}
         <div className="flex items-center flex-col gap-4">
           <Image
-            src={avatarURL || profile} // Show uploaded avatar or default image
+            src={formData.avatarURL || profile} // Show uploaded avatar or default image
             alt="Profile Avatar"
             width={120}
             height={120}
@@ -265,30 +246,46 @@ const Profile = ({ token }) => {
           <InputField
             label="First Name"
             id="firstName"
-            value={firstName}
-            onChange={(e) => setFirstName(e.target.value)}
+            value={formData.firstName}
+            onChange={(e) =>
+              setFormData((prev) => ({ ...prev, firstName: e.target.value }))
+            }
           />
           <InputField
             label="Last Name"
             id="lastName"
-            value={lastName}
-            onChange={(e) => setLastName(e.target.value)}
+            value={formData.lastName}
+            onChange={(e) =>
+              setFormData((prev) => ({ ...prev, lastName: e.target.value }))
+            }
           />
           <InputField
             label="Company Name"
             id="companyName"
-            value={companyName}
-            onChange={(e) => setCompanyName(e.target.value)}
+            value={formData.companyName}
+            onChange={(e) =>
+              setFormData((prev) => ({
+                ...prev,
+                companyName: e.target.value,
+              }))
+            }
           />
           <InputField
             label="Website URL"
             id="websiteURL"
-            value={websiteURL}
-            onChange={(e) => setWebsiteURL(e.target.value)}
+            value={formData.websiteURL}
+            onChange={(e) =>
+              setFormData((prev) => ({ ...prev, websiteURL: e.target.value }))
+            }
           />
           <select
-            onChange={(e) => setCountryOfBirth(e.target.value)}
-            defaultValue={countryOfBirth}
+            value={formData.countryOfBirth}
+            onChange={(e) =>
+              setFormData((prev) => ({
+                ...prev,
+                countryOfBirth: e.target.value,
+              }))
+            }
             className="bg-gray-50 h-12 p-2 rounded-md border border-gray-300"
           >
             <option value="" disabled>
@@ -301,8 +298,13 @@ const Profile = ({ token }) => {
             ))}
           </select>
           <select
-            onChange={(e) => setNationality(e.target.value)}
-            defaultValue={nationality}
+            value={formData.nationality}
+            onChange={(e) =>
+              setFormData((prev) => ({
+                ...prev,
+                nationality: e.target.value,
+              }))
+            }
             className="bg-gray-50 h-12 p-2 rounded-md border border-gray-300"
           >
             <option value="" disabled>
@@ -317,8 +319,13 @@ const Profile = ({ token }) => {
         </section>
         <div className="flex items-center justify-center w-full gap-9 ">
           <select
-            onChange={(e) => setRelocationTimeframe(e.target.value)}
-            defaultValue={relocationTimeframe}
+            value={formData.relocationTimeframe}
+            onChange={(e) =>
+              setFormData((prev) => ({
+                ...prev,
+                relocationTimeframe: e.target.value,
+              }))
+            }
             className="bg-gray-50 h-12 w-full p-2 rounded-md border border-gray-300"
           >
             <option value="" disabled>
@@ -331,8 +338,13 @@ const Profile = ({ token }) => {
             ))}
           </select>
           <select
-            onChange={(e) => setRelocationCountry(e.target.value)}
-            defaultValue={relocationCountry}
+            value={formData.relocationCountry}
+            onChange={(e) =>
+              setFormData((prev) => ({
+                ...prev,
+                relocationCountry: e.target.value,
+              }))
+            }
             className="bg-gray-50 h-12 w-full p-2 rounded-md border border-gray-300"
           >
             <option value="" disabled>
@@ -349,8 +361,10 @@ const Profile = ({ token }) => {
         {/* Financial Details */}
         <section className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <select
-            onChange={(e) => setNetWorth(e.target.value)}
-            defaultValue={netWorth}
+            value={formData.netWorth}
+            onChange={(e) =>
+              setFormData((prev) => ({ ...prev, netWorth: e.target.value }))
+            }
             className="bg-gray-50 h-12 p-2 rounded-md border border-gray-300"
           >
             <option value="" disabled>
@@ -363,8 +377,13 @@ const Profile = ({ token }) => {
             ))}
           </select>
           <select
-            onChange={(e) => setLiquidAssets(e.target.value)}
-            defaultValue={liquidAssets}
+            value={formData.liquidAssets}
+            onChange={(e) =>
+              setFormData((prev) => ({
+                ...prev,
+                liquidAssets: e.target.value,
+              }))
+            }
             className="bg-gray-50 h-12 p-2 rounded-md border border-gray-300"
           >
             <option value="" disabled>
@@ -377,8 +396,13 @@ const Profile = ({ token }) => {
             ))}
           </select>
           <select
-            onChange={(e) => setIndustryToInvest(e.target.value)}
-            defaultValue={industryToInvest}
+            value={formData.industryToInvest}
+            onChange={(e) =>
+              setFormData((prev) => ({
+                ...prev,
+                industryToInvest: e.target.value,
+              }))
+            }
             className="bg-gray-50 h-12 p-2 rounded-md border border-gray-300"
           >
             <option value="" disabled>
@@ -392,8 +416,13 @@ const Profile = ({ token }) => {
           </select>
 
           <select
-            onChange={(e) => setInvestmentAmount(e.target.value)}
-            defaultValue={investmentAmount}
+            value={formData.investmentAmount}
+            onChange={(e) =>
+              setFormData((prev) => ({
+                ...prev,
+                investmentAmount: e.target.value,
+              }))
+            }
             className="bg-gray-50 h-12 p-2 rounded-md border border-gray-300"
           >
             <option value="" disabled>
@@ -412,14 +441,18 @@ const Profile = ({ token }) => {
           <InputField
             label="Instagram Profile"
             id="instagram"
-            value={instagram}
-            onChange={(e) => setInstagram(e.target.value)}
+            value={formData.instagram}
+            onChange={(e) =>
+              setFormData((prev) => ({ ...prev, instagram: e.target.value }))
+            }
           />
           <InputField
             label="LinkedIn Profile"
             id="linkedin"
-            value={linkedin}
-            onChange={(e) => setLinkedin(e.target.value)}
+            value={formData.linkedin}
+            onChange={(e) =>
+              setFormData((prev) => ({ ...prev, linkedin: e.target.value }))
+            }
           />
         </section>
         <div className="w-full">
@@ -430,7 +463,7 @@ const Profile = ({ token }) => {
             isMulti
             options={countryOptions}
             value={countryOptions.filter((option) =>
-              countriesForVisa.includes(option.value)
+              formData.countriesForVisa.includes(option.value)
             )}
             onChange={handleCountriesForVisaChange}
             className="react-select-container "
@@ -443,8 +476,13 @@ const Profile = ({ token }) => {
             <input
               type="checkbox"
               id="canProvideLiquidityEvidence"
-              checked={canProvideLiquidityEvidence}
-              onChange={(e) => setCanProvideLiquidityEvidence(e.target.checked)}
+              checked={formData.canProvideLiquidityEvidence}
+              onChange={(e) =>
+                setFormData((prev) => ({
+                  ...prev,
+                  canProvideLiquidityEvidence: e.target.value,
+                }))
+              }
               className="h-5 w-5 cursor-pointer"
             />
             <label
@@ -458,8 +496,13 @@ const Profile = ({ token }) => {
             <input
               type="checkbox"
               id="dualCitizenship"
-              checked={dualCitizenship}
-              onChange={(e) => setDualCitizenship(e.target.checked)}
+              checked={formData.dualCitizenship}
+              onChange={(e) =>
+                setFormData((prev) => ({
+                  ...prev,
+                  dualCitizenship: e.target.value,
+                }))
+              }
               className="h-5 w-5 cursor-pointer"
             />
             <label htmlFor="dualCitizenship" className="cursor-pointer">
@@ -470,8 +513,10 @@ const Profile = ({ token }) => {
             <label className="text-sm font-medium">Public Profile</label>
             <input
               type="checkbox"
-              checked={isPublic}
-              onChange={(e) => setIsPublic(e.target.checked)}
+              checked={formData.isPublic}
+              onChange={(e) =>
+                setFormData((prev) => ({ ...prev, isPublic: e.target.value }))
+              }
               className="h-5 w-5 cursor-pointer"
             />
           </div>
@@ -480,8 +525,10 @@ const Profile = ({ token }) => {
         <textarea
           className="min-h-[200px] p-2 bg-gray-50 rounded-lg border border-gray-300"
           placeholder="Add comments or notes..."
-          value={comments}
-          onChange={(e) => setComments(e.target.value)}
+          value={formData.comments}
+          onChange={(e) =>
+            setFormData((prev) => ({ ...prev, comments: e.target.value }))
+          }
         ></textarea>
         {/* Contact Info */}
         <section className="grid grid-cols-1 md:grid-cols-3 gap-2">
@@ -489,24 +536,39 @@ const Profile = ({ token }) => {
             <label>Telegram</label>
             <PhoneInput
               defaultCountry="ua"
-              value={telegram}
-              onChange={(phone) => setTelegram(phone)}
+              value={formData.telegram}
+              onChange={(value) =>
+                setFormData((prev) => ({
+                  ...prev,
+                  telegram: value, // Use the value directly
+                }))
+              }
             />
           </div>
           <div className="flex items-center gap-2">
             <label>WhatsApp</label>
             <PhoneInput
               defaultCountry="ua"
-              value={whatsapp}
-              onChange={(phone) => setWhatsapp(phone)}
+              value={formData.whatsapp}
+              onChange={(value) =>
+                setFormData((prev) => ({
+                  ...prev,
+                  whatsapp: value, // Use the value directly
+                }))
+              }
             />
           </div>
           <div className="flex items-center gap-2">
             <label>Phone</label>
             <PhoneInput
               defaultCountry="ua"
-              value={phone}
-              onChange={(phone) => setPhone(phone)}
+              value={formData.phone}
+              onChange={(value) =>
+                setFormData((prev) => ({
+                  ...prev,
+                  phone: value, // Use the value directly
+                }))
+              }
             />
           </div>
         </section>
@@ -522,4 +584,4 @@ const Profile = ({ token }) => {
   );
 };
 
-export default Profile;
+export default ProfileForm;

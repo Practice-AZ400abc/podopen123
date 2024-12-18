@@ -15,13 +15,9 @@ export const POST = async (req) => {
       return new Response(JSON.stringify({ message: "User not found" }), { status: 404 });
     }
 
-    const token = sign(
-      {
-        user,
-      },
-      secret,
-      { expiresIn: "7d" }
-    );
+    const { password, ...userWithoutPassword } = user.toObject();
+
+    const token = sign(userWithoutPassword, secret, { expiresIn: "7d" });
 
     return new Response(JSON.stringify({ token }), { status: 200 });
   } catch (error) {

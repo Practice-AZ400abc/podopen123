@@ -58,6 +58,12 @@ const UserSchema = new Schema(
     lastName: {
       type: String,
     },
+    companyName: {
+      type: String,
+    },
+    websiteURL: {
+      type: String,
+    },
     countryOfBirth: {
       type: String,
     },

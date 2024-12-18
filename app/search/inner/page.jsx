@@ -32,7 +32,7 @@ export default function SearchPage() {
   const fetchInvestors = async () => {
     setLoading(true);
     try {
-      const response = await fetch(`/api/search/investor?country=${country}`);
+      const response = await fetch(`/api/search/sponsor?country=${country}`);
       const data = await response.json();
       setInvestors(data);
 

@@ -2,7 +2,7 @@ import User from "@/models/user";
 import { connectToDB } from "@/utils/database";
 import jwt from 'jsonwebtoken'
 
-const JWT_SECRET = process.env.JWT_SECRET;
+const secret = process.env.JWT_SECRET;
 
 const verifyToken = (req) => {
     try {
@@ -16,7 +16,7 @@ const verifyToken = (req) => {
             throw new Error("No token provided");
         }
 
-        const decoded = jwt.verify(token, JWT_SECRET);
+        const decoded = jwt.verify(token, secret);
         return decoded;
     } catch (error) {
         console.error("JWT verification failed:", error.message);
@@ -28,10 +28,9 @@ export const PUT = async (req) => {
     try {
         const body = await req.json();
         const { email } = body;
-        const decodedToken = verifyToken(req);
-        const user = decodedToken.user;
+        const user = verifyToken(req);
 
-        if (!decodedToken) {
+        if (!user) {
             return new Response(JSON.stringify({ message: "Unauthorized" }), { status: 401 });
         }
 
@@ -50,7 +49,7 @@ export const PUT = async (req) => {
             return new Response(JSON.stringify({ message: "User not found." }), { status: 404 });
         }
 
-        if (targetUser.role === "Visa Sponsoer") {
+        if (targetUser.role === "Visa Sponsor") {
             console.log(body);
         }
 
@@ -128,7 +127,7 @@ export const PUT = async (req) => {
             targetUser.instagram = instagram;
             targetUser.linkedin = linkedin;
             targetUser.comments = comments;
-            targetUser.isPublic = isPublic || false;
+            targetUser.isPublic = isPublic || true;
             targetUser.completedProfile = true;
 
             await targetUser.save();
