@@ -24,20 +24,21 @@ const countryOptions = COUNTRIES.map((country) => ({
   label: country,
 }));
 
-const ProfileForm = ({ }) => {
+const ProfileForm = ({}) => {
+  const router = useRouter();
   const [uploading, setUploading] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
-  const [token, setToken] = useState(null)
-  const {login} = useContext(AuthContext)
+  const [token, setToken] = useState(null);
+  const { login } = useContext(AuthContext);
 
   useEffect(() => {
     const storedToken = localStorage.getItem("token");
-    if (storedToken) {
-      setToken(storedToken);
+    if (!storedToken) {
+      router.push("/");
     }
-  }, [])
-
-  const router = useRouter();
+    setToken(storedToken);
+  }, []);
+  
   const getEmailFromToken = () => {
     if (token) {
       return jwtDecode(token).email;
@@ -179,6 +180,8 @@ const ProfileForm = ({ }) => {
   // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    console.log(formData);
 
     try {
       const updateResponse = await fetch("/api/edit-profile", {

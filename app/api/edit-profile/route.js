@@ -87,7 +87,7 @@ export const PUT = async (req) => {
             targetUser.lastName = lastName;
             targetUser.countryOfBirth = countryOfBirth;
             targetUser.nationality = nationality;
-            targetUser.dualCitizenship = dualCitizenship || false;
+            targetUser.dualCitizenship = dualCitizenship;
             targetUser.netWorth = netWorth;
             targetUser.liquidAssets = liquidAssets;
             targetUser.telegram = telegram;
@@ -98,11 +98,11 @@ export const PUT = async (req) => {
             targetUser.countriesForVisa = countriesForVisa;
             targetUser.relocationTimeframe = relocationTimeframe;
             targetUser.relocationCountry = relocationCountry;
-            targetUser.canProvideLiquidityEvidence = canProvideLiquidityEvidence || false;
+            targetUser.canProvideLiquidityEvidence = canProvideLiquidityEvidence;
             targetUser.instagram = instagram;
             targetUser.linkedin = linkedin;
             targetUser.comments = comments;
-            targetUser.isPublic = isPublic || true;
+            targetUser.isPublic = isPublic;
             targetUser.completedProfile = true;
 
             await targetUser.save();

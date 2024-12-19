@@ -1,13 +1,9 @@
 "use client";
 import { useState, useEffect, useContext } from "react";
-import { auth } from "../../firebase/firebaseConfig";
-import Logo from "../../Lookvisa.png";
 import Link from "next/link";
 import { ArrowLeft, Fingerprint, Loader } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { AuthContext } from "@/components/AuthProvider"; // Import the AuthContext
-import useAuthStore from "@/stores/useAuthStore";
-import toast from "react-hot-toast";
 
 const ForgetPassword = () => {
   const { isLoggedIn } = useContext(AuthContext); // Access isLoggedIn from context

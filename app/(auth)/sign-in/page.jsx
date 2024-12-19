@@ -7,12 +7,10 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { toast } from "react-hot-toast";
 import { GoogleAuthProvider, FacebookAuthProvider } from "firebase/auth";
-import { auth } from "@/app/firebase/firebaseConfig";
 import handleSocialAuth from "@/utils/handleSocialAuth";
-import { ArrowRight, Loader } from "lucide-react";
+import { Loader } from "lucide-react";
 import Logo from "../../Lookvisa.png";
-import { AuthContext } from "@/components/AuthProvider"; // Adjust the path
-import useAuthStore from "@/stores/useAuthStore";
+import { AuthContext } from "@/components/AuthProvider";
 import Image from "next/image";
 
 const SignIn = () => {
@@ -48,7 +46,7 @@ const SignIn = () => {
       });
 
       const userData = await userResponse.json();
-    
+
       if (!userResponse.ok) {
         toast.error("Email address is not registered!");
         setEmail("");
@@ -109,13 +107,13 @@ const SignIn = () => {
   const signInWithSocials = async (provider) => {
     try {
       const result = await handleSocialAuth(provider);
-  
+
       if (result.error) {
         toast.error(result.error);
         return;
       }
-  
-      login(result.token)
+
+      login(result.token);
       if (result.completedProfile) {
         router.push("/");
       } else {
@@ -126,7 +124,6 @@ const SignIn = () => {
       toast.error("An error occurred during sign-in. Please try again.");
     }
   };
-  
 
   return (
     <div className="mx-auto container">

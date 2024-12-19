@@ -7,8 +7,7 @@ import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../../../firebase/firebaseConfig";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
-import { AuthContext } from "@/components/AuthProvider"; // Adjust the import as needed
-import useAuthStore from "@/stores/useAuthStore";
+import { AuthContext } from "@/components/AuthProvider";
 import { Loader } from "lucide-react";
 
 const EnterPassword = () => {

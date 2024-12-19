@@ -12,8 +12,7 @@ import {
   FacebookAuthProvider,
 } from "firebase/auth";
 import { auth } from "../../firebase/firebaseConfig";
-import { AuthContext } from "@/components/AuthProvider"; // Import AuthContext
-import useAuthStore from "@/stores/useAuthStore";
+import { AuthContext } from "@/components/AuthProvider"; 
 import handleSocialAuth from "@/utils/handleSocialAuth";
 import toast from "react-hot-toast";
 import { ArrowLeft, ArrowRight, Loader } from "lucide-react";

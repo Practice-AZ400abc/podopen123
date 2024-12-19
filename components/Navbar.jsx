@@ -14,7 +14,6 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 import { AuthContext } from "@/components/AuthProvider";
-import useAuthStore from "@/stores/useAuthStore";
 import { LogOut } from "lucide-react";
 import { jwtDecode } from "jwt-decode"; // Import jwt-decode to decode the token
 
