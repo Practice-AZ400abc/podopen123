@@ -107,7 +107,7 @@ const Navbar = () => {
               href="/sign-up"
               className="text-black px-6 py-3 rounded-full font-bold"
             >
-              Become Visa Sponser
+              Sponsor Sign In
             </Link>
             <Link
               href="/sign-in"
