@@ -12,6 +12,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
+import Link from "next/link";
 
 export default function Home() {
   const [selectedCountry, setSelectedCountry] = useState(""); // Track the selected country
@@ -32,6 +33,7 @@ export default function Home() {
         <div className="space-y-4">
           <h1 className="text-2xl font-semibold text-blue-400">
             Find a Visa Investor
+            Search for projects seeking eb5, or golden investors for a project.
           </h1>
           <p className="text-gray-600">
             Search for investors seeking a golden visa or investment visa in the country where you seek funds for your project.
@@ -63,20 +65,38 @@ export default function Home() {
             </Button>
           </div>
 
+         
+          <div className="text-center">
+            <Link
+              href="/sign-in"
+              className="text-blue-600 hover:text-blue-800 text-sm font-medium"
+            >
+              Post your investor profile
+            </Link>{" "}
+            <span className="text-gray-600 text-sm">
+            - It only takes a few seconds
+            </span>
+          </div>
+
+          <div className="text-center">
+            
+            <span className="text-gray-600 text-sm">
+            LookVisa helps investors obtain investors visa, golden visas, EB5 visas
+            </span>
+          </div>
           <div className="text-center text-sm text-gray-500">
             <span>or</span>
           </div>
 
           <div className="text-center">
-            <a
-              href="#"
+            <Link
+              href="/sign-in"
               className="text-blue-600 hover:text-blue-800 text-sm font-medium"
             >
-              Login as a visa sponsor
-            </a>{" "}
+              login as a visa sponsor
+            </Link>{" "}
             <span className="text-gray-600 text-sm">
-              to contact the investors seeking investment and golden visas
-              directly
+             to contact the investors seeking investment and golden visas directly
             </span>
           </div>
         </div>

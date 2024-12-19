@@ -16,7 +16,15 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <head>
-        <meta charset="utf-8" />
+        <meta
+          name="description"
+          content="With LookVisa, you can seach for and match up with individuals seeking to invest in your projects for an investment visa, or golden visa."
+        />
+        <meta name="keywords" content="investment visa, lookvisa, visa sponsor, golden visa, investment opportunities, citizenship investment, foreign investor, immigrant investor, project funding, search engine platform for immigrant investment visas" />
+
+
+
+        <meta charSet="utf-8" />
 
 
 
@@ -61,15 +69,13 @@ export default function RootLayout({ children }) {
 
 
         <meta name="twitter:title" content="Investment Visas – Find Immigrant Investor Visas" />
-        <meta
-          name="description"
-          content="With LookVisa, you can seach for and match up with individuals seeking to invest in your projects for an investment visa, or golden visa."
-        />
-        <meta
-          name="keywords"
-          content="investment visa, lookvisa, visa sponsor, golden visa, investment opportunities, citizenship investment, foreign investor, immigrant investor, project funding, search engine platform for immigrant investment visas"
-        />
-        <title> Lookvisa – Find Investors Seeking Visa</title>
+
+
+
+        <meta name="twitter:description" content=" LOOKVISA is the easiest way to find an immigrant visa and streamline and find an immigrant investor for your projects and investment opportunities." />
+
+
+        <title> Lookvisa – Find Projects Seeking Funding for investment, Golden and EB5 visas</title>
       </head>
       <body className="antialiased">
         <SuspenseProvider>
