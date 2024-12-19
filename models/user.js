@@ -1,11 +1,12 @@
 import { Schema, model, models } from "mongoose";
+import { boolean } from "zod";
 
 const UserSchema = new Schema(
   {
     email: {
       type: String,
       unique: true,
-      required: true,
+     required: false,
     },
     name: {
       type: String,
@@ -15,28 +16,28 @@ const UserSchema = new Schema(
     },
     completedProfile: {
       type: Boolean,
-      required: true,
+     required: false,
       default: false,
     },
     emailVerified: {
       type: Boolean,
-      required: true,
+     required: false,
       default: false,
     },
     role: {
       type: String,
       enum: ["Visa Sponsor", "Visa Seeker"],
-      required: true,
+     required: false,
       default: "Visa Sponsor",
     },
     firebaseUid: {
       type: String,
       unique: true,
-      required: true,
+     required: false,
     },
     authMethod: {
       type: String,
-      required: true,
+     required: false,
       enum: ["credentials", "google", "facebook"],
     },
     authToken: {
@@ -54,74 +55,95 @@ const UserSchema = new Schema(
     // Visa seeker fields
     firstName: {
       type: String,
+      required: false,
     },
     lastName: {
       type: String,
+      required: false,
     },
     companyName: {
       type: String,
+      required: false,
     },
     websiteURL: {
       type: String,
+      required: false,
     },
     countryOfBirth: {
       type: String,
+      required: false,
     },
     nationality: {
       type: String,
+      required: false,
     },
     dualCitizenship: {
       type: Boolean,
       default: false,
+      required: false,
     },
     netWorth: {
       type: String,
+      required: false,
     },
     liquidAssets: {
       type: String,
+      required: false,
     },
     telegram: {
       type: String,
+      required: false,
     },
     whatsapp: {
       type: String,
+      required: false,
     },
     phone: {
       type: String,
+      required: false,
     },
     industryToInvest: {
       type: String,
+      required: false,
     },
     investmentAmount: {
       type: String,
+      required: false,
     },
     countriesForVisa: {
       type: [String],
       default: [],
+      required: false,
     },
     relocationTimeframe: {
       type: String,
+      required: false,
     },
     relocationCountry: {
       type: String,
+      required: false,
     },
     canProvideLiquidityEvidence: {
       type: Boolean,
       default: false,
+      required: false,
     },
     instagram: {
       type: String,
+      required: false,
     },
     linkedin: {
       type: String,
+      required: false,
     },
     comments: {
       type: String,
       maxlength: 90,
+      required: false,
     },
     isPublic: {
       type: Boolean,
-      default: false,
+      default: boolean,
     },
   },
   {

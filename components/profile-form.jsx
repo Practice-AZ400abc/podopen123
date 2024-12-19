@@ -15,6 +15,7 @@ import "react-international-phone/style.css";
 import ReactSelect from "react-select";
 import toast from "react-hot-toast";
 import { jwtDecode } from "jwt-decode";
+import { useRouter } from "next/navigation";
 
 // Define options for the countries dropdown
 const countryOptions = COUNTRIES.map((country) => ({
@@ -25,7 +26,7 @@ const countryOptions = COUNTRIES.map((country) => ({
 const ProfileForm = ({ token, login }) => {
   const [uploading, setUploading] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
-
+  const router = useRouter();
   const getEmailFromToken = () => {
     if (token) {
       return jwtDecode(token).email;
@@ -196,6 +197,7 @@ const ProfileForm = ({ token, login }) => {
       login(newToken); // Update the token in AuthContext
 
       toast.success("Your profile has been successfully updated.");
+      router.push("/");
     } catch (error) {
       toast.error(error.message);
       throw new Error(error);
@@ -317,7 +319,7 @@ const ProfileForm = ({ token, login }) => {
             ))}
           </select>
         </section>
-        <div className="flex items-center justify-center w-full gap-9 ">
+        <div className="flex items-center justify-center w-full gap-4 ">
           <select
             value={formData.relocationTimeframe}
             onChange={(e) =>

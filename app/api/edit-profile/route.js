@@ -80,30 +80,7 @@ export const PUT = async (req) => {
                 isPublic,
             } = body;
 
-            if (!avatarURL ||
-                !websiteURL ||
-                !companyName ||
-                !firstName ||
-                !lastName ||
-                !countryOfBirth ||
-                !nationality ||
-                !netWorth ||
-                !liquidAssets ||
-                !industryToInvest ||
-                !investmentAmount ||
-                !countriesForVisa ||
-                !relocationTimeframe ||
-                !relocationCountry ||
-                !instagram ||
-                !linkedin ||
-                !comments) {
-                return new Response(
-                    JSON.stringify({
-                        message: "Required fields are missing.",
-                    }),
-                    { status: 400 }
-                );
-            }
+           
 
             targetUser.avatarURL = avatarURL;
             targetUser.websiteURL = websiteURL;
