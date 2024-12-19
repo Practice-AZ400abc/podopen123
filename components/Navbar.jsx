@@ -67,7 +67,7 @@ const Navbar = () => {
             <Link href="/">Blogs</Link>
             <Link href="/PrivacyPolicy">Privacy Policy</Link>
             <Link href="/OurStory">Our Story</Link>
-            <Link href={"/search"}>Find Projects</Link>
+            <Link href={"/search"}>find investors</Link>
           </ul>
         </div>
         {isLoggedIn ? (

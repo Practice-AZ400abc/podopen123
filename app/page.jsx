@@ -44,7 +44,7 @@ export default function Home() {
           <div className="flex gap-3">
             <Select onValueChange={(value) => setSelectedCountry(value)}>
               <SelectTrigger className="h-12">
-                <SelectValue placeholder="Investor desired country" />
+                <SelectValue placeholder="Find a Project sponsoring an investment or golden visa" />
               </SelectTrigger>
               <SelectContent>
                 {COUNTRIES.map((country) => (
