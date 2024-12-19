@@ -260,7 +260,7 @@ const ProfileForm = ({}) => {
         {/* Personal Information */}
         <section className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <InputField
-            label="First Name"
+            label="* First Name"
             id="firstName"
             value={formData.firstName}
             onChange={(e) =>
@@ -268,7 +268,7 @@ const ProfileForm = ({}) => {
             }
           />
           <InputField
-            label="Last Name"
+            label="* Last Name"
             id="lastName"
             value={formData.lastName}
             onChange={(e) =>
@@ -305,7 +305,7 @@ const ProfileForm = ({}) => {
             className="bg-gray-50 h-12 p-2 rounded-md border border-gray-300"
           >
             <option value="" disabled>
-              Country of Birth
+              * Country of Birth
             </option>
             {COUNTRIES.map((country, index) => (
               <option key={index} value={country}>
@@ -324,7 +324,7 @@ const ProfileForm = ({}) => {
             className="bg-gray-50 h-12 p-2 rounded-md border border-gray-300"
           >
             <option value="" disabled>
-              Nationality
+              * Nationality
             </option>
             {COUNTRIES.map((country, index) => (
               <option key={index} value={country}>
@@ -353,7 +353,7 @@ const ProfileForm = ({}) => {
               </option>
             ))}
           </select>
-          <select
+          {/* <select
             value={formData.relocationCountry}
             onChange={(e) =>
               setFormData((prev) => ({
@@ -371,7 +371,7 @@ const ProfileForm = ({}) => {
                 {country}
               </option>
             ))}
-          </select>
+          </select> */}
         </div>
 
         {/* Financial Details */}
@@ -403,7 +403,7 @@ const ProfileForm = ({}) => {
             className="bg-gray-50 h-12 p-2 rounded-md border border-gray-300"
           >
             <option value="" disabled>
-              Liquid Assets (USD)
+              * Liquid Assets (USD)
             </option>
             {INVESTMENT_RANGES.map((range, index) => (
               <option key={index} value={range}>
@@ -442,7 +442,7 @@ const ProfileForm = ({}) => {
             className="bg-gray-50 h-12 p-2 rounded-md border border-gray-300"
           >
             <option value="" disabled>
-              Amount willing to invest (USD)
+              * Amount willing to invest (USD)
             </option>
             {INVESTMENT_RANGES.map((range, index) => (
               <option key={index} value={range}>
@@ -473,7 +473,7 @@ const ProfileForm = ({}) => {
         </section>
         <div className="w-full">
           <label className="block text-sm font-medium mb-2 ">
-            Countries for Visa
+          Country to relocate to with golden/investment visa
           </label>
           <ReactSelect
             isMulti
@@ -505,7 +505,7 @@ const ProfileForm = ({}) => {
               htmlFor="canProvideLiquidityEvidence"
               className="cursor-pointer"
             >
-              Can provide liquidity evidence?
+             Can provide evidence of liquidity?
             </label>
           </div>
           <div className="flex items-center gap-2">
@@ -526,7 +526,7 @@ const ProfileForm = ({}) => {
             </label>
           </div>
           <div className="flex items-center gap-2">
-            <label className="text-sm font-medium">Public Profile</label>
+            <label className="text-sm font-medium">* Public Profile</label>
             <input
               type="checkbox"
               checked={formData.isPublic}
@@ -562,7 +562,7 @@ const ProfileForm = ({}) => {
             />
           </div>
           <div className="flex items-center gap-2">
-            <label>WhatsApp</label>
+            <label>* WhatsApp</label>
             <PhoneInput
               defaultCountry="ua"
               value={formData.whatsapp}
