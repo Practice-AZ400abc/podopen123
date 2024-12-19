@@ -16,6 +16,7 @@ import ReactSelect from "react-select";
 import toast from "react-hot-toast";
 import { jwtDecode } from "jwt-decode";
 import { useRouter } from "next/navigation";
+import { AuthContext } from "./AuthProvider";
 
 // Define options for the countries dropdown
 const countryOptions = COUNTRIES.map((country) => ({
@@ -23,9 +24,19 @@ const countryOptions = COUNTRIES.map((country) => ({
   label: country,
 }));
 
-const ProfileForm = ({ token, login }) => {
+const ProfileForm = ({ }) => {
   const [uploading, setUploading] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  const [token, setToken] = useState(null)
+  const {login} = useContext(AuthContext)
+
+  useEffect(() => {
+    const storedToken = localStorage.getItem("token");
+    if (storedToken) {
+      setToken(storedToken);
+    }
+  }, [])
+
   const router = useRouter();
   const getEmailFromToken = () => {
     if (token) {
@@ -126,7 +137,7 @@ const ProfileForm = ({ token, login }) => {
     };
 
     if (email) fetchProfile();
-  }, []);
+  }, [email]);
 
   // Function to upload an image to Cloudinary
   const uploadToCloudinary = async (file) => {

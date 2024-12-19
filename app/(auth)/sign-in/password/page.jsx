@@ -8,6 +8,7 @@ import { auth } from "../../../firebase/firebaseConfig";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 import { AuthContext } from "@/components/AuthProvider"; // Adjust the import as needed
+import useAuthStore from "@/stores/useAuthStore";
 import { Loader } from "lucide-react";
 
 const EnterPassword = () => {

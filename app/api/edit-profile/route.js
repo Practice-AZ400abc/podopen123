@@ -80,8 +80,6 @@ export const PUT = async (req) => {
                 isPublic,
             } = body;
 
-           
-
             targetUser.avatarURL = avatarURL;
             targetUser.websiteURL = websiteURL;
             targetUser.companyName = companyName;

@@ -11,8 +11,8 @@ import { auth } from "@/app/firebase/firebaseConfig";
 import handleSocialAuth from "@/utils/handleSocialAuth";
 import { ArrowRight, Loader } from "lucide-react";
 import Logo from "../../Lookvisa.png";
-
 import { AuthContext } from "@/components/AuthProvider"; // Adjust the path
+import useAuthStore from "@/stores/useAuthStore";
 import Image from "next/image";
 
 const SignIn = () => {

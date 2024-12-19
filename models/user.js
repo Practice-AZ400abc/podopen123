@@ -1,12 +1,11 @@
 import { Schema, model, models } from "mongoose";
-import { boolean } from "zod";
 
 const UserSchema = new Schema(
   {
     email: {
       type: String,
       unique: true,
-     required: false,
+      required: false,
     },
     name: {
       type: String,
@@ -16,28 +15,28 @@ const UserSchema = new Schema(
     },
     completedProfile: {
       type: Boolean,
-     required: false,
+      required: false,
       default: false,
     },
     emailVerified: {
       type: Boolean,
-     required: false,
+      required: false,
       default: false,
     },
     role: {
       type: String,
       enum: ["Visa Sponsor", "Visa Seeker"],
-     required: false,
+      required: false,
       default: "Visa Sponsor",
     },
     firebaseUid: {
       type: String,
       unique: true,
-     required: false,
+      required: false,
     },
     authMethod: {
       type: String,
-     required: false,
+      required: false,
       enum: ["credentials", "google", "facebook"],
     },
     authToken: {
@@ -143,7 +142,8 @@ const UserSchema = new Schema(
     },
     isPublic: {
       type: Boolean,
-      default: boolean,
+      default: true,
+      required: false,
     },
   },
   {

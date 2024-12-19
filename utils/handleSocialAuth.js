@@ -31,10 +31,6 @@ const handleSocialAuth = async (provider) => {
             : FacebookAuthProvider.credentialFromResult(result);
 
         await linkWithCredential(auth.currentUser, credential);
-
-        console.log("Social account linked with existing user:", existingUser);
-      } else {
-        console.log("User already exists, no linking required.");
       }
     } else if (checkUserResponse.status === 404) {
       const newUserResponse = await fetch("/api/users", {

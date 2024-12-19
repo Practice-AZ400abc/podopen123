@@ -1,24 +1,27 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import React, { useEffect, useContext } from "react";
+import React, { useEffect, useContext, useState } from "react";
 import "react-international-phone/style.css";
 import { AuthContext } from "@/components/AuthProvider";
+import useAuthStore from "@/stores/useAuthStore";
 import ProfileForm from "@/components/profile-form";
 
 const ProfilePage = () => {
-  const { token, isLoggedIn, login } = useContext(AuthContext);
+  const [token, setToken] = useState(null);
   const router = useRouter();
 
   useEffect(() => {
-    if (!isLoggedIn) {
+    const storedToken = localStorage.getItem("token");
+    if (!storedToken) {
       router.push("/");
     }
-  }, [isLoggedIn, router]);
+    setToken(storedToken);
+  }, []);
 
   return (
     <div className="mx-auto container">
-      <ProfileForm token={token} login={login} />
+      <ProfileForm />
     </div>
   );
 };
