@@ -32,7 +32,7 @@ export default function Home() {
       <div className="w-full max-w-3xl mx-auto text-center space-y-6">
         <div className="space-y-4">
           <h1 className="text-2xl font-semibold text-blue-400">
-            Find a Visa Investor
+            Find a Visa Investor Projects
             Search for projects seeking eb5, or golden investors for a project.
           </h1>
           <p className="text-gray-600">
