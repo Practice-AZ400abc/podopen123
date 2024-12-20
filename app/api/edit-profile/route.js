@@ -67,6 +67,7 @@ export const PUT = async (req) => {
                 liquidAssets,
                 telegram,
                 whatsapp,
+                contactEmail,
                 phone,
                 industryToInvest,
                 investmentAmount,
@@ -92,6 +93,7 @@ export const PUT = async (req) => {
             targetUser.liquidAssets = liquidAssets;
             targetUser.telegram = telegram;
             targetUser.whatsapp = whatsapp;
+            targetUser.contactEmail = contactEmail;
             targetUser.phone = phone;
             targetUser.industryToInvest = industryToInvest;
             targetUser.investmentAmount = investmentAmount;

@@ -8,13 +8,14 @@ import { Card } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Badge } from "@/components/ui/badge";
-import { MapPin, Building, MessageSquare, Baby } from "lucide-react";
+import { MapPin, Building, MessageSquare, Baby, Filter } from "lucide-react";
 import {
   INDUSTRIES,
   INVESTMENT_RANGES,
   RELOCATION_TIMEFRAMES,
 } from "@/lib/constants";
 import Link from "next/link";
+import { Select, SelectContent, SelectTrigger, SelectValue, SelectItem } from "@/components/ui/select";
 
 export default function SearchPage() {
   const searchParams = useSearchParams(); // Get query params from the URL
@@ -91,10 +92,34 @@ export default function SearchPage() {
   return (
     <div className="min-h-screen w-full bg-gray-50">
       <header className="bg-white border-b">
-        <div className="max-w-7xl mx-auto px-4 py-4">
+        <div className="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
           <h1 className="text-xl font-semibold">
             Investors Seeking Golden Visas in {country}
           </h1>
+          <div className="flex gap-4 w-[200px]">
+            <Select>
+              <SelectTrigger className="h-12">
+                <div className="flex items-center gap-2">
+                  <Filter />
+                  <SelectValue className="text-lg font-bold" placeholder="Sort" />
+                </div>
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="highToLowNetWorth">
+                  High net worth to Lowest net worth
+                </SelectItem>
+                <SelectItem value="lowToHighNetWorth">
+                  Lowest net worth to highest net worth
+                </SelectItem>
+                <SelectItem value="highToLowInvestment">
+                  Investment Amount high to low
+                </SelectItem>
+                <SelectItem value="lowToHighInvestment">
+                  Investment Amount low to high
+                </SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
         </div>
       </header>
 
@@ -162,55 +187,7 @@ export default function SearchPage() {
                   </select>
                 </div>
 
-                <h2 className="font-semibold mb-4">Sort By</h2>
-                <div className="flex items-center gap-2">
-                  <input
-                    type="radio"
-                    name="sort"
-                    value="netWorthDesc"
-                    onChange={() => handleSortChange("netWorthDesc")}
-                    checked={sortOption === "netWorthDesc"}
-                  />
-                  <label className="ml-2 text-sm">
-                    High net worth to Lowest net worth
-                  </label>
-                </div>
-                <div className="flex items-center gap-2">
-                  <input
-                    type="radio"
-                    name="sort"
-                    value="netWorthAsc"
-                    onChange={() => handleSortChange("netWorthAsc")}
-                    checked={sortOption === "netWorthAsc"}
-                  />
-                  <label className="ml-2 text-sm">
-                    Lowest net worth to highest net worth
-                  </label>
-                </div>
-                <div className="flex items-center gap-2">
-                  <input
-                    type="radio"
-                    name="sort"
-                    value="investmentDesc"
-                    onChange={() => handleSortChange("investmentDesc")}
-                    checked={sortOption === "investmentDesc"}
-                  />
-                  <label className="ml-2 text-sm">
-                    Investment Amount high to low
-                  </label>
-                </div>
-                <div className="flex items-center gap-2">
-                  <input
-                    type="radio"
-                    name="sort"
-                    value="investmentAsc"
-                    onChange={() => handleSortChange("investmentAsc")}
-                    checked={sortOption === "investmentAsc"}
-                  />
-                  <label className="ml-2 text-sm">
-                    Investment Amount low to high
-                  </label>
-                </div>
+
               </div>
               <Separator />
             </Card>
@@ -228,53 +205,53 @@ export default function SearchPage() {
                     className="p-4 hover:shadow-md transition-shadow"
                   >
                     <div className="flex justify-between items-start">
-                     <div className="grid grid-cols-2 items-center gap-5 ">
-                     <div className="flex gap-2">
-                        <h1 className="text-sm text-blue-500">Country of Nationality </h1>
-                        <p> {investor.nationality}</p>
+                      <div className="grid grid-cols-2 items-center gap-5 ">
+                        <div className="flex gap-2">
+                          <h1 className="text-sm text-blue-500">Country of Nationality </h1>
+                          <p> {investor.nationality}</p>
+                        </div>
+                        <div className="flex gap-2">
+                          <h1 className="text-sm text-blue-500">Dual Citizenship </h1>
+                          <p> {investor.dualCitizenship == true ? "Yes" : "No"}</p>
+                        </div>
+                        <div className="flex gap-2">
+                          <h1 className="text-sm text-blue-500">Dual Citizenship </h1>
+                          <p> {investor.dualCitizenship == true ? "Yes" : "No"}</p>
+                        </div>
+                        <div className="flex gap-2">
+                          <h1 className="text-sm text-blue-500">Networth </h1>
+                          <p> {investor.netWorth}</p>
+                        </div>
+                        <div className="flex gap-2">
+                          <h1 className="text-sm text-blue-500">Liquid Assets </h1>
+                          <p> {investor.liquidAssets}</p>
+                        </div>
+                        <div className="flex gap-2">
+                          <h1 className="text-sm text-blue-500">Industry to invest</h1>
+                          <p> {investor.industryToInvest}</p>
+                        </div>
+                        <div className="flex gap-2">
+                          <h1 className="text-sm text-blue-500">Amount willing to invest</h1>
+                          <p> {investor.investmentAmount}</p>
+                        </div>
+                        <div className="flex gap-2">
+                          <h1 className="text-sm text-blue-500">Country to Relocate</h1>
+                          <p> {investor.relocationCountry}</p>
+                        </div>
+                        <div className="flex gap-2">
+                          <h1 className="text-sm text-blue-500">Time to Relocate</h1>
+                          <p> {investor.relocationTimeframe}</p>
+                        </div>
+                        <div className="flex gap-2">
+                          <h1 className="text-sm text-blue-500">can you provide evidence of liquid assets </h1>
+                          <p> {investor.canProvideLiquidityEvidence == true ? "Yes" : "No"}</p>
+                        </div>
                       </div>
-                      <div className="flex gap-2">
-                        <h1 className="text-sm text-blue-500">Dual Citizenship </h1>
-                        <p> {investor.dualCitizenship == true ? "Yes" : "No"}</p>
-                      </div>
-                      <div className="flex gap-2">
-                        <h1 className="text-sm text-blue-500">Dual Citizenship </h1>
-                        <p> {investor.dualCitizenship == true ? "Yes" : "No"}</p>
-                      </div>
-                      <div className="flex gap-2">
-                        <h1 className="text-sm text-blue-500">Networth </h1>
-                        <p> {investor.netWorth}</p>
-                      </div>
-                      <div className="flex gap-2">
-                        <h1 className="text-sm text-blue-500">Liquid Assets </h1>
-                        <p> {investor.liquidAssets}</p>
-                      </div>
-                      <div className="flex gap-2">
-                        <h1 className="text-sm text-blue-500">Industry to invest</h1>
-                        <p> {investor.industryToInvest}</p>
-                      </div>
-                      <div className="flex gap-2">
-                        <h1 className="text-sm text-blue-500">Amount willing to invest</h1>
-                        <p> {investor.investmentAmount}</p>
-                      </div>
-                      <div className="flex gap-2">
-                        <h1 className="text-sm text-blue-500">Country to Relocate</h1>
-                        <p> {investor.relocationCountry}</p>
-                      </div>
-                      <div className="flex gap-2">
-                        <h1 className="text-sm text-blue-500">Time to Relocate</h1>
-                        <p> {investor.relocationTimeframe}</p>
-                      </div>
-                      <div className="flex gap-2">
-                        <h1 className="text-sm text-blue-500">can you provide evidence of liquid assets </h1>
-                        <p> {investor.canProvideLiquidityEvidence == true ? "Yes" : "No"}</p>
-                      </div>
-                     </div>
-                     <Link href={"/sign-in"}>
-                      <Button variant="outline">
-                        <MessageSquare className="w-4 h-4 mr-2" />
-                        Message
-                      </Button>
+                      <Link href={"/sign-in"}>
+                        <Button variant="outline" className="bg-blue-500 hover:bg-blue-600 text-white hover:text-white">
+                          <MessageSquare className="w-4 h-4 mr-2" />
+                          Message
+                        </Button>
                       </Link>
                     </div>
                   </Card>

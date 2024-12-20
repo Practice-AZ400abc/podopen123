@@ -4,6 +4,8 @@ import { useState } from "react";
 import { useRouter } from "next/navigation"; // Import useRouter for navigation
 import { Search } from "lucide-react";
 import { COUNTRIES } from "@/lib/constants";
+import SearchImage from "../app/SearchPage.png";
+
 import {
   Select,
   SelectContent,
@@ -13,7 +15,8 @@ import {
 } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
-
+import searchImage from "@/app/SearchPage.png";
+import Image from "next/image";
 export default function Home() {
   const [selectedCountry, setSelectedCountry] = useState(""); // Track the selected country
   const router = useRouter(); // Use the Next.js router for navigation
@@ -30,7 +33,8 @@ export default function Home() {
   return (
     <main className="min-h-screen bg-gray-50 flex flex-col items-center pt-16 px-4">
       <div className="w-full max-w-3xl mx-auto text-center space-y-6">
-        <div className="space-y-4">
+        <div className="space-y-4 flex items-center flex-col">
+        <Image src={SearchImage} alt="Visa Investor"  width="200" height="200" />
           <h1 className="text-2xl font-semibold text-blue-400">
             Find a Visa Investor Projects
             Search for projects seeking eb5, or golden investors for a project.

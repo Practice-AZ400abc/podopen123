@@ -97,6 +97,10 @@ const UserSchema = new Schema(
       type: String,
       required: false,
     },
+    contactEmail: {
+      type: String,
+      required: false,
+    },
     phone: {
       type: String,
       required: false,

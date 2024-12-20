@@ -17,6 +17,7 @@ import toast from "react-hot-toast";
 import { jwtDecode } from "jwt-decode";
 import { useRouter } from "next/navigation";
 import { AuthContext } from "./AuthProvider";
+import { Mail } from "lucide-react";
 
 // Define options for the countries dropdown
 const countryOptions = COUNTRIES.map((country) => ({
@@ -53,6 +54,7 @@ const ProfileForm = ({ }) => {
   };
   const firebaseUid = getFirebaseUidFromToken();
 
+  const [errors, setErrors] = useState({});
   const [formData, setFormData] = useState({
     email: "",
     avatarURL: "",
@@ -67,6 +69,7 @@ const ProfileForm = ({ }) => {
     liquidAssets: "",
     telegram: "",
     whatsapp: "",
+    contactEmail: "",
     phone: "",
     industryToInvest: "",
     investmentAmount: "",
@@ -111,6 +114,7 @@ const ProfileForm = ({ }) => {
           liquidAssets: user.liquidAssets ? user.liquidAssets : "",
           telegram: user.telegram ? user.telegram : "",
           whatsapp: user.whatsapp ? user.whatsapp : "",
+          contactEmail: user.contactEmail ? user.contactEmail : "",
           phone: user.phone ? user.phone : "",
           industryToInvest: user.industryToInvest ? user.industryToInvest : "",
           investmentAmount: user.investmentAmount ? user.investmentAmount : "",
@@ -177,58 +181,62 @@ const ProfileForm = ({ }) => {
     }
   };
 
-// Handle form submission
-const handleSubmit = async (e) => {
-  e.preventDefault();
+  // Handle form submission
+  const handleSubmit = async (e) => {
+    e.preventDefault();
 
-  // Check for required fields
-  if (
-    !formData.firstName || 
-    !formData.lastName || 
-    !formData.nationality || 
-    !formData.countryOfBirth || 
-    !formData.relocationTimeframe || 
-    !formData.liquidAssets || 
-    !formData.investmentAmount
-  ) {
-    toast.error("Please fill in all the required fields");
-    return; // Prevent further execution
-  }
+    // Check for required fields
+    const newErrors = {};
+    if (!formData.firstName) newErrors.firstName = "Please enter your first name";
+    if (!formData.lastName) newErrors.lastName = "Please enter your last name";
+    if (!formData.nationality) newErrors.nationality = "Please select";
+    if (!formData.countryOfBirth) newErrors.countryOfBirth = "Please select";
+    if (!formData.relocationTimeframe) newErrors.relocationTimeframe = "Please select";
+    if (!formData.liquidAssets) newErrors.liquidAssets = "This field must be filled";
+    if (!formData.investmentAmount) newErrors.investmentAmount = "This field must be filled";
+    if (!formData.relocationCountry) newErrors.relocationCountry = "This field must be filled";
+    if (!formData.canProvideLiquidityEvidence) newErrors.canProvideLiquidityEvidence = "This field must be filled";
 
-  try {
-    const updateResponse = await fetch("/api/edit-profile", {
-      method: "PUT",
-      headers: { Authorization: `Bearer ${token}` },
-      body: JSON.stringify(formData),
-    });
-
-    if (!updateResponse.ok) {
-      throw new Error("Failed to update profile");
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors);
+      toast.error("Please fill in all the required fields");
+      return; // Prevent further execution
     }
 
-    const updatedUser = await updateResponse.json();
+    try {
+      const updateResponse = await fetch("/api/edit-profile", {
+        method: "PUT",
+        headers: { Authorization: `Bearer ${token}` },
+        body: JSON.stringify(formData),
+      });
 
-    // Refresh the token with updated `profileCompleted` state
-    const tokenResponse = await fetch("/api/token", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ firebaseUid }), // Replace with actual firebase UID
-    });
+      if (!updateResponse.ok) {
+        throw new Error("Failed to update profile");
+      }
 
-    if (!tokenResponse.ok) {
-      throw new Error("Failed to refresh token");
+      const updatedUser = await updateResponse.json();
+
+      // Refresh the token with updated `profileCompleted` state
+      const tokenResponse = await fetch("/api/token", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ firebaseUid }), // Replace with actual firebase UID
+      });
+
+      if (!tokenResponse.ok) {
+        throw new Error("Failed to refresh token");
+      }
+
+      const { token: newToken } = await tokenResponse.json();
+      login(newToken); // Update the token in AuthContext
+
+      toast.success("Your profile has been successfully updated.");
+      router.push("/");
+    } catch (error) {
+      toast.error(error.message);
+      throw new Error(error);
     }
-
-    const { token: newToken } = await tokenResponse.json();
-    login(newToken); // Update the token in AuthContext
-
-    toast.success("Your profile has been successfully updated.");
-    router.push("/");
-  } catch (error) {
-    toast.error(error.message);
-    throw new Error(error);
-  }
-};
+  };
 
 
   if (isLoading) {
@@ -276,6 +284,7 @@ const handleSubmit = async (e) => {
             label="* First Name"
             id="firstName"
             value={formData.firstName}
+            errors={errors.firstName}
             onChange={(e) =>
               setFormData((prev) => ({ ...prev, firstName: e.target.value }))
             }
@@ -284,6 +293,7 @@ const handleSubmit = async (e) => {
             label="* Last Name"
             id="lastName"
             value={formData.lastName}
+            error={errors.lastName}
             onChange={(e) =>
               setFormData((prev) => ({ ...prev, lastName: e.target.value }))
             }
@@ -329,6 +339,7 @@ const handleSubmit = async (e) => {
                 </option>
               ))}
             </select>
+            {errors.countryOfBirth && <span style={{ color: 'red' }}>{errors.countryOfBirth}</span>}
           </div>
 
           <div className="flex flex-col gap-2 w-full">
@@ -355,6 +366,7 @@ const handleSubmit = async (e) => {
                 </option>
               ))}
             </select>
+            {errors.nationality && <span style={{ color: 'red' }}>{errors.nationality}</span>}
           </div>
         </section>
         <div className="flex items-center justify-center w-full gap-4 ">
@@ -381,6 +393,8 @@ const handleSubmit = async (e) => {
                 </option>
               ))}
             </select>
+            {errors.relocationTimeframe && <span style={{ color: 'red' }}>{errors.relocationTimeframe}</span>}
+
           </div>
           {/* <div className="w-full">
           <label className="block text-sm font-medium mb-2 ">
@@ -400,7 +414,7 @@ const handleSubmit = async (e) => {
         </div> */}
           <div className="w-full flex flex-col gap-2">
             <label className="text-sm font-medium text-gray-700">
-              Country to relocate to with golden/investment visa
+              * Country to relocate to with golden/investment visa
             </label>
             <select
               value={formData.relocationCountry}
@@ -422,6 +436,8 @@ const handleSubmit = async (e) => {
               ))}
             </select>
           </div>
+          {errors.relocationCountry && <span style={{ color: 'red' }}>{errors.relocationCountry}</span>}
+
         </div>
 
         {/* Financial Details */}
@@ -470,6 +486,7 @@ const handleSubmit = async (e) => {
                 </option>
               ))}
             </select>
+            {errors.liquidAssets && <span style={{ color: 'red' }}>{errors.liquidAssets}</span>}
           </div>
 
           <div className="w-full flex flex-col gap-2">
@@ -522,6 +539,8 @@ const handleSubmit = async (e) => {
               ))}
             </select>
           </div>
+
+          {errors.investmentAmount && <span style={{ color: 'red' }}>{errors.investmentAmount}</span>}
         </section>
 
         {/* Social Profiles */}
@@ -562,7 +581,7 @@ const handleSubmit = async (e) => {
               htmlFor="canProvideLiquidityEvidence"
               className="cursor-pointer"
             >
-              Can provide evidence of liquidity?
+              * Can provide evidence of liquidity?
             </label>
           </div>
           <div className="flex items-center gap-2">
@@ -581,6 +600,7 @@ const handleSubmit = async (e) => {
             <label htmlFor="dualCitizenship" className="cursor-pointer">
               Do you have dual citizenship?
             </label>
+            {errors.canProvideLiquidityEvidence && <span style={{ color: 'red' }}>{errors.canProvideLiquidityEvidence}</span>}
           </div>
           <div className="flex items-center gap-2">
             <label className="text-sm font-medium">* Public Profile</label>
@@ -604,7 +624,7 @@ const handleSubmit = async (e) => {
           }
         ></textarea>
         {/* Contact Info */}
-        <section className="grid grid-cols-1 md:grid-cols-3 gap-2">
+        <section className="grid grid-cols-1 md:grid-cols-4 gap-2 place-content-center">
           <div className="flex items-center gap-2">
             <label>Telegram</label>
             <PhoneInput
@@ -641,6 +661,18 @@ const handleSubmit = async (e) => {
                   ...prev,
                   phone: value, // Use the value directly
                 }))
+              }
+            />
+          </div>
+          <div className="flex gap-2 items-center h-full">
+            <Mail />
+            <InputField
+              label="* Contact Email"
+              id="contactEmail"
+              errors={errors.contactEmail}
+              value={formData.contactEmail}
+              onChange={(e) =>
+                setFormData((prev) => ({ ...prev, contactEmail: e.target.value }))
               }
             />
           </div>
