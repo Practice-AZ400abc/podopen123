@@ -24,7 +24,7 @@ const countryOptions = COUNTRIES.map((country) => ({
   label: country,
 }));
 
-const ProfileForm = ({}) => {
+const ProfileForm = ({ }) => {
   const router = useRouter();
   const [uploading, setUploading] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
@@ -38,7 +38,7 @@ const ProfileForm = ({}) => {
     }
     setToken(storedToken);
   }, []);
-  
+
   const getEmailFromToken = () => {
     if (token) {
       return jwtDecode(token).email;
@@ -177,46 +177,59 @@ const ProfileForm = ({}) => {
     }
   };
 
-  // Handle form submission
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+// Handle form submission
+const handleSubmit = async (e) => {
+  e.preventDefault();
 
-    console.log(formData);
+  // Check for required fields
+  if (
+    !formData.firstName || 
+    !formData.lastName || 
+    !formData.nationality || 
+    !formData.countryOfBirth || 
+    !formData.relocationTimeframe || 
+    !formData.liquidAssets || 
+    !formData.investmentAmount
+  ) {
+    toast.error("Please fill in all the required fields");
+    return; // Prevent further execution
+  }
 
-    try {
-      const updateResponse = await fetch("/api/edit-profile", {
-        method: "PUT",
-        headers: { Authorization: `Bearer ${token}` },
-        body: JSON.stringify(formData),
-      });
+  try {
+    const updateResponse = await fetch("/api/edit-profile", {
+      method: "PUT",
+      headers: { Authorization: `Bearer ${token}` },
+      body: JSON.stringify(formData),
+    });
 
-      if (!updateResponse.ok) {
-        throw new Error("Failed to update profile");
-      }
-
-      const updatedUser = await updateResponse.json();
-
-      // Refresh the token with updated `profileCompleted` state
-      const tokenResponse = await fetch("/api/token", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ firebaseUid }), // Replace with actual firebase UID
-      });
-
-      if (!tokenResponse.ok) {
-        throw new Error("Failed to refresh token");
-      }
-
-      const { token: newToken } = await tokenResponse.json();
-      login(newToken); // Update the token in AuthContext
-
-      toast.success("Your profile has been successfully updated.");
-      router.push("/");
-    } catch (error) {
-      toast.error(error.message);
-      throw new Error(error);
+    if (!updateResponse.ok) {
+      throw new Error("Failed to update profile");
     }
-  };
+
+    const updatedUser = await updateResponse.json();
+
+    // Refresh the token with updated `profileCompleted` state
+    const tokenResponse = await fetch("/api/token", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ firebaseUid }), // Replace with actual firebase UID
+    });
+
+    if (!tokenResponse.ok) {
+      throw new Error("Failed to refresh token");
+    }
+
+    const { token: newToken } = await tokenResponse.json();
+    login(newToken); // Update the token in AuthContext
+
+    toast.success("Your profile has been successfully updated.");
+    router.push("/");
+  } catch (error) {
+    toast.error(error.message);
+    throw new Error(error);
+  }
+};
+
 
   if (isLoading) {
     return <div className="flex items-center justify-center">Loading...</div>;
@@ -294,162 +307,221 @@ const ProfileForm = ({}) => {
               setFormData((prev) => ({ ...prev, websiteURL: e.target.value }))
             }
           />
-          <select
-            value={formData.countryOfBirth}
-            onChange={(e) =>
-              setFormData((prev) => ({
-                ...prev,
-                countryOfBirth: e.target.value,
-              }))
-            }
-            className="bg-gray-50 h-12 p-2 rounded-md border border-gray-300"
-          >
-            <option value="" disabled>
+
+          <div className="flex flex-col gap-2 w-full">
+            <label className="text-sm font-medium text-gray-700">
               * Country of Birth
-            </option>
-            {COUNTRIES.map((country, index) => (
-              <option key={index} value={country}>
-                {country}
-              </option>
-            ))}
-          </select>
-          <select
-            value={formData.nationality}
-            onChange={(e) =>
-              setFormData((prev) => ({
-                ...prev,
-                nationality: e.target.value,
-              }))
-            }
-            className="bg-gray-50 h-12 p-2 rounded-md border border-gray-300"
-          >
-            <option value="" disabled>
+            </label>
+
+            <select
+              value={formData.countryOfBirth}
+              onChange={(e) =>
+                setFormData((prev) => ({
+                  ...prev,
+                  countryOfBirth: e.target.value,
+                }))
+              }
+              className="bg-gray-50 h-12 p-2 rounded-md border border-gray-300"
+            >
+              {COUNTRIES.map((country, index) => (
+                <option key={index} value={country}>
+                  {country}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          <div className="flex flex-col gap-2 w-full">
+            <label className="text-sm font-medium text-gray-700">
               * Nationality
-            </option>
-            {COUNTRIES.map((country, index) => (
-              <option key={index} value={country}>
-                {country}
+            </label>
+
+            <select
+              value={formData.nationality}
+              onChange={(e) =>
+                setFormData((prev) => ({
+                  ...prev,
+                  nationality: e.target.value,
+                }))
+              }
+              className="bg-gray-50 h-12 p-2 rounded-md border border-gray-300"
+            >
+              <option value="" disabled>
+                Select Nationality
               </option>
-            ))}
-          </select>
+              {COUNTRIES.map((country, index) => (
+                <option key={index} value={country}>
+                  {country}
+                </option>
+              ))}
+            </select>
+          </div>
         </section>
         <div className="flex items-center justify-center w-full gap-4 ">
-          <select
-            value={formData.relocationTimeframe}
-            onChange={(e) =>
-              setFormData((prev) => ({
-                ...prev,
-                relocationTimeframe: e.target.value,
-              }))
-            }
-            className="bg-gray-50 h-12 w-full p-2 rounded-md border border-gray-300"
-          >
-            <option value="" disabled>
-              Relocation Timespan
-            </option>
-            {RELOCATION_TIMEFRAMES.map((timespan, index) => (
-              <option key={index} value={timespan}>
-                {timespan}
+          <div className="w-full flex flex-col gap-2">
+            <label className="text-sm font-medium text-gray-700">
+              * Relocation Timespan
+            </label>
+            <select
+              value={formData.relocationTimeframe}
+              onChange={(e) =>
+                setFormData((prev) => ({
+                  ...prev,
+                  relocationTimeframe: e.target.value,
+                }))
+              }
+              className="bg-gray-50 h-12 w-full p-2 rounded-md border border-gray-300"
+            >
+              <option value="" disabled>
+                Select
               </option>
-            ))}
-          </select>
-          {/* <select
-            value={formData.relocationCountry}
-            onChange={(e) =>
-              setFormData((prev) => ({
-                ...prev,
-                relocationCountry: e.target.value,
-              }))
-            }
-            className="bg-gray-50 h-12 w-full p-2 rounded-md border border-gray-300"
-          >
-            <option value="" disabled>
-              Country to Relocate to
-            </option>
-            {COUNTRIES.map((country, index) => (
-              <option key={index} value={country}>
-                {country}
+              {RELOCATION_TIMEFRAMES.map((timespan, index) => (
+                <option key={index} value={timespan}>
+                  {timespan}
+                </option>
+              ))}
+            </select>
+          </div>
+          {/* <div className="w-full">
+          <label className="block text-sm font-medium mb-2 ">
+          Country to relocate to with golden/investment visa
+          </label>
+          <ReactSelect
+            isMulti
+            options={countryOptions}
+            value={countryOptions.filter((option) =>
+              formData.countriesForVisa.includes(option.value)
+            )}
+            onChange={handleCountriesForVisaChange}
+            className="react-select-container "
+            classNamePrefix="react-select"
+            placeholder="Select countries"
+          />
+        </div> */}
+          <div className="w-full flex flex-col gap-2">
+            <label className="text-sm font-medium text-gray-700">
+              Country to relocate to with golden/investment visa
+            </label>
+            <select
+              value={formData.relocationCountry}
+              onChange={(e) =>
+                setFormData((prev) => ({
+                  ...prev,
+                  relocationCountry: e.target.value,
+                }))
+              }
+              className="bg-gray-50 h-12 w-full p-2 rounded-md border border-gray-300"
+            >
+              <option value="" disabled>
+                Select
               </option>
-            ))}
-          </select> */}
+              {COUNTRIES.map((country, index) => (
+                <option key={index} value={country}>
+                  {country}
+                </option>
+              ))}
+            </select>
+          </div>
         </div>
 
         {/* Financial Details */}
         <section className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <select
-            value={formData.netWorth}
-            onChange={(e) =>
-              setFormData((prev) => ({ ...prev, netWorth: e.target.value }))
-            }
-            className="bg-gray-50 h-12 p-2 rounded-md border border-gray-300"
-          >
-            <option value="" disabled>
+          <div className="w-full flex flex-col gap-2">
+            <label className="text-sm font-medium text-gray-700">
               Net Worth (USD)
-            </option>
-            {INVESTMENT_RANGES.map((range, index) => (
-              <option key={index} value={range}>
-                {range}
+            </label>
+            <select
+              value={formData.netWorth}
+              onChange={(e) =>
+                setFormData((prev) => ({ ...prev, netWorth: e.target.value }))
+              }
+              className="bg-gray-50 h-12 p-2 rounded-md border border-gray-300"
+            >
+              <option value="" disabled>
+                Select
               </option>
-            ))}
-          </select>
-          <select
-            value={formData.liquidAssets}
-            onChange={(e) =>
-              setFormData((prev) => ({
-                ...prev,
-                liquidAssets: e.target.value,
-              }))
-            }
-            className="bg-gray-50 h-12 p-2 rounded-md border border-gray-300"
-          >
-            <option value="" disabled>
+              {INVESTMENT_RANGES.map((range, index) => (
+                <option key={index} value={range}>
+                  {range}
+                </option>
+              ))}
+            </select>
+          </div>
+          <div className="w-full flex flex-col gap-2">
+            <label className="text-sm font-medium text-gray-700">
               * Liquid Assets (USD)
-            </option>
-            {INVESTMENT_RANGES.map((range, index) => (
-              <option key={index} value={range}>
-                {range}
+            </label>
+            <select
+              value={formData.liquidAssets}
+              onChange={(e) =>
+                setFormData((prev) => ({
+                  ...prev,
+                  liquidAssets: e.target.value,
+                }))
+              }
+              className="bg-gray-50 h-12 p-2 rounded-md border border-gray-300"
+            >
+              <option value="" disabled>
+                Select
               </option>
-            ))}
-          </select>
-          <select
-            value={formData.industryToInvest}
-            onChange={(e) =>
-              setFormData((prev) => ({
-                ...prev,
-                industryToInvest: e.target.value,
-              }))
-            }
-            className="bg-gray-50 h-12 p-2 rounded-md border border-gray-300"
-          >
-            <option value="" disabled>
-              Industry To Invest
-            </option>
-            {INDUSTRIES.map((industry, index) => (
-              <option key={index} value={industry}>
-                {industry}
-              </option>
-            ))}
-          </select>
+              {INVESTMENT_RANGES.map((range, index) => (
+                <option key={index} value={range}>
+                  {range}
+                </option>
+              ))}
+            </select>
+          </div>
 
-          <select
-            value={formData.investmentAmount}
-            onChange={(e) =>
-              setFormData((prev) => ({
-                ...prev,
-                investmentAmount: e.target.value,
-              }))
-            }
-            className="bg-gray-50 h-12 p-2 rounded-md border border-gray-300"
-          >
-            <option value="" disabled>
-              * Amount willing to invest (USD)
-            </option>
-            {INVESTMENT_RANGES.map((range, index) => (
-              <option key={index} value={range}>
-                {range}
+          <div className="w-full flex flex-col gap-2">
+            <label className="text-sm font-medium text-gray-700">
+              Industry To Invest
+            </label>
+            <select
+              value={formData.industryToInvest}
+              onChange={(e) =>
+                setFormData((prev) => ({
+                  ...prev,
+                  industryToInvest: e.target.value,
+                }))
+              }
+              className="bg-gray-50 h-12 p-2 rounded-md border border-gray-300"
+            >
+              <option value="" disabled>
+                Select
               </option>
-            ))}
-          </select>
+              {INDUSTRIES.map((industry, index) => (
+                <option key={index} value={industry}>
+                  {industry}
+                </option>
+              ))}
+            </select>
+          </div>
+
+
+          <div className="w-full flex flex-col gap-2">
+            <label className="text-sm font-medium text-gray-700">
+              * Amount willing to invest (USD)
+            </label>
+            <select
+              value={formData.investmentAmount}
+              onChange={(e) =>
+                setFormData((prev) => ({
+                  ...prev,
+                  investmentAmount: e.target.value,
+                }))
+              }
+              className="bg-gray-50 h-12 p-2 rounded-md border border-gray-300"
+            >
+              <option value="" disabled>
+                Select
+              </option>
+              {INVESTMENT_RANGES.map((range, index) => (
+                <option key={index} value={range}>
+                  {range}
+                </option>
+              ))}
+            </select>
+          </div>
         </section>
 
         {/* Social Profiles */}
@@ -471,22 +543,7 @@ const ProfileForm = ({}) => {
             }
           />
         </section>
-        <div className="w-full">
-          <label className="block text-sm font-medium mb-2 ">
-          Country to relocate to with golden/investment visa
-          </label>
-          <ReactSelect
-            isMulti
-            options={countryOptions}
-            value={countryOptions.filter((option) =>
-              formData.countriesForVisa.includes(option.value)
-            )}
-            onChange={handleCountriesForVisaChange}
-            className="react-select-container "
-            classNamePrefix="react-select"
-            placeholder="Select countries"
-          />
-        </div>
+
         <div className="flex gap-10 items-center">
           <div className="flex items-center gap-2">
             <input
@@ -505,7 +562,7 @@ const ProfileForm = ({}) => {
               htmlFor="canProvideLiquidityEvidence"
               className="cursor-pointer"
             >
-             Can provide evidence of liquidity?
+              Can provide evidence of liquidity?
             </label>
           </div>
           <div className="flex items-center gap-2">
