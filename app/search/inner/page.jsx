@@ -15,7 +15,13 @@ import {
   RELOCATION_TIMEFRAMES,
 } from "@/lib/constants";
 import Link from "next/link";
-import { Select, SelectContent, SelectTrigger, SelectValue, SelectItem } from "@/components/ui/select";
+import {
+  Select,
+  SelectContent,
+  SelectTrigger,
+  SelectValue,
+  SelectItem,
+} from "@/components/ui/select";
 
 export default function SearchPage() {
   const searchParams = useSearchParams(); // Get query params from the URL
@@ -36,8 +42,6 @@ export default function SearchPage() {
       const response = await fetch(`/api/search/seeker?country=${country}`);
       const data = await response.json();
       setInvestors(data);
-
-      console.log(data);
     } catch (error) {
       console.error("Error fetching investors:", error);
     } finally {
@@ -45,15 +49,37 @@ export default function SearchPage() {
     }
   };
 
+  const parseRangeValue = (rangeString) => {
+    if (!rangeString) return 0; // Default value for missing ranges
+
+    // Extract the lower bound of the range
+    const match = rangeString.match(/([\d,\.]+)\s*(million|billion)?/i);
+    if (!match) return 0;
+
+    let [_, value, unit] = match; // Extract value and unit
+    value = parseFloat(value.replace(/,/g, "")); // Remove commas and convert to a number
+
+    // Convert units
+    if (unit?.toLowerCase() === "million") {
+      value *= 1_000_000;
+    } else if (unit?.toLowerCase() === "billion") {
+      value *= 1_000_000_000;
+    }
+
+    return value;
+  };
+
   const applyFilters = () => {
-    // Filter investors based on selected filters
     let filtered = [...investors];
 
+    // Apply filters
     if (filters.netWorth) {
       filtered = filtered.filter((inv) => inv.netWorth === filters.netWorth);
     }
     if (filters.industry) {
-      filtered = filtered.filter((inv) => inv.industry === filters.industry);
+      filtered = filtered.filter(
+        (inv) => inv.industryToInvest === filters.industry
+      );
     }
     if (filters.relocationTimeframe) {
       filtered = filtered.filter(
@@ -61,15 +87,27 @@ export default function SearchPage() {
       );
     }
 
-    // Apply sorting based on the selected option
+    // Apply sorting
     if (sortOption === "netWorthDesc") {
-      filtered.sort((a, b) => b.netWorth - a.netWorth);
+      filtered.sort(
+        (a, b) => parseRangeValue(b.netWorth) - parseRangeValue(a.netWorth)
+      );
     } else if (sortOption === "netWorthAsc") {
-      filtered.sort((a, b) => a.netWorth - b.netWorth);
+      filtered.sort(
+        (a, b) => parseRangeValue(a.netWorth) - parseRangeValue(b.netWorth)
+      );
     } else if (sortOption === "investmentDesc") {
-      filtered.sort((a, b) => b.investmentAmount - a.investmentAmount);
+      filtered.sort(
+        (a, b) =>
+          parseRangeValue(b.investmentAmount) -
+          parseRangeValue(a.investmentAmount)
+      );
     } else if (sortOption === "investmentAsc") {
-      filtered.sort((a, b) => a.investmentAmount - b.investmentAmount);
+      filtered.sort(
+        (a, b) =>
+          parseRangeValue(a.investmentAmount) -
+          parseRangeValue(b.investmentAmount)
+      );
     }
 
     return filtered;
@@ -97,24 +135,27 @@ export default function SearchPage() {
             Investors Seeking Golden Visas in {country}
           </h1>
           <div className="flex gap-4 w-[200px]">
-            <Select>
+            <Select onValueChange={(value) => handleSortChange(value)}>
               <SelectTrigger className="h-12">
                 <div className="flex items-center gap-2">
                   <Filter />
-                  <SelectValue className="text-lg font-bold" placeholder="Sort" />
+                  <SelectValue
+                    className="text-lg font-bold"
+                    placeholder="Sort"
+                  />
                 </div>
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="highToLowNetWorth">
+                <SelectItem value="netWorthDesc">
                   High net worth to Lowest net worth
                 </SelectItem>
-                <SelectItem value="lowToHighNetWorth">
+                <SelectItem value="netWorthAsc">
                   Lowest net worth to highest net worth
                 </SelectItem>
-                <SelectItem value="highToLowInvestment">
+                <SelectItem value="investmentDesc">
                   Investment Amount high to low
                 </SelectItem>
-                <SelectItem value="lowToHighInvestment">
+                <SelectItem value="investmentAsc">
                   Investment Amount low to high
                 </SelectItem>
               </SelectContent>
@@ -172,10 +213,7 @@ export default function SearchPage() {
                     className="w-full border p-2"
                     value={filters.relocationTimeframe}
                     onChange={(e) =>
-                      handleFilterChange(
-                        "relocationTimeframe",
-                        e.target.value
-                      )
+                      handleFilterChange("relocationTimeframe", e.target.value)
                     }
                   >
                     <option value="">All</option>
@@ -186,8 +224,6 @@ export default function SearchPage() {
                     ))}
                   </select>
                 </div>
-
-
               </div>
               <Separator />
             </Card>
@@ -207,48 +243,80 @@ export default function SearchPage() {
                     <div className="flex justify-between items-start">
                       <div className="grid grid-cols-2 items-center gap-5 ">
                         <div className="flex gap-2">
-                          <h1 className="text-sm text-blue-500">Country of Nationality </h1>
+                          <h1 className="text-sm text-blue-500">
+                            Country of Nationality{" "}
+                          </h1>
                           <p> {investor.nationality}</p>
                         </div>
                         <div className="flex gap-2">
-                          <h1 className="text-sm text-blue-500">Dual Citizenship </h1>
-                          <p> {investor.dualCitizenship == true ? "Yes" : "No"}</p>
+                          <h1 className="text-sm text-blue-500">
+                            Dual Citizenship{" "}
+                          </h1>
+                          <p>
+                            {" "}
+                            {investor.dualCitizenship == true ? "Yes" : "No"}
+                          </p>
                         </div>
                         <div className="flex gap-2">
-                          <h1 className="text-sm text-blue-500">Dual Citizenship </h1>
-                          <p> {investor.dualCitizenship == true ? "Yes" : "No"}</p>
+                          <h1 className="text-sm text-blue-500">
+                            Dual Citizenship{" "}
+                          </h1>
+                          <p>
+                            {" "}
+                            {investor.dualCitizenship == true ? "Yes" : "No"}
+                          </p>
                         </div>
                         <div className="flex gap-2">
                           <h1 className="text-sm text-blue-500">Networth </h1>
                           <p> {investor.netWorth}</p>
                         </div>
                         <div className="flex gap-2">
-                          <h1 className="text-sm text-blue-500">Liquid Assets </h1>
+                          <h1 className="text-sm text-blue-500">
+                            Liquid Assets{" "}
+                          </h1>
                           <p> {investor.liquidAssets}</p>
                         </div>
                         <div className="flex gap-2">
-                          <h1 className="text-sm text-blue-500">Industry to invest</h1>
+                          <h1 className="text-sm text-blue-500">
+                            Industry to invest
+                          </h1>
                           <p> {investor.industryToInvest}</p>
                         </div>
                         <div className="flex gap-2">
-                          <h1 className="text-sm text-blue-500">Amount willing to invest</h1>
+                          <h1 className="text-sm text-blue-500">
+                            Amount willing to invest
+                          </h1>
                           <p> {investor.investmentAmount}</p>
                         </div>
                         <div className="flex gap-2">
-                          <h1 className="text-sm text-blue-500">Country to Relocate</h1>
+                          <h1 className="text-sm text-blue-500">
+                            Country to Relocate
+                          </h1>
                           <p> {investor.relocationCountry}</p>
                         </div>
                         <div className="flex gap-2">
-                          <h1 className="text-sm text-blue-500">Time to Relocate</h1>
+                          <h1 className="text-sm text-blue-500">
+                            Time to Relocate
+                          </h1>
                           <p> {investor.relocationTimeframe}</p>
                         </div>
                         <div className="flex gap-2">
-                          <h1 className="text-sm text-blue-500">can you provide evidence of liquid assets </h1>
-                          <p> {investor.canProvideLiquidityEvidence == true ? "Yes" : "No"}</p>
+                          <h1 className="text-sm text-blue-500">
+                            can you provide evidence of liquid assets{" "}
+                          </h1>
+                          <p>
+                            {" "}
+                            {investor.canProvideLiquidityEvidence == true
+                              ? "Yes"
+                              : "No"}
+                          </p>
                         </div>
                       </div>
                       <Link href={"/sign-in"}>
-                        <Button variant="outline" className="bg-blue-500 hover:bg-blue-600 text-white hover:text-white">
+                        <Button
+                          variant="outline"
+                          className="bg-blue-500 hover:bg-blue-600 text-white hover:text-white"
+                        >
                           <MessageSquare className="w-4 h-4 mr-2" />
                           Message
                         </Button>

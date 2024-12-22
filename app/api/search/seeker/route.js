@@ -23,7 +23,6 @@ export const GET = async (req) => {
             });
         }
 
-        console.log(investors)
         return new Response(JSON.stringify(investors), { status: 200 });
     } catch (error) {
         console.error("Error updating profile:", error);
