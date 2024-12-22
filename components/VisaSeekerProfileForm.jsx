@@ -25,7 +25,7 @@ const countryOptions = COUNTRIES.map((country) => ({
   label: country,
 }));
 
-const ProfileForm = ({ }) => {
+const VisaSeekerProfileForm = ({ }) => {
   const router = useRouter();
   const [uploading, setUploading] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
@@ -689,4 +689,4 @@ const ProfileForm = ({ }) => {
   );
 };
 
-export default ProfileForm;
+export default VisaSeekerProfileForm;

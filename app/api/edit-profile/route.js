@@ -1,28 +1,6 @@
 import User from "@/models/user";
 import { connectToDB } from "@/utils/database";
-import jwt from 'jsonwebtoken'
-
-const secret = process.env.JWT_SECRET;
-
-const verifyToken = (req) => {
-    try {
-        const authHeader = req.headers.get("authorization");
-        if (!authHeader) {
-            throw new Error("No authorization header");
-        }
-
-        const token = authHeader.split(" ")[1];
-        if (!token) {
-            throw new Error("No token provided");
-        }
-
-        const decoded = jwt.verify(token, secret);
-        return decoded;
-    } catch (error) {
-        console.error("JWT verification failed:", error.message);
-        return null;
-    }
-};
+import verifyToken from "@/utils/verifyToken";
 
 export const PUT = async (req) => {
     try {
@@ -50,7 +28,32 @@ export const PUT = async (req) => {
         }
 
         if (targetUser.role === "Visa Sponsor") {
-            console.log(body);
+            const {
+                avatarURL,
+                companyName,
+                firstName,
+                lastName,
+                phone,
+                telegram,
+                whatsapp,
+                contactEmail,
+                countryLocation,
+                investmentRole,
+            } = body;
+
+            targetUser.avatarURL = avatarURL;
+            targetUser.companyName = companyName;
+            targetUser.firstName = firstName;
+            targetUser.lastName = lastName;
+            targetUser.phone = phone;
+            targetUser.telegram = telegram;
+            targetUser.whatsapp = whatsapp;
+            targetUser.contactEmail = contactEmail;
+            targetUser.countryLocation = countryLocation;
+            targetUser.investmentRole = investmentRole;
+            targetUser.completedProfile = true;
+
+            await targetUser.save();
         }
 
         if (targetUser.role === "Visa Seeker") {

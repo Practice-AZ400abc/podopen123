@@ -50,8 +50,6 @@ const UserSchema = new Schema(
     avatarURL: {
       type: String,
     },
-
-    // Visa seeker fields
     firstName: {
       type: String,
       required: false,
@@ -61,31 +59,6 @@ const UserSchema = new Schema(
       required: false,
     },
     companyName: {
-      type: String,
-      required: false,
-    },
-    websiteURL: {
-      type: String,
-      required: false,
-    },
-    countryOfBirth: {
-      type: String,
-      required: false,
-    },
-    nationality: {
-      type: String,
-      required: false,
-    },
-    dualCitizenship: {
-      type: Boolean,
-      default: false,
-      required: false,
-    },
-    netWorth: {
-      type: String,
-      required: false,
-    },
-    liquidAssets: {
       type: String,
       required: false,
     },
@@ -105,49 +78,64 @@ const UserSchema = new Schema(
       type: String,
       required: false,
     },
+
+    // Visa seeker fields
+    websiteURL: {
+      type: String,
+    },
+    countryOfBirth: {
+      type: String,
+    },
+    nationality: {
+      type: String,
+    },
+    dualCitizenship: {
+      type: Boolean,
+    },
+    netWorth: {
+      type: String,
+    },
+    liquidAssets: {
+      type: String,
+    },
     industryToInvest: {
       type: String,
-      required: false,
     },
     investmentAmount: {
       type: String,
-      required: false,
     },
     countriesForVisa: {
       type: [String],
-      default: [],
-      required: false,
     },
     relocationTimeframe: {
       type: String,
-      required: false,
     },
     relocationCountry: {
       type: String,
-      required: false,
     },
     canProvideLiquidityEvidence: {
       type: Boolean,
-      default: false,
-      required: false,
     },
     instagram: {
       type: String,
-      required: false,
     },
     linkedin: {
       type: String,
-      required: false,
     },
     comments: {
       type: String,
       maxlength: 90,
-      required: false,
     },
     isPublic: {
       type: Boolean,
-      default: true,
-      required: false,
+    },
+
+    // Visa sponsor fields
+    investmentRole: {
+      type: String,
+    },
+    countryLocation: {
+      type: String,
     },
   },
   {

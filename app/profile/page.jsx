@@ -2,8 +2,10 @@
 
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
+import { jwtDecode } from "jwt-decode";
 import "react-international-phone/style.css";
-import ProfileForm from "@/components/profile-form";
+import VisaSeekerProfileForm from "@/components/VisaSeekerProfileForm";
+import VisaSponsorProfileForm from "@/components/VisaSponsorProfileForm";
 
 const ProfilePage = () => {
   const [token, setToken] = useState(null);
@@ -17,9 +19,21 @@ const ProfilePage = () => {
     setToken(storedToken);
   }, [router]);
 
+  const getRoleFromToken = () => {
+    if (token) {
+      return jwtDecode(token).role;
+    }
+  }
+
+  const role = getRoleFromToken();
+
   return (
     <div className="mx-auto container">
-      <ProfileForm />
+      {role === "Visa Seeker" ? (
+        <VisaSeekerProfileForm />
+      ) : (
+        <VisaSponsorProfileForm />
+      )}
     </div>
   );
 };

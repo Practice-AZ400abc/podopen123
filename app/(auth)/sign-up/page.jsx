@@ -22,7 +22,7 @@ export default function Signup() {
   const router = useRouter();
   const { isLoggedIn, login } = useContext(AuthContext); // Access isLoggedIn
 
-  const [selectedForm, setSelectedForm] = useState("Investor");
+  const [selectedForm, setSelectedForm] = useState("Visa Sponsor");
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
