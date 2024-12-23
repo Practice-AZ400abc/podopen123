@@ -2,9 +2,9 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation"; // Import useRouter for navigation
-import { Search } from "lucide-react";
+
 import { COUNTRIES } from "@/lib/constants";
-import SearchImage from "../app/SearchPage.png";
+import People from "../app/people.jpg";
 
 import {
   Select,
@@ -17,6 +17,7 @@ import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import searchImage from "@/app/SearchPage.png";
 import Image from "next/image";
+import { SearchCodeIcon } from "lucide-react";
 export default function Home() {
   const [selectedCountry, setSelectedCountry] = useState(""); // Track the selected country
   const router = useRouter(); // Use the Next.js router for navigation
@@ -31,68 +32,66 @@ export default function Home() {
   };
 
   return (
-    <main className="min-h-screen bg-gray-50 flex flex-col items-center pt-16 px-4">
+    <main className="min-h-screen bg-gray-50 flex flex-col items-center pt-4 px-4">
       <div className="w-full max-w-3xl mx-auto text-center space-y-6">
+        <div className="flex gap-3 bg-white flex items-center justify-center gap-3  p-3 rounded-md border border-blue-400 shadow-md">
+
+          <Select onValueChange={(value) => setSelectedCountry(value)}>
+            <SelectTrigger className="h-12">
+              <SelectValue placeholder="Select country  where you need investment" />
+            </SelectTrigger>
+            <SelectContent>
+              {COUNTRIES.map((country) => (
+                <SelectItem key={country} value={country}>
+                  {country}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+
+          <Button
+            className="h-12 px-8 bg-blue-400 hover:bg-blue-500"
+            size="lg"
+            onClick={handleSearch} // Call handleSearch on button click
+          >
+
+            Find
+          </Button>
+        </div>
         <div className="space-y-4 flex items-center flex-col">
-        <Image src={SearchImage} alt="Visa Investor"  width="200" height="200" />
+
+          <Image src={People} alt="Visa Investor" className="rounded-md" width="400" height="200" />
+
           <h1 className="text-2xl font-semibold text-blue-400">
-            Find a Visa Investor Projects
-            Search for projects seeking eb5, or golden investors for a project.
+            Create a listing to get funding for your project from an investor seeking a golden, EB5, or
+            immigrant investor. <br />
           </h1>
-          <p className="text-gray-600">
+          {/* <p className="text-gray-600">
             Search for investors seeking a golden visa or investment visa in the country where you seek funds for your project.
-          </p>
+          </p> */}
         </div>
 
         <div className="space-y-4">
-          <div className="flex gap-3">
-            <Select onValueChange={(value) => setSelectedCountry(value)}>
-              <SelectTrigger className="h-12">
-                <SelectValue placeholder="Find a Project sponsoring an investment or golden visa" />
-              </SelectTrigger>
-              <SelectContent>
-                {COUNTRIES.map((country) => (
-                  <SelectItem key={country} value={country}>
-                    {country}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-
-            <Button
-              className="h-12 px-8 bg-blue-400 hover:bg-blue-500"
-              size="lg"
-              onClick={handleSearch} // Call handleSearch on button click
-            >
-              <Search className="mr-2 h-4 w-4" />
-              Find
-            </Button>
+          <span className="text-gray-600 text-sm">
+            Create your Listing  - It only takes a few seconds
+          </span>
+          <div>
+            <Link href={"/sign-up"}>
+              <Button className="bg-blue-400">Get Started</Button>
+            </Link>
           </div>
 
-         
-          <div className="text-center">
-            <Link
-              href="/sign-in"
-              className="text-blue-600 hover:text-blue-800 text-sm font-medium"
-            >
-              Post your investor profile
-            </Link>{" "}
-            <span className="text-gray-600 text-sm">
-            - It only takes a few seconds
-            </span>
-          </div>
+          {/* <div className="text-center">
 
-          <div className="text-center">
-            
             <span className="text-gray-600 text-sm">
-            LookVisa helps investors obtain investors visa, golden visas, EB5 visas
+              LookVisa helps investors obtain investors visa, golden visas, EB5 visas
             </span>
           </div>
           <div className="text-center text-sm text-gray-500">
             <span>or</span>
-          </div>
+          </div> */}
 
-          <div className="text-center">
+          {/* <div className="text-center">
             <Link
               href="/sign-in"
               className="text-blue-600 hover:text-blue-800 text-sm font-medium"
@@ -100,9 +99,9 @@ export default function Home() {
               login as a visa sponsor
             </Link>{" "}
             <span className="text-gray-600 text-sm">
-             to contact the investors seeking investment and golden visas directly
+              to contact the investors seeking investment and golden visas directly
             </span>
-          </div>
+          </div> */}
         </div>
       </div>
     </main>

@@ -42,7 +42,7 @@ const manageListing = () => {
 
                             </div>
                             <div className='flex items-end justify-end w-full'>
-                                <Link href={"/create-listing"} className='bg-black p-2 text-white rounded-md hover:bg-gray-900'>Create Listing</Link>
+                                <Link href={"/create-listing"} className='bg-black p-2 text-white rounded-md hover:bg-gray-900'>Get Started</Link>
                             </div>
                         </div>
                     </div>
