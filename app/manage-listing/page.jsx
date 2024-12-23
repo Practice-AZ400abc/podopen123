@@ -8,6 +8,7 @@ import {
     SheetTitle,
     SheetTrigger,
 } from "@/components/ui/sheet"
+import Link from 'next/link'
 
 const manageListing = () => {
     const Firstname = "faizan"
@@ -26,17 +27,26 @@ const manageListing = () => {
                         </div>
                         <div className='flex flex-col gap-10'>
                             <div className='flex flex-col gap-4'>
-                                <h1 className='text-lg'>1 - Tell us about your listing</h1>
+                                <h1 className='text-lg'><span className='bg-blue-400 p-2 text-white rounded-full'>1</span> - Tell us about your listing</h1>
+                                <hr />
+
                             </div>
                             <div className='flex flex-col gap-4'>
-                                <h1 className='text-lg'>2 - Make it stand out </h1>
+                                <h1 className='text-lg'><span className='bg-blue-400 p-2 text-white rounded-full'>2</span> - Make it stand out </h1>
+                                <hr />
                             </div>
                             <div className='flex flex-col gap-4'>
-                                <h1 className='text-lg'>3 - Finish up preview, pay
+                                <h1 className='text-lg'><span className='bg-blue-400 p-2 text-white rounded-full'>3</span> - Finish up preview, pay
                                     and publish</h1>
+                                <hr />
+
+                            </div>
+                            <div className='flex items-end justify-end w-full'>
+                                <Link href={"/create-listing"} className='bg-black p-2 text-white rounded-md hover:bg-gray-900'>Create Listing</Link>
                             </div>
                         </div>
                     </div>
+
                 </SheetContent>
             </Sheet>
 
