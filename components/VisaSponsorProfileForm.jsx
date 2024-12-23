@@ -204,7 +204,7 @@ const VisaSponsorProfileForm = ({ }) => {
     <div className="container mx-auto px-4 py-6">
       <form
         onSubmit={handleSubmit}
-        className="bg-white p-6 rounded-lg bg-gray-50 flex flex-col gap-6"
+        className="bg-white p-6 rounded-lg flex flex-col gap-6"
       >
         {/* Avatar Section */}
         <div className="flex items-center flex-col gap-4">

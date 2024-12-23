@@ -45,12 +45,16 @@ const ListingSchema = new Schema(
             required: true,
         },
         minimumInvestment: {
-            type: Number,
+            type: String,
             required: true,
         },
         projectDescription: {
             type: String,
             required: true,
+        },
+        images: {
+            type: [String],
+            required: true
         },
     },
     {
