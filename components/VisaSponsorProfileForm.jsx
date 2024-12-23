@@ -14,7 +14,8 @@ import toast from "react-hot-toast";
 import { jwtDecode } from "jwt-decode";
 import { useRouter } from "next/navigation";
 import { AuthContext } from "./AuthProvider";
-import { Mail } from "lucide-react";
+import { ArrowRight, Mail } from "lucide-react";
+import Link from "next/link";
 
 // Define options for the countries dropdown
 const countryOptions = COUNTRIES.map((country) => ({
@@ -22,7 +23,7 @@ const countryOptions = COUNTRIES.map((country) => ({
   label: country,
 }));
 
-const VisaSponsorProfileForm = ({}) => {
+const VisaSponsorProfileForm = ({ }) => {
   const router = useRouter();
   const [uploading, setUploading] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
@@ -150,6 +151,10 @@ const VisaSponsorProfileForm = ({}) => {
       newErrors.investmentRole = "This field must be filled";
     if (!formData.countryLocation)
       newErrors.countryLocation = "This field must be filled";
+    if (!formData.contactEmail)
+      newErrors.contactEmail = "Contact email is required!"
+    if (!formData.phone)
+      newErrors.phone = "Contact Number is required!"
 
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);
@@ -158,7 +163,7 @@ const VisaSponsorProfileForm = ({}) => {
     }
 
     try {
-      console.log(formData);
+
       const updateResponse = await fetch("/api/edit-profile", {
         method: "PUT",
         headers: { Authorization: `Bearer ${token}` },
@@ -199,7 +204,7 @@ const VisaSponsorProfileForm = ({}) => {
     <div className="container mx-auto px-4 py-6">
       <form
         onSubmit={handleSubmit}
-        className="bg-white p-6 rounded-lg shadow-md flex flex-col gap-6"
+        className="bg-white p-6 rounded-lg bg-gray-50 flex flex-col gap-6"
       >
         {/* Avatar Section */}
         <div className="flex items-center flex-col gap-4">
@@ -230,154 +235,169 @@ const VisaSponsorProfileForm = ({}) => {
           />
         </div>
 
-        {/* Personal Information */}
-        <section className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <InputField
-            label="* First Name"
-            id="firstName"
-            value={formData.firstName}
-            errors={errors.firstName}
-            onChange={(e) =>
-              setFormData((prev) => ({ ...prev, firstName: e.target.value }))
-            }
-          />
-          <InputField
-            label="* Last Name"
-            id="lastName"
-            value={formData.lastName}
-            error={errors.lastName}
-            onChange={(e) =>
-              setFormData((prev) => ({ ...prev, lastName: e.target.value }))
-            }
-          />
-          <InputField
-            label="Company Name"
-            id="companyName"
-            value={formData.companyName}
-            onChange={(e) =>
-              setFormData((prev) => ({
-                ...prev,
-                companyName: e.target.value,
-              }))
-            }
-          />
-
-          <div className="flex flex-col gap-2 w-full">
-            <label className="text-sm font-medium text-gray-700">
-              * Country Location
-            </label>
-
-            <select
-              value={formData.countryLocation}
-              onChange={(e) =>
-                setFormData((prev) => ({
-                  ...prev,
-                  countryLocation: e.target.value,
-                }))
-              }
-              className="bg-gray-50 h-12 p-2 rounded-md border border-gray-300"
-            >
-              {COUNTRIES.map((country, index) => (
-                <option key={index} value={country}>
-                  {country}
-                </option>
-              ))}
-            </select>
-            {errors.countryLocation && (
-              <span style={{ color: "red" }}>{errors.countryLocation}</span>
-            )}
-          </div>
-
-          <div className="w-full flex flex-col gap-2">
-            <label className="text-sm font-medium text-gray-700">
-              Role seeking investment
-            </label>
-            <select
-              value={formData.investmentRole}
-              onChange={(e) =>
-                setFormData((prev) => ({
-                  ...prev,
-                  investmentRole: e.target.value,
-                }))
-              }
-              className="bg-gray-50 h-12 p-2 rounded-md border border-gray-300"
-            >
-              <option value="" disabled>
-                Select
-              </option>
-              {INDUSTRY_ROLES.map((industry, index) => (
-                <option key={index} value={industry}>
-                  {industry}
-                </option>
-              ))}
-            </select>
-          </div>
-        </section>
-
-        {/* Contact Info */}
-        <section className="grid grid-cols-1 md:grid-cols-4 gap-2 place-content-center">
-          <div className="flex items-center gap-2">
-            <label>Telegram</label>
-            <PhoneInput
-              defaultCountry="ua"
-              value={formData.telegram}
-              onChange={(value) =>
-                setFormData((prev) => ({
-                  ...prev,
-                  telegram: value, // Use the value directly
-                }))
-              }
-            />
-          </div>
-          <div className="flex items-center gap-2">
-            <label>* WhatsApp</label>
-            <PhoneInput
-              defaultCountry="ua"
-              value={formData.whatsapp}
-              onChange={(value) =>
-                setFormData((prev) => ({
-                  ...prev,
-                  whatsapp: value, // Use the value directly
-                }))
-              }
-            />
-          </div>
-          <div className="flex items-center gap-2">
-            <label>Phone</label>
-            <PhoneInput
-              defaultCountry="ua"
-              value={formData.phone}
-              onChange={(value) =>
-                setFormData((prev) => ({
-                  ...prev,
-                  phone: value, // Use the value directly
-                }))
-              }
-            />
-          </div>
-          <div className="flex gap-2 items-center h-full">
-            <Mail />
+        <div className="flex items-start justify-center gap-10">
+          {/* Personal Information */}
+          <section className="grid grid-cols-1 md:grid-cols-1 gap-4">
             <InputField
-              label="* Contact Email"
-              id="contactEmail"
-              errors={errors.contactEmail}
-              value={formData.contactEmail}
+              label="* First Name"
+              id="firstName"
+              value={formData.firstName}
+              errors={errors.firstName}
+              onChange={(e) =>
+                setFormData((prev) => ({ ...prev, firstName: e.target.value }))
+              }
+            />
+            <InputField
+              label="* Last Name"
+              id="lastName"
+              value={formData.lastName}
+              error={errors.lastName}
+              onChange={(e) =>
+                setFormData((prev) => ({ ...prev, lastName: e.target.value }))
+              }
+            />
+            <InputField
+              label="Company Name"
+              id="companyName"
+              value={formData.companyName}
               onChange={(e) =>
                 setFormData((prev) => ({
                   ...prev,
-                  contactEmail: e.target.value,
+                  companyName: e.target.value,
                 }))
               }
             />
-          </div>
-        </section>
+
+            <div className="flex flex-col gap-2 w-full">
+              <label className="text-sm font-medium text-gray-700">
+                * Country Location
+              </label>
+
+              <select
+                value={formData.countryLocation}
+                onChange={(e) =>
+                  setFormData((prev) => ({
+                    ...prev,
+                    countryLocation: e.target.value,
+                  }))
+                }
+                className="bg-gray-50 h-12 p-2 rounded-md border border-gray-300"
+              >
+                {COUNTRIES.map((country, index) => (
+                  <option key={index} value={country}>
+                    {country}
+                  </option>
+                ))}
+              </select>
+              {errors.countryLocation && (
+                <span style={{ color: "red" }}>{errors.countryLocation}</span>
+              )}
+            </div>
+
+            <div className="w-full flex flex-col gap-2">
+              <label className="text-sm font-medium text-gray-700">
+                Role seeking investment
+              </label>
+              <select
+                value={formData.investmentRole}
+                onChange={(e) =>
+                  setFormData((prev) => ({
+                    ...prev,
+                    investmentRole: e.target.value,
+                  }))
+                }
+                className="bg-gray-50 h-12 p-2 rounded-md border border-gray-300"
+              >
+                <option value="" disabled>
+                  Select
+                </option>
+                {INDUSTRY_ROLES.map((industry, index) => (
+                  <option key={index} value={industry}>
+                    {industry}
+                  </option>
+                ))}
+              </select>
+            </div>
+          </section>
+
+          {/* Contact Info */}
+          <section className="grid grid-cols-1 md:grid-cols-1 gap-4  ">
+            <div className="flex flex-col items-start gap-2 w-full">
+              <label className="text-sm font-medium text-gray-700">Telegram</label>
+              <PhoneInput
+                style={{ width: "100%" }}
+                defaultCountry="ua"
+                value={formData.telegram}
+                onChange={(value) =>
+                  setFormData((prev) => ({
+                    ...prev,
+                    telegram: value, // Use the value directly
+                  }))
+
+                }
+              />
+            </div>
+            <div className="flex flex-col items-start gap-2 w-full">
+              <label className="text-sm font-medium text-gray-700">* WhatsApp</label>
+              <PhoneInput
+                defaultCountry="ua"
+                value={formData.whatsapp}
+                onChange={(value) =>
+                  setFormData((prev) => ({
+                    ...prev,
+                    whatsapp: value, // Use the value directly
+                  }))
+                }
+              />
+            </div>
+            <div className="flex flex-col items-start gap-2 w-full">
+              <label className="text-sm font-medium text-gray-700">Phone</label>
+              <PhoneInput
+                defaultCountry="ua"
+                value={formData.phone}
+                onChange={(value) =>
+                  setFormData((prev) => ({
+                    ...prev,
+                    phone: value, // Use the value directly
+                  }))
+                }
+              />
+              {errors.phone && (
+                <span style={{ color: "red" }}>{errors.phone}</span>
+              )}
+
+            </div>
+            <div className="flex   gap-2 items-center h-full w-full">
+              <Mail />
+              <InputField
+                label="* Contact Email"
+                id="contactEmail"
+                errors={errors.contactEmail}
+                value={formData.contactEmail}
+                onChange={(e) =>
+                  setFormData((prev) => ({
+                    ...prev,
+                    contactEmail: e.target.value,
+                  }))
+                }
+              />
+            </div>
+          </section>
+        </div>
         {/* Submit Button */}
-        <button
-          type="submit"
-          className="mt-4 px-6 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-700"
-        >
-          Save Profile
-        </button>
+        <div className="w-full flex gap-4 items-center justify-end">
+          <div className="flex items-center justify-center gap-4">
+            <button
+              type="submit"
+              className="mt-4 px-6 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-700"
+            >
+              Save Profile
+            </button>
+            <Link className="flex items-center gap-2 underline " href={"/manage-listing"}>Create Listing
+              <ArrowRight size={18} />
+            </Link>
+          </div>
+        </div>
       </form>
     </div>
   );
