@@ -17,8 +17,8 @@ const manageListing = () => {
             <h1 className='text-4xl font-bold'>Welcome! <span className='text-blue-400'>{Firstname}</span></h1>
 
             <Sheet>
-                <SheetTrigger>
-                    <Button className="bg-black font-bold text-white" variant="ghost">Create a Listing</Button>
+                <SheetTrigger className="btn p-3 rounded-sm bg-black font-bold text-white" variant="ghost">
+                    Create a Listing
                 </SheetTrigger>
                 <SheetContent className="h-[90vh] bg-white" side={"bottom"}>
                     <div className='h-full flex flex-col md:flex-row items-center justify-center gap-20 max-w-[900px] mx-auto'>
