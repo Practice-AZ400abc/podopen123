@@ -9,7 +9,7 @@ const Wrapper = () => {
         <div className='w-full flex items-start justify-start gap-10'>
             <div className='w-[10%] border rounded-md  bg-white  p-5'>
                 <ul className='w-full flex items-start justify-center flex-col gap-5'>
-                    <Link href='/' className='text-md underline'>Profile</Link>
+                    <Link href='/profile' className='text-md underline'>Profile</Link>
                     <Link href='/' className='text-md underline'>Analytics</Link>
                     <Link href='/' className='text-md underline'>Your Listings</Link>
                 </ul>
