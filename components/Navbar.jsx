@@ -35,7 +35,7 @@ const Navbar = () => {
   };
 
   const avatarURL = getAvatarURLFromToken(); // Get the avatarURL
-
+ 
   const toggleLogout = () => setShowLogout((prev) => !prev);
 
   // Close the dropdown when clicking outside
