@@ -13,7 +13,7 @@ import {
 import { Filter } from "lucide-react";
 const Wrapper = () => {
     const [token, setToken] = useState(null);
-
+    const [listings, setListings] = useState([]);
     useEffect(() => {
         const storedToken = localStorage.getItem("token");
         setToken(storedToken);
@@ -34,7 +34,8 @@ const Wrapper = () => {
                 }
 
                 const data = await response.json();
-                console.log(data);
+                console.log(data)
+                setListings(data);
             } catch (error) {
                 console.error(error);
             }
@@ -61,7 +62,8 @@ const Wrapper = () => {
                 </ul>
             </div>
             {/* wrappeing Lisings */}
-            <div className="w-[90%] border rounded-md  bg-white  p-5">
+         <div className="w-[90%] flex flex-col items-start justify-start gap-5">
+         <div className="w-[90%] border rounded-md  bg-white  p-5">
                 <div className="flex items-start justify-between">
                     <h1 className="text-4xl font-bold">Your Listings</h1>
                     <div className="w-[200px]">
@@ -86,10 +88,15 @@ const Wrapper = () => {
                     </div>
                 </div>
                 {/* Listings */}
-                <div className="mt-5">
-                    <Listings />
-                </div>
+              
             </div>
+            <div className="w-[90%] flex flex-col items-start justify-start gap-5 rounded-md">
+                {listings.map((listing) => (
+                    <Listings key={listing.id} listing={listing} />
+                ))}
+                
+            </div>
+         </div>
         </div>
     );
 };
