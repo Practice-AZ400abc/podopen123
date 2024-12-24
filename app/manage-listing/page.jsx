@@ -8,7 +8,7 @@ import { PlusCircleIcon } from "lucide-react";
 import { jwtDecode } from "jwt-decode";
 import Wrapper from "@/components/Wrapper";
 
-const manageListing = () => {
+const ManageListing = () => {
     const [token, setToken] = useState(null);
     const router = useRouter();
 
@@ -99,4 +99,4 @@ const manageListing = () => {
     );
 };
 
-export default manageListing;
+export default ManageListing;
