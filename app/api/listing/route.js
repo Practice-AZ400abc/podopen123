@@ -70,19 +70,24 @@ export const POST = async (req) => {
 
 export const GET = async (req) => {
     try {
-        const { searchParams } = new URL(req.url);
-        const country = searchParams.get("country");
+        const user = verifyToken(req);
 
-        if (!country) {
-            return new Response(
-                JSON.stringify({ message: "Missing country parameter" }),
-                { status: 400 }
-            );
+        if (!user) {
+            return new Response(JSON.stringify({ message: "Unauthorized" }), {
+                status: 401,
+            });
         }
+        if (user.role !== "Visa Sponsor") {
+            return new Response(JSON.stringify({ message: "Unauthorized" }), {
+                status: 401,
+            });
+        }
+
+        const id = user._id
 
         await connectToDB();
 
-        const listings = await Listing.find({ countryForInvestment: country });
+        const listings = await Listing.find({ author: id });
 
         if (!listings) {
             return new Response(JSON.stringify({ message: "Listings not found" }), {

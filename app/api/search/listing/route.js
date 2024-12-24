@@ -1,4 +1,4 @@
-import User from "@/models/user";
+import Listing from "@/models/listing";
 import { connectToDB } from "@/utils/database";
 
 export const GET = async (req) => {
@@ -15,17 +15,17 @@ export const GET = async (req) => {
 
         await connectToDB();
 
-        const investors = await User.find({ role: "Visa Seeker", relocationCountry: { $in: [country] }, isPublic: true });
+        const listings = await Listing.find({ countryForInvestmemt: { $in: [country] } });
 
-        if (!investors) {
-            return new Response(JSON.stringify({ message: "Investors not found" }), {
+        if (!listings) {
+            return new Response(JSON.stringify({ message: "Listings not found" }), {
                 status: 404,
             });
         }
 
-        return new Response(JSON.stringify(investors), { status: 200 });
+        return new Response(JSON.stringify(listings), { status: 200 });
     } catch (error) {
-        console.error("Error fetchings profiles:", error);
+        console.error("Error getting listings: ", error);
         return new Response(JSON.stringify({ message: "Internal Server Error" }), { status: 500 });
     }
 }

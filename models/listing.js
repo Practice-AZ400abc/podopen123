@@ -56,9 +56,10 @@ const ListingSchema = new Schema(
             type: [String],
             required: true
         },
-        status:{
+        status: {
             type: String,
             required: true,
+            enum: ["pending", "published"],
             default: "pending",
         }
     },
