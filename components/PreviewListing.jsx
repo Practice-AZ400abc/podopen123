@@ -2,9 +2,17 @@ import React from "react";
 
 const PreviewListing = ({ formData }) => {
     return (
-        <div className="min-w-[500px] flex flex-col gap-2 items-start bg-gray-200 rounded-md p-2">
+     <div className="flex flex-col md:flex-row items-center justify-center md:justify-between">
+        <div className="">
+        <h1 className="text-2xl font-semibold">Preview Your Listing Before Publiblishing</h1>
+        <p>Ensure everything is correct before publishing</p>
+        </div>
+           <div className="min-w-[500px] flex flex-col gap-2 items-start bg-white border rounded-md p-2">
             {/* Images */}
-            <div className="flex w-full items-center justify-center gap-2">
+            <div className="flex flex-col gap-2 p-2">
+                <h1 className="font-bold text-2xl">{formData.sponsorShipDescription}</h1>
+            </div>
+            <div className="flex w-full items-start justify-start gap-2">
                 {formData.images.length > 0 ? (
                     formData.images.map((image, index) => (
                         <img
@@ -20,11 +28,18 @@ const PreviewListing = ({ formData }) => {
             </div>
 
             {/* Title and Description */}
+          
+                <div className="flex flex-col md:flex-row gap-2 p-2">
+                <p className="text-sm text-blue-500 p-2  rounded-md border font-bold"><span className="text-black">Country for Investment:</span> {formData.countryForInvestment}</p>
+                <p className="text-sm text-blue-500 p-2  rounded-md border font-bold"><span className="text-black">Industry:</span> {formData.investmentIndustry}</p>
+                </div>
+
+            
             <div className="flex flex-col gap-2 p-2">
-                <h1 className="text-bold text-2xl">{formData.sponsorShipDescription}</h1>
-                <p>{formData.projectDescription}</p>
+                <p className="text-md text-black">{formData.projectDescription}</p>
             </div>
         </div>
+     </div>
     );
 };
 

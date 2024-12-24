@@ -8,6 +8,7 @@ import Image from "next/image";
 import ListingForm from "@/components/ListingForm";
 import UploadMedia from "@/components/UploadMedia";
 import PreviewListing from "@/components/PreviewListing";
+import toast from "react-hot-toast";
 
 const CreateListing = () => {
     const router = useRouter();
@@ -63,7 +64,8 @@ const CreateListing = () => {
                 throw new Error("Failed to create listing");
             }
 
-            alert("Listing published successfully!");
+            toast.success("Listing published successfully!");
+            router.push("/manage-listing");
         } catch (error) {
             console.error(error);
             alert("Error publishing the listing");
