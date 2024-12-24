@@ -393,7 +393,7 @@ const VisaSponsorProfileForm = ({ }) => {
             >
               Save Profile
             </button>
-            <Link className="flex items-center gap-2 underline " href={"/manage-listing"}>Create Listing
+            <Link className="flex items-center gap-2 underline " href={"/manage-listing"}>Manage Your Listings
               <ArrowRight size={18} />
             </Link>
           </div>

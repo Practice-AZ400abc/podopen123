@@ -54,6 +54,7 @@ const Wrapper = () => {
                         </Select>
                     </div>
                 </div>
+                {/* Listings */}
                 <div className='mt-5'>
                     <Listings />
                 </div>
