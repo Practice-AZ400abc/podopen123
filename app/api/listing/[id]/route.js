@@ -12,12 +12,15 @@ export const DELETE = async (req, { params }) => {
             });
         }
 
-        const { id } = params;
+        const { id } = await params;
 
         if (!id) {
-            return new Response(JSON.stringify({ message: "Listing ID is required" }), {
-                status: 400,
-            });
+            return new Response(
+                JSON.stringify({ message: "Listing ID is required" }),
+                {
+                    status: 400,
+                }
+            );
         }
 
         await connectToDB();
@@ -38,9 +41,12 @@ export const DELETE = async (req, { params }) => {
 
         await Listing.findByIdAndDelete(id);
 
-        return new Response(JSON.stringify({ message: "Listing deleted successfully" }), {
-            status: 200,
-        });
+        return new Response(
+            JSON.stringify({ message: "Listing deleted successfully" }),
+            {
+                status: 200,
+            }
+        );
     } catch (error) {
         return new Response(JSON.stringify({ message: error.message }), {
             status: 500,
@@ -48,9 +54,20 @@ export const DELETE = async (req, { params }) => {
     }
 };
 
-export const PATCH = async (req, { params }) => {
+export const PUT = async (req, { params }) => {
     try {
         const body = await req.json();
+        const { author, _id, ...updateBody } = body;
+
+        if (!body || Object.keys(body).length === 0) {
+            return new Response(
+                JSON.stringify({ message: "Request body cannot be empty" }),
+                {
+                    status: 400,
+                }
+            );
+        }
+
         const user = verifyToken(req);
 
         if (!user) {
@@ -59,12 +76,15 @@ export const PATCH = async (req, { params }) => {
             });
         }
 
-        const { id } = params;
+        const { id } = await params;
 
         if (!id) {
-            return new Response(JSON.stringify({ message: "Listing ID is required" }), {
-                status: 400,
-            });
+            return new Response(
+                JSON.stringify({ message: "Listing ID is required" }),
+                {
+                    status: 400,
+                }
+            );
         }
 
         await connectToDB();
@@ -85,7 +105,7 @@ export const PATCH = async (req, { params }) => {
 
         const updatedListing = await Listing.findByIdAndUpdate(
             id,
-            { ...body },
+            { ...updateBody },
             { new: true }
         );
 

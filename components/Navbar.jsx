@@ -22,20 +22,15 @@ const Navbar = () => {
   const [showLogout, setShowLogout] = useState(false);
   const profileRef = useRef(null); // Ref for the profile image and dropdown
 
-  // Function to decode the token and get the avatarURL
-  const getAvatarURLFromToken = () => {
-    if (!token) return null;
-    try {
-      const decoded = jwtDecode(token); // Decode the JWT
-      return decoded.avatarURL || null; // Return the avatarURL if present
-    } catch (error) {
-      console.error("Error decoding token:", error);
-      return null;
-    }
-  };
+  const [avatarURL, setAvatarURL] = useState(null); // Get the avatarURL from the token
 
-  const avatarURL = getAvatarURLFromToken(); // Get the avatarURL
- 
+  // Function to decode the token and get the avatarURL
+  useEffect(() => {
+    if (token) {
+      setAvatarURL(jwtDecode(token).avatarURL);
+    }
+  }, [token]);
+
   const toggleLogout = () => setShowLogout((prev) => !prev);
 
   // Close the dropdown when clicking outside

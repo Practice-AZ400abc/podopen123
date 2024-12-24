@@ -15,7 +15,18 @@ export const GET = async (req) => {
 
         await connectToDB();
 
-        const listings = await Listing.find({ countryForInvestmemt: { $in: [country] } });
+        const expiryDate = new Date();
+        expiryDate.setDate(expiryDate.getDate() - 30);
+
+        await Listing.updateMany(
+            {
+                createdAt: { $lte: expiryDate },
+                status: { $ne: "Expired" }
+            },
+            { $set: { status: "Expired" } }
+        );
+
+        const listings = await Listing.find({ countryForInvestmemt: { $in: [country] }, status: "Published" });
 
         if (!listings) {
             return new Response(JSON.stringify({ message: "Listings not found" }), {
