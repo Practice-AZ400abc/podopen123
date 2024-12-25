@@ -153,13 +153,13 @@ const Listings = ({ listing, refreshListings }) => {
             <h1 className="mt-2 font-bold">
               Country for Investment:{" "}
               <span className="text-blue-500 uppercase p-2 m-2 rounded-sm text-sm font-bold">
-                {updatedListing.investmentIndustry}
+                {updatedListing.countryForInvestment}
               </span>
             </h1>
             <h1 className="mt-2 font-bold">
               Industry of Investment:{" "}
               <span className="text-blue-500 uppercase p-2 m-2 rounded-sm text-sm font-bold">
-                {updatedListing.countryForInvestment}
+                {updatedListing.investmentIndustry}
               </span>
             </h1>
             <h1 className="mt-2 font-bold">

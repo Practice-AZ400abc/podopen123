@@ -100,8 +100,20 @@ const ProjectsSearch = () => {
                         <div>
                             <h1 className='text-2xl font-bold text-blue-400'>Projects Listings</h1>
                         </div>
-                        <div className='mt-4'>
-                            <p>Check the console for the listings.</p>
+                        <div className='mt-4 bg-gray-50 w-full p-4 rounded-lg '>
+                            {listings.map((listing) => (
+                                <div key={listing.id} className='bg-white p-4 rounded-lg border mt-4 flex flex-col gap-2'>
+                                    <h1 className='text-2xl font-bold underline text-blue-400'>{listing.projectDescription}</h1>
+                                    <div className='flex gap-1 items-center'>
+                                        <h1 className='font-bold'>Country where investment:</h1>
+                                        <p className='text-gray-800  w-fit p-2 rounded-md bg-blue-100'>  {listing.countryForInvestment}</p>
+                                    </div>
+                                    <div className='flex gap-1 items-center'>
+                                        <h1 className='font-bold'>Minimum investment:</h1>
+                                        <p className='text-gray-800  w-fit p-2 rounded-md bg-blue-100'>  {listing.minimumInvestment}</p>
+                                    </div>
+                                </div>
+                            ))}
                         </div>
                     </div>
                 </div>
