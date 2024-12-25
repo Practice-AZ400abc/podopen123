@@ -14,6 +14,7 @@ import { Filter } from 'lucide-react';
 
 const ProjectsSearch = () => {
     const [listings, setListings] = useState([]); // Store fetched listings
+    const [filtered, setFiltered] = useState([])
     const [selectedIndustry, setSelectedIndustry] = useState(""); // Store selected industry filter
     const searchParams = useSearchParams(); // Get query params from the URL
     const country = searchParams.get("country"); // Extract 'country' parameter
@@ -27,6 +28,7 @@ const ProjectsSearch = () => {
             }
             const data = await response.json();
             setListings(data);
+            setFiltered(data); // Store the initial filtered listings for comparison
         } catch (error) {
             console.error("Error fetching listings:", error);
         }
@@ -41,6 +43,7 @@ const ProjectsSearch = () => {
             ? listings.filter((listing) => listing.investmentIndustry === selectedIndustry)
             : listings;
 
+        setFiltered(filteredListings);
         console.log("Filtered Listings:", filteredListings); // Log filtered listings to console
     }, [listings, selectedIndustry]);
 
@@ -101,8 +104,8 @@ const ProjectsSearch = () => {
                             <h1 className='text-2xl font-bold text-blue-400'>Projects Listings</h1>
                         </div>
                         <div className='mt-4 bg-gray-50 w-full p-4 rounded-lg '>
-                            {listings.map((listing) => (
-                                <div key={listing.id} className='bg-white p-4 rounded-lg border mt-4 flex flex-col gap-2'>
+                            {filtered.map((listing) => (
+                                <div key={listing._id} className='bg-white p-4 rounded-lg border mt-4 flex flex-col gap-2'>
                                     <h1 className='text-2xl font-bold underline text-blue-400'>{listing.projectDescription}</h1>
                                     <div className='flex gap-1 items-center'>
                                         <h1 className='font-bold'>Country where investment:</h1>

@@ -21,12 +21,15 @@ export const GET = async (req) => {
         await Listing.updateMany(
             {
                 createdAt: { $lte: expiryDate },
-                status: { $ne: "Expired" }
+                status: { $ne: "Expired" },
             },
             { $set: { status: "Expired" } }
         );
 
-        const listings = await Listing.find({ status: "Published", countryForInvestment: country });
+        const listings = await Listing.find({
+            status: "Published",
+            countryForInvestment: country,
+        });
 
         if (!listings) {
             return new Response(JSON.stringify({ message: "Listings not found" }), {
@@ -34,10 +37,11 @@ export const GET = async (req) => {
             });
         }
 
-        console.log(listings)
         return new Response(JSON.stringify(listings), { status: 200 });
     } catch (error) {
         console.error("Error getting listings: ", error);
-        return new Response(JSON.stringify({ message: "Internal Server Error" }), { status: 500 });
+        return new Response(JSON.stringify({ message: "Internal Server Error" }), {
+            status: 500,
+        });
     }
-}
+};
