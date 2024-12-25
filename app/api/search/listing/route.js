@@ -26,7 +26,7 @@ export const GET = async (req) => {
             { $set: { status: "Expired" } }
         );
 
-        const listings = await Listing.find({ countryForInvestmemt: { $in: [country] }, status: "Published" });
+        const listings = await Listing.find({ status: "Published", countryForInvestment: country });
 
         if (!listings) {
             return new Response(JSON.stringify({ message: "Listings not found" }), {
@@ -34,6 +34,7 @@ export const GET = async (req) => {
             });
         }
 
+        console.log(listings)
         return new Response(JSON.stringify(listings), { status: 200 });
     } catch (error) {
         console.error("Error getting listings: ", error);

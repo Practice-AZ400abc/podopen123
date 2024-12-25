@@ -25,7 +25,7 @@ export default function Home() {
   const handleSearch = () => {
     if (selectedCountry) {
       // Redirect to the search page with the selected country as a query parameter
-      router.push(`/search/inner?country=${encodeURIComponent(selectedCountry)}`);
+      router.push(`/Projects-search?country=${encodeURIComponent(selectedCountry)}`);
     } else {
       alert("Please select a country before searching.");
     }
