@@ -13,13 +13,11 @@ import {
 import { Filter } from "lucide-react";
 import {
     Card,
-    CardContent,
-    CardDescription,
-    CardFooter,
     CardHeader,
     CardTitle,
 } from "@/components/ui/card";
 import { Chart } from "./Chart";
+import Spinner from "@/components/Spinner";
 
 const Wrapper = () => {
     const [token, setToken] = useState(null);
@@ -145,7 +143,7 @@ const Wrapper = () => {
                         </div>
 
                         {/* Loading State */}
-                        {loading && <p>Loading your listings...</p>}
+                        {loading ? <Spinner /> : null}
                     </div>
 
                     <div className="w-[90%] flex flex-col items-start justify-start gap-5 rounded-md">
@@ -195,8 +193,8 @@ const Wrapper = () => {
                         </Card>
                     </div>
 
-                    {/* Pass totalLast30DaysImpressions to the chart */}
-                    <Chart totalLast30DaysImpressions={analytics.totalLast30DaysImpressions} />
+                    {/* Loading Spinner for Analytics */}
+                    {loading ? <Spinner /> : <Chart totalLast30DaysImpressions={analytics.totalLast30DaysImpressions} />}
                 </div>
             )}
         </div>

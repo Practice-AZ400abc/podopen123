@@ -12,8 +12,10 @@ import {
 } from "@/components/ui/select";
 import { Filter } from "lucide-react";
 import ProjectCard from "@/components/ProjectCard"; // Import the ProjectCard component
+import Spinner from "@/components/Spinner";
 
 const ProjectsSearch = () => {
+    const [loading, setLoading] = useState(false);
     const [listings, setListings] = useState([]);
     const [filtered, setFiltered] = useState([]);
     const [selectedIndustry, setSelectedIndustry] = useState("");
@@ -24,6 +26,7 @@ const ProjectsSearch = () => {
 
     const fetchListings = async (country) => {
         try {
+            setLoading(true);
             const response = await fetch(`/api/search/listing?country=${country}`);
             if (!response.ok) throw new Error();
             const data = await response.json();
@@ -31,6 +34,8 @@ const ProjectsSearch = () => {
             setFiltered(data);
         } catch (error) {
             console.error("Error fetching listings:", error);
+        } finally {
+            setLoading(false);
         }
     };
 
@@ -56,7 +61,9 @@ const ProjectsSearch = () => {
 
     useEffect(() => {
         const filteredListings = selectedIndustry
-            ? listings.filter((listing) => listing.investmentIndustry === selectedIndustry)
+            ? listings.filter(
+                (listing) => listing.investmentIndustry === selectedIndustry
+            )
             : listings;
 
         setFiltered(filteredListings);
@@ -95,7 +102,10 @@ const ProjectsSearch = () => {
                             </Select>
                         </div>
                         <div className="mt-4">
-                            <Select value={selectedIndustry} onValueChange={handleIndustryChange}>
+                            <Select
+                                value={selectedIndustry}
+                                onValueChange={handleIndustryChange}
+                            >
                                 <SelectTrigger className="h-12">
                                     <SelectValue placeholder="Select Industry" />
                                 </SelectTrigger>
@@ -113,18 +123,24 @@ const ProjectsSearch = () => {
                     {/* Projects Listings */}
                     <div className="bg-white p-4 rounded-lg w-[70%] mx-auto">
                         <div>
-                            <h1 className="text-2xl font-bold text-blue-400">Projects Listings</h1>
+                            <h1 className="text-2xl font-bold text-blue-400">
+                                Projects Listings
+                            </h1>
                         </div>
                         <div className="mt-4 bg-gray-50 w-full p-4 rounded-lg">
-                            {filtered.map((listing) => (
-                                <ProjectCard
-                                    key={listing._id}
-                                    listing={listing}
-                                    updateImpressions={updateImpressions}
-                                    updateClicks={updateClicks}
-                                    seenImpressions={seenImpressions}
-                                />
-                            ))}
+                            {loading ? (
+                                <Spinner />
+                            ) : (
+                                filtered.map((listing) => (
+                                    <ProjectCard
+                                        key={listing._id}
+                                        listing={listing}
+                                        updateImpressions={updateImpressions}
+                                        updateClicks={updateClicks}
+                                        seenImpressions={seenImpressions}
+                                    />
+                                ))
+                            )}
                         </div>
                     </div>
                 </div>
