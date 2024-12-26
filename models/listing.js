@@ -70,6 +70,18 @@ const ListingSchema = new Schema(
             type: Number,
             default: 0,
         },
+        dailyImpressions: [
+            {
+                date: {
+                    type: Date,
+                    required: true,
+                },
+                impressions: {
+                    type: Number,
+                    required: true,
+                },
+            },
+        ],
     },
     {
         timestamps: true,

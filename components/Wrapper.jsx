@@ -18,24 +18,31 @@ import {
     CardFooter,
     CardHeader,
     CardTitle,
-} from "@/components/ui/card"
+} from "@/components/ui/card";
 import { Chart } from "./Chart";
-
 
 const Wrapper = () => {
     const [token, setToken] = useState(null);
     const [listings, setListings] = useState([]);
-    const [loading, setLoading] = useState(false); // Loading state for fetch operations
+    const [analytics, setAnalytics] = useState({
+        totalListings: 0,
+        totalImpressions: 0,
+        activeListings: 0,
+        expiredListings: 0,
+        totalLast30DaysImpressions: 0, // We will use this value for the chart
+    });
+    const [loading, setLoading] = useState(false);
     const [activeSection, setActiveSection] = useState('listings');
-    const impressions = 44;
+
     useEffect(() => {
         const storedToken = localStorage.getItem("token");
         setToken(storedToken);
     }, []);
 
+    // Fetch user listings
     const fetchUserListings = async () => {
         try {
-            setLoading(true); // Set loading to true when fetching
+            setLoading(true);
             const response = await fetch("/api/listing", {
                 method: "GET",
                 headers: {
@@ -48,25 +55,49 @@ const Wrapper = () => {
             }
 
             const data = await response.json();
-            console.log(data);
             setListings(data);
         } catch (error) {
             console.error(error);
         } finally {
-            setLoading(false); // Set loading to false after fetch is done
+            setLoading(false);
+        }
+    };
+
+    // Fetch analytics data
+    const fetchAnalytics = async () => {
+        try {
+            setLoading(true);
+            const response = await fetch("/api/analytics", {
+                method: "GET",
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            });
+
+            if (!response.ok) {
+                throw new Error("Failed to fetch analytics");
+            }
+
+            const data = await response.json();
+            setAnalytics(data.data);
+        } catch (error) {
+            console.error(error);
+        } finally {
+            setLoading(false);
         }
     };
 
     useEffect(() => {
         if (token) {
             fetchUserListings();
+            fetchAnalytics(); // Fetch analytics when the token is available
         }
     }, [token]);
 
     // Function to refetch listings when a deletion happens
     const refreshListings = () => {
-        setListings([]); // Optionally clear current listings while fetching new ones
-        fetchUserListings(); // Call the fetch function again
+        setListings([]);
+        fetchUserListings();
     };
 
     return (
@@ -76,7 +107,7 @@ const Wrapper = () => {
                     <Link href="/profile" className="text-md underline">
                         Profile
                     </Link>
-                    <button onClick={() => setActiveSection('analytics')} className="text-md underline" >
+                    <button onClick={() => setActiveSection('analytics')} className="text-md underline">
                         Analytics
                     </button>
                     <button onClick={() => setActiveSection('listings')} className="text-md underline">
@@ -84,7 +115,6 @@ const Wrapper = () => {
                     </button>
                 </ul>
             </div>
-
 
             {/* Listings Wrapper */}
             {activeSection === 'listings' && (
@@ -99,7 +129,7 @@ const Wrapper = () => {
                                             <Filter />
                                             <SelectValue
                                                 className="text-lg font-bold"
-                                                value={null} // Ensure no value is selected initially
+                                                value={null}
                                                 placeholder="Status"
                                             />
                                         </div>
@@ -119,7 +149,6 @@ const Wrapper = () => {
                     </div>
 
                     <div className="w-[90%] flex flex-col items-start justify-start gap-5 rounded-md">
-                        {/* Render Listings */}
                         {listings.length === 0 && !loading ? (
                             <p>No listings found.</p>
                         ) : (
@@ -127,7 +156,7 @@ const Wrapper = () => {
                                 <Listings
                                     key={listing._id}
                                     listing={listing}
-                                    refreshListings={refreshListings} // Pass the refresh function
+                                    refreshListings={refreshListings}
                                 />
                             ))
                         )}
@@ -144,31 +173,30 @@ const Wrapper = () => {
                             <CardHeader>
                                 <CardTitle>Total Listings</CardTitle>
                             </CardHeader>
-                            <h1 className="text-center mb-4 font-bold text-blue-400 text-4xl">{listings.length}</h1>
+                            <h1 className="text-center mb-4 font-bold text-blue-400 text-4xl">{analytics.totalListings}</h1>
                         </Card>
                         <Card className="">
                             <CardHeader>
                                 <CardTitle>Total Impressions</CardTitle>
                             </CardHeader>
-                            <h1 className="text-center mb-4 font-bold text-blue-400 text-4xl">{impressions}</h1>
+                            <h1 className="text-center mb-4 font-bold text-blue-400 text-4xl">{analytics.totalImpressions}</h1>
                         </Card>
                         <Card className="">
                             <CardHeader>
                                 <CardTitle>Active Listings</CardTitle>
                             </CardHeader>
-                            <h1 className="text-center mb-4 font-bold text-blue-400 text-4xl">{2}</h1>
+                            <h1 className="text-center mb-4 font-bold text-blue-400 text-4xl">{analytics.activeListings}</h1>
                         </Card>
                         <Card className="">
                             <CardHeader>
                                 <CardTitle>Expired Listings</CardTitle>
                             </CardHeader>
-                            <h1 className="text-center mb-4 font-bold text-blue-400 text-4xl">{3}</h1>
+                            <h1 className="text-center mb-4 font-bold text-blue-400 text-4xl">{analytics.expiredListings}</h1>
                         </Card>
-
                     </div>
 
-                    <Chart />
-
+                    {/* Pass totalLast30DaysImpressions to the chart */}
+                    <Chart totalLast30DaysImpressions={analytics.totalLast30DaysImpressions} />
                 </div>
             )}
         </div>
