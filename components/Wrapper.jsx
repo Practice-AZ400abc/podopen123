@@ -100,7 +100,7 @@ const Wrapper = () => {
 
     return (
         <div className="w-full flex items-start justify-start gap-10">
-            <div className="w-[10%] border rounded-md bg-white p-5">
+            <div className="w-[30%] border rounded-md bg-white p-5">
                 <ul className="w-full flex items-start justify-center flex-col gap-5">
                     <Link href="/profile" className="text-md underline">
                         Profile
