@@ -61,7 +61,15 @@ const ListingSchema = new Schema(
             required: true,
             enum: ["Draft", "Published", "Unpublished", "Expired"],
             default: "Draft",
-        }
+        },
+        impressions: {
+            type: Number,
+            default: 0,
+        },
+        clicks: {
+            type: Number,
+            default: 0,
+        },
     },
     {
         timestamps: true,
