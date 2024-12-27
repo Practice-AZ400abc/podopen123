@@ -100,7 +100,7 @@ const Navbar = () => {
           <div className="flex gap-5 items-center max-md:hidden">
             <Link
               href="/sign-up"
-              className="text-black px-6 py-3 rounded-full font-bold"
+              className="bg-blue-300 hover:bg-blue-300 text-black px-6 py-3 rounded-sm font-bold"
             >
               Sponsor Sign In
             </Link>

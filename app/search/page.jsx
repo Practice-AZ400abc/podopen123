@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation"; // Import useRouter for navigation
-import { Search } from "lucide-react";
+import { Search, SearchCheck, SearchCheckIcon } from "lucide-react";
 import { COUNTRIES } from "@/lib/constants";
 import SearchImage from "../../app/SearchPage.png";
 
@@ -34,10 +34,9 @@ export default function Home() {
     <main className="min-h-screen bg-gray-50 flex flex-col items-center pt-16 px-4">
       <div className="w-full max-w-3xl mx-auto text-center space-y-6">
         <div className="space-y-4 flex items-center flex-col">
-          <Image src={SearchImage} alt="Visa Investor" width="200" height="200" />
-          <h1 className="text-2xl font-semibold text-blue-400">
-            Find a Visa Investor Projects
-            Search for projects seeking eb5, or golden investors for a project.
+
+          <h1 className="text-2xl flex items-center gap-2 font-semibold text-blue-400">
+            <SearchCheckIcon /> Find a visa investor for your project
           </h1>
           <p className="text-gray-600">
             Search for investors seeking a golden visa or investment visa in the country where you seek funds for your project.
@@ -69,6 +68,9 @@ export default function Home() {
             </Button>
           </div>
 
+          <div className="flex w-full items-center justify-center">
+            <Image src={SearchImage} className="rounded-md" alt="Visa Investor" width="200" height="200" />
+          </div>
 
           <div className="text-center">
             <Link

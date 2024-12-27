@@ -147,7 +147,7 @@ export default function SearchPage() {
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="netWorthDesc">
-                  High net worth to Lowest net worth
+                  Highest net worth to lowest net worth
                 </SelectItem>
                 <SelectItem value="netWorthAsc">
                   Lowest net worth to highest net worth
@@ -164,7 +164,7 @@ export default function SearchPage() {
         </div>
       </header>
 
-      <main className="max-w-7xl mx-auto px-4 py-6">
+      <main className="max-w-full mx-auto px-4 py-6">
         <div className="grid grid-cols-12 gap-6">
           {/* Filters */}
           <div className="col-span-3">

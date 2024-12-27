@@ -17,7 +17,7 @@ import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import searchImage from "@/app/SearchPage.png";
 import Image from "next/image";
-import { SearchCodeIcon } from "lucide-react";
+import { SearchCheck, SearchCodeIcon } from "lucide-react";
 export default function Home() {
   const [selectedCountry, setSelectedCountry] = useState(""); // Track the selected country
   const router = useRouter(); // Use the Next.js router for navigation
@@ -38,7 +38,7 @@ export default function Home() {
 
           <Select onValueChange={(value) => setSelectedCountry(value)}>
             <SelectTrigger className="h-12">
-              <SelectValue placeholder="Select country  where you need investment" />
+              <SearchCheck /> <SelectValue placeholder="Countries with Visa Sponsor" />
             </SelectTrigger>
             <SelectContent>
               {COUNTRIES.map((country) => (
@@ -55,12 +55,14 @@ export default function Home() {
             onClick={handleSearch} // Call handleSearch on button click
           >
 
-            Find
+            Search
           </Button>
         </div>
         <div className="space-y-4 flex items-center flex-col">
 
-          <Image src={People} alt="Visa Investor" className="rounded-md" width="400" height="200" />
+          <div className="bg-gray-100 w-full flex items-center justify-center border">
+            <Image src={People} alt="Visa Investor" className="rounded-md" width="400" height="200" />
+          </div>
 
           <h1 className="text-2xl font-semibold text-blue-400">
             Create a listing to get funding for your project from an investor seeking a golden, EB5, or
