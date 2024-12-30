@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation"; // Import useRouter for navigation
 import { Search, SearchCheck, SearchCheckIcon } from "lucide-react";
 import { COUNTRIES } from "@/lib/constants";
-import SearchImage from "../../app/Searchpage.png";
+import SearchImage from "../SearchPage.png";
 
 import {
   Select,
