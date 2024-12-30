@@ -17,7 +17,7 @@ import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import searchImage from "@/app/SearchPage.png";
 import Image from "next/image";
-import { SearchCheck, SearchCodeIcon } from "lucide-react";
+import { SearchCheck } from "lucide-react";
 export default function Home() {
   const [selectedCountry, setSelectedCountry] = useState(""); // Track the selected country
   const router = useRouter(); // Use the Next.js router for navigation

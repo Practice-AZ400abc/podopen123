@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useContext, useEffect, useRef } from "react";
+import { usePathname } from "next/navigation"; // Import useRouter
 import Logo from "../app/Lookvisa.png";
 import Image from "next/image";
 import Link from "next/link";
@@ -15,16 +16,17 @@ import {
 } from "@/components/ui/sheet";
 import { AuthContext } from "@/components/AuthProvider";
 import { LogOut } from "lucide-react";
-import { jwtDecode } from "jwt-decode"; // Import jwt-decode to decode the token
+import { jwtDecode } from "jwt-decode";
 
 const Navbar = () => {
-  const { isLoggedIn, logout, token } = useContext(AuthContext); // Get the token from AuthContext
+  const pathname = usePathname(); // Initialize useRouter
+  const { isLoggedIn, logout, token } = useContext(AuthContext);
   const [showLogout, setShowLogout] = useState(false);
-  const profileRef = useRef(null); // Ref for the profile image and dropdown
+  const profileRef = useRef(null);
 
-  const [avatarURL, setAvatarURL] = useState(null); // Get the avatarURL from the token
+  const [avatarURL, setAvatarURL] = useState(null);
 
-  // Function to decode the token and get the avatarURL
+  // Decode the token to get the avatarURL
   useEffect(() => {
     if (token) {
       setAvatarURL(jwtDecode(token).avatarURL);
@@ -48,6 +50,9 @@ const Navbar = () => {
     };
   }, []);
 
+  // Function to check if a link is active
+  const isActive = (path) => {return pathname === path};
+
   return (
     <div className="w-full border-b border-gray-200 bg-white z-10 sticky">
       <div className="container mx-auto flex items-center h-[70px] justify-between px-4">
@@ -56,13 +61,55 @@ const Navbar = () => {
             <Image src={Logo} alt="Lookvisa" width={120} />
           </Link>
           <ul className="flex gap-10 items-center max-md:hidden font-regular text-[16px] text-black">
-            <Link href="/" className="hover:underline hover:font-bold">Home</Link>
-            <Link href="/howItWorks" className="hover:underline hover:font-bold">How it Works</Link>
-            <Link href="/" className="hover:underline hover:font-bold">Pricing</Link>
-            <Link href="/" className="hover:underline hover:font-bold">Blogs</Link>
-            <Link href="/PrivacyPolicy" className="hover:underline hover:font-bold">Privacy Policy</Link>
-            <Link href="/OurStory" className="hover:underline hover:font-bold">Our Story</Link>
-            <Link href={"/search"} className="hover:underline hover:font-bold">Find investors</Link>
+            <Link
+              href="/"
+              className={`hover:underline hover:font-bold ${isActive("/") ? "underline font-bold" : ""
+                }`}
+            >
+              Home
+            </Link>
+            <Link
+              href="/howItWorks"
+              className={`hover:underline hover:font-bold ${isActive("/howItWorks") ? "underline font-bold" : ""
+                }`}
+            >
+              How it Works
+            </Link>
+            <Link
+              href="/pricing"
+              className={`hover:underline hover:font-bold ${isActive("/pricing") ? "underline font-bold" : ""
+                }`}
+            >
+              Pricing
+            </Link>
+            <Link
+              href="/blogs"
+              className={`hover:underline hover:font-bold ${isActive("/blogs") ? "underline font-bold" : ""
+                }`}
+            >
+              Blogs
+            </Link>
+            <Link
+              href="/PrivacyPolicy"
+              className={`hover:underline hover:font-bold ${isActive("/PrivacyPolicy") ? "underline font-bold" : ""
+                }`}
+            >
+              Privacy Policy
+            </Link>
+            <Link
+              href="/OurStory"
+              className={`hover:underline hover:font-bold ${isActive("/OurStory") ? "underline font-bold" : ""
+                }`}
+            >
+              Our Story
+            </Link>
+            <Link
+              href="/search"
+              className={`hover:underline hover:font-bold ${isActive("/search") ? "underline font-bold" : ""
+                }`}
+            >
+              Find investors
+            </Link>
           </ul>
         </div>
         {isLoggedIn ? (
@@ -70,23 +117,21 @@ const Navbar = () => {
             ref={profileRef}
             className="relative flex gap-5 items-center max-md:hidden"
           >
-            {/* Profile Image */}
             <Image
-              src={avatarURL || profile} // Use the avatarURL if available, otherwise use the default image
+              src={avatarURL || profile}
               alt="Profile"
               className="rounded-full h-10 w-10 object-cover cursor-pointer"
               width={40}
               height={40}
-              onClick={toggleLogout} // Toggle visibility on click
+              onClick={toggleLogout}
             />
-            {/* Logout Div */}
             {showLogout && (
               <div className="absolute top-[120%] right-0 bg-slate-800 shadow-md px-8 py-2 rounded-md flex items-center gap-2">
                 <div className="flex flex-col gap-2">
                   <ul className="flex flex-col items-start gap-2 text-white">
-                    <Link href={"/profile"}>Profile</Link>
+                    <Link href="/profile">Profile</Link>
                   </ul>
-                  <div className="flex gap-2 items-center ">
+                  <div className="flex gap-2 items-center">
                     <button onClick={logout} className="text-white">
                       Logout
                     </button>
@@ -117,21 +162,20 @@ const Navbar = () => {
           {isLoggedIn ? (
             <div className="flex gap-5 items-center relative">
               <Image
-                src={avatarURL || profile} // Use the avatarURL if available, otherwise use the default image
+                src={avatarURL || profile}
                 alt="Profile"
                 className="rounded-full"
                 width={40}
                 height={40}
                 onClick={toggleLogout}
               />
-              {/* Logout Div */}
               {showLogout && (
                 <div className="absolute top-[120%] right-0 bg-slate-800 shadow-md px-8 py-2 rounded-md flex items-center gap-2">
                   <div className="flex flex-col gap-2">
                     <ul className="flex flex-col items-start gap-2 text-white">
-                      <Link href={"/profile"}>Profile</Link>
+                      <Link href="/profile">Profile</Link>
                     </ul>
-                    <div className="flex gap-2 items-center ">
+                    <div className="flex gap-2 items-center">
                       <button onClick={logout} className="text-white">
                         Logout
                       </button>
@@ -154,12 +198,44 @@ const Navbar = () => {
                 <SheetTitle className="sr-only">Menu</SheetTitle>
               </SheetHeader>
               <ul className="flex flex-col gap-5 items-left">
-                <Link href="/">Home</Link>
-                <Link href="/">How it Works</Link>
-                <Link href="/">Pricing</Link>
-                <Link href="/">Blogs</Link>
-                <Link href={"/search"}>Find investors</Link>
-                <Link href="/PrivacyPolicy">Privacy Policy</Link>
+                <Link
+                  href="/"
+                  className={isActive("/") ? "underline font-bold" : ""}
+                >
+                  Home
+                </Link>
+                <Link
+                  href="/howItWorks"
+                  className={
+                    isActive("/howItWorks") ? "underline font-bold" : ""
+                  }
+                >
+                  How it Works
+                </Link>
+                <Link
+                  href="/pricing"
+                  className={
+                    isActive("/pricing") ? "underline font-bold" : ""
+                  }
+                >
+                  Pricing
+                </Link>
+                <Link
+                  href="/blogs"
+                  className={
+                    isActive("/blogs") ? "underline font-bold" : ""
+                  }
+                >
+                  Blogs
+                </Link>
+                <Link
+                  href="/PrivacyPolicy"
+                  className={
+                    isActive("/PrivacyPolicy") ? "underline font-bold" : ""
+                  }
+                >
+                  Privacy Policy
+                </Link>
                 {isLoggedIn ? (
                   <button
                     className="border border-black text-black hover:bg-black hover:text-white px-6 py-3 rounded-full font-bold text-[18px]"
@@ -170,7 +246,8 @@ const Navbar = () => {
                 ) : (
                   <Link
                     href="/sign-in"
-                    className="text-blue-400 font-bold text-[18px]"
+                    className={`text-blue-400 font-bold text-[18px] ${isActive("/sign-in") ? "underline" : ""
+                      }`}
                   >
                     Log in
                   </Link>
