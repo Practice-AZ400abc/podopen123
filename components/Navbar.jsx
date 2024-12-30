@@ -51,7 +51,7 @@ const Navbar = () => {
   }, []);
 
   // Function to check if a link is active
-  const isActive = (path) => {return pathname === path};
+  const isActive = (path) => { return pathname === path };
 
   return (
     <div className="w-full border-b border-gray-200 bg-white z-10 sticky">
@@ -235,6 +235,13 @@ const Navbar = () => {
                   }
                 >
                   Privacy Policy
+                </Link>
+                <Link
+                  href="/search"
+                  className={`hover:underline hover:font-bold ${isActive("/search") ? "underline font-bold" : ""
+                    }`}
+                >
+                  Find investors
                 </Link>
                 {isLoggedIn ? (
                   <button

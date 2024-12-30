@@ -67,8 +67,8 @@ export default function Home() {
             </Button>
           </div>
 
-          <div className="flex w-full items-center justify-center bg-[#b4c4c4] p-4 rounded-md ">
-            <Image src={SearchImage} className="rounded-md object-cover w-[250px] h-[250px]" alt="Visa Investor" width="200"  height="200" />
+          <div className="flex w-full items-center justify-center bg-[#b4c4c4]  object-cover rounded-md ">
+            <Image src={SearchImage} className="rounded-md object-cover w-[350px] h-[350px]" alt="Visa Investor" width="200"  height="200" />
           </div>
 
           <div className="text-center">
