@@ -56,13 +56,13 @@ const Navbar = () => {
             <Image src={Logo} alt="Lookvisa" width={120} />
           </Link>
           <ul className="flex gap-10 items-center max-md:hidden font-regular text-[16px] text-black">
-            <Link href="/">Home</Link>
-            <Link href="/howItWorks">How it Works</Link>
-            <Link href="/">Pricing</Link>
-            <Link href="/">Blogs</Link>
-            <Link href="/PrivacyPolicy">Privacy Policy</Link>
-            <Link href="/OurStory">Our Story</Link>
-            <Link href={"/search"}>Find investors</Link>
+            <Link href="/" className="hover:underline hover:font-bold">Home</Link>
+            <Link href="/howItWorks" className="hover:underline hover:font-bold">How it Works</Link>
+            <Link href="/" className="hover:underline hover:font-bold">Pricing</Link>
+            <Link href="/" className="hover:underline hover:font-bold">Blogs</Link>
+            <Link href="/PrivacyPolicy" className="hover:underline hover:font-bold">Privacy Policy</Link>
+            <Link href="/OurStory" className="hover:underline hover:font-bold">Our Story</Link>
+            <Link href={"/search"} className="hover:underline hover:font-bold">Find investors</Link>
           </ul>
         </div>
         {isLoggedIn ? (
@@ -158,6 +158,8 @@ const Navbar = () => {
                 <Link href="/">How it Works</Link>
                 <Link href="/">Pricing</Link>
                 <Link href="/">Blogs</Link>
+                <Link href={"/search"}>Find investors</Link>
+                <Link href="/PrivacyPolicy">Privacy Policy</Link>
                 {isLoggedIn ? (
                   <button
                     className="border border-black text-black hover:bg-black hover:text-white px-6 py-3 rounded-full font-bold text-[18px]"

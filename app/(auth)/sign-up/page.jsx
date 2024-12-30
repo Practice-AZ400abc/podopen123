@@ -339,13 +339,13 @@ export default function Signup() {
                 <FcGoogle />
                 <h1 className="text-black">Continue with Google</h1>
               </button>
-              <button
+              {/* <button
                 className="flex gap-5 items-center w-[80%] p-3 bg-blue-600 text-white rounded-full mx-auto justify-center"
                 onClick={() => signInWithSocials(new FacebookAuthProvider())}
               >
                 <FaFacebookF />
                 <h1>Continue with Facebook</h1>
-              </button>
+              </button> */}
             </div>
           )}
         </div>

@@ -33,9 +33,10 @@ export default function Home() {
 
   return (
     <main className="min-h-screen bg-gray-50 flex flex-col items-center pt-4 px-4">
-      <div className="w-full max-w-3xl mx-auto text-center space-y-6">
+      <div className="w-full max-w-3xl mx-auto text-center space-y-6 mt-6">
+        <h1 className="text-lg sm:text-lg md:text-4xl font-bold  text-blue-500">Get sponsorship for your golden,<br/> eb5, investor visa</h1>
         <div className="flex gap-3 bg-white  items-center justify-center   p-3 rounded-md border border-blue-400 shadow-md">
-
+          
           <Select onValueChange={(value) => setSelectedCountry(value)}>
             <SelectTrigger className="h-12">
               <SearchCheck /> <SelectValue placeholder="Countries with Visa Sponsor" />
