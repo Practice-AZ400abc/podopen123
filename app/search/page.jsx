@@ -15,7 +15,6 @@ import {
 } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
-import searchImage from "@/app/SearchPage.png";
 import Image from "next/image";
 export default function Home() {
   const [selectedCountry, setSelectedCountry] = useState(""); // Track the selected country

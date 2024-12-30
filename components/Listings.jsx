@@ -1,5 +1,6 @@
 "use client";
 
+import { Image } from 'next/image'
 import React, { useEffect, useState } from "react";
 import { Button } from "./ui/button";
 import {
@@ -116,7 +117,7 @@ const Listings = ({ listing, refreshListings }) => {
       <div className="flex flex-col gap-4">
         <div className="flex gap-2">
           {updatedListing.images.map((img, idx) => (
-            <img
+            <Image
               key={idx}
               className="h-[100px] object-cover rounded-md w-[100px]"
               src={img}

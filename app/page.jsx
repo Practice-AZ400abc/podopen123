@@ -15,7 +15,7 @@ import {
 } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
-import searchImage from "@/app/SearchPage.png";
+import SearchImage from "@/app/SearchPage.png";
 import Image from "next/image";
 import { SearchCheck } from "lucide-react";
 export default function Home() {
