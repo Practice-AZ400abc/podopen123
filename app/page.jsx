@@ -34,9 +34,9 @@ export default function Home() {
   return (
     <main className="min-h-screen bg-gray-50 flex flex-col items-center pt-4 px-4">
       <div className="w-full max-w-3xl mx-auto text-center space-y-6 mt-6">
-        <h1 className="text-4xl leading-10 text-black font-bold">Get sponsorship for your golden, eb5, investor visa</h1>
+        <h1 className="text-4xl md:text-[54px] leading-snug  text-black font-bold">Get sponsorship for your <br /> golden, eb5, investor visa</h1>
         <div className="flex gap-3 bg-white  items-center justify-center   p-3 rounded-md border border-blue-400 shadow-md">
-          
+
           <Select onValueChange={(value) => setSelectedCountry(value)}>
             <SelectTrigger className="h-12">
               <SearchCheck /> <SelectValue placeholder="Countries with Visa Sponsor" />
@@ -106,6 +106,6 @@ export default function Home() {
           </div> */}
         </div>
       </div>
-    </main>
+    </main >
   );
 }
