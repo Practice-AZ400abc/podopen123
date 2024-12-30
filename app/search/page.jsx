@@ -35,7 +35,7 @@ export default function Home() {
         <div className="space-y-4 flex items-center flex-col">
 
           <h1 className="text-2xl flex items-center gap-2 font-semibold text-blue-400">
-             Find a visa investor for your project
+            Find a visa investor for your project
           </h1>
           <p className="text-gray-600">
             Search for investors seeking a golden visa or investment visa in the country where you seek funds for your project.
@@ -46,7 +46,7 @@ export default function Home() {
           <div className="flex gap-3">
             <Select onValueChange={(value) => setSelectedCountry(value)}>
               <SelectTrigger className="h-12">
-              <SearchCheckIcon /> <SelectValue placeholder="Find a visa investor for your project" />
+                <SearchCheckIcon /> <SelectValue placeholder="Find a visa investor for your project" />
               </SelectTrigger>
               <SelectContent>
                 {COUNTRIES.map((country) => (
@@ -62,13 +62,13 @@ export default function Home() {
               size="lg"
               onClick={handleSearch} // Call handleSearch on button click
             >
-              <Search className="mr-2 h-4 w-4" />
+
               Find
             </Button>
           </div>
 
           <div className="flex w-full items-center justify-center bg-[#b4c4c4]  object-cover rounded-md ">
-            <Image src={SearchImage} className="rounded-md object-cover w-[350px] h-[350px]" alt="Visa Investor" width="200"  height="200" />
+            <Image src={SearchImage} className="rounded-md object-cover w-[350px] h-[350px]" alt="Visa Investor" width="200" height="200" />
           </div>
 
           <div className="text-center">
