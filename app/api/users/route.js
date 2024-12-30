@@ -1,5 +1,6 @@
 import { connectToDB } from "@/utils/database";
 import User from "@/models/user";
+import verifyToken from "@/utils/verifyToken";
 
 export const GET = async (req) => {
   try {
@@ -41,6 +42,7 @@ export const GET = async (req) => {
 export const POST = async (req) => {
   try {
     const body = await req.json();
+    const user = verifyToken(req);
 
     if (!body.firebaseUid || !body.email || !body.role) {
       return new Response(
@@ -63,6 +65,38 @@ export const POST = async (req) => {
     return new Response(JSON.stringify(newUser), { status: 201 });
   } catch (error) {
     console.error("Error creating user:", error);
+    return new Response(JSON.stringify({ message: "Internal server error" }), {
+      status: 500,
+    });
+  }
+};
+
+export const DELETE = async (req) => {
+  try {
+    const { searchParams } = new URL(req.url);
+    const email = searchParams.get("email");
+    const user = verifyToken(req);
+
+    if (!user) {
+      return new Response({ message: "Unauthorized" }, { status: 401 });
+    }
+
+    if (!email) {
+      return new Response(
+        JSON.stringify({ message: "Missing firebaseUid or email parameter" }),
+        { status: 400 }
+      );
+    }
+
+    await connectToDB();
+
+    await User.findOneAndDelete({ email: email });
+
+    return new Response(JSON.stringify({ message: "User deleted" }), {
+      status: 200,
+    });
+  } catch (error) {
+    console.log(error);
     return new Response(JSON.stringify({ message: "Internal server error" }), {
       status: 500,
     });

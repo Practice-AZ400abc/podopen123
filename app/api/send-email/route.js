@@ -9,10 +9,18 @@ export const POST = async (req) => {
   try {
     const { email, action } = await req.json();
 
-    if (!["verify", "reset"].includes(action)) {
+    if (!["verify", "reset", "listingCreated"].includes(action)) {
       return new Response(JSON.stringify({ message: "Invalid action type." }), {
         status: 400,
       });
+    }
+
+    if (action === "listingCreated") {
+      await sendActionEmail(email, action);
+      return new Response(
+        JSON.stringify({ message: "Listing creation email sent successfully." }),
+        { status: 200 }
+      );
     }
 
     const secretKey = process.env.JWT_SECRET;

@@ -123,6 +123,46 @@ export const sendActionEmail = async (email, action, token) => {
         },
       ],
     },
+    listingCreated: {
+      subject: "Lookvisa: Your Listing Has Been Created Successfully",
+      html: `
+        <div style="font-family: Arial, sans-serif; margin: 0 auto; padding: 20px; max-width: 600px; background-color: #022150">
+          <table width="100%" border="0" cellpadding="0" cellspacing="0" style="background-color: #1e293b; border-radius: 8px; overflow: hidden;">
+            <tr>
+              <td style="padding: 20px; text-align: center; color: #ffffff;">
+                <img src="cid:logo" alt="Lookvisa Logo" style="max-width: 150px; margin-bottom: 20px;" />
+                <h1 style="margin: 0; font-size: 24px; font-weight: bold;">Your Listing Has Been Created</h1>
+                <p>Congratulations! Your new listing is live on Lookvisa.</p>
+                <hr>
+              </td>
+            </tr>
+            <tr>
+              <td style="padding: 40px 30px; width: 100%; text-align: center;">
+                <p style="color: white; font-weight: 600;">Visit your dashboard to view or manage your listings.</p>
+                <a href="${actionUrls.listingCreated}" style="padding: 10px 20px; color: white; background-color: #3b82f6; text-decoration: none; border-radius: 5px;">Go to Dashboard</a>
+              </td>
+            </tr>
+            <tr>
+              <td style="padding: 20px 30px; text-align: center; color: #ffffff;">
+                <p>If you have any questions, feel free to contact us at <a href="mailto:info@lookvisa.com" style="color: #3b82f6; text-decoration: none;">info@lookvisa.com</a></p>
+              </td>
+            </tr>
+            <tr>
+              <td style="background-color: #1e293b; padding: 10px 20px; text-align: center; color: #fff; font-size: 12px;">
+                &copy; 2024 Lookvisa, All Rights Reserved
+              </td>
+            </tr>
+          </table>
+        </div>
+      `,
+      attachments: [
+        {
+          filename: "Lookvisa.png",
+          path: path.resolve("./app/Lookvisa.png"),
+          cid: "logo",
+        },
+      ],
+    },
   };
 
   const { subject, html } = actionDetails[action];

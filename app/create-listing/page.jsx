@@ -9,6 +9,7 @@ import ListingForm from "@/components/ListingForm";
 import UploadMedia from "@/components/UploadMedia";
 import PreviewListing from "@/components/PreviewListing";
 import toast from "react-hot-toast";
+import { jwtDecode } from 'jwt-decode'
 
 const CreateListing = () => {
     const router = useRouter();
@@ -21,6 +22,16 @@ const CreateListing = () => {
         }
         setToken(storedToken);
     }, []);
+
+    const getEmailFromToken = () => {
+        if (!token) {
+            return null;
+        }
+
+        return jwtDecode(token).email;
+    }
+
+    const email = getEmailFromToken();
 
     const [activeStep, setActiveStep] = useState(1);
 
@@ -50,7 +61,7 @@ const CreateListing = () => {
 
     const handleSubmit = async () => {
         console.log(formData);
-        
+
         try {
             const res = await fetch("/api/listing", {
                 method: "POST",
@@ -62,6 +73,18 @@ const CreateListing = () => {
 
             if (!res.ok) {
                 throw new Error("Failed to create listing");
+            }
+
+            const emailResponse = await fetch("/api/send-email", {
+                method: "POST",
+                body: {
+                    email,
+                    action: "listingCreated",
+                }
+            })
+
+            if (!emailResponse.ok) {
+                throw new Error("Failed to send email")
             }
 
             toast.success("Listing published successfully!");

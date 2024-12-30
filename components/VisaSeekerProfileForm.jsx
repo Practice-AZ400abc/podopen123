@@ -18,6 +18,7 @@ import { jwtDecode } from "jwt-decode";
 import { useRouter } from "next/navigation";
 import { AuthContext } from "./AuthProvider";
 import { Mail } from "lucide-react";
+import DeleteAccountButton from "./DeleteAccountButton";
 
 // Define options for the countries dropdown
 const countryOptions = COUNTRIES.map((country) => ({
@@ -684,6 +685,7 @@ const VisaSeekerProfileForm = ({ }) => {
         >
           Save Profile
         </button>
+        <DeleteAccountButton />
       </form>
     </div>
   );
