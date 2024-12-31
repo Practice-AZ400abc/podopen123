@@ -43,7 +43,8 @@ export default function Home() {
         </div>
 
         <div className="space-y-4">
-          <div className="flex gap-3">
+          <div className="flex gap-3 bg-white  items-center justify-center   p-3 rounded-md border border-blue-400 shadow-md">
+             
             <Select onValueChange={(value) => setSelectedCountry(value)}>
               <SelectTrigger className="h-12">
                 <SearchCheckIcon /> <SelectValue placeholder="Find a visa investor for your project" />
