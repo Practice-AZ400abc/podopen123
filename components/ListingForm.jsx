@@ -30,7 +30,7 @@ const ListingForm = ({ formData, setFormData }) => {
 
     return (
         <form className="w-full flex flex-col md:flex-row items-start justify-evenly gap-4 mt-10">
-            {/* Section 1 */}
+
             <div className="flex flex-col gap-2 w-[30%]">
                 <label className="text-sm font-medium text-gray-700">
                     Short description title of your sponsorship *
@@ -65,6 +65,7 @@ const ListingForm = ({ formData, setFormData }) => {
                         handleFormInput("investmentTimeTable", e.target.value)
                     }
                     className="p-2 bg-gray-50 border rounded-md w-full"
+                    min={new Date().toISOString().split("T")[0]}
                 />
             </div>
 

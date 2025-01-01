@@ -8,8 +8,9 @@ import { Card } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Badge } from "@/components/ui/badge";
-import { MapPin, Building, MessageSquare, Baby, Filter } from "lucide-react";
+import { MapPin, Building, MessageSquare, Baby, Filter, SearchCheckIcon } from "lucide-react";
 import {
+  COUNTRIES,
   INDUSTRIES,
   INVESTMENT_RANGES,
   RELOCATION_TIMEFRAMES,
@@ -126,10 +127,41 @@ export default function SearchPage() {
   }, [country]);
 
   const filteredInvestors = applyFilters(); // Apply filters and sorting to fetched data
-
+  const handleSearch = () => {
+    if (selectedCountry) {
+      // Redirect to the search page with the selected country as a query parameter
+      router.push(`/search/inner?country=${encodeURIComponent(selectedCountry)}`);
+    } else {
+      alert("Please select a country before searching.");
+    }
+  };
   return (
     <div className="min-h-screen w-full bg-gray-50">
       <header className="bg-white border-b">
+      <div className="flex gap-3 bg-white  items-center justify-center max-w-[1000px] mt-6 mx-auto p-3 rounded-md border border-blue-400 shadow-md">
+             
+             <Select onValueChange={(value) => setSelectedCountry(value)}>
+               <SelectTrigger className="h-12">
+                 <SearchCheckIcon /> <SelectValue placeholder="Find a visa investor for your project" />
+               </SelectTrigger>
+               <SelectContent>
+                 {COUNTRIES.map((country) => (
+                   <SelectItem key={country} value={country}>
+                     {country}
+                   </SelectItem>
+                 ))}
+               </SelectContent>
+             </Select>
+ 
+             <Button
+               className="h-12 px-8 bg-blue-400 hover:bg-blue-500"
+               size="lg"
+               onClick={handleSearch} // Call handleSearch on button click
+             >
+ 
+               Find
+             </Button>
+           </div>
         <div className="max-w-7xl mx-auto px-4 py-4 flex flex-col md:flex-row justify-between items-center">
           <h1 className="text-xl font-semibold">
             Investors Seeking Golden Visas in {country}

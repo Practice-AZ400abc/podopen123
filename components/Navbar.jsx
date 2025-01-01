@@ -15,7 +15,7 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 import { AuthContext } from "@/components/AuthProvider";
-import { LogOut } from "lucide-react";
+import { ArrowBigRight, LogOut } from "lucide-react";
 import { jwtDecode } from "jwt-decode";
 
 const Navbar = () => {
@@ -126,13 +126,16 @@ const Navbar = () => {
               onClick={toggleLogout}
             />
             {showLogout && (
-              <div className="absolute top-[120%] right-0 bg-slate-800 shadow-md px-8 py-2 rounded-md flex items-center gap-2">
+              <div className="absolute top-[120%] right-0 bg-white text-black border shadow-md px-8 py-2 rounded-md flex items-center gap-2 w-[230px]">
                 <div className="flex flex-col gap-2">
-                  <ul className="flex flex-col items-start gap-2 text-white">
+                  <ul className="flex flex-col items-start gap-2 text-black">
                     <Link href="/profile">Profile</Link>
                   </ul>
+                  <ul className="flex flex-col items-start gap-2 text-black">
+                    <Link href="/manage-listing">Manage Your Listings </Link>
+                    </ul>
                   <div className="flex gap-2 items-center">
-                    <button onClick={logout} className="text-white">
+                    <button onClick={logout} className="text-black">
                       Logout
                     </button>
                     <LogOut size={14} color="white" />
@@ -170,20 +173,23 @@ const Navbar = () => {
                 onClick={toggleLogout}
               />
               {showLogout && (
-                <div className="absolute top-[120%] right-0 bg-slate-800 shadow-md px-8 py-2 rounded-md flex items-center gap-2">
-                  <div className="flex flex-col gap-2">
-                    <ul className="flex flex-col items-start gap-2 text-white">
+              <div className="absolute top-[120%] right-0 bg-white text-black border shadow-md px-8 py-2 rounded-md flex items-center gap-2 w-[230px]">
+                <div className="flex flex-col gap-2">
+                  <ul className="flex flex-col items-start gap-2 text-black">
                     <Link href="/profile">Profile</Link>
+                  </ul>
+                  <ul className="flex flex-col items-start gap-2 text-black">
+                    <Link href="/manage-listing">Manage Your Listings </Link>
                     </ul>
-                    <div className="flex gap-2 items-center">
-                      <button onClick={logout} className="text-white">
-                        Logout
-                      </button>
-                      <LogOut size={14} color="white" />
-                    </div>
+                  <div className="flex gap-2 items-center">
+                    <button onClick={logout} className="text-black">
+                      Logout
+                    </button>
+                    <LogOut size={14} color="white" />
                   </div>
                 </div>
-              )}
+              </div>
+            )}
             </div>
           ) : (
             ""

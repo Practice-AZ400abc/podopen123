@@ -518,7 +518,7 @@ const VisaSeekerProfileForm = ({ }) => {
 
           <div className="w-full flex flex-col gap-2">
             <label className="text-sm font-medium text-gray-700">
-              * Amount willing to invest (USD)
+              * Amount willing to invest (USD) for a Visa
             </label>
             <select
               value={formData.investmentAmount}
@@ -582,7 +582,8 @@ const VisaSeekerProfileForm = ({ }) => {
               htmlFor="canProvideLiquidityEvidence"
               className="cursor-pointer"
             >
-              * Can provide evidence of liquidity?
+             * Can you provide evidence of
+             liquidity?
             </label>
           </div>
           <div className="flex items-center gap-2">
@@ -604,8 +605,7 @@ const VisaSeekerProfileForm = ({ }) => {
             {errors.canProvideLiquidityEvidence && <span style={{ color: 'red' }}>{errors.canProvideLiquidityEvidence}</span>}
           </div>
           <div className="flex items-center gap-2">
-            <label className="text-sm font-medium">* Public Profile</label>
-            <input
+          <input
               type="checkbox"
               checked={formData.isPublic}
               onChange={(e) =>
@@ -613,6 +613,7 @@ const VisaSeekerProfileForm = ({ }) => {
               }
               className="h-5 w-5 cursor-pointer"
             />
+            <label className="text-sm font-medium">* Make Profile Public for searching Profile</label>
           </div>
         </div>
         {/* Additional Comments */}

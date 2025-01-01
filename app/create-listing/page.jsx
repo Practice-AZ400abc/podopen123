@@ -100,7 +100,7 @@ const CreateListing = () => {
     return (
         <div className="mx-auto container flex flex-col items-center justify-center">
             {/* Main Content */}
-            <div className="w-full flex h-screen overflow-hidden relative transition-all duration-500">
+            <div className="w-full flex h-full overflow-hidden relative transition-all duration-500">
                 {/* Sliding Container */}
                 <div
                     className="flex w-full"
@@ -129,7 +129,7 @@ const CreateListing = () => {
                     </div>
 
                     {/* Step 2 */}
-                    <div className="flex-none w-full h-[70vh] flex items-center justify-between">
+                    <div className="flex-none w-full h-[50vh] flex items-center justify-between">
                         <div className="w-full">
                             <ListingForm formData={formData} setFormData={setFormData} />
                         </div>
@@ -171,7 +171,7 @@ const CreateListing = () => {
                     {activeStep === 4 ? (
                         <Button onClick={handleSubmit}>Publish Listing</Button>
                     ) : (
-                        <Button onClick={handleNext}>Next</Button>
+                        <Button className="bg-green-400 text-black hover:bg-green-200" onClick={handleNext}>Next</Button>
                     )}
                 </div>
             </div>
