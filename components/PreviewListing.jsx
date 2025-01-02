@@ -1,4 +1,4 @@
-import { Image } from "next/image";
+import Image from "next/image";
 
 const PreviewListing = ({ formData }) => {
     return (
@@ -19,6 +19,8 @@ const PreviewListing = ({ formData }) => {
                                 key={index}
                                 className="object-cover rounded-md w-32 h-32"
                                 src={image}
+                                width={"100"}
+                                height={"100"}
                                 alt={`Preview ${index + 1}`}
                             />
                         ))

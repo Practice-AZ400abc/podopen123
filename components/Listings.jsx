@@ -1,6 +1,6 @@
 "use client";
 
-import { Image } from 'next/image'
+import Image from 'next/image';
 import React, { useEffect, useState } from "react";
 import { Button } from "./ui/button";
 import {
@@ -121,6 +121,8 @@ const Listings = ({ listing, refreshListings }) => {
               key={idx}
               className="h-[100px] object-cover rounded-md w-[100px]"
               src={img}
+              width={"100"}
+              height={"100"}
               alt={`Listing Image ${idx + 1}`}
             />
           ))}

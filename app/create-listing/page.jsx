@@ -18,7 +18,7 @@ const CreateListing = () => {
     useEffect(() => {
         const storedToken = localStorage.getItem("token");
         if (!storedToken) {
-            router.push("/login");
+            router.push("/sign-in");
         }
         setToken(storedToken);
     }, []);
@@ -77,11 +77,11 @@ const CreateListing = () => {
 
             const emailResponse = await fetch("/api/send-email", {
                 method: "POST",
-                body: {
+                body: JSON.stringify({
                     email,
                     action: "listingCreated",
-                }
-            })
+                })
+            });
 
             if (!emailResponse.ok) {
                 throw new Error("Failed to send email")

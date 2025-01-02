@@ -2,13 +2,10 @@
 
 import { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation"; // To get query params
-import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
-import { Checkbox } from "@/components/ui/checkbox";
-import { Badge } from "@/components/ui/badge";
-import { MapPin, Building, MessageSquare, Baby, Filter, SearchCheckIcon } from "lucide-react";
+import { MessageSquare, Filter, SearchCheckIcon } from "lucide-react";
 import {
   COUNTRIES,
   INDUSTRIES,
@@ -23,8 +20,10 @@ import {
   SelectValue,
   SelectItem,
 } from "@/components/ui/select";
+import { useRouter } from "next/navigation";
 
 export default function SearchPage() {
+  const router = useRouter(); // Use the Next.js router for navigation
   const searchParams = useSearchParams(); // Get query params from the URL
   const country = searchParams.get("country"); // Extract 'country' parameter
   const [investors, setInvestors] = useState([]); // Store fetched investors
@@ -135,33 +134,29 @@ export default function SearchPage() {
       alert("Please select a country before searching.");
     }
   };
+
+  const handleCountryChange = (country) => {
+    router.push(`/search/inner?country=${country}`);
+  };
+
   return (
     <div className="min-h-screen w-full bg-gray-50">
       <header className="bg-white border-b">
-      <div className="flex gap-3 bg-white  items-center justify-center max-w-[1000px] mt-6 mx-auto p-3 rounded-md border border-blue-400 shadow-md">
-             
-             <Select onValueChange={(value) => setSelectedCountry(value)}>
-               <SelectTrigger className="h-12">
-                 <SearchCheckIcon /> <SelectValue placeholder="Find a visa investor for your project" />
-               </SelectTrigger>
-               <SelectContent>
-                 {COUNTRIES.map((country) => (
-                   <SelectItem key={country} value={country}>
-                     {country}
-                   </SelectItem>
-                 ))}
-               </SelectContent>
-             </Select>
- 
-             <Button
-               className="h-12 px-8 bg-blue-400 hover:bg-blue-500"
-               size="lg"
-               onClick={handleSearch} // Call handleSearch on button click
-             >
- 
-               Find
-             </Button>
-           </div>
+        <div className="flex gap-3 bg-white  items-center justify-center max-w-[1000px] mt-6 mx-auto p-3 rounded-md border border-blue-400 shadow-md">
+
+          <Select onValueChange={(value) => handleCountryChange(value)}>
+            <SelectTrigger className="h-12">
+              <SearchCheckIcon /> <SelectValue placeholder="Find a visa investor for your project" />
+            </SelectTrigger>
+            <SelectContent>
+              {COUNTRIES.map((country) => (
+                <SelectItem key={country} value={country}>
+                  {country}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
         <div className="max-w-7xl mx-auto px-4 py-4 flex flex-col md:flex-row justify-between items-center">
           <h1 className="text-xl font-semibold">
             Investors Seeking Golden Visas in {country}
