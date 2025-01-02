@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { MessageSquare, Filter, SearchCheckIcon } from "lucide-react";
-import PopupImg from "../../Popimg.png";
+import PopupImg from "./Popimg.png";
 import {
   COUNTRIES,
   INDUSTRIES,
