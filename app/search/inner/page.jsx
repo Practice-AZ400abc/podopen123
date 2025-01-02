@@ -353,32 +353,32 @@ export default function SearchPage() {
 
                       <Dialog>
                         <DialogTrigger className="bg-blue-400 flex items-center p-2 text-white justify-center rounded-md">
-                         <MessageSquare className="w-4 h-4 mr-2" />
-                          Message 
-                         </DialogTrigger>
+                          <MessageSquare className="w-4 h-4 mr-2" />
+                          Message
+                        </DialogTrigger>
                         <DialogContent>
                           <DialogHeader>
                             <DialogTitle>Connect with investors</DialogTitle>
                           </DialogHeader>
                           <hr className="mt-2 mb-2 h-1 bg-gray-300" />
-                           <div className="flex items-center justify-center w-full">
-                           <Image src={PopupImg} alt="connect with Invetors" className="h-[200px] w-[200px] rounded-sm  object-cover"/>
-                           </div>
-                            <DialogDescription>
-                            To contact and connect with investors and see their profile please get started with a fast, secure, payment. You’ll also get full access to create a listing to obtain funding from a visa investor for your projects. 
-                            </DialogDescription>
-                            
-                           <ul className="flex flex-col gap-1 mt-2 w-[80%] mx-auto  p-2 rounded-md">
-                           <DialogTitle className="text-blue-400 mt-2">30-Day Pass for $30</DialogTitle>
-                            <li className="text-gray-600 list-disc text-sm">Allows you to contact investors for 30 days to get funding for your projects</li>
-                            <li  className="text-gray-600 list-disc text-sm"> Allows you to create a listing to get funding for your project</li>
-                            <p className="text-black">Renew your pass as needed</p>
-                            </ul>
+                          <div className="flex items-center justify-center w-full">
+                            <Image src={PopupImg} alt="connect with Invetors" className="h-[200px] w-[200px] rounded-sm  object-cover" />
+                          </div>
+                          <DialogDescription>
+                            To contact and connect with investors and see their profile please get started with a fast, secure, payment. You’ll also get full access to create a listing to obtain funding from a visa investor for your projects.
+                          </DialogDescription>
 
-                            <div className="w-full flex items-center justify-end gap-4 ">
-                              <Link href={"/"} className="underline">Not Now</Link>
-                              <Link href={"/"} className="text-white bg-green-500 rounded-sm p-2 hover:bg-green-400">Get Started</Link>
-                           </div>
+                          <ul className="flex flex-col gap-1 mt-2 w-[80%] mx-auto  p-2 rounded-md">
+                            <DialogTitle className="text-blue-400 mt-2">30-Day Pass for $30</DialogTitle>
+                            <li className="text-gray-600 list-disc text-sm">Allows you to contact investors for 30 days to get funding for your projects</li>
+                            <li className="text-gray-600 list-disc text-sm"> Allows you to create a listing to get funding for your project</li>
+                            <p className="text-black">Renew your pass as needed</p>
+                          </ul>
+
+                          <div className="w-full flex items-center justify-end gap-4 ">
+                            <Link href={"/"} className="underline">Not Now</Link>
+                            <Link href={"/"} className="text-white bg-green-500 rounded-sm p-2 hover:bg-green-400">Get Started</Link>
+                          </div>
                         </DialogContent>
                       </Dialog>
 
