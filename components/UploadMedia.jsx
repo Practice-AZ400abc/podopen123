@@ -1,5 +1,6 @@
 import { Plus } from "lucide-react";
 import React, { useState } from "react";
+import Image from "next/image";
 
 const UploadMedia = ({ formData, setFormData }) => {
     const [uploading, setUploading] = useState(false);
@@ -48,18 +49,36 @@ const UploadMedia = ({ formData, setFormData }) => {
     };
 
     return (
-        <div className="bg-gray-200 w-fit p-6 rounded-md">
-            <input
-                type="file"
-                accept="image/*"
-                onChange={handleFileChange}
-                style={{ display: "none" }}
-                id="upload-button"
-            />
-            <label htmlFor="upload-button" className="cursor-pointer flex items-center gap-2">
-                <Plus size={20} />
-                {uploading ? "Uploading..." : "Upload"}
-            </label>
+        <div className="flex">
+            <div className="bg-gray-200 w-fit p-6 rounded-md">
+                <input
+                    type="file"
+                    accept="image/*"
+                    onChange={handleFileChange}
+                    style={{ display: "none" }}
+                    id="upload-button"
+                />
+                <label htmlFor="upload-button" className="cursor-pointer flex items-center gap-2">
+                    <Plus size={20} />
+                    {uploading ? "Uploading..." : "Upload"}
+                </label>
+            </div>
+            <div>
+                {formData.images.length > 0 ? (
+                    formData.images.map((image, index) => (
+                        <Image
+                            key={index}
+                            className="object-cover rounded-md w-32 h-32"
+                            src={image}
+                            width={"100"}
+                            height={"100"}
+                            alt={`Preview ${index + 1}`}
+                        />
+                    ))
+                ) : (
+                    <p>No images to display</p>
+                )}
+            </div >
         </div>
     );
 };
