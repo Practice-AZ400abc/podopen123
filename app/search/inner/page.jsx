@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { MessageSquare, Filter, SearchCheckIcon } from "lucide-react";
-import PopupImg from "./Popimg.png";
+// import PopupImg from "./Popimg.png";
 import {
   COUNTRIES,
   INDUSTRIES,
@@ -362,7 +362,7 @@ export default function SearchPage() {
                           </DialogHeader>
                           <hr className="mt-2 mb-2 h-1 bg-gray-300" />
                           <div className="flex items-center justify-center w-full">
-                            <Image src={PopupImg} alt="connect with Invetors" className="h-[200px] w-[200px] rounded-sm  object-cover" />
+                            {/* <Image src={PopupImg} alt="connect with Invetors" className="h-[200px] w-[200px] rounded-sm  object-cover" /> */}
                           </div>
                           <DialogDescription>
                             To contact and connect with investors and see their profile please get started with a fast, secure, payment. You’ll also get full access to create a listing to obtain funding from a visa investor for your projects.
