@@ -34,7 +34,8 @@ export default function Home() {
   return (
     <main className="min-h-screen bg-gray-50 flex flex-col items-center pt-4 px-4">
       <div className="w-full max-w-3xl mx-auto text-center space-y-6 mt-6">
-        <h1 className="text-2xl md:text-[54px] leading-snug  text-black font-bold">Get sponsorship for your <br /> golden, eb5, investor visa</h1>
+        <h1 className="text-2xl md:text-[54px] leading-snug  text-black font-bold">Connect with Investors to Secure Your Golden or EB-5 Visa
+          Funding</h1>
         <div className="flex gap-3 bg-white  items-center justify-center   p-3 rounded-md border border-blue-400 shadow-md">
 
           <Select onValueChange={(value) => setSelectedCountry(value)}>
@@ -79,7 +80,7 @@ export default function Home() {
           </span>
           <div>
             <Link href={"/sign-up"}>
-              <Button className="bg-blue-400">Get Started</Button>
+              <Button className="bg-green-400 text-white hover:bg-green-500 shadow-sm">Get Started Now</Button>
             </Link>
           </div>
 
