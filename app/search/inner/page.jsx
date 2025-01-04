@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { MessageSquare, Filter, SearchCheckIcon, CheckIcon } from "lucide-react";
-import PopupImg from "./Popimg.png";
+import PopupImg from "../../Popupimg.jpg";
 import {
   COUNTRIES,
   INDUSTRIES,
@@ -31,8 +31,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog"
 import Image from "next/image";
-import { Checkbox } from "@radix-ui/react-checkbox";
-import { RiCheckboxBlankCircleFill } from "react-icons/ri";
+
 import { FaExclamationTriangle } from "react-icons/fa";
 
 
