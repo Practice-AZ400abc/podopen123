@@ -79,7 +79,7 @@ const ProjectsSearch = () => {
 
     return (
         <div className="flex justify-center flex-col items-center gap-2 w-full">
-            <div className="mx-auto rounded-lg w-[90%] bg-gray-50 mt-10 h-screen p-2 gap-4 flex items-start">
+            <div className="mx-auto rounded-lg w-[90%]  mt-10 h-screen p-2 gap-4 flex items-start">
                 <div className="w-full mt-4 flex justify-between gap-4 flex-wrap">
                     {/* Filters */}
                     <div className="bg-white p-4 rounded-lg w-[20%]">
@@ -128,11 +128,12 @@ const ProjectsSearch = () => {
                             </h1>
                             <p>Results: {listings.length}</p>
                         </div>
-                        <div className="mt-4 bg-gray-50 w-full p-4 rounded-lg">
+                        <div className="mt-4  w-full p-4 rounded-lg">
                             {loading ? (
                                 <Spinner />
                             ) : filtered.length === 0 && !loading ? (
-                                <p>No projects found, please choose another criteria</p>
+                                <p className="text-center">Sorry no results for your query please consider
+                                    revising your criteria</p>
                             ) : (
                                 filtered.map((listing) => (
                                     <ProjectCard
