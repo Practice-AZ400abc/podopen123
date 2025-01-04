@@ -76,7 +76,8 @@ export default function Home() {
 
         <div className="space-y-4">
           <span className="text-gray-600 text-sm">
-            Create your Listing  - It only takes a few seconds
+            Join our network of
+            successful visa sponsors. Create your Listing it only takes a few seconds
           </span>
           <div>
             <Link href={"/sign-up"}>
@@ -106,6 +107,7 @@ export default function Home() {
             </span>
           </div> */}
         </div>
+      
       </div>
     </main >
   );

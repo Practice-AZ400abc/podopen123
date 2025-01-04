@@ -84,7 +84,7 @@ const Listings = ({ listing, refreshListings }) => {
     <div className="w-full rounded-md flex flex-col items-start border p-2 justify-start gap-2">
       <div className="flex gap-2 justify-between w-full">
         <h1 className="text-blue-500 uppercase p-2 m-2 rounded-sm text-sm font-bold">
-          {updatedListing.projectDescription}
+          {updatedListing.sponsorShipDescription}
         </h1>
         <div className="flex items-center gap-2">
           <span>Status:</span>
@@ -127,17 +127,21 @@ const Listings = ({ listing, refreshListings }) => {
             />
           ))}
         </div>
-        <p className='text-gray-500 font-thin'>id: {listing._id}</p>
-        <h1 className="text-blue-500 uppercase rounded-sm text-sm font-bold">
+       
+        <div className=" rounded-sm text-gray-600 font-light text-sm">
+          <span className="font-bold text-black">Listing Number: </span>
+          <p className='mt-4'>{updatedListing._id.slice(0, 5)}</p>
+        </div>
+        <div className="  rounded-sm text-gray-600 font-light text-sm">
           <span className="font-bold text-black">Description: </span>
-          {updatedListing.sponsorShipDescription}
-        </h1>
+          <p className='mt-4'>{updatedListing.projectDescription}</p>
+        </div>
         <h1 className="font-light text-gray-800 ">
           <span className="font-bold">Countries for Investors : </span>
           {updatedListing.countriesForInvestors.map((country, idx) => (
             <span
               key={idx}
-              className="bg-blue-200 p-2 m-2 rounded-sm text-sm font-bold"
+              className="underline p-2 m-2 rounded-sm text-sm font-bold"
             >
               {country}
             </span>
@@ -153,35 +157,36 @@ const Listings = ({ listing, refreshListings }) => {
 
       {showDetails && (
         <>
-          <div className="mt-4 flex gap-2 flex-col">
-            <h1 className="mt-2 font-bold">
+          <div className="mt-4 flex ">
+            <h1 className="mt-2 ">
               Country for Investment:{" "}
-              <span className="text-blue-500 uppercase p-2 m-2 rounded-sm text-sm font-bold">
+              <span className=" uppercase p-2 m-2 rounded-sm text-sm ">
                 {updatedListing.countryForInvestment}
+             
               </span>
             </h1>
-            <h1 className="mt-2 font-bold">
+            <h1 className="mt-2 ">
               Industry of Investment:{" "}
-              <span className="text-blue-500 uppercase p-2 m-2 rounded-sm text-sm font-bold">
+              <span className=" uppercase p-2 m-2 rounded-sm text-sm">
                 {updatedListing.investmentIndustry}
               </span>
             </h1>
-            <h1 className="mt-2 font-bold">
+            <h1 className="mt-2 ">
               Minimum Investment:{" "}
-              <span className="text-blue-500 uppercase p-2 m-2 rounded-sm text-sm font-bold">
+              <span className="uppercase p-2 m-2 rounded-sm text-sm">
                 {updatedListing.minimumInvestment}
               </span>
             </h1>
           </div>
           <div className="mt-4 flex gap-2 flex-col">
-            <h1 className="font-bold">Contact Information</h1>
+       
             <div className="flex gap-4">
               <div className="flex gap-2">
-                <span className="font-bold text-blue-700">Telegram:</span>
+                <span className="font-bold ">Telegram:</span>
                 <span>{updatedListing.telegram}</span>
               </div>
               <div className="flex gap-2">
-                <span className="font-bold text-blue-400">
+                <span className="font-bold ">
                   Contact Phone Number:
                 </span>
                 <span>{updatedListing.contactPhone}</span>
@@ -194,7 +199,7 @@ const Listings = ({ listing, refreshListings }) => {
           </div>
           <div className="mt-4 flex gap-2 flex-col">
             <div className="flex gap-2">
-              <h1 className="font-bold text-blue-700">Email</h1>
+              <h1 className="font-bold ">Email</h1>
               <span>{updatedListing.contactEmail}</span>
             </div>
           </div>

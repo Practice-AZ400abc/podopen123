@@ -22,6 +22,9 @@ const ProjectCard = ({ listing, updateImpressions, updateClicks, seenImpressions
         updateClicks(listing._id); // Track click
         router.push(`/Projects/${listing._id}`); // Navigate to dynamic page
     };
+
+
+    const title = listing.sponsorShipDescription;
     const listingNumber = listing._id;
     return (
         <div
@@ -31,8 +34,8 @@ const ProjectCard = ({ listing, updateImpressions, updateClicks, seenImpressions
         >
          
             <div className="flex items-center justify-between">
-                <h1 className="text-2xl font-bold text-blue-400">
-                    {listing.projectDescription}
+                <h1 className="text-xl font-semibold text-gray-600">
+                    {listing.sponsorShipDescription}
                 </h1>
                 <div className="flex items-center gap-2">
                     <Link href={`/Projects/${listing._id}`} className="underline">View Full Listing</Link>

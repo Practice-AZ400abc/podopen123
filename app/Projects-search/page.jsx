@@ -32,6 +32,7 @@ const ProjectsSearch = () => {
             const data = await response.json();
             setListings(data);
             setFiltered(data);
+
         } catch (error) {
             console.error("Error fetching listings:", error);
         } finally {
