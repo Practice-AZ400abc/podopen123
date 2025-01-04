@@ -127,6 +127,7 @@ const Listings = ({ listing, refreshListings }) => {
             />
           ))}
         </div>
+        <p className='text-gray-500 font-thin'>id: {listing._id}</p>
         <h1 className="text-blue-500 uppercase rounded-sm text-sm font-bold">
           <span className="font-bold text-black">Description: </span>
           {updatedListing.sponsorShipDescription}
