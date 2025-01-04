@@ -86,17 +86,32 @@ const Listings = ({ listing, refreshListings }) => {
     handleUpdate({ status: newStatus }); // Update only the status
   };
 
+  const getStatusColor = () => {
+    switch (updatedStatus) {
+      case "Published":
+        return "bg-green-400";
+      case "Draft":
+        return "bg-red-400";
+      case "Inactive":
+        return "bg-yellow-400";
+      case "Expired":
+        return "bg-gray-400";
+      default:
+        return "bg-gray-200";
+    }
+  };
+
   const [showDetails, setShowDetails] = useState(false);
 
   return (
     <div className="w-full rounded-md flex flex-col items-start border p-2 justify-start gap-2">
       <div className="flex gap-2 justify-between w-full">
-
-        <div className="flex items-center justify-between w-full gap-2">
-          <div className='flex gap-2 items-center'>
-            <span>Status:</span>
-            <Button className="bg-green-400 text-white">{updatedStatus}</Button>
-          </div>
+        <h1 className="text-blue-500 uppercase p-2 m-2 rounded-sm text-sm font-bold">
+          {updatedListing.projectDescription}
+        </h1>
+        <div className="flex items-center gap-2">
+          <span>Status:</span>
+          <Button className={`${getStatusColor()} text-white`}>{updatedStatus}</Button>
           <div className="flex items-start justify-between">
             <div className="w-[200px]">
               <Select
@@ -113,10 +128,17 @@ const Listings = ({ listing, refreshListings }) => {
                   </div>
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="Published">✔️ Activate Listing</SelectItem>
-                  <SelectItem value="Draft">✔️ Save Draft</SelectItem>
-                  <SelectItem value="Unpublished">✔️ Unpublish Listing</SelectItem>
+                  <SelectItem value="Published">
+                    {updatedStatus === "Published" && "✔️ "} Activate Listing
+                  </SelectItem>
+                  <SelectItem value="Draft">
+                    {updatedStatus === "Draft" && "✔️ "} Save Draft
+                  </SelectItem>
+                  <SelectItem value="Unpublished">
+                    {updatedStatus === "Unpublished" && "✔️ "} Unpublish Listing
+                  </SelectItem>
                 </SelectContent>
+
               </Select>
             </div>
           </div>
@@ -170,23 +192,23 @@ const Listings = ({ listing, refreshListings }) => {
 
       {showDetails && (
         <>
-          <div className="mt-4 flex ">
-            <h1 className="mt-2 ">
-              Country for Investment:{" "}
-              <span className=" uppercase p-2 m-2 rounded-sm text-sm ">
+          <div className="mt-4 flex gap-2 flex-col">
+            <h1 className="mt-2 font-bold">
+              Country for Investment: {" "}
+              <span className="text-blue-500 uppercase p-2 m-2 rounded-sm text-sm font-bold">
                 {updatedListing.countryForInvestment}
 
               </span>
             </h1>
-            <h1 className="mt-2 ">
-              Industry of Investment:{" "}
-              <span className=" uppercase p-2 m-2 rounded-sm text-sm">
+            <h1 className="mt-2 font-bold">
+              Industry of Investment: {" "}
+              <span className="text-blue-500 uppercase p-2 m-2 rounded-sm text-sm font-bold">
                 {updatedListing.investmentIndustry}
               </span>
             </h1>
-            <h1 className="mt-2 ">
-              Minimum Investment:{" "}
-              <span className="uppercase p-2 m-2 rounded-sm text-sm">
+            <h1 className="mt-2 font-bold">
+              Minimum Investment: {" "}
+              <span className="text-blue-500 uppercase p-2 m-2 rounded-sm text-sm font-bold">
                 {updatedListing.minimumInvestment}
               </span>
             </h1>
@@ -248,7 +270,7 @@ const Listings = ({ listing, refreshListings }) => {
           </Button>
         ) : (
           <Button
-            onClick={() => handleUpdate({ status: "Unpublished" })}
+            onClick={() => handleUpdate({ status: "Inactive" })}
             className="bg-yellow-500 text-white"
           >
             Unpublish Listing
