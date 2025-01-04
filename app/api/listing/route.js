@@ -31,15 +31,13 @@ export const POST = async (req) => {
             minimumInvestment,
             projectDescription,
             images,
+            pdfs,
         } = body;
 
         if (
             !countryForInvestment ||
             !sponsorShipDescription ||
-            !telegram ||
-            !whatsapp ||
             !contactEmail ||
-            !phone ||
             !investmentIndustry ||
             !investmentTimeTable ||
             !countriesForInvestors ||

@@ -10,7 +10,7 @@ import UploadMedia from "@/components/UploadMedia";
 import PreviewListing from "@/components/PreviewListing";
 import toast from "react-hot-toast";
 import { jwtDecode } from 'jwt-decode'
-import ImageUpload from "@/components/UploadMedia";
+import MediaUpload from "@/components/UploadMedia";
 import { PictureInPicture2 } from "lucide-react";
 
 const CreateListing = () => {
@@ -51,6 +51,7 @@ const CreateListing = () => {
         phone: "",
         contactEmail: "",
         images: [],
+        pdfs: [],
     });
 
     const handleNext = () => {
@@ -140,30 +141,53 @@ const CreateListing = () => {
                     {/* Step 3 */}
                     <div className="flex-none w-full h-[70vh] flex items-center justify-between">
                         <div className="w-full">
-                           <div>
-                          <div className="flex gap-2 items-center justify-start">
-                            <PictureInPicture2 color="Skyblue"/>
-                          <h1 className="text-2xl font-bold"> Upload pictures</h1>
-                          </div>
-                            <p> (Png, Jpeg format) or PDFs if
-                            any for your project</p>
-                           </div>
+                            <div>
+                                <div className="flex gap-2 items-center justify-start">
+                                    <PictureInPicture2 color="Skyblue" />
+                                    <h1 className="text-2xl font-bold"> Upload pictures</h1>
+                                </div>
+                                <p> (Png, Jpeg format) or PDFs if
+                                    any for your project</p>
+                            </div>
                             <div className="mt-4">
-                            <ImageUpload
-                                value={formData.images}
-                                onChange={(url) =>
-                                    setFormData({
-                                        ...formData,
-                                        images: [...formData.images, url],
-                                    })
-                                }
-                                onRemove={(url) =>
-                                    setFormData({
-                                        ...formData,
-                                        images: formData.images.filter((image) => image !== url),
-                                    })
-                                }
-                            />
+                                <div className="mb-6">
+                                    <h2 className="text-lg font-semibold">Upload Images</h2>
+                                    <MediaUpload
+                                        value={formData.images}
+                                        onChange={(url) =>
+                                            setFormData({
+                                                ...formData,
+                                                images: [...formData.images, url],
+                                            })
+                                        }
+                                        onRemove={(url) =>
+                                            setFormData({
+                                                ...formData,
+                                                images: formData.images.filter((image) => image !== url),
+                                            })
+                                        }
+                                        acceptedFormats={["image"]}
+                                    />
+                                </div>
+                                <div>
+                                    <h2 className="text-lg font-semibold">Upload PDFs</h2>
+                                    <MediaUpload
+                                        value={formData.pdfs || []}
+                                        onChange={(url) =>
+                                            setFormData({
+                                                ...formData,
+                                                pdfs: [...(formData.pdfs || []), url],
+                                            })
+                                        }
+                                        onRemove={(url) =>
+                                            setFormData({
+                                                ...formData,
+                                                pdfs: formData.pdfs.filter((pdf) => pdf !== url),
+                                            })
+                                        }
+                                        acceptedFormats={["pdf"]}
+                                    />
+                                </div>
                             </div>
                         </div>
                     </div>

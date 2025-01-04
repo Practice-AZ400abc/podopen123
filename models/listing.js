@@ -54,7 +54,11 @@ const ListingSchema = new Schema(
         },
         images: {
             type: [String],
-            required: true
+            required: true,
+        },
+        pdfs: {
+            type: [String],
+            required: false,
         },
         status: {
             type: String,
