@@ -3,6 +3,9 @@
 import React, { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useInView } from "react-intersection-observer";
+import Link from "next/link";
+import { Arrow } from "@radix-ui/react-select";
+import { ArrowRightIcon } from "lucide-react";
 
 const ProjectCard = ({ listing, updateImpressions, updateClicks, seenImpressions }) => {
     const { ref, inView } = useInView({ threshold: 0.5 }); // Trigger when 50% visible
@@ -26,9 +29,15 @@ const ProjectCard = ({ listing, updateImpressions, updateClicks, seenImpressions
             className="bg-white p-4 rounded-lg border mt-4 flex flex-col gap-2 cursor-pointer"
             onClick={handleClick}
         >
-            <h1 className="text-lg underline text-blue-400">
+           <div className="flex items-center justify-between">
+           <h1 className="text-2xl font-bold text-blue-400">
                 {listing.projectDescription}
             </h1>
+          <div className="flex items-center gap-2">
+          <Link href="/Projects/${listing._id}" className="underline">View Full Listing</Link>
+          <ArrowRightIcon className="w-4 h-4 text-blue-400" />
+          </div>
+           </div>
             <div className="flex gap-2 items-center">
                 <div className="flex gap-1 items-center">
                     <h1 className="font-bold">Country where investment:</h1>
@@ -44,10 +53,9 @@ const ProjectCard = ({ listing, updateImpressions, updateClicks, seenImpressions
                 </div>
             </div>
             <div className="flex gap-1 items-center">
-
+                <p>Pulished at:</p>
                 <p className="text-gray-600 w-fit p-2 rounded-md text-sm">
-                    Created at:
-                    {new Date(listing.createdAt).toLocaleDateString()}
+                   {new Date(listing.createdAt).toLocaleDateString()}
                 </p>
             </div>
         </div>
