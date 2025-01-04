@@ -11,6 +11,14 @@ import {
   SelectItem,
 } from "@/components/ui/select";
 import { RiEyeFill } from "react-icons/ri";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog"
 
 const Listings = ({ listing, refreshListings }) => {
   const [token, setToken] = useState(null);
@@ -85,10 +93,10 @@ const Listings = ({ listing, refreshListings }) => {
       <div className="flex gap-2 justify-between w-full">
 
         <div className="flex items-center justify-between w-full gap-2">
-         <div className='flex gap-2 items-center'>
-         <span>Status:</span>
-         <Button className="bg-green-400 text-white">{updatedStatus}</Button>
-         </div>
+          <div className='flex gap-2 items-center'>
+            <span>Status:</span>
+            <Button className="bg-green-400 text-white">{updatedStatus}</Button>
+          </div>
           <div className="flex items-start justify-between">
             <div className="w-[200px]">
               <Select
@@ -127,7 +135,7 @@ const Listings = ({ listing, refreshListings }) => {
             />
           ))}
         </div>
-        
+
         <div className=" rounded-sm text-gray-600 font-light text-sm">
           <span className="font-bold text-black">Title: </span>
           <p className='mt-4'>{updatedListing.sponsorShipDescription}</p>
@@ -136,7 +144,7 @@ const Listings = ({ listing, refreshListings }) => {
           <span className="font-bold text-black">Listing Number: </span>
           <p className='mt-4'>{updatedListing._id.slice(0, 5)}</p>
         </div>
-        
+
         <div className="  rounded-sm text-gray-600 font-light text-sm">
           <span className="font-bold text-black">Description: </span>
           <p className='mt-4'>{updatedListing.projectDescription}</p>
@@ -167,7 +175,7 @@ const Listings = ({ listing, refreshListings }) => {
               Country for Investment:{" "}
               <span className=" uppercase p-2 m-2 rounded-sm text-sm ">
                 {updatedListing.countryForInvestment}
-             
+
               </span>
             </h1>
             <h1 className="mt-2 ">
@@ -184,7 +192,8 @@ const Listings = ({ listing, refreshListings }) => {
             </h1>
           </div>
           <div className="mt-4 flex gap-2 flex-col">
-       
+
+
             <div className="flex gap-4">
               <div className="flex gap-2">
                 <span className="font-bold ">Telegram:</span>
@@ -212,9 +221,24 @@ const Listings = ({ listing, refreshListings }) => {
       )}
 
       <div className="flex items-end justify-end gap-2 w-full">
-        <Button onClick={handleDelete} className="bg-red-500 text-white">
-          Delete
-        </Button>
+        <Dialog>
+          <DialogTrigger className=' text-white rounded-md bg-red-500 p-2'>Delete</DialogTrigger>
+          <DialogContent>
+            <DialogHeader>
+              <DialogTitle>Warning!</DialogTitle>
+              <DialogDescription>
+                Do you want to
+                delete this listing?
+              </DialogDescription>
+
+              <div className='flex gap-2 justify-end'>
+              <Button onClick={handleDelete} className="bg-red-500 text-white w-fit aligh-end">
+                Delete Now
+              </Button>
+              </div>
+            </DialogHeader>
+          </DialogContent>
+        </Dialog>
         {updatedStatus !== "Published" ? (
           <Button
             onClick={() => handleUpdate({ status: "Published" })}
@@ -236,3 +260,4 @@ const Listings = ({ listing, refreshListings }) => {
 };
 
 export default Listings;
+
