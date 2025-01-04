@@ -81,7 +81,7 @@ export default function Home() {
           </span>
           <div>
             <Link href={"/sign-up"}>
-              <Button className="bg-green-400 text-white hover:bg-green-500 shadow-sm">Get Started Now</Button>
+              <Button className="bg-green-400 text-white hover:bg-green-500 shadow-sm">Get Started Now!</Button>
             </Link>
           </div>
 

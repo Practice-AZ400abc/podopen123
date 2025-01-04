@@ -613,7 +613,7 @@ const VisaSeekerProfileForm = ({ }) => {
               }
               className="h-5 w-5 cursor-pointer"
             />
-            <label className="text-sm font-medium">* Make Profile Public for searching Profile</label>
+            <label className="text-sm font-medium">*Make Profile Public for searching       </label>
           </div>
         </div>
         {/* Additional Comments */}

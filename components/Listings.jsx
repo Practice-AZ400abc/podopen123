@@ -83,12 +83,12 @@ const Listings = ({ listing, refreshListings }) => {
   return (
     <div className="w-full rounded-md flex flex-col items-start border p-2 justify-start gap-2">
       <div className="flex gap-2 justify-between w-full">
-        <h1 className="text-blue-500 uppercase p-2 m-2 rounded-sm text-sm font-bold">
-          {updatedListing.sponsorShipDescription}
-        </h1>
-        <div className="flex items-center gap-2">
-          <span>Status:</span>
-          <Button className="bg-green-400 text-white">{updatedStatus}</Button>
+
+        <div className="flex items-center justify-between w-full gap-2">
+         <div className='flex gap-2 items-center'>
+         <span>Status:</span>
+         <Button className="bg-green-400 text-white">{updatedStatus}</Button>
+         </div>
           <div className="flex items-start justify-between">
             <div className="w-[200px]">
               <Select
@@ -127,11 +127,16 @@ const Listings = ({ listing, refreshListings }) => {
             />
           ))}
         </div>
-       
+        
+        <div className=" rounded-sm text-gray-600 font-light text-sm">
+          <span className="font-bold text-black">Title: </span>
+          <p className='mt-4'>{updatedListing.sponsorShipDescription}</p>
+        </div>
         <div className=" rounded-sm text-gray-600 font-light text-sm">
           <span className="font-bold text-black">Listing Number: </span>
           <p className='mt-4'>{updatedListing._id.slice(0, 5)}</p>
         </div>
+        
         <div className="  rounded-sm text-gray-600 font-light text-sm">
           <span className="font-bold text-black">Description: </span>
           <p className='mt-4'>{updatedListing.projectDescription}</p>
