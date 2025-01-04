@@ -5,7 +5,7 @@ import { useSearchParams } from "next/navigation"; // To get query params
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
-import { MessageSquare, Filter, SearchCheckIcon } from "lucide-react";
+import { MessageSquare, Filter, SearchCheckIcon, CheckIcon } from "lucide-react";
 import PopupImg from "./Popimg.png";
 import {
   COUNTRIES,
@@ -31,6 +31,9 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog"
 import Image from "next/image";
+import { Checkbox } from "@radix-ui/react-checkbox";
+import { RiCheckboxBlankCircleFill } from "react-icons/ri";
+import { FaExclamationTriangle } from "react-icons/fa";
 
 
 export default function SearchPage() {
@@ -368,12 +371,32 @@ export default function SearchPage() {
                             To contact and connect with investors and see their profile please get started with a fast, secure, payment. You’ll also get full access to create a listing to obtain funding from a visa investor for your projects.
                           </DialogDescription>
 
-                          <ul className="flex flex-col gap-1 mt-2 w-[80%] mx-auto  p-2 rounded-md">
-                            <DialogTitle className="text-blue-400 mt-2">30-Day Pass for $30</DialogTitle>
-                            <li className="text-gray-600 list-disc text-sm">Allows you to contact investors for 30 days to get funding for your projects</li>
-                            <li className="text-gray-600 list-disc text-sm"> Allows you to create a listing to get funding for your project</li>
-                            <p className="text-black">Renew your pass as needed</p>
-                          </ul>
+                          <div className="w-full flex items-center justify-center gap-4 mt-4">
+                            <div className="p-3 border rounded-md w-[60%] flex flex-col gap-4 ">
+                              <div>
+                                <h1 className="text-sm font-semibold">30 Days Pass</h1>
+                                <p className="text-4xl text-blue-400 font-bold"> $30.00</p>
+                              </div>
+                              <div className="flex flex-col gap-2">
+                                <div className="flex items-center gap-2">
+                                  <div>
+                                    <CheckIcon size={20} />
+                                  </div>
+                                  <h1 className="text-sm text-gray-500 ">Allows you to contact investors for 30 days to get funding for your projects</h1>
+                                </div>
+                                <div className="flex items-center gap-2">
+                                  <div>
+                                    <CheckIcon size={20} />
+                                  </div>
+                                  <h1 className="text-sm text-gray-500 ">Allows you to create a lisLng to get funding for your project </h1>
+                                </div>
+                              </div>
+                              <div className="p-2 border flex gap-2 rounded-md bg-gray-100">
+                                <FaExclamationTriangle />
+                              <p className="text-sm uppercase">Renew your pass as needed</p>
+                              </div>
+                            </div>
+                          </div>
 
                           <div className="w-full flex items-center justify-end gap-4 ">
                             <Link href={"/"} className="underline">Not Now</Link>
