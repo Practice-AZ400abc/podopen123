@@ -131,6 +131,8 @@ const ProjectsSearch = () => {
                         <div className="mt-4 bg-gray-50 w-full p-4 rounded-lg">
                             {loading ? (
                                 <Spinner />
+                            ) : filtered.length === 0 && !loading ? (
+                                <p>No projects found, please choose another criteria</p>
                             ) : (
                                 filtered.map((listing) => (
                                     <ProjectCard
