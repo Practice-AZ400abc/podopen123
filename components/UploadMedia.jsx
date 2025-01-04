@@ -32,7 +32,7 @@ const ImageUpload = ({ onChange, onRemove, value }) => {
             />
           </div>
         ))}
-        <CldUploadWidget uploadPreset={process.env.NEXT_PUBLIC_CLOUDINARY_PRESET_NAME} onUpload={onUpload}>
+        <CldUploadWidget uploadPreset="dqayy79ql" onUpload={onUpload}>
           {({ open }) => {
             return (
               <Button
