@@ -1,86 +1,55 @@
-import { Plus } from "lucide-react";
-import React, { useState } from "react";
+import { CldUploadWidget } from "next-cloudinary";
+import { Plus, Trash } from "lucide-react";
+
 import Image from "next/image";
+import { Button } from "./ui/button";
 
-const UploadMedia = ({ formData, setFormData }) => {
-    const [uploading, setUploading] = useState(false);
 
-    const handleFileChange = async (event) => {
-        const file = event.target.files[0];
-        if (!file) return;
 
-        console.log("Selected file:", file);
+const ImageUpload = ({
+  onChange,
+  onRemove,
+  value,
+}) => {
+  const onUpload = (result) => {
+    onChange(result.info.secure_url);
+  };
 
-        // Upload file to Cloudinary
-        try {
-            setUploading(true);
-
-            const uploadData = new FormData();
-            uploadData.append("file", file);
-            uploadData.append("upload_preset", "lookvisa");
-            uploadData.append("cloud_name", "dqayy79ql");
-
-            const response = await fetch(
-                "https://api.cloudinary.com/v1_1/dqayy79ql/image/upload",
-                {
-                    method: "POST",
-                    body: uploadData,
-                }
-            );
-
-            const data = await response.json();
-
-            if (data.secure_url) {
-                console.log("Uploaded file URL:", data.secure_url);
-
-                // Update formData state with the new URL
-                setFormData((prev) => ({
-                    ...prev,
-                    images: [...(prev.images || []), data.secure_url],
-                }));
-            } else {
-                console.error("Failed to upload image:", data);
-            }
-        } catch (error) {
-            console.error("Error uploading image:", error);
-        } finally {
-            setUploading(false);
-        }
-    };
-
-    return (
-        <div className="flex">
-            <div className="bg-gray-200 w-fit p-6 rounded-md">
-                <input
-                    type="file"
-                    accept="image/*"
-                    onChange={handleFileChange}
-                    style={{ display: "none" }}
-                    id="upload-button"
-                />
-                <label htmlFor="upload-button" className="cursor-pointer flex items-center gap-2">
-                    <Plus size={20} />
-                    {uploading ? "Uploading..." : "Upload"}
-                </label>
+  return (
+    <div>
+      <div className="mb-4 w-fit flex flex-wrap items-center justify-center gap-4 border  p-3 rounded-[10px]">
+        {value.map((url) => (
+          <div key={url} className="relative rounded-[10px] w-[40px] h-[40px]">
+            <div className="absolute top-0 right-0 z-10">
+              <Button type="button" onClick={() => onRemove(url)} size="sm" className="bg-blue-500 hover:bg-blue-200 text-white">
+                <Trash className="h-4 w-4" />
+              </Button>
             </div>
-            <div>
-                {formData.images.length > 0 ? (
-                    formData.images.map((image, index) => (
-                        <Image
-                            key={index}
-                            className="object-cover rounded-md w-32 h-32"
-                            src={image}
-                            width={"100"}
-                            height={"100"}
-                            alt={`Preview ${index + 1}`}
-                        />
-                    ))
-                ) : (
-                    <p>No images to display</p>
-                )}
-            </div >
-        </div>
-    );
+            <Image
+              src={url}
+              alt="collection"
+              width={100}
+              height={100}
+              className="object-cover  rounded-[10px] w-[100px] h-[100px]"
+      
+            />
+          </div>
+        ))}
+          <CldUploadWidget uploadPreset="iqwrzijm" onUpload={onUpload}>
+        {({ open }) => {
+          return (
+            <Button type="button" onClick={() => open()} className="  w-[200px] h-[200px] bg-gray-100 text-black hover:bg-gray-50">
+              <Plus className="h-4 w-4 mr-2" />
+            
+            </Button>
+          );
+        }}
+      </CldUploadWidget>
+      </div>
+
+    
+    </div>
+  );
 };
 
-export default UploadMedia;
+export default ImageUpload;

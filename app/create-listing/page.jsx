@@ -10,6 +10,8 @@ import UploadMedia from "@/components/UploadMedia";
 import PreviewListing from "@/components/PreviewListing";
 import toast from "react-hot-toast";
 import { jwtDecode } from 'jwt-decode'
+import ImageUpload from "@/components/UploadMedia";
+import { PictureInPicture2 } from "lucide-react";
 
 const CreateListing = () => {
     const router = useRouter();
@@ -138,7 +140,31 @@ const CreateListing = () => {
                     {/* Step 3 */}
                     <div className="flex-none w-full h-[70vh] flex items-center justify-between">
                         <div className="w-full">
-                            <UploadMedia formData={formData} setFormData={setFormData} />
+                           <div>
+                          <div className="flex gap-2 items-center justify-start">
+                            <PictureInPicture2 color="Skyblue"/>
+                          <h1 className="text-2xl font-bold"> Upload pictures</h1>
+                          </div>
+                            <p> (Png, Jpeg format) or PDFs if
+                            any for your project</p>
+                           </div>
+                            <div className="mt-4">
+                            <ImageUpload
+                                value={formData.images}
+                                onChange={(url) =>
+                                    setFormData({
+                                        ...formData,
+                                        images: [...formData.images, url],
+                                    })
+                                }
+                                onRemove={(url) =>
+                                    setFormData({
+                                        ...formData,
+                                        images: formData.images.filter((image) => image !== url),
+                                    })
+                                }
+                            />
+                            </div>
                         </div>
                     </div>
 
