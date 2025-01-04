@@ -3,16 +3,20 @@ import { Plus, Trash } from "lucide-react";
 import Image from "next/image";
 import { Button } from "./ui/button";
 
-const MediaUpload = ({ onChange, onRemove, value, acceptedFormats }) => {
+const MediaUpload = ({ onChange, onRemove, value }) => {
   const onUpload = (result) => {
-    onChange(result.info.secure_url);
+    // Get the secure URL of the uploaded file
+    const uploadedFileUrl = result.info.secure_url;
+    onChange(uploadedFileUrl);
   };
 
   return (
     <div>
       <div className="mb-4 w-fit flex flex-wrap items-center justify-center gap-4 border p-3 rounded-[10px]">
+        {/* Render Uploaded Media */}
         {value.map((url) => (
-          <div key={url} className="relative rounded-[10px] w-[40px] h-[40px]">
+          <div key={url} className="relative rounded-[10px] w-[100px] h-[100px]">
+            {/* Remove Button */}
             <div className="absolute top-0 right-0 z-10">
               <Button
                 type="button"
@@ -23,8 +27,14 @@ const MediaUpload = ({ onChange, onRemove, value, acceptedFormats }) => {
                 <Trash className="h-4 w-4" />
               </Button>
             </div>
-            {acceptedFormats.includes("pdf") && url.endsWith(".pdf") ? (
-              <a href={url} target="_blank" rel="noopener noreferrer" className="block">
+            {/* Show PDF or Image */}
+            {url.endsWith(".pdf") ? (
+              <a
+                href={url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="block"
+              >
                 <div className="bg-gray-100 w-[100px] h-[100px] flex items-center justify-center">
                   PDF
                 </div>
@@ -40,22 +50,24 @@ const MediaUpload = ({ onChange, onRemove, value, acceptedFormats }) => {
             )}
           </div>
         ))}
+        {/* Upload Widget */}
         <CldUploadWidget
           uploadPreset={process.env.NEXT_PUBLIC_CLOUDINARY_PRESET_NAME}
-          resourceType={acceptedFormats.includes("pdf") ? "raw" : "image"}
+          options={{
+            resourceType: "auto", // Automatically detect file type
+            multiple: true,
+          }}
           onUpload={onUpload}
         >
-          {({ open }) => {
-            return (
-              <Button
-                type="button"
-                onClick={() => open()}
-                className="w-[200px] h-[200px] bg-gray-100 text-black hover:bg-gray-50"
-              >
-                <Plus className="h-4 w-4 mr-2" />
-              </Button>
-            );
-          }}
+          {({ open }) => (
+            <Button
+              type="button"
+              onClick={() => open()}
+              className="w-[200px] h-[200px] bg-gray-100 text-black hover:bg-gray-50"
+            >
+              <Plus className="h-4 w-4 mr-2" />
+            </Button>
+          )}
         </CldUploadWidget>
       </div>
     </div>

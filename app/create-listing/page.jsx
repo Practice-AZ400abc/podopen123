@@ -151,44 +151,43 @@ const CreateListing = () => {
                             </div>
                             <div className="mt-4">
                                 <div className="mb-6">
-                                    <h2 className="text-lg font-semibold">Upload Images</h2>
+                                    <h2 className="text-lg font-semibold">Upload Media (Images or PDFs)</h2>
                                     <MediaUpload
-                                        value={formData.images}
-                                        onChange={(url) =>
-                                            setFormData({
-                                                ...formData,
-                                                images: [...formData.images, url],
-                                            })
-                                        }
-                                        onRemove={(url) =>
-                                            setFormData({
-                                                ...formData,
-                                                images: formData.images.filter((image) => image !== url),
-                                            })
-                                        }
-                                        acceptedFormats={["image"]}
-                                    />
-                                </div>
-                                <div>
-                                    <h2 className="text-lg font-semibold">Upload PDFs</h2>
-                                    <MediaUpload
-                                        value={formData.pdfs || []}
-                                        onChange={(url) =>
-                                            setFormData({
-                                                ...formData,
-                                                pdfs: [...(formData.pdfs || []), url],
-                                            })
-                                        }
-                                        onRemove={(url) =>
-                                            setFormData({
-                                                ...formData,
-                                                pdfs: formData.pdfs.filter((pdf) => pdf !== url),
-                                            })
-                                        }
-                                        acceptedFormats={["pdf"]}
+                                        value={formData.images.concat(formData.pdfs || [])} // Combine images and PDFs into a single array for rendering
+                                        onChange={(url) => {
+                                            if (url.endsWith(".pdf")) {
+                                                // If file is a PDF, update the pdfs array
+                                                setFormData({
+                                                    ...formData,
+                                                    pdfs: [...(formData.pdfs || []), url],
+                                                });
+                                            } else {
+                                                // If file is an image, update the images array
+                                                setFormData({
+                                                    ...formData,
+                                                    images: [...formData.images, url],
+                                                });
+                                            }
+                                        }}
+                                        onRemove={(url) => {
+                                            if (url.endsWith(".pdf")) {
+                                                // If file is a PDF, remove it from the pdfs array
+                                                setFormData({
+                                                    ...formData,
+                                                    pdfs: formData.pdfs.filter((pdf) => pdf !== url),
+                                                });
+                                            } else {
+                                                // If file is an image, remove it from the images array
+                                                setFormData({
+                                                    ...formData,
+                                                    images: formData.images.filter((image) => image !== url),
+                                                });
+                                            }
+                                        }}
                                     />
                                 </div>
                             </div>
+
                         </div>
                     </div>
 
