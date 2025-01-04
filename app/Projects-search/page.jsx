@@ -126,6 +126,7 @@ const ProjectsSearch = () => {
                             <h1 className="text-2xl font-bold text-blue-400">
                                 Projects Listings
                             </h1>
+                            <p>Results: {listings.length}</p>
                         </div>
                         <div className="mt-4 bg-gray-50 w-full p-4 rounded-lg">
                             {loading ? (

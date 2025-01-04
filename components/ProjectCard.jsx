@@ -26,19 +26,28 @@ const ProjectCard = ({ listing, updateImpressions, updateClicks, seenImpressions
             className="bg-white p-4 rounded-lg border mt-4 flex flex-col gap-2 cursor-pointer"
             onClick={handleClick}
         >
-            <h1 className="text-2xl font-bold underline text-blue-400">
+            <h1 className="text-lg underline text-blue-400">
                 {listing.projectDescription}
             </h1>
-            <div className="flex gap-1 items-center">
-                <h1 className="font-bold">Country where investment:</h1>
-                <p className="text-gray-800 w-fit p-2 rounded-md bg-blue-100">
-                    {listing.countryForInvestment}
-                </p>
+            <div className="flex gap-2 items-center">
+                <div className="flex gap-1 items-center">
+                    <h1 className="font-bold">Country where investment:</h1>
+                    <p className="text-gray-800 w-fit p-2 rounded-md ">
+                        {listing.countryForInvestment}
+                    </p>
+                </div>
+                <div className="flex gap-1 items-center">
+                    <h1 className="font-bold">Minimum investment:</h1>
+                    <p className="text-gray-800 w-fit p-2 rounded-md ">
+                        {listing.minimumInvestment}
+                    </p>
+                </div>
             </div>
             <div className="flex gap-1 items-center">
-                <h1 className="font-bold">Minimum investment:</h1>
-                <p className="text-gray-800 w-fit p-2 rounded-md bg-blue-100">
-                    {listing.minimumInvestment}
+
+                <p className="text-gray-600 w-fit p-2 rounded-md text-sm">
+                    Created at:
+                    {new Date(listing.createdAt).toLocaleDateString()}
                 </p>
             </div>
         </div>
