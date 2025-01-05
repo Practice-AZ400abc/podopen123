@@ -19,6 +19,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog"
+import toast from 'react-hot-toast';
 
 const Listings = ({ listing, refreshListings }) => {
   const [token, setToken] = useState(null);
@@ -46,11 +47,11 @@ const Listings = ({ listing, refreshListings }) => {
         throw new Error("Failed to delete listing");
       }
 
-      alert("Listing deleted successfully!");
+      toast.success("Listing deleted successfully!");
       refreshListings(); // Refetch listings after deletion
     } catch (error) {
       console.error(error);
-      alert("Error deleting listing.");
+      toast.error("Error deleting listing.");
     }
   };
 
@@ -73,10 +74,10 @@ const Listings = ({ listing, refreshListings }) => {
       const updatedListing = await updateResponse.json();
       setUpdatedListing(updatedListing); // Update the state with the updated listing
       setUpdatedStatus(updatedListing.status); // Ensure status is updated
-      alert("Listing updated successfully!");
+      toast.success("Listing updated successfully!");
     } catch (error) {
       console.error(error);
-      alert("Error updating listing.");
+      toast.error("Error updating listing.");
     }
   };
 
@@ -106,12 +107,12 @@ const Listings = ({ listing, refreshListings }) => {
   return (
     <div className="w-full rounded-md flex flex-col items-start border p-2 justify-start gap-2">
       <div className="flex gap-2 justify-between w-full">
-        <h1 className="text-blue-500 uppercase p-2 m-2 rounded-sm text-sm font-bold">
-          {updatedListing.projectDescription}
-        </h1>
-        <div className="flex items-center gap-2">
+       
+        <div className="flex items-center justify-end w-full gap-2">
+          <div className='flex gap-2 border p-2 rounded-md justify-center items-center'>
           <span>Status:</span>
           <Button className={`${getStatusColor()} text-white`}>{updatedStatus}</Button>
+          </div>
           <div className="flex items-start justify-between">
             <div className="w-[200px]">
               <Select
