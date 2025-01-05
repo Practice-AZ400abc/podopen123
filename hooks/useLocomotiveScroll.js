@@ -20,5 +20,7 @@ export const useLocomotiveScroll = (options) => {
     };
   }, [options]);
 
+
+  
   return { containerRef, scrollRef };
 };
