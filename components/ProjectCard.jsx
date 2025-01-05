@@ -19,7 +19,7 @@ const ProjectCard = ({ listing, updateImpressions, updateClicks, seenImpressions
 
     const handleClick = () => {
         updateClicks(listing._id); // Track click
-        router.push(`/Projects/${listing._id}`); // Navigate to dynamic page
+        router.push(`/projects/${listing._id}`); // Navigate to dynamic page
     };
 
     const handleDownload = (e, pdfUrl, index) => {
@@ -49,7 +49,8 @@ const ProjectCard = ({ listing, updateImpressions, updateClicks, seenImpressions
             </div>
             <div className="flex gap-2 items-center">
                 <div className="flex gap-1 items-center">
-                    <h1 className="font-bold">Country where investment:</h1>
+                    <h1 className="font-bold">Country where
+                    investment is needed:</h1>
                     <p className="text-gray-800 w-fit p-2 rounded-md ">
                         {listing.countryForInvestment}
                     </p>
