@@ -7,39 +7,28 @@ export const POST = async (req, { params }) => {
 
     try {
         const today = new Date();
-        const todayString = today.toISOString().split('T')[0]; // Format as "YYYY-MM-DD"
+        const startOfDay = new Date(today.setHours(0, 0, 0, 0));
+        const endOfDay = new Date(today.setHours(23, 59, 59, 999));
 
-        await Listing.findByIdAndUpdate(id, { $inc: { impressions: 1 } });
-
-        const listing = await Listing.findById(id);
-        const dailyImpressions = listing.dailyImpressions || [];
-
-        const todayImpression = dailyImpressions.find(
-            (entry) => entry.date === todayString
+        const result = await Listing.updateOne(
+            {
+                _id: id,
+                "dailyImpressions.date": { $gte: startOfDay, $lte: endOfDay },
+            },
+            {
+                $inc: { impressions: 1, "dailyImpressions.$.impressions": 1 },
+            }
         );
 
-        if (todayImpression) {
-            await Listing.findByIdAndUpdate(
-                id,
+        if (result.matchedCount === 0) {
+            await Listing.updateOne(
+                { _id: id },
                 {
-                    $set: {
-                        "dailyImpressions.$.impressions": todayImpression.impressions + 1,
-                    },
-                },
-                { new: true }
-            );
-        } else {
-            await Listing.findByIdAndUpdate(
-                id,
-                {
+                    $inc: { impressions: 1 },
                     $push: {
-                        dailyImpressions: {
-                            date: todayString,
-                            impressions: 1,
-                        },
+                        dailyImpressions: { date: startOfDay, impressions: 1 },
                     },
-                },
-                { new: true }
+                }
             );
         }
 
