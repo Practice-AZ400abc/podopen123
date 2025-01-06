@@ -82,6 +82,7 @@ const ListingSchema = new Schema(
                 },
                 impressions: {
                     type: Number,
+                    default: 0,
                     required: true,
                 },
             },
