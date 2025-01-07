@@ -43,7 +43,7 @@ const ProjectCard = ({ listing, updateImpressions, updateClicks, seenImpressions
                     {listing.sponsorShipDescription}
                 </h1>
                 <div className="flex items-center gap-2">
-                    <Link href={`/Projects/${listing._id}`} className="underline">View Full Listing</Link>
+                    <Link href={`/projects/${listing._id}`} className="underline">View Full Listing</Link>
                     <ArrowRightIcon className="w-4 h-4 text-blue-400" />
                 </div>
             </div>

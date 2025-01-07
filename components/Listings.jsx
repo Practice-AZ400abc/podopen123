@@ -75,6 +75,7 @@ const Listings = ({ listing, refreshListings }) => {
       setUpdatedListing(updatedListing); // Update the state with the updated listing
       setUpdatedStatus(updatedListing.status); // Ensure status is updated
       toast.success("Listing updated successfully!");
+      refreshListings(); // Refetch listings after update
     } catch (error) {
       console.error(error);
       toast.error("Error updating listing.");
@@ -107,11 +108,11 @@ const Listings = ({ listing, refreshListings }) => {
   return (
     <div className="w-full rounded-md flex flex-col items-start border p-2 justify-start gap-2">
       <div className="flex gap-2 justify-between w-full">
-       
+
         <div className="flex items-center justify-end w-full gap-2">
           <div className='flex gap-2 border p-2 rounded-md justify-center items-center'>
-          <span>Status:</span>
-          <Button className={`${getStatusColor()} text-white`}>{updatedStatus}</Button>
+            <span>Status:</span>
+            <Button className={`${getStatusColor()} text-white`}>{updatedStatus}</Button>
           </div>
           <div className="flex items-start justify-between">
             <div className="w-[200px]">
@@ -215,8 +216,6 @@ const Listings = ({ listing, refreshListings }) => {
             </h1>
           </div>
           <div className="mt-4 flex gap-2 flex-col">
-
-
             <div className="flex gap-4">
               <div className="flex gap-2">
                 <span className="font-bold ">Telegram:</span>
@@ -226,7 +225,7 @@ const Listings = ({ listing, refreshListings }) => {
                 <span className="font-bold ">
                   Contact Phone Number:
                 </span>
-                <span>{updatedListing.contactPhone}</span>
+                <span>{updatedListing.phone}</span>
               </div>
               <div className="flex gap-2">
                 <span className="font-bold text-green-400">Whatsapp:</span>
@@ -255,9 +254,9 @@ const Listings = ({ listing, refreshListings }) => {
               </DialogDescription>
 
               <div className='flex gap-2 justify-end'>
-              <Button onClick={handleDelete} className="bg-red-500 text-white w-fit aligh-end">
-                Delete Now
-              </Button>
+                <Button onClick={handleDelete} className="bg-red-500 text-white w-fit aligh-end">
+                  Delete Now
+                </Button>
               </div>
             </DialogHeader>
           </DialogContent>
@@ -271,7 +270,7 @@ const Listings = ({ listing, refreshListings }) => {
           </Button>
         ) : (
           <Button
-            onClick={() => handleUpdate({ status: "Inactive" })}
+            onClick={() => handleUpdate({ status: "Unpublished" })}
             className="bg-yellow-500 text-white"
           >
             Unpublish Listing

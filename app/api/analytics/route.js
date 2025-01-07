@@ -27,21 +27,29 @@ export const GET = async (req) => {
         const expiredListings = listings.filter((listing) => listing.status === "Expired").length;
 
         const today = new Date();
-        const past30DaysImpressions = listings.map((listing) => {
-            const dailyImpressions = listing.dailyImpressions || [];
 
-            const last30Days = dailyImpressions.filter((entry) => {
-                const entryDate = new Date(entry.date);
-                const diffTime = today - entryDate;
-                const diffDays = diffTime / (1000 * 3600 * 24);
-                return diffDays <= 30;
-            });
-
-            const impressionsInLast30Days = last30Days.reduce((acc, entry) => acc + entry.impressions, 0);
-            return impressionsInLast30Days;
+        const dailyImpressionsLast30Days = Array.from({ length: 30 }, (_, index) => {
+            const date = new Date(today);
+            date.setDate(today.getDate() - index);
+            const dateString = date.toISOString().split("T")[0];
+            return {
+                date: dateString,
+                impressions: 0,
+            };
         });
 
-        const totalLast30DaysImpressions = past30DaysImpressions.reduce((acc, impressions) => acc + impressions, 0);
+        listings.forEach((listing) => {
+            const dailyImpressions = listing.dailyImpressions || [];
+            dailyImpressions.forEach((entry) => {
+                const entryDate = new Date(entry.date).toISOString().split("T")[0];
+                const index = dailyImpressionsLast30Days.findIndex((day) => day.date === entryDate);
+                if (index !== -1) {
+                    dailyImpressionsLast30Days[index].impressions += entry.impressions;
+                }
+            });
+        });
+
+        console.log(dailyImpressionsLast30Days);
 
         return new Response(
             JSON.stringify({
@@ -51,7 +59,7 @@ export const GET = async (req) => {
                     totalImpressions,
                     activeListings,
                     expiredListings,
-                    totalLast30DaysImpressions,
+                    dailyImpressionsLast30Days,
                 },
             }),
             { status: 200 }

@@ -103,6 +103,22 @@ export const PUT = async (req, { params }) => {
             });
         }
 
+        if (
+            updateBody ==
+            {
+                status: "Published",
+            }
+        ) {
+            if (user.subscriptionStatus != "Active") {
+                return new Response(
+                    JSON.stringify({ message: "You need subscription" }),
+                    {
+                        status: 403,
+                    }
+                );
+            }
+        }
+
         const updatedListing = await Listing.findByIdAndUpdate(
             id,
             { ...updateBody },

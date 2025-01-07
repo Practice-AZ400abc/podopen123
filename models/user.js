@@ -137,6 +137,24 @@ const UserSchema = new Schema(
     countryLocation: {
       type: String,
     },
+    stripeCustomerId: {
+      type: String,
+      required: false,
+    },
+    stripeSubscriptionId: {
+      type: String,
+      required: false,
+    },
+    subscriptionStatus: {
+      type: String,
+      required: true,
+      enum: ["Active", "Inactive"],
+      default: "Inactive",
+    },
+    subscriptionExpiresAt: {
+      type: Date,
+      required: false,
+    },
   },
   {
     timestamps: true,

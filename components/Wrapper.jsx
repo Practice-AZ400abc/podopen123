@@ -30,7 +30,7 @@ const Wrapper = () => {
         totalImpressions: 0,
         activeListings: 0,
         expiredListings: 0,
-        totalLast30DaysImpressions: 0,
+        dailyImpressionsLast30Days: [],
     });
     const [loading, setLoading] = useState(false);
     const [activeSection, setActiveSection] = useState("listings");
@@ -211,7 +211,7 @@ const Wrapper = () => {
                         </Card>
                     </div>
 
-                    {loading ? <Spinner /> : <Chart totalLast30DaysImpressions={analytics.totalLast30DaysImpressions} />}
+                    {loading ? <Spinner /> : <Chart dailyImpressionsLast30Days={analytics.dailyImpressionsLast30Days} />}
                 </div>
             )}
         </div>
