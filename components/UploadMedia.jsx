@@ -71,7 +71,7 @@ const MediaUpload = ({ onChange, onRemove, value }) => {
           {({ open }) => (
             <Button
               type="button"
-              onClick={() => open()}
+              onClick={() => open?.()}
               className="w-[200px] h-[200px] bg-gray-100 text-black hover:bg-gray-50"
             >
               <Plus className="h-4 w-4 mr-2" />

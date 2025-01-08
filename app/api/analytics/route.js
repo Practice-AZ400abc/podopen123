@@ -49,8 +49,6 @@ export const GET = async (req) => {
             });
         });
 
-        console.log(dailyImpressionsLast30Days);
-
         return new Response(
             JSON.stringify({
                 success: true,

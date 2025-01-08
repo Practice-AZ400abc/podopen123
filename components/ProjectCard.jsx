@@ -3,8 +3,9 @@
 import React, { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useInView } from "react-intersection-observer";
-import Link from "next/link";
 import { ArrowRightIcon } from "lucide-react";
+import Image from "next/image";
+import Link from "next/link";
 
 const ProjectCard = ({ listing, updateImpressions, updateClicks, seenImpressions }) => {
     const { ref, inView } = useInView({ threshold: 0.5 }); // Trigger when 50% visible
@@ -22,11 +23,11 @@ const ProjectCard = ({ listing, updateImpressions, updateClicks, seenImpressions
         router.push(`/projects/${listing._id}`); // Navigate to dynamic page
     };
 
-    const handleDownload = (e, pdfUrl, index) => {
+    const handleDownload = (e, fileUrl, index) => {
         e.stopPropagation(); // Prevent parent click event
         const link = document.createElement("a");
-        link.href = pdfUrl;
-        link.download = `Listing-${listing._id}-File-${index + 1}.pdf`;
+        link.href = fileUrl;
+        link.download = `Listing-${listing._id}-Attachment-${index + 1}`;
         link.click();
     };
 
@@ -43,14 +44,15 @@ const ProjectCard = ({ listing, updateImpressions, updateClicks, seenImpressions
                     {listing.sponsorShipDescription}
                 </h1>
                 <div className="flex items-center gap-2">
-                    <Link href={`/projects/${listing._id}`} className="underline">View Full Listing</Link>
+                    <Link href={`/projects/${listing._id}`} className="underline">
+                        View Full Listing
+                    </Link>
                     <ArrowRightIcon className="w-4 h-4 text-blue-400" />
                 </div>
             </div>
             <div className="flex gap-2 items-center">
                 <div className="flex gap-1 items-center">
-                    <h1 className="font-bold">Country where
-                    investment is needed:</h1>
+                    <h1 className="font-bold">Country where investment is needed:</h1>
                     <p className="text-gray-800 w-fit p-2 rounded-md ">
                         {listing.countryForInvestment}
                     </p>
@@ -70,28 +72,38 @@ const ProjectCard = ({ listing, updateImpressions, updateClicks, seenImpressions
                     </p>
                 </div>
                 <div className="flex gap-1 items-center">
-                    <p>Listing Number :</p>
+                    <p>Listing Number:</p>
                     <p className="text-gray-600 w-fit p-2 rounded-md text-sm">
                         {listingNumber.substring(0, 8)}
                     </p>
                 </div>
             </div>
-            {listing.pdfs?.length > 0 && (
+            {listing.attachments?.length > 0 && (
                 <div className="mt-4">
-                    <h2 className="font-bold text-lg">Download Files:</h2>
-                    <ul className="list-disc ml-5 mt-2 space-y-2">
-                        {listing.pdfs.map((pdfUrl, index) => (
-                            <li key={index} className="flex items-center gap-2">
-                                <span>File {index + 1}</span>
-                                <button
-                                    onClick={(e) => handleDownload(e, pdfUrl, index)}
-                                    className="bg-blue-500 text-white px-4 py-1 rounded-lg"
-                                >
-                                    Download
-                                </button>
-                            </li>
+                    <h2 className="font-bold text-lg">Attachments:</h2>
+                    <div className="flex flex-wrap gap-4 mt-2">
+                        {listing.attachments.map((fileUrl, index) => (
+                            <div key={index} className="relative w-[100px] h-[100px]">
+                                {fileUrl.endsWith(".pdf") ? (
+                                    <div
+                                        onClick={(e) => handleDownload(e, fileUrl, index)}
+                                        className="bg-gray-100 w-full h-full flex items-center justify-center text-center text-sm cursor-pointer border rounded-md"
+                                    >
+                                        <span>PDF {index + 1}</span>
+                                    </div>
+                                ) : (
+                                    <Image
+                                        src={fileUrl}
+                                        alt={`Attachment ${index + 1}`}
+                                        width={100}
+                                        height={100}
+                                        className="object-cover rounded-md cursor-pointer"
+                                        onClick={(e) => handleDownload(e, fileUrl, index)}
+                                    />
+                                )}
+                            </div>
                         ))}
-                    </ul>
+                    </div>
                 </div>
             )}
         </div>

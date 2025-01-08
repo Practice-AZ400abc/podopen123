@@ -148,16 +148,28 @@ const Listings = ({ listing, refreshListings }) => {
       </div>
       <div className="flex flex-col gap-4">
         <div className="flex gap-2">
-          {updatedListing.images.map((img, idx) => (
-            <Image
-              key={idx}
-              className="h-[100px] object-cover rounded-md w-[100px]"
-              src={img}
-              width={"100"}
-              height={"100"}
-              alt={`Listing Image ${idx + 1}`}
-            />
-          ))}
+          {updatedListing.attachments.map((attachment, index) =>
+            attachment.endsWith(".pdf") ? (
+              <a
+                key={index}
+                href={attachment}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="border rounded-md p-2 bg-gray-100 w-32 h-32 flex items-center justify-center"
+              >
+                <p className="text-gray-500">PDF {index + 1}</p>
+              </a>
+            ) : (
+              <Image
+                key={index}
+                src={attachment}
+                alt={`Attachment ${index + 1}`}
+                width={100}
+                height={100}
+                className="object-cover rounded-md w-32 h-32"
+              />
+            )
+          )}
         </div>
 
         <div className=" rounded-sm text-gray-600 font-light text-sm">
@@ -175,7 +187,7 @@ const Listings = ({ listing, refreshListings }) => {
         </div>
         <h1 className="font-light text-gray-800 ">
           <span className="font-bold">Investors needed from
-          these countri(es): </span>
+            these countri(es): </span>
           {updatedListing.countriesForInvestors.map((country, idx) => (
             <span
               key={idx}
@@ -197,7 +209,7 @@ const Listings = ({ listing, refreshListings }) => {
         <>
           <div className="mt-4 flex gap-2 flex-col">
             <h1 className="mt-2 font-bold">
-            Country where investment is needed: {" "}
+              Country where investment is needed: {" "}
               <span className="text-blue-500 uppercase p-2 m-2 rounded-sm text-sm font-bold">
                 {updatedListing.countryForInvestment}
 

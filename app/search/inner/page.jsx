@@ -408,7 +408,7 @@ export default function SearchPage() {
 
                           <div className="w-full flex items-center justify-end gap-4 ">
                             <Link href={"/"} className="underline">Not Now</Link>
-                            <Link href={isLoggedIn ? "/sign-in" : "/"} className="text-white bg-green-500 rounded-sm p-2 hover:bg-green-400">Get Started</Link>
+                            <Link href={!isLoggedIn ? "/sign-in" : "/"} className="text-white bg-green-500 rounded-sm p-2 hover:bg-green-400">Get Started</Link>
                           </div>
                         </DialogContent>
                       </Dialog>

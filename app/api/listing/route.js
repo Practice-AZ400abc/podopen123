@@ -41,8 +41,7 @@ export const POST = async (req) => {
             !investmentTimeTable ||
             !countriesForInvestors ||
             !minimumInvestment ||
-            !projectDescription ||
-            !images
+            !projectDescription
         ) {
             return new Response(
                 JSON.stringify({ message: "Missing required fields" }),
