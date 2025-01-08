@@ -52,13 +52,15 @@ const ListingSchema = new Schema(
             type: String,
             required: true,
         },
-        images: {
-            type: [String],
-            required: true,
-        },
-        pdfs: {
+        attachments: {
             type: [String],
             required: false,
+            validate: {
+                validator: function (value) {
+                    return value.length <= 3;
+                },
+                message: "A listing can have at most 3 attachments.",
+            },
         },
         status: {
             type: String,

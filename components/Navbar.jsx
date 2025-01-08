@@ -25,11 +25,17 @@ const Navbar = () => {
   const profileRef = useRef(null);
 
   const [avatarURL, setAvatarURL] = useState(null);
+  const [role, setRole] = useState(null);
+  const [firstName, setFirstName] = useState(null);
+  const [lastName, setLastName] = useState(null);
 
   // Decode the token to get the avatarURL
   useEffect(() => {
     if (token) {
       setAvatarURL(jwtDecode(token).avatarURL);
+      setRole(jwtDecode(token).role);
+      setFirstName(jwtDecode(token).firstName);
+      setLastName(jwtDecode(token).lastName);
     }
   }, [token]);
 
@@ -51,7 +57,9 @@ const Navbar = () => {
   }, []);
 
   // Function to check if a link is active
-  const isActive = (path) => { return pathname === path };
+  const isActive = (path) => {
+    return pathname === path;
+  };
 
   return (
     <div className="w-full border-b border-gray-200 bg-white z-10 sticky">
@@ -126,14 +134,17 @@ const Navbar = () => {
               onClick={toggleLogout}
             />
             {showLogout && (
-              <div className="absolute top-[120%] right-0 bg-white text-black border shadow-md px-8 py-2 rounded-md flex items-center gap-2 w-[230px]">
+              <div className="absolute top-[120%] right-0 bg-white text-black border shadow-md px-8 py-2 rounded-md flex flex-col items-center gap-2 w-[230px]">
+                <p className="font-bold text-lg">{firstName} {lastName}</p>
                 <div className="flex flex-col gap-2">
                   <ul className="flex flex-col items-start gap-2 text-black">
                     <Link href="/profile">Profile</Link>
                   </ul>
-                  <ul className="flex flex-col items-start gap-2 text-black">
-                    <Link href="/manage-listing">Manage Your Listings </Link>
+                  {role === "Visa Sponsor" && (
+                    <ul className="flex flex-col items-start gap-2 text-black">
+                      <Link href="/manage-listing">Manage Your Listings </Link>
                     </ul>
+                  )}
                   <div className="flex gap-2 items-center">
                     <button onClick={logout} className="text-black">
                       Logout
@@ -173,23 +184,26 @@ const Navbar = () => {
                 onClick={toggleLogout}
               />
               {showLogout && (
-              <div className="absolute top-[120%] right-0 bg-white text-black border shadow-md px-8 py-2 rounded-md flex items-center gap-2 w-[230px]">
-                <div className="flex flex-col gap-2">
-                  <ul className="flex flex-col items-start gap-2 text-black">
-                    <Link href="/profile">Profile</Link>
-                  </ul>
-                  <ul className="flex flex-col items-start gap-2 text-black">
-                    <Link href="/manage-listing">Manage Your Listings </Link>
+                <div className="absolute top-[120%] right-0 bg-white text-black border shadow-md px-8 py-2 rounded-md flex flex-col items-center gap-2 w-[230px]">
+                  <p className="font-bold text-lg">{firstName} {lastName}</p>
+                  <div className="flex flex-col gap-2">
+                    <ul className="flex flex-col items-start gap-2 text-black">
+                      <Link href="/profile">Profile</Link>
                     </ul>
-                  <div className="flex gap-2 items-center">
-                    <button onClick={logout} className="text-black">
-                      Logout
-                    </button>
-                    <LogOut size={14} color="white" />
+                    {role === "Visa Sponsor" && (
+                      <ul className="flex flex-col items-start gap-2 text-black">
+                        <Link href="/manage-listing">Manage Your Listings </Link>
+                      </ul>
+                    )}
+                    <div className="flex gap-2 items-center">
+                      <button onClick={logout} className="text-black">
+                        Logout
+                      </button>
+                      <LogOut size={14} color="white" />
+                    </div>
                   </div>
                 </div>
-              </div>
-            )}
+              )}
             </div>
           ) : (
             ""
@@ -220,17 +234,13 @@ const Navbar = () => {
                 </Link>
                 <Link
                   href="/pricing"
-                  className={
-                    isActive("/pricing") ? "underline font-bold" : ""
-                  }
+                  className={isActive("/pricing") ? "underline font-bold" : ""}
                 >
                   Pricing
                 </Link>
                 <Link
                   href="/blogs"
-                  className={
-                    isActive("/blogs") ? "underline font-bold" : ""
-                  }
+                  className={isActive("/blogs") ? "underline font-bold" : ""}
                 >
                   Blogs
                 </Link>

@@ -1,6 +1,8 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useContext } from "react";
+import { AuthContext } from "@/components/AuthProvider";
 import { useSearchParams } from "next/navigation"; // To get query params
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -36,6 +38,7 @@ import { FaExclamationTriangle } from "react-icons/fa";
 
 
 export default function SearchPage() {
+  const { isLoggedIn } = useContext(AuthContext);
   const router = useRouter(); // Use the Next.js router for navigation
   const searchParams = useSearchParams(); // Get query params from the URL
   const country = searchParams.get("country"); // Extract 'country' parameter
@@ -398,14 +401,14 @@ export default function SearchPage() {
                               </div>
                               <div className="p-2 border flex gap-2 rounded-md bg-gray-100">
                                 <FaExclamationTriangle />
-                              <p className="text-sm uppercase">Renew your pass as needed</p>
+                                <p className="text-sm uppercase">Renew your pass as needed</p>
                               </div>
                             </div>
                           </div>
 
                           <div className="w-full flex items-center justify-end gap-4 ">
                             <Link href={"/"} className="underline">Not Now</Link>
-                            <Link href={"/"} className="text-white bg-green-500 rounded-sm p-2 hover:bg-green-400">Get Started</Link>
+                            <Link href={isLoggedIn ? "/sign-in" : "/"} className="text-white bg-green-500 rounded-sm p-2 hover:bg-green-400">Get Started</Link>
                           </div>
                         </DialogContent>
                       </Dialog>

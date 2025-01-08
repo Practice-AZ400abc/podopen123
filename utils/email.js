@@ -34,6 +34,7 @@ export const sendActionEmail = async (email, action, token) => {
   const actionUrls = {
     verify: `${baseUrl}/verify-email?token=${token}`,
     reset: `${baseUrl}/reset-password?token=${token}`,
+    listingCreated: `${baseUrl}/manage-listing`,
   };
 
   const actionDetails = {

@@ -30,8 +30,7 @@ export const POST = async (req) => {
             countriesForInvestors,
             minimumInvestment,
             projectDescription,
-            images,
-            pdfs,
+            attachments,
         } = body;
 
         if (

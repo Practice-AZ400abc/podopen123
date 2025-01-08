@@ -1,15 +1,13 @@
 "use client";
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
-import Link from "next/link";
 import React, { useState, useEffect } from "react";
 import ListingImage from "@/app/ListingImage.png";
 import Image from "next/image";
 import ListingForm from "@/components/ListingForm";
-import UploadMedia from "@/components/UploadMedia";
 import PreviewListing from "@/components/PreviewListing";
 import toast from "react-hot-toast";
-import { jwtDecode } from 'jwt-decode'
+import { jwtDecode } from "jwt-decode";
 import MediaUpload from "@/components/UploadMedia";
 import { PictureInPicture2 } from "lucide-react";
 
@@ -31,7 +29,7 @@ const CreateListing = () => {
         }
 
         return jwtDecode(token).email;
-    }
+    };
 
     const email = getEmailFromToken();
 
@@ -50,8 +48,7 @@ const CreateListing = () => {
         telegram: "",
         phone: "",
         contactEmail: "",
-        images: [],
-        pdfs: [],
+        attachments: [],
     });
 
     const handleNext = () => {
@@ -69,7 +66,7 @@ const CreateListing = () => {
             const res = await fetch("/api/listing", {
                 method: "POST",
                 headers: {
-                    "Authorization": `Bearer ${token}`,
+                    Authorization: `Bearer ${token}`,
                 },
                 body: JSON.stringify(formData),
             });
@@ -83,11 +80,11 @@ const CreateListing = () => {
                 body: JSON.stringify({
                     email,
                     action: "listingCreated",
-                })
+                }),
             });
 
             if (!emailResponse.ok) {
-                throw new Error("Failed to send email")
+                throw new Error("Failed to send email");
             }
 
             toast.success("Listing published successfully!");
@@ -146,48 +143,32 @@ const CreateListing = () => {
                                     <PictureInPicture2 color="Skyblue" />
                                     <h1 className="text-2xl font-bold"> Upload pictures</h1>
                                 </div>
-                                <p> (Png, Jpeg format) or PDFs if
-                                    any for your project</p>
+                                <p> (Png, Jpeg format) or PDFs if any for your project</p>
                             </div>
                             <div className="mt-4">
                                 <div className="mb-6">
-                                    <h2 className="text-lg font-semibold">Upload Media (Images or PDFs)</h2>
+                                    <h2 className="text-lg font-semibold">
+                                        Upload Media (Images or PDFs)
+                                    </h2>
                                     <MediaUpload
-                                        value={formData.images.concat(formData.pdfs || [])} // Combine images and PDFs into a single array for rendering
+                                        value={formData.attachments} // Combine images and PDFs into a single array for rendering
                                         onChange={(url) => {
-                                            if (url.endsWith(".pdf")) {
-                                                // If file is a PDF, update the pdfs array
-                                                setFormData({
-                                                    ...formData,
-                                                    pdfs: [...(formData.pdfs || []), url],
-                                                });
-                                            } else {
-                                                // If file is an image, update the images array
-                                                setFormData({
-                                                    ...formData,
-                                                    images: [...formData.images, url],
-                                                });
-                                            }
+                                            setFormData({
+                                                ...formData,
+                                                attachments: [...formData.attachments, url],
+                                            });
                                         }}
                                         onRemove={(url) => {
-                                            if (url.endsWith(".pdf")) {
-                                                // If file is a PDF, remove it from the pdfs array
-                                                setFormData({
-                                                    ...formData,
-                                                    pdfs: formData.pdfs.filter((pdf) => pdf !== url),
-                                                });
-                                            } else {
-                                                // If file is an image, remove it from the images array
-                                                setFormData({
-                                                    ...formData,
-                                                    images: formData.images.filter((image) => image !== url),
-                                                });
-                                            }
+                                            setFormData({
+                                                ...formData,
+                                                attachments: formData.attachments.filter(
+                                                    (attachment) => attachment !== url
+                                                ),
+                                            });
                                         }}
                                     />
                                 </div>
                             </div>
-
                         </div>
                     </div>
 
@@ -220,7 +201,12 @@ const CreateListing = () => {
                     {activeStep === 4 ? (
                         <Button onClick={handleSubmit}>Publish Listing</Button>
                     ) : (
-                        <Button className="bg-green-400 text-black hover:bg-green-200" onClick={handleNext}>Next</Button>
+                        <Button
+                            className="bg-green-400 text-black hover:bg-green-200"
+                            onClick={handleNext}
+                        >
+                            Next
+                        </Button>
                     )}
                 </div>
             </div>

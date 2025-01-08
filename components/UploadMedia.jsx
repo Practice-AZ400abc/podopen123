@@ -2,11 +2,17 @@ import { CldUploadWidget } from "next-cloudinary";
 import { Plus, Trash } from "lucide-react";
 import Image from "next/image";
 import { Button } from "./ui/button";
+import toast from "react-hot-toast";
 
 const MediaUpload = ({ onChange, onRemove, value }) => {
   const onUpload = (result) => {
-    // Get the secure URL of the uploaded file
     const uploadedFileUrl = result.info.secure_url;
+
+    if (value.length >= 3) {
+      toast.error("You can upload a maximum of 3 attachments.");
+      return;
+    }
+
     onChange(uploadedFileUrl);
   };
 
@@ -15,7 +21,10 @@ const MediaUpload = ({ onChange, onRemove, value }) => {
       <div className="mb-4 w-fit flex flex-wrap items-center justify-center gap-4 border p-3 rounded-[10px]">
         {/* Render Uploaded Media */}
         {value.map((url) => (
-          <div key={url} className="relative rounded-[10px] w-[100px] h-[100px]">
+          <div
+            key={url}
+            className="relative rounded-[10px] w-[100px] h-[100px]"
+          >
             {/* Remove Button */}
             <div className="absolute top-0 right-0 z-10">
               <Button
