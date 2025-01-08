@@ -80,15 +80,8 @@ const ProjectsSearch = () => {
 
     return (
         <div className="flex justify-center flex-col items-center gap-2 w-full">
-            <div className="mx-auto rounded-lg w-[90%]  mt-10 h-screen p-2 gap-4 flex items-start">
-                <div className="w-full mt-4 flex justify-between gap-4 flex-wrap">
-                    {/* Filters */}
-                    <div className="bg-white p-4 rounded-lg w-[20%]">
-                        <div className="w-full flex justify-between">
-                            <h1 className="font-bold text-blue-400">Apply Filters</h1>
-                            <Filter />
-                        </div>
-                        <div className="mt-4">
+              <div className="mt-4 w-[80%]  m-auto">
+                            <div className="border rounded-md p-4 border-blue-400 ">
                             <Select value={country} onValueChange={handleCountryChange}>
                                 <SelectTrigger className="h-12">
                                     <SelectValue placeholder="Select country where you need investment" />
@@ -101,7 +94,17 @@ const ProjectsSearch = () => {
                                     ))}
                                 </SelectContent>
                             </Select>
+                            </div>
                         </div>
+            <div className="mx-auto rounded-lg w-[80%]  mt-4 h-screen p-2 gap-4 flex items-start">
+                <div className="w-full  flex justify-between gap-4 flex-wrap">
+                    {/* Filters */}
+                    <div className="bg-white p-4 rounded-lg w-[20%]">
+                        <div className="w-full flex justify-between">
+                            <h1 className="font-bold text-blue-400">Apply Filters</h1>
+                            <Filter />
+                        </div>
+                      
                         <div className="mt-4">
                             <Select
                                 value={selectedIndustry}

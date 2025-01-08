@@ -170,10 +170,15 @@ export default function SearchPage() {
             </SelectContent>
           </Select>
         </div>
+        
         <div className="max-w-7xl mx-auto px-4 py-4 flex flex-col md:flex-row justify-between items-center">
+          <div className="">
           <h1 className="text-xl font-semibold">
             Investors Seeking Golden Visas in {country}
           </h1>
+          <p> Result: {investors.length}</p>
+          </div>
+        
           <div className="flex gap-4 w-full md:w-[200px] mt-2 md:mt-0">
             <Select onValueChange={(value) => handleSortChange(value)}>
               <SelectTrigger className="h-12">
@@ -203,10 +208,11 @@ export default function SearchPage() {
           </div>
         </div>
       </header>
-
       <main className="max-w-full mx-auto px-4 py-6">
+        
         <div className="flex flex-col md:flex-row gap-6 mx-auto max-w-7xl">
           {/* Filters */}
+          
           <div className="col-span-3">
             <Card className="p-4">
               <h2 className="font-semibold mb-4">Apply Filters</h2>
@@ -270,15 +276,15 @@ export default function SearchPage() {
           </div>
 
           {/* Investors Listings */}
-          <div className="">
+          <div className=" w-full ">
             {loading ? (
               <p>Loading investors...</p>
             ) : filteredInvestors.length > 0 ? (
-              <div className="space-y-4">
+              <div className="space-y-4 w-full">
                 {filteredInvestors.map((investor) => (
                   <Card
                     key={investor._id}
-                    className="p-4 hover:shadow-md transition-shadow"
+                    className="p-4 w-full hover:shadow-md transition-shadow"
                   >
                     <div className="flex flex-wrap justify-between items-start w-full">
                       <div className="grid grid-cols-2 items-center gap-5 ">
