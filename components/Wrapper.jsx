@@ -211,7 +211,7 @@ const Wrapper = () => {
                         </Card>
                     </div>
 
-                    {loading ? <Spinner /> : <Chart dailyImpressionsLast30Days={analytics.dailyImpressionsLast30Days} />}
+                    {loading ? <Spinner /> : <Chart dailyImpressionsLast30Days={analytics.dailyImpressionsLast30Days}/>}
                 </div>
             )}
         </div>
