@@ -34,8 +34,6 @@ export default function Home() {
   return (
     <main className="min-h-screen bg-gray-50 flex flex-col items-center pt-4 px-4">
       <div className="w-full max-w-3xl mx-auto text-center space-y-6 mt-6">
-        <h1 className="text-2xl md:text-[54px] leading-snug  text-black font-bold">Connect with Investors to Secure Your Golden or EB-5 Visa
-          Funding</h1>
         <div className="flex gap-3 bg-white  items-center justify-center   p-3 rounded-md border border-blue-400 shadow-md">
 
           <Select onValueChange={(value) => setSelectedCountry(value)}>
@@ -60,6 +58,9 @@ export default function Home() {
             Search
           </Button>
         </div>
+        <h1 className="text-2xl md:text-[54px] leading-snug  text-black font-bold">Connect with Investors to Secure Your Golden or EB-5 Visa
+          Funding</h1>
+
         <div className="space-y-4 flex items-center flex-col">
 
           <div className="bg-gray-100 w-full flex items-center justify-center border">
@@ -74,40 +75,18 @@ export default function Home() {
           </p> */}
         </div>
 
-        <div className="space-y-4">
-          <span className="text-gray-600 text-sm">
-            Join our network of
-            successful visa sponsors. Create your Listing it only takes a few seconds
-          </span>
+        <div className="flex flex-col gap-2">
           <div>
             <Link href={"/sign-up"}>
-              <Button className="bg-green-400 text-white hover:bg-green-500 shadow-sm">Get Started Now!</Button>
+              <Button className="bg-green-400 text-white hover:bg-green-500 shadow-sm">Get Started Now !</Button>
             </Link>
           </div>
+          <span className="text-gray-600 text-sm mt-4 max-w-[400px] m-auto">
+            Join our network of successful visa sponsors Create your Listing - It only takes a few seconds
+          </span>
 
-          {/* <div className="text-center">
-
-            <span className="text-gray-600 text-sm">
-              LookVisa helps investors obtain investors visa, golden visas, EB5 visas
-            </span>
-          </div>
-          <div className="text-center text-sm text-gray-500">
-            <span>or</span>
-          </div> */}
-
-          {/* <div className="text-center">
-            <Link
-              href="/sign-in"
-              className="text-blue-600 hover:text-blue-800 text-sm font-medium"
-            >
-              login as a visa sponsor
-            </Link>{" "}
-            <span className="text-gray-600 text-sm">
-              to contact the investors seeking investment and golden visas directly
-            </span>
-          </div> */}
         </div>
-      
+
       </div>
     </main >
   );

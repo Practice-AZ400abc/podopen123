@@ -416,7 +416,7 @@ export default function SearchPage() {
                 ))}
               </div>
             ) : (
-              <p>No investors found.</p>
+              <p className="text-center">Sorry no results for your query please consider revising your criteria.</p>
             )}
           </div>
         </div>

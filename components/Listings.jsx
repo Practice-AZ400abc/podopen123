@@ -174,7 +174,8 @@ const Listings = ({ listing, refreshListings }) => {
           <p className='mt-4'>{updatedListing.projectDescription}</p>
         </div>
         <h1 className="font-light text-gray-800 ">
-          <span className="font-bold">Countries for Investors : </span>
+          <span className="font-bold">Investors needed from
+          these countri(es): </span>
           {updatedListing.countriesForInvestors.map((country, idx) => (
             <span
               key={idx}
@@ -196,7 +197,7 @@ const Listings = ({ listing, refreshListings }) => {
         <>
           <div className="mt-4 flex gap-2 flex-col">
             <h1 className="mt-2 font-bold">
-              Country for Investment: {" "}
+            Country where investment is needed: {" "}
               <span className="text-blue-500 uppercase p-2 m-2 rounded-sm text-sm font-bold">
                 {updatedListing.countryForInvestment}
 
