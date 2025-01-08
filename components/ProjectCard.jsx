@@ -72,7 +72,7 @@ const ProjectCard = ({ listing, updateImpressions, updateClicks, seenImpressions
                 <div className="flex gap-1 items-center">
                     <p>Listing Number :</p>
                     <p className="text-gray-600 w-fit p-2 rounded-md text-sm">
-                        {listingNumber.substring(0, 5)}
+                        {listingNumber.substring(0, 8)}
                     </p>
                 </div>
             </div>
