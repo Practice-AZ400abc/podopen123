@@ -1,25 +1,51 @@
-import { CldUploadWidget } from "next-cloudinary";
+"use client";
+
 import { Plus, Trash } from "lucide-react";
 import Image from "next/image";
 import { Button } from "./ui/button";
 import toast from "react-hot-toast";
 
 const MediaUpload = ({ onChange, onRemove, value }) => {
-  const onUpload = (result) => {
-    if (!result || !result.info) {
-      toast.error("Failed to upload file.");
-      return;
-    }
-
-    const uploadedFileUrl = result.info.secure_url;
-    console.log(uploadedFileUrl);
+  const handleUpload = async (file) => {
 
     if (value.length >= 3) {
       toast.error("You can upload a maximum of 3 attachments.");
       return;
     }
+    
+    const formData = new FormData();
+    formData.append("file", file);
+    formData.append("upload_preset", process.env.NEXT_PUBLIC_CLOUDINARY_PRESET_NAME);
 
-    onChange(uploadedFileUrl);
+    try {
+      const res = await fetch(
+        `https://api.cloudinary.com/v1_1/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}/auto/upload`,
+        {
+          method: "POST",
+          body: formData,
+        }
+      );
+
+      if (!res.ok) {
+        throw new Error("Upload failed");
+      }
+
+      const data = await res.json();
+      const uploadedFileUrl = data.secure_url;
+
+      onChange(uploadedFileUrl);
+      toast.success("File uploaded successfully!");
+    } catch (error) {
+      console.error("Error uploading file:", error);
+      toast.error("Failed to upload file. Please try again.");
+    }
+  };
+
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      handleUpload(file);
+    }
   };
 
   return (
@@ -65,25 +91,22 @@ const MediaUpload = ({ onChange, onRemove, value }) => {
             )}
           </div>
         ))}
-        {/* Upload Widget */}
-        <CldUploadWidget
-          uploadPreset={process.env.NEXT_PUBLIC_CLOUDINARY_PRESET_NAME}
-          options={{
-            resourceType: "auto", // Automatically detect file type
-            multiple: true,
-          }}
-          onUpload={onUpload}
+        {/* Upload Button */}
+        <Button
+          type="button"
+          className="w-[200px] h-[200px] bg-gray-100 text-black hover:bg-gray-50"
         >
-          {({ open }) => (
-            <Button
-              type="button"
-              onClick={() => open?.()}
-              className="w-[200px] h-[200px] bg-gray-100 text-black hover:bg-gray-50"
-            >
-              <Plus className="h-4 w-4 mr-2" />
-            </Button>
-          )}
-        </CldUploadWidget>
+          <label htmlFor="file-upload" className="cursor-pointer">
+            <Plus className="h-4 w-4 mr-2" />
+            <input
+              id="file-upload"
+              type="file"
+              accept="image/*,application/pdf"
+              onChange={handleFileChange}
+              className="hidden"
+            />
+          </label>
+        </Button>
       </div>
     </div>
   );
