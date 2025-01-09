@@ -4,10 +4,14 @@ import { useEffect, useState } from "react";
 import { useContext } from "react";
 import { AuthContext } from "@/components/AuthProvider";
 import { useSearchParams } from "next/navigation"; // To get query params
-import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
-import { MessageSquare, Filter, SearchCheckIcon, CheckIcon } from "lucide-react";
+import {
+  MessageSquare,
+  Filter,
+  SearchCheckIcon,
+  CheckIcon,
+} from "lucide-react";
 import PopupImg from "../../Popupimg.jpg";
 import {
   COUNTRIES,
@@ -31,11 +35,10 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/components/ui/dialog"
+} from "@/components/ui/dialog";
 import Image from "next/image";
 
 import { FaExclamationTriangle } from "react-icons/fa";
-
 
 export default function SearchPage() {
   const { isLoggedIn } = useContext(AuthContext);
@@ -51,6 +54,9 @@ export default function SearchPage() {
   });
 
   const [sortOption, setSortOption] = useState(""); // State for sorting
+
+  const [currentPage, setCurrentPage] = useState(1); // Track the current page
+  const itemsPerPage = 10; // Number of items per page
 
   const fetchInvestors = async () => {
     setLoading(true);
@@ -142,27 +148,32 @@ export default function SearchPage() {
   }, [country]);
 
   const filteredInvestors = applyFilters(); // Apply filters and sorting to fetched data
-  const handleSearch = () => {
-    if (selectedCountry) {
-      // Redirect to the search page with the selected country as a query parameter
-      router.push(`/search/inner?country=${encodeURIComponent(selectedCountry)}`);
-    } else {
-      alert("Please select a country before searching.");
-    }
-  };
+
+  const totalPages = Math.ceil(filteredInvestors.length / itemsPerPage);
 
   const handleCountryChange = (country) => {
     router.push(`/search/inner?country=${country}`);
   };
 
+  const handlePageChange = (page) => {
+    if (page >= 1 && page <= totalPages) {
+      setCurrentPage(page);
+    }
+  };
+
+  const paginatedInvestors = filteredInvestors.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage
+  );
+
   return (
     <div className="min-h-screen w-full bg-gray-50">
       <header className="bg-white border-b">
         <div className="flex gap-3 bg-white  items-center justify-center max-w-[1000px] mt-6 mx-auto p-3 rounded-md border border-blue-400 shadow-md">
-
           <Select onValueChange={(value) => handleCountryChange(value)}>
             <SelectTrigger className="h-12">
-              <SearchCheckIcon /> <SelectValue placeholder="Find a visa investor for your project" />
+              <SearchCheckIcon />{" "}
+              <SelectValue placeholder="Find a visa investor for your project" />
             </SelectTrigger>
             <SelectContent>
               {COUNTRIES.map((country) => (
@@ -173,15 +184,15 @@ export default function SearchPage() {
             </SelectContent>
           </Select>
         </div>
-        
+
         <div className="max-w-7xl mx-auto px-4 py-4 flex flex-col md:flex-row justify-between items-center">
           <div className="">
-          <h1 className="text-xl font-semibold">
-            Investors Seeking Golden Visas in {country}
-          </h1>
-          <p> Result: {investors.length}</p>
+            <h1 className="text-xl font-semibold">
+              Investors Seeking Golden Visas in {country}
+            </h1>
+            <p> Result: {investors.length}</p>
           </div>
-        
+
           <div className="flex gap-4 w-full md:w-[200px] mt-2 md:mt-0">
             <Select onValueChange={(value) => handleSortChange(value)}>
               <SelectTrigger className="h-12">
@@ -212,10 +223,9 @@ export default function SearchPage() {
         </div>
       </header>
       <main className="max-w-full mx-auto px-4 py-6">
-        
         <div className="flex flex-col md:flex-row gap-6 mx-auto max-w-7xl">
           {/* Filters */}
-          
+
           <div className="col-span-3">
             <Card className="p-4">
               <h2 className="font-semibold mb-4">Apply Filters</h2>
@@ -373,53 +383,103 @@ export default function SearchPage() {
                           </DialogHeader>
                           <hr className="mt-2 mb-2 h-1 bg-gray-300" />
                           <div className="flex items-center justify-center w-full">
-                            <Image src={PopupImg} alt="connect with Invetors" className="h-[200px] w-[200px] rounded-sm  object-cover" />
+                            <Image
+                              src={PopupImg}
+                              alt="connect with Invetors"
+                              className="h-[200px] w-[200px] rounded-sm  object-cover"
+                            />
                           </div>
                           <DialogDescription>
-                            To contact and connect with investors and see their profile please get started with a fast, secure, payment. You’ll also get full access to create a listing to obtain funding from a visa investor for your projects.
+                            To contact and connect with investors and see their
+                            profile please get started with a fast, secure,
+                            payment. You’ll also get full access to create a
+                            listing to obtain funding from a visa investor for
+                            your projects.
                           </DialogDescription>
 
                           <div className="w-full flex items-center justify-center gap-4 mt-4">
                             <div className="p-3 border rounded-md w-[60%] flex flex-col gap-4 ">
                               <div>
-                                <h1 className="text-sm font-semibold">30 Days Pass</h1>
-                                <p className="text-4xl text-blue-400 font-bold"> $30.00</p>
+                                <h1 className="text-sm font-semibold">
+                                  30 Days Pass
+                                </h1>
+                                <p className="text-4xl text-blue-400 font-bold">
+                                  {" "}
+                                  $30.00
+                                </p>
                               </div>
                               <div className="flex flex-col gap-2">
                                 <div className="flex items-center gap-2">
                                   <div>
                                     <CheckIcon size={20} />
                                   </div>
-                                  <h1 className="text-sm text-gray-500 ">Allows you to contact investors for 30 days to get funding for your projects</h1>
+                                  <h1 className="text-sm text-gray-500 ">
+                                    Allows you to contact investors for 30 days
+                                    to get funding for your projects
+                                  </h1>
                                 </div>
                                 <div className="flex items-center gap-2">
                                   <div>
                                     <CheckIcon size={20} />
                                   </div>
-                                  <h1 className="text-sm text-gray-500 ">Allows you to create a lisLng to get funding for your project </h1>
+                                  <h1 className="text-sm text-gray-500 ">
+                                    Allows you to create a lisLng to get funding
+                                    for your project{" "}
+                                  </h1>
                                 </div>
                               </div>
                               <div className="p-2 border flex gap-2 rounded-md bg-gray-100">
                                 <FaExclamationTriangle />
-                                <p className="text-sm uppercase">Renew your pass as needed</p>
+                                <p className="text-sm uppercase">
+                                  Renew your pass as needed
+                                </p>
                               </div>
                             </div>
                           </div>
 
                           <div className="w-full flex items-center justify-end gap-4 ">
-                            <Link href={"/"} className="underline">Not Now</Link>
-                            <Link href={!isLoggedIn ? "/sign-in" : "/"} className="text-white bg-green-500 rounded-sm p-2 hover:bg-green-400">Get Started</Link>
+                            <Link href={"/"} className="underline">
+                              Not Now
+                            </Link>
+                            <Link
+                              href={!isLoggedIn ? "/sign-in" : "/"}
+                              className="text-white bg-green-500 rounded-sm p-2 hover:bg-green-400"
+                            >
+                              Get Started
+                            </Link>
                           </div>
                         </DialogContent>
                       </Dialog>
-
-
                     </div>
                   </Card>
                 ))}
+
+                {/* Pagination Controls */}
+                <div className="flex justify-center items-center gap-4 mt-6">
+                  <button
+                    className="px-3 py-1 bg-gray-200 rounded disabled:opacity-50"
+                    onClick={() => handlePageChange(currentPage - 1)}
+                    disabled={currentPage === 1}
+                  >
+                    Previous
+                  </button>
+                  <span className="text-sm font-semibold">
+                    Page {currentPage} of {totalPages}
+                  </span>
+                  <button
+                    className="px-3 py-1 bg-gray-200 rounded disabled:opacity-50"
+                    onClick={() => handlePageChange(currentPage + 1)}
+                    disabled={currentPage === totalPages}
+                  >
+                    Next
+                  </button>
+                </div>
               </div>
             ) : (
-              <p className="text-center">Sorry no results for your query please consider revising your criteria.</p>
+              <p className="text-center">
+                Sorry no results for your query please consider revising your
+                criteria.
+              </p>
             )}
           </div>
         </div>

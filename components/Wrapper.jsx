@@ -166,6 +166,8 @@ const Wrapper = () => {
                                     key={listing._id}
                                     listing={listing}
                                     refreshListings={refreshListings}
+                                    handleFilterChange={handleFilterChange}
+                                    filter={filter}
                                 />
                             ))
                         )}

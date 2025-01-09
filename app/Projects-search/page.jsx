@@ -19,6 +19,8 @@ const ProjectsSearch = () => {
     const [listings, setListings] = useState([]);
     const [filtered, setFiltered] = useState([]);
     const [selectedIndustry, setSelectedIndustry] = useState("");
+    const [currentPage, setCurrentPage] = useState(1);
+    const itemsPerPage = 10; // 10 results per page
     const searchParams = useSearchParams();
     const country = searchParams.get("country");
     const router = useRouter();
@@ -32,7 +34,6 @@ const ProjectsSearch = () => {
             const data = await response.json();
             setListings(data);
             setFiltered(data);
-
         } catch (error) {
             console.error("Error fetching listings:", error);
         } finally {
@@ -63,11 +64,12 @@ const ProjectsSearch = () => {
     useEffect(() => {
         const filteredListings = selectedIndustry
             ? listings.filter(
-                (listing) => listing.investmentIndustry === selectedIndustry
-            )
+                  (listing) => listing.investmentIndustry === selectedIndustry
+              )
             : listings;
 
         setFiltered(filteredListings);
+        setCurrentPage(1); // Reset to the first page when filters change
     }, [listings, selectedIndustry]);
 
     const handleIndustryChange = (value) => {
@@ -78,33 +80,44 @@ const ProjectsSearch = () => {
         router.push(`/Projects-search?country=${country}`);
     };
 
+    const totalPages = Math.ceil(filtered.length / itemsPerPage);
+    const startIndex = (currentPage - 1) * itemsPerPage;
+    const currentListings = filtered.slice(startIndex, startIndex + itemsPerPage);
+
+    const handleNextPage = () => {
+        if (currentPage < totalPages) setCurrentPage((prev) => prev + 1);
+    };
+
+    const handlePrevPage = () => {
+        if (currentPage > 1) setCurrentPage((prev) => prev - 1);
+    };
+
     return (
         <div className="flex justify-center flex-col items-center gap-2 w-full">
-              <div className="mt-4 w-[80%]  m-auto">
-                            <div className="border rounded-md p-4 border-blue-400 ">
-                            <Select value={country} onValueChange={handleCountryChange}>
-                                <SelectTrigger className="h-12">
-                                    <SelectValue placeholder="Select country where you need investment" />
-                                </SelectTrigger>
-                                <SelectContent>
-                                    {COUNTRIES.map((country) => (
-                                        <SelectItem key={country} value={country}>
-                                            {country}
-                                        </SelectItem>
-                                    ))}
-                                </SelectContent>
-                            </Select>
-                            </div>
-                        </div>
-            <div className="mx-auto rounded-lg w-[80%]  mt-4 h-screen p-2 gap-4 flex items-start">
-                <div className="w-full  flex justify-between gap-4 flex-wrap">
+            <div className="mt-4 w-[80%] m-auto">
+                <div className="border rounded-md p-4 border-blue-400">
+                    <Select value={country} onValueChange={handleCountryChange}>
+                        <SelectTrigger className="h-12">
+                            <SelectValue placeholder="Select country where you need investment" />
+                        </SelectTrigger>
+                        <SelectContent>
+                            {COUNTRIES.map((country) => (
+                                <SelectItem key={country} value={country}>
+                                    {country}
+                                </SelectItem>
+                            ))}
+                        </SelectContent>
+                    </Select>
+                </div>
+            </div>
+            <div className="mx-auto rounded-lg w-[80%] mt-4 h-screen p-2 gap-4 flex items-start">
+                <div className="w-full flex justify-between gap-4 flex-wrap">
                     {/* Filters */}
                     <div className="bg-white p-4 rounded-lg w-[20%]">
                         <div className="w-full flex justify-between">
                             <h1 className="font-bold text-blue-400">Apply Filters</h1>
                             <Filter />
                         </div>
-                      
                         <div className="mt-4">
                             <Select
                                 value={selectedIndustry}
@@ -130,16 +143,17 @@ const ProjectsSearch = () => {
                             <h1 className="text-2xl font-bold text-blue-400">
                                 Projects Listings
                             </h1>
-                            <p>Results: {listings.length}</p>
+                            <p>Results: {filtered.length}</p>
                         </div>
-                        <div className="mt-4  w-full p-4 rounded-lg">
+                        <div className="mt-4 w-full p-4 rounded-lg">
                             {loading ? (
                                 <Spinner />
-                            ) : filtered.length === 0 && !loading ? (
-                                <p className="text-center">Sorry no results for your query please consider
-                                    revising your criteria</p>
+                            ) : currentListings.length === 0 && !loading ? (
+                                <p className="text-center">
+                                    Sorry no results for your query. Please revise your criteria.
+                                </p>
                             ) : (
-                                filtered.map((listing) => (
+                                currentListings.map((listing) => (
                                     <ProjectCard
                                         key={listing._id}
                                         listing={listing}
@@ -149,6 +163,26 @@ const ProjectsSearch = () => {
                                     />
                                 ))
                             )}
+                        </div>
+                        {/* Pagination Controls */}
+                        <div className="flex justify-between items-center mt-4">
+                            <button
+                                className="btn btn-secondary"
+                                disabled={currentPage === 1}
+                                onClick={handlePrevPage}
+                            >
+                                Previous
+                            </button>
+                            <p>
+                                Page {currentPage} of {totalPages}
+                            </p>
+                            <button
+                                className="btn btn-secondary"
+                                disabled={currentPage === totalPages}
+                                onClick={handleNextPage}
+                            >
+                                Next
+                            </button>
                         </div>
                     </div>
                 </div>

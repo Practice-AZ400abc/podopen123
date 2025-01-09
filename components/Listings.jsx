@@ -21,7 +21,7 @@ import {
 } from "@/components/ui/dialog"
 import toast from 'react-hot-toast';
 
-const Listings = ({ listing, refreshListings }) => {
+const Listings = ({ listing, refreshListings, handleFilterChange, filter }) => {
   const [token, setToken] = useState(null);
   const [updatedStatus, setUpdatedStatus] = useState(listing.status); // Track status changes
   const [updatedListing, setUpdatedListing] = useState(listing); // Track full listing updates
@@ -75,6 +75,7 @@ const Listings = ({ listing, refreshListings }) => {
       setUpdatedListing(updatedListing); // Update the state with the updated listing
       setUpdatedStatus(updatedListing.status); // Ensure status is updated
       toast.success("Listing updated successfully!");
+      handleFilterChange(filter);
       refreshListings(); // Refetch listings after update
     } catch (error) {
       console.error(error);
