@@ -6,6 +6,11 @@ import toast from "react-hot-toast";
 
 const MediaUpload = ({ onChange, onRemove, value }) => {
   const onUpload = (result) => {
+    if (!result || !result.info) {
+      toast.error("Failed to upload file.");
+      return;
+    }
+
     const uploadedFileUrl = result.info.secure_url;
 
     if (value.length >= 3) {
