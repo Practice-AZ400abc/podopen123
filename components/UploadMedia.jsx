@@ -12,6 +12,7 @@ const MediaUpload = ({ onChange, onRemove, value }) => {
     }
 
     const uploadedFileUrl = result.info.secure_url;
+    console.log(uploadedFileUrl);
 
     if (value.length >= 3) {
       toast.error("You can upload a maximum of 3 attachments.");
