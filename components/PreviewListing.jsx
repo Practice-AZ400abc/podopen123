@@ -2,7 +2,7 @@ import Image from "next/image";
 
 const PreviewListing = ({ formData }) => {
     return (
-        <div className="flex flex-col md:flex-row items-center justify-center md:justify-between p-4">
+        <div className="flex flex-col md:flex-row items-center justify-center md:justify-between p-4 mb-8">
             <div className="w-full">
                 <h1 className="text-2xl font-semibold mb-4">Preview Your Listing Before Publishing</h1>
                 <p className="mb-6">Ensure everything is correct before publishing.</p>

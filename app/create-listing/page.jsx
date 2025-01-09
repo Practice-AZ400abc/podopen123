@@ -173,8 +173,14 @@ const CreateListing = () => {
                     </div>
 
                     {/* Step 4 */}
-                    <div className="flex-none w-full h-[70vh] flex items-center justify-between">
-                        <div className="w-full">
+                    <div
+                        className="flex-none w-full h-auto min-h-[calc(100vh-80px)] flex items-center justify-between"
+                        style={{
+                            paddingTop: "64px", // Adjust to match the navbar height
+                            paddingBottom: "80px", // Adjust to account for the progress bar
+                        }}
+                    >
+                        <div className="w-full overflow-y-auto">
                             <PreviewListing formData={formData} />
                         </div>
                     </div>
