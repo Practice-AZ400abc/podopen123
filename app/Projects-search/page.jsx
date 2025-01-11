@@ -11,7 +11,7 @@ import {
     SelectValue,
 } from "@/components/ui/select";
 import { Filter } from "lucide-react";
-import ProjectCard from "@/components/ProjectCard"; // Import the ProjectCard component
+import ProjectCard from "@/components/ProjectCard";
 import Spinner from "@/components/Spinner";
 
 const ProjectsSearch = () => {
@@ -19,12 +19,13 @@ const ProjectsSearch = () => {
     const [listings, setListings] = useState([]);
     const [filtered, setFiltered] = useState([]);
     const [selectedIndustry, setSelectedIndustry] = useState("");
+    const [sortOption, setSortOption] = useState(""); // Sort option selected
     const [currentPage, setCurrentPage] = useState(1);
-    const itemsPerPage = 10; // 10 results per page
+    const itemsPerPage = 10;
     const searchParams = useSearchParams();
     const country = searchParams.get("country");
     const router = useRouter();
-    const seenImpressions = useRef(new Set()); // Track listings with updated impressions
+    const seenImpressions = useRef(new Set());
 
     const fetchListings = async (country) => {
         try {
@@ -61,19 +62,49 @@ const ProjectsSearch = () => {
         if (country) fetchListings(country);
     }, [country]);
 
+    // Apply filters and sorting
     useEffect(() => {
-        const filteredListings = selectedIndustry
-            ? listings.filter(
-                  (listing) => listing.investmentIndustry === selectedIndustry
-              )
+        let filteredListings = selectedIndustry
+            ? listings.filter((listing) => listing.investmentIndustry === selectedIndustry)
             : listings;
 
+        // Sorting logic
+        if (sortOption === "investmentAmountAsc") {
+            filteredListings = filteredListings.sort((a, b) => {
+                const amountA = parseFloat(a.minimumInvestment.replace(/[^0-9.-]+/g, ""));
+                const amountB = parseFloat(b.minimumInvestment.replace(/[^0-9.-]+/g, ""));
+                return amountA - amountB;
+            });
+        } else if (sortOption === "investmentAmountDesc") {
+            filteredListings = filteredListings.sort((a, b) => {
+                const amountA = parseFloat(a.minimumInvestment.replace(/[^0-9.-]+/g, ""));
+                const amountB = parseFloat(b.minimumInvestment.replace(/[^0-9.-]+/g, ""));
+                return amountB - amountA;
+            });
+        } else if (sortOption === "datePostedAsc") {
+            filteredListings = filteredListings.sort((a, b) => {
+                const dateA = new Date(a.createdAt);
+                const dateB = new Date(b.createdAt);
+                return dateA - dateB;
+            });
+        } else if (sortOption === "datePostedDesc") {
+            filteredListings = filteredListings.sort((a, b) => {
+                const dateA = new Date(a.createdAt);
+                const dateB = new Date(b.createdAt);
+                return dateB - dateA;
+            });
+        }
+
         setFiltered(filteredListings);
-        setCurrentPage(1); // Reset to the first page when filters change
-    }, [listings, selectedIndustry]);
+        setCurrentPage(1);
+    }, [listings, selectedIndustry, sortOption]);
 
     const handleIndustryChange = (value) => {
         setSelectedIndustry(value);
+    };
+
+    const handleSortChange = (value) => {
+        setSortOption(value);
     };
 
     const handleCountryChange = (country) => {
@@ -132,6 +163,27 @@ const ProjectsSearch = () => {
                                             {industry}
                                         </SelectItem>
                                     ))}
+                                </SelectContent>
+                            </Select>
+                        </div>
+                        <div className="mt-4">
+                            <Select value={sortOption} onValueChange={handleSortChange}>
+                                <SelectTrigger className="h-12">
+                                    <SelectValue placeholder="Sort By" />
+                                </SelectTrigger>
+                                <SelectContent>
+                                    <SelectItem value="investmentAmountAsc">
+                                        Investment Amount Ascending
+                                    </SelectItem>
+                                    <SelectItem value="investmentAmountDesc">
+                                        Investment Amount Descending
+                                    </SelectItem>
+                                    <SelectItem value="datePostedAsc">
+                                        Date Posted Ascending
+                                    </SelectItem>
+                                    <SelectItem value="datePostedDesc">
+                                        Date Posted Descending
+                                    </SelectItem>
                                 </SelectContent>
                             </Select>
                         </div>
