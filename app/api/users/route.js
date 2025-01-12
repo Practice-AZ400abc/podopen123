@@ -1,5 +1,6 @@
 import { connectToDB } from "@/utils/database";
 import User from "@/models/user";
+import Listing from "@/models/listing";
 import verifyToken from "@/utils/verifyToken";
 
 export const GET = async (req) => {
@@ -91,6 +92,7 @@ export const DELETE = async (req) => {
     await connectToDB();
 
     await User.findOneAndDelete({ email: email });
+    await Listing.deleteMany({ author: user._id });
 
     return new Response(JSON.stringify({ message: "User deleted" }), {
       status: 200,

@@ -109,13 +109,8 @@ export const PUT = async (req, { params }) => {
                 status: "Published",
             }
         ) {
-            if (user.subscriptionStatus != "Active") {
-                return new Response(
-                    JSON.stringify({ message: "You need subscription" }),
-                    {
-                        status: 403,
-                    }
-                );
+            if (!listing.publishedAt) {
+                updateBody.publishedAt = new Date();
             }
         }
 

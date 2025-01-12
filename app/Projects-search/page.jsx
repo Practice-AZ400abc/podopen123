@@ -103,14 +103,14 @@ const ProjectsSearch = () => {
             });
         } else if (sortOption === "datePostedDesc") {
             filteredListings = filteredListings.sort((a, b) => {
-                const dateA = new Date(a.createdAt);
-                const dateB = new Date(b.createdAt);
+                const dateA = new Date(a.publishedAt);
+                const dateB = new Date(b.publishedAt);
                 return dateA - dateB;
             });
         } else if (sortOption === "datePostedAsc") {
             filteredListings = filteredListings.sort((a, b) => {
-                const dateA = new Date(a.createdAt);
-                const dateB = new Date(b.createdAt);
+                const dateA = new Date(a.publishedAt);
+                const dateB = new Date(b.publishedAt);
                 return dateB - dateA;
             });
         }
