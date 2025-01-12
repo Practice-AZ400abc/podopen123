@@ -6,6 +6,8 @@ import { PhoneInput } from "react-international-phone";
 import "react-international-phone/style.css";
 import MediaUpload from "@/components/UploadMedia";
 import { useParams } from "next/navigation"; // Import for dynamic routing
+import toast from "react-hot-toast";
+import { Loader } from "lucide-react";
 
 const countryOptions = COUNTRIES.map((country) => ({
     value: country,
@@ -17,7 +19,7 @@ const EditListingForm = () => {
     const { id } = params;
     const [formData, setFormData] = useState({});
     const [token, setToken] = useState(null);
-
+    const[loading, setLoading] = useState(false)
     // Fetch listing data
     useEffect(() => {
         const fetchListing = async () => {
@@ -58,7 +60,7 @@ const EditListingForm = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-
+        setLoading(true)
         if (!token) {
             alert("Unauthorized. Please log in.");
             return;
@@ -76,9 +78,11 @@ const EditListingForm = () => {
 
             if (!updateResponse.ok) {
                 throw new Error("Failed to update listing");
+                setLoading(false)
             }
 
-            alert("Listing updated successfully");
+            toast.success("Listing updated successfully");
+            setLoading(false)
         } catch (error) {
             console.error(error);
             alert("An error occurred while updating the listing");
@@ -86,9 +90,11 @@ const EditListingForm = () => {
     };
 
     return (
-        <div className="flex flex-col gap-4">
-            <form className="w-full flex flex-col md:flex-row h-[60vh] items-center justify-evenly gap-4 mt-10">
+        <div className="flex flex-col items-end justify-end gap-4 mx-auto container">
+            
+            <form className="w-full flex flex-col md:flex-row  items-center justify-evenly gap-4 mt-10">
                 <div className="flex flex-col gap-2 w-[30%]">
+                <h1 className="text-2xl md:text-4xl text-black font-bold">Edit  Listing</h1>
                     <label className="text-sm font-medium text-gray-700">
                         Short description title of your sponsorship *
                     </label>
@@ -262,9 +268,13 @@ const EditListingForm = () => {
             <button
                 onClick={(e) => handleSubmit(e)}
                 type="button"
-                className="p-2 bg-blue-500 text-white rounded-md"
+                className="p-2 bg-blue-500 w-fit flex items-end text-white rounded-md"
             >
-                Confirm
+                {loading ? (
+                    <Loader onAnimationEnd={Animation} />
+                ) : (
+                    "Save"
+                )}
             </button>
         </div>
     );
