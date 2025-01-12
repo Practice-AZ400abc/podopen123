@@ -20,6 +20,8 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog"
 import toast from 'react-hot-toast';
+import { Edit2 } from 'lucide-react';
+import Link from 'next/link';
 
 const Listings = ({ listing, refreshListings, handleFilterChange, filter }) => {
   const [token, setToken] = useState(null);
@@ -259,6 +261,10 @@ const Listings = ({ listing, refreshListings, handleFilterChange, filter }) => {
       )}
 
       <div className="flex items-end justify-end gap-2 w-full">
+      <Link href={`/edit-listing/${listing._id}`} className="flex items-center gap-2 text-white bg-black p-2 rounded-md">
+          <Edit2 size={14} />
+          Edit Listing
+        </Link>
         <Dialog>
           <DialogTrigger className=' text-white rounded-md bg-red-500 p-2'>Delete</DialogTrigger>
           <DialogContent>
@@ -277,6 +283,7 @@ const Listings = ({ listing, refreshListings, handleFilterChange, filter }) => {
             </DialogHeader>
           </DialogContent>
         </Dialog>
+       
         {updatedStatus !== "Published" ? (
           <Button
             onClick={() => handleUpdate({ status: "Published" })}
@@ -292,6 +299,7 @@ const Listings = ({ listing, refreshListings, handleFilterChange, filter }) => {
             Unpublish Listing
           </Button>
         )}
+        
       </div>
     </div>
   );
