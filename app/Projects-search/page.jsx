@@ -196,13 +196,13 @@ const ProjectsSearch = () => {
                                         Investment Amount Ascending
                                     </SelectItem>
                                     <SelectItem value="investmentAmountDesc">
-                                        Investment Amount Descending
+                                    highest to lowest investment amount Low
                                     </SelectItem>
                                     <SelectItem value="datePostedAsc">
-                                        Date Posted Ascending
+                                    Old Listings posted
                                     </SelectItem>
                                     <SelectItem value="datePostedDesc">
-                                        Date Posted Descending
+                                        Old Listings posted
                                     </SelectItem>
                                 </SelectContent>
                             </Select>

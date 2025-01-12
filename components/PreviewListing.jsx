@@ -9,42 +9,11 @@ const PreviewListing = ({ formData }) => {
                 <div className="flex flex-col gap-4 bg-white border rounded-md p-4">
                     {/* SponsorShip Description */}
                     <div>
-                        <h2 className="text-xl font-bold text-gray-800">Sponsorship Description</h2>
-                        <p className="text-md text-gray-600">{formData.sponsorShipDescription}</p>
+                        <h2 className="text-xl font-bold text-gray-800"></h2>
+                        <p className="text-md text-gray-600 text-lg font-bold ">{formData.sponsorShipDescription}</p>
                     </div>
 
-                    {/* Images or PDFs */}
-                    <div>
-                        <h2 className="text-xl font-bold text-gray-800">Attachments</h2>
-                        <div className="flex flex-wrap gap-4">
-                            {formData.attachments && formData.attachments.length > 0 ? (
-                                formData.attachments.map((attachment, index) =>
-                                    attachment.endsWith(".pdf") ? (
-                                        <a
-                                            key={index}
-                                            href={attachment}
-                                            target="_blank"
-                                            rel="noopener noreferrer"
-                                            className="border rounded-md p-2 bg-gray-100 w-32 h-32 flex items-center justify-center"
-                                        >
-                                            <p className="text-gray-500">PDF {index + 1}</p>
-                                        </a>
-                                    ) : (
-                                        <Image
-                                            key={index}
-                                            src={attachment}
-                                            alt={`Attachment ${index + 1}`}
-                                            width={100}
-                                            height={100}
-                                            className="object-cover rounded-md w-32 h-32"
-                                        />
-                                    )
-                                )
-                            ) : (
-                                <p className="text-gray-600">No attachments to display.</p>
-                            )}
-                        </div>
-                    </div>
+
 
                     {/* Country for Investment and Industry */}
                     <div className="flex flex-col md:flex-row gap-4">
@@ -78,12 +47,44 @@ const PreviewListing = ({ formData }) => {
                             <strong>Email:</strong> {formData.contactEmail}
                         </p>
                     </div>
-
-                    {/* Minimum Investment */}
-                    <div>
+                     {/* Minimum Investment */}
+                     <div>
                         <h2 className="text-xl font-bold text-gray-800">Minimum Investment</h2>
                         <p className="text-md text-gray-600">{formData.minimumInvestment}</p>
                     </div>
+                    {/* Images or PDFs */}
+                    <div>
+                        <h2 className="text-xl font-bold text-gray-800">Attachments</h2>
+                        <div className="flex flex-wrap gap-4">
+                            {formData.attachments && formData.attachments.length > 0 ? (
+                                formData.attachments.map((attachment, index) =>
+                                    attachment.endsWith(".pdf") ? (
+                                        <a
+                                            key={index}
+                                            href={attachment}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            className="border rounded-md p-2 bg-gray-100 w-32 h-32 flex items-center justify-center"
+                                        >
+                                            <p className="text-gray-500">PDF {index + 1}</p>
+                                        </a>
+                                    ) : (
+                                        <Image
+                                            key={index}
+                                            src={attachment}
+                                            alt={`Attachment ${index + 1}`}
+                                            width={100}
+                                            height={100}
+                                            className="object-cover rounded-md w-32 h-32"
+                                        />
+                                    )
+                                )
+                            ) : (
+                                <p className="text-gray-600">No attachments to display.</p>
+                            )}
+                        </div>
+                    </div>
+                   
                 </div>
             </div>
         </div>

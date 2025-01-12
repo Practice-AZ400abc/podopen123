@@ -36,7 +36,7 @@ const ProjectCard = ({ listing, updateImpressions, updateClicks, seenImpressions
     return (
         <div
             ref={ref}
-            className="bg-white p-4 rounded-lg border mt-4 flex flex-col gap-2 cursor-pointer"
+            className="bg-white p-4 hover:shadow-md  rounded-lg border mt-4 flex flex-col gap-2 cursor-pointer"
             onClick={handleClick}
         >
             <div className="flex items-center justify-between">
@@ -78,34 +78,7 @@ const ProjectCard = ({ listing, updateImpressions, updateClicks, seenImpressions
                     </p>
                 </div>
             </div>
-            {listing.attachments?.length > 0 && (
-                <div className="mt-4">
-                    <h2 className="font-bold text-lg">Attachments:</h2>
-                    <div className="flex flex-wrap gap-4 mt-2">
-                        {listing.attachments.map((fileUrl, index) => (
-                            <div key={index} className="relative w-[100px] h-[100px]">
-                                {fileUrl.endsWith(".pdf") ? (
-                                    <div
-                                        onClick={(e) => handleDownload(e, fileUrl, index)}
-                                        className="bg-gray-100 w-full h-full flex items-center justify-center text-center text-sm cursor-pointer border rounded-md"
-                                    >
-                                        <span>PDF {index + 1}</span>
-                                    </div>
-                                ) : (
-                                    <Image
-                                        src={fileUrl}
-                                        alt={`Attachment ${index + 1}`}
-                                        width={100}
-                                        height={100}
-                                        className="object-cover rounded-md cursor-pointer"
-                                        onClick={(e) => handleDownload(e, fileUrl, index)}
-                                    />
-                                )}
-                            </div>
-                        ))}
-                    </div>
-                </div>
-            )}
+           
         </div>
     );
 };

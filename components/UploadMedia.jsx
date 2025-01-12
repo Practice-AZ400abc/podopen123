@@ -4,15 +4,16 @@ import { Plus, Trash } from "lucide-react";
 import Image from "next/image";
 import { Button } from "./ui/button";
 import toast from "react-hot-toast";
-
+import { useState } from "react";
 const MediaUpload = ({ onChange, onRemove, value }) => {
+  const [imageUploading, setImageUploading] = useState(false);
   const handleUpload = async (file) => {
-
     if (value.length >= 3) {
       toast.error("You can upload a maximum of 3 attachments.");
       return;
     }
-    
+
+    const toastId = toast.loading("Files are being uploaded!");
     const formData = new FormData();
     formData.append("file", file);
     formData.append("upload_preset", process.env.NEXT_PUBLIC_CLOUDINARY_PRESET_NAME);
@@ -38,6 +39,9 @@ const MediaUpload = ({ onChange, onRemove, value }) => {
     } catch (error) {
       console.error("Error uploading file:", error);
       toast.error("Failed to upload file. Please try again.");
+    } finally {
+      toast.dismiss(toastId);
+      setImageUploading(false);
     }
   };
 

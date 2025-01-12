@@ -16,6 +16,18 @@ import { useRouter } from "next/navigation";
 import { AuthContext } from "./AuthProvider";
 import { ArrowRight, Mail } from "lucide-react";
 import Link from "next/link";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog"
+
 
 // Define options for the countries dropdown
 const countryOptions = COUNTRIES.map((country) => ({
@@ -387,6 +399,25 @@ const VisaSponsorProfileForm = ({ }) => {
         {/* Submit Button */}
         <div className="w-full flex gap-4 items-center justify-end">
           <div className="flex items-center justify-center gap-4">
+            <AlertDialog>
+              <AlertDialogTrigger 
+              className="mt-4 px-6 py-2 bg-red-500 text-white rounded-lg hover:bg-red-700"
+              
+              >Delete</AlertDialogTrigger>
+              <AlertDialogContent>
+                <AlertDialogHeader>
+                  <AlertDialogTitle>! Warning</AlertDialogTitle>
+                  <AlertDialogDescription>
+                    By click continue your profile will be deleted
+                  </AlertDialogDescription>
+                </AlertDialogHeader>
+                <AlertDialogFooter>
+                  <AlertDialogCancel>Cancel</AlertDialogCancel>
+                  <AlertDialogAction className="bg-red-600">Continue</AlertDialogAction>
+                </AlertDialogFooter>
+              </AlertDialogContent>
+            </AlertDialog>
+
             <button
               type="submit"
               className="mt-4 px-6 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-700"

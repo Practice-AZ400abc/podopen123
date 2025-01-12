@@ -1,5 +1,5 @@
 "use client";
-import { Loader, Locate, LocateIcon } from "lucide-react";
+import { DownloadIcon, Loader, Locate, LocateIcon } from "lucide-react";
 import Image from "next/image";
 import { useParams } from "next/navigation";
 import React, { useEffect, useState } from "react";
@@ -41,7 +41,7 @@ const ProjectPage = () => {
     }
 
     return (
-        <div className=" w-full  container mx-auto p-4">
+        <div className="w-full container mx-auto p-4">
             <div className="mt-2 border p-3 rounded-md">
                 <div className="flex items-start gap-4">
                     <Image
@@ -66,9 +66,10 @@ const ProjectPage = () => {
                         </div>
                     </div>
                 </div>
-                {/* Flx box */}
-                <div className="flex gap-4 mt-4">
-                    <div className="p-2 border mt-2 w-[35%] h-full rounded-md">
+
+                {/* Flex box */}
+                <div className="flex flex-col md:flex-row gap-4 mt-4">
+                    <div className="p-2 border mt-2 w-full md:w-[35%] h-full rounded-md">
                         <h1 className="text-gray-600 uppercase font-bold">
                             About Investor
                         </h1>
@@ -92,7 +93,7 @@ const ProjectPage = () => {
                         </div>
                     </div>
 
-                    <div className="p-2 border mt-2 w-[65%] h-full rounded-md">
+                    <div className="p-2 border mt-2 w-full md:w-[65%] h-full rounded-md">
                         <h1 className="text-2xl uppercase font-bold">
                             {project.sponsorShipDescription}
                         </h1>
@@ -102,26 +103,89 @@ const ProjectPage = () => {
                                 {project.projectDescription}
                             </p>
                         </div>
-                        <div className="flex justify-between items-center">
-                            <div className="mt-5 flex items-center gap-4">
-                                <p className="text-bold">Minimum Investment: </p>
-                                <span className="text-sm text-gray-500">
-                                    {project.minimumInvestment.toLocaleString()}
-                                </span>
-                            </div>
-                            <div className="mt-5 flex items-center gap-4">
-                                <p className="text-bold">Industry of Investment: </p>
-                                <span className="text-sm text-gray-500">
-                                    {project.investmentIndustry}
-                                </span>
-                            </div>
-                            <div className="mt-5 flex items-center gap-4">
-                                <p className="text-bold">Timetable of Investment: </p>
-                                <span className="text-sm text-gray-500">
-                                    {new Date(project.investmentTimeTable).toLocaleDateString()}
-                                </span>
+                        <div className="border p-2 rounded-md mt-5">
+                            <div className="flex flex-col flex-wrap md:flex-row text-left justify-start gap-4 items-center">
+                                <div className="flex items-center gap-4">
+                                    <p className="text-bold">Minimum Investment: </p>
+                                    <span className="text-sm text-gray-500">
+                                        {project.minimumInvestment.toLocaleString()}
+                                    </span>
+                                </div>
+                                <div className="flex items-center gap-4">
+                                    <p className="text-bold">Industry of Investment: </p>
+                                    <span className="text-sm text-gray-500">
+                                        {project.investmentIndustry}
+                                    </span>
+                                </div>
+                                <div className="flex items-center gap-4">
+                                    <p className="text-bold">Timetable of Investment: </p>
+                                    <span className="text-sm text-gray-500">
+                                        {new Date(project.investmentTimeTable).toLocaleDateString()}
+                                    </span>
+                                </div>
+                                <div className="mt-5 flex items-center gap-4">
+                                    <p className="text-bold">Counties for investors: </p>
+                                    <span className="text-sm flex gap-4 border p-2 rounded-md text-gray-500">
+                                        {project.countriesForInvestors.map((investor) => (
+                                            <p className="text-bold   text-gray-600" key={investor}>
+                                                {investor}
+                                            </p>
+                                        ))}
+                                    </span>
+                                </div>
+                                <div className="mt-5 flex items-center gap-4">
+                                    <p className="text-bold">Country where investment needed: </p>
+                                    <span className="text-sm text-gray-500">
+                                        {project.countryForInvestment}
+                                    </span>
+                                </div>
                             </div>
                         </div>
+
+
+            
+                        <div className="border p-2 rounded-md mt-5">
+                        <h1 className="text-xl  font-bold">Contact Informatiion</h1>
+                            <div className="flex flex-col mt-5 flex-wrap md:flex-row text-left justify-start gap-4 items-center">
+                                <div className="flex items-center gap-4">
+                                    <p className="text-bold">Telegram: </p>
+                                    <span className="text-sm text-gray-500">
+                                        {project.telegram}
+                                    </span>
+                                </div>
+                                <div className="flex items-center gap-4">
+                                    <p className="text-bold">Phone Number: </p>
+                                    <span className="text-sm text-gray-500">
+                                        {project.phone}
+                                    </span>
+                                </div>
+                                <div className="flex items-center gap-4">
+                                    <p className="text-bold">Whatsapp: </p>
+                                    <span className="text-sm text-gray-500">
+                                        {project.whatsapp}
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="flex flex-col gap-2 mt-5 p-4">
+                            <h1 className="text-xl  font-bold">Attachments</h1>
+                            <div className="p-2 rounded-md">
+                                {project.attachments.map((attachment) => (
+                                    <div key={attachment.url} className="flex items-center gap-2 border p-2 w-fit rounded-sm">
+                                        <a href={attachment.url} target="_blank" rel="noopener noreferrer" className="text-blue-500 underline">
+                                            {attachment.fileName}
+                                        </a>
+                                        <button
+                                            onClick={() => window.open(attachment.url, '_blank')}
+                                            className="text-sm text-blue-500 underline flex items-center gap-4"
+                                        >
+                                           <DownloadIcon size={14}/> Download
+                                        </button>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                        <p className="text-sm text-gray-500 text-end">Created At: {new Date(project.createdAt).toLocaleDateString()} </p>
                     </div>
                 </div>
             </div>

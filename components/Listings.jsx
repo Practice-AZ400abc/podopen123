@@ -100,7 +100,7 @@ const Listings = ({ listing, refreshListings, handleFilterChange, filter }) => {
       case "Expired":
         return "bg-gray-400";
       default:
-        return "bg-gray-200";
+        return "bg-red-200";
     }
   };
 
@@ -148,30 +148,7 @@ const Listings = ({ listing, refreshListings, handleFilterChange, filter }) => {
         </div>
       </div>
       <div className="flex flex-col gap-4">
-        <div className="flex gap-2">
-          {updatedListing.attachments.map((attachment, index) =>
-            attachment.endsWith(".pdf") ? (
-              <a
-                key={index}
-                href={attachment}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="border rounded-md p-2 bg-gray-100 w-32 h-32 flex items-center justify-center"
-              >
-                <p className="text-gray-500">PDF {index + 1}</p>
-              </a>
-            ) : (
-              <Image
-                key={index}
-                src={attachment}
-                alt={`Attachment ${index + 1}`}
-                width={100}
-                height={100}
-                className="object-cover rounded-md w-32 h-32"
-              />
-            )
-          )}
-        </div>
+    
 
         <div className=" rounded-sm text-gray-600 font-light text-sm">
           <span className="font-bold text-black">Title: </span>
@@ -253,6 +230,31 @@ const Listings = ({ listing, refreshListings, handleFilterChange, filter }) => {
               <span>{updatedListing.contactEmail}</span>
             </div>
           </div>
+          <div className="flex flex-col gap-2">
+            <h1 className="font-bold ">Attachments:</h1>
+          {updatedListing.attachments.map((attachment, index) =>
+            attachment.endsWith(".pdf") ? (
+              <a
+                key={index}
+                href={attachment}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="border rounded-md p-2 bg-gray-100 w-32 h-32 flex items-center justify-center"
+              >
+                <p className="text-gray-500">PDF {index + 1}</p>
+              </a>
+            ) : (
+              <Image
+                key={index}
+                src={attachment}
+                alt={`Attachment ${index + 1}`}
+                width={100}
+                height={100}
+                className="object-cover rounded-md w-32 h-32"
+              />
+            )
+          )}
+        </div>
         </>
       )}
 
