@@ -27,6 +27,7 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog"
+import DeleteAccountButton from "./DeleteAccountButton";
 
 
 // Define options for the countries dropdown
@@ -413,7 +414,7 @@ const VisaSponsorProfileForm = ({ }) => {
                 </AlertDialogHeader>
                 <AlertDialogFooter>
                   <AlertDialogCancel>Cancel</AlertDialogCancel>
-                  <AlertDialogAction className="bg-red-600">Continue</AlertDialogAction>
+                  <AlertDialogAction> <DeleteAccountButton /> </AlertDialogAction>
                 </AlertDialogFooter>
               </AlertDialogContent>
             </AlertDialog>

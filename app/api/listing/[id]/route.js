@@ -127,3 +127,34 @@ export const PUT = async (req, { params }) => {
         });
     }
 };
+
+export const GET = async (req, { params }) => {
+    try {
+        const { id } = await params;
+
+        if (!id) {
+            return new Response(
+                JSON.stringify({ message: "Listing ID is required" }),
+                {
+                    status: 400,
+                }
+            );
+        }
+
+        await connectToDB();
+
+        const listing = await Listing.findById(id);
+
+        if (!listing) {
+            return new Response(JSON.stringify({ message: "Listing not found" }), {
+                status: 404,
+            });
+        }
+
+        return new Response(JSON.stringify(listing), { status: 200 });
+    } catch (error) {
+        return new Response(JSON.stringify({ message: error.message }), {
+            status: 500,
+        });
+    }
+}

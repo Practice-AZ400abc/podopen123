@@ -1,39 +1,47 @@
 "use client";
 import React, { useState, useEffect } from "react";
-import {
-    COUNTRIES,
-    INDUSTRIES,
-    INVESTMENT_RANGES,
-} from "@/lib/constants";
+import { COUNTRIES, INDUSTRIES, INVESTMENT_RANGES } from "@/lib/constants";
 import ReactSelect from "react-select";
 import { PhoneInput } from "react-international-phone";
 import "react-international-phone/style.css";
 import MediaUpload from "@/components/UploadMedia";
+import { useParams } from "next/navigation"; // Import for dynamic routing
 
 const countryOptions = COUNTRIES.map((country) => ({
     value: country,
     label: country,
 }));
 
-const EditListingForm = ({ initialFormData = {} }) => {
-    const [formData, setFormData] = useState({
-        sponsorShipDescription: "",
-        projectDescription: "",
-        investmentTimeTable: "",
-        countryForInvestment: "",
-        investmentIndustry: "",
-        countriesForInvestors: [],
-        minimumInvestment: "",
-        whatsapp: "",
-        telegram: "",
-        phone: "",
-        contactEmail: "",
-        ...initialFormData,
-    });
+const EditListingForm = () => {
+    const params = useParams();
+    const { id } = params;
+    const [formData, setFormData] = useState({});
+    const [token, setToken] = useState(null);
 
+    // Fetch listing data
     useEffect(() => {
-        setFormData(initialFormData);
-    }, [initialFormData]);
+        const fetchListing = async () => {
+            if (!id) return; // Wait for the ID to be available
+            try {
+                const response = await fetch(`/api/listing/${id}`);
+                if (!response.ok) throw new Error("Failed to fetch listing data");
+                const data = await response.json();
+                setFormData(data); // Initialize formData with fetched data
+            } catch (error) {
+                console.error(error);
+            }
+        };
+
+        fetchListing();
+    }, [id]);
+
+    // Get token from localStorage
+    useEffect(() => {
+        const storedToken = localStorage.getItem("token");
+        if (storedToken) {
+            setToken(storedToken);
+        }
+    }, []);
 
     const handleFormInput = (field, value) => {
         setFormData((prev) => ({ ...prev, [field]: value }));
@@ -48,9 +56,38 @@ const EditListingForm = ({ initialFormData = {} }) => {
         }));
     };
 
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+
+        if (!token) {
+            alert("Unauthorized. Please log in.");
+            return;
+        }
+
+        try {
+            const updateResponse = await fetch(`/api/listing/${formData._id}`, {
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${token}`,
+                },
+                method: "PUT",
+                body: JSON.stringify(formData),
+            });
+
+            if (!updateResponse.ok) {
+                throw new Error("Failed to update listing");
+            }
+
+            alert("Listing updated successfully");
+        } catch (error) {
+            console.error(error);
+            alert("An error occurred while updating the listing");
+        }
+    };
+
     return (
         <div className="flex flex-col gap-4">
-            <form className="w-full flex flex-col md:flex-row  h-[60vh] items-center justify-evenly gap-4 mt-10">
+            <form className="w-full flex flex-col md:flex-row h-[60vh] items-center justify-evenly gap-4 mt-10">
                 <div className="flex flex-col gap-2 w-[30%]">
                     <label className="text-sm font-medium text-gray-700">
                         Short description title of your sponsorship *
@@ -99,7 +136,7 @@ const EditListingForm = ({ initialFormData = {} }) => {
                             handleFormInput("countryForInvestment", e.target.value)
                         }
                         className="bg-gray-50 h-12 p-2 rounded-md border border-gray-300"
-                    >f
+                    >
                         <option value="">Select a country</option>
                         {COUNTRIES.map((country, index) => (
                             <option key={index} value={country}>
@@ -109,7 +146,7 @@ const EditListingForm = ({ initialFormData = {} }) => {
                     </select>
 
                     <label className="text-sm font-medium text-gray-700">
-                        Seeking investors in these industries*
+                        Seeking investors in these industries *
                     </label>
                     <select
                         value={formData.investmentIndustry || ""}
@@ -132,10 +169,12 @@ const EditListingForm = ({ initialFormData = {} }) => {
                     <ReactSelect
                         isMulti
                         options={countryOptions}
-                        value={formData.countriesForInvestors?.map((country) => ({
-                            value: country,
-                            label: country,
-                        })) || []}
+                        value={
+                            formData.countriesForInvestors?.map((country) => ({
+                                value: country,
+                                label: country,
+                            })) || []
+                        }
                         className="react-select-container"
                         classNamePrefix="react-select"
                         placeholder="Select countries"
@@ -143,7 +182,7 @@ const EditListingForm = ({ initialFormData = {} }) => {
                     />
 
                     <label className="text-sm font-medium text-gray-700">
-                        Minimum Investment needed (in USD dollars)*
+                        Minimum Investment needed (in USD dollars) *
                     </label>
                     <select
                         value={formData.minimumInvestment || ""}
@@ -165,9 +204,7 @@ const EditListingForm = ({ initialFormData = {} }) => {
                     <label className="text-sm font-medium text-gray-700">WhatsApp</label>
                     <PhoneInput
                         value={formData.whatsapp || ""}
-                        onChange={(phone) =>
-                            handleFormInput("whatsapp", phone)
-                        }
+                        onChange={(phone) => handleFormInput("whatsapp", phone)}
                         defaultCountry="ua"
                         placeholder="Enter phone number"
                     />
@@ -175,9 +212,7 @@ const EditListingForm = ({ initialFormData = {} }) => {
                     <label className="text-sm font-medium text-gray-700">Telegram</label>
                     <PhoneInput
                         value={formData.telegram || ""}
-                        onChange={(phone) =>
-                            handleFormInput("telegram", phone)
-                        }
+                        onChange={(phone) => handleFormInput("telegram", phone)}
                         defaultCountry="ua"
                         placeholder="Enter phone number"
                     />
@@ -187,9 +222,7 @@ const EditListingForm = ({ initialFormData = {} }) => {
                     </label>
                     <PhoneInput
                         value={formData.phone || ""}
-                        onChange={(phone) =>
-                            handleFormInput("phone", phone)
-                        }
+                        onChange={(phone) => handleFormInput("phone", phone)}
                         defaultCountry="ua"
                         placeholder="Enter phone number"
                     />
@@ -208,23 +241,31 @@ const EditListingForm = ({ initialFormData = {} }) => {
             </form>
             <div>
                 <MediaUpload
-                    value={formData.attachments} // Combine images and PDFs into a single array for rendering
+                    value={formData.attachments || []}
                     onChange={(url) => {
-                        setFormData({
-                            ...formData,
-                            attachments: [...formData.attachments, url],
-                        });
+                        setFormData((prev) => ({
+                            ...prev,
+                            attachments: [...(prev.attachments || []), url],
+                        }));
                     }}
                     onRemove={(url) => {
-                        setFormData({
-                            ...formData,
-                            attachments: formData.attachments.filter(
+                        setFormData((prev) => ({
+                            ...prev,
+                            attachments: (prev.attachments || []).filter(
                                 (attachment) => attachment !== url
                             ),
-                        });
+                        }));
                     }}
                 />
             </div>
+
+            <button
+                onClick={(e) => handleSubmit(e)}
+                type="button"
+                className="p-2 bg-blue-500 text-white rounded-md"
+            >
+                Confirm
+            </button>
         </div>
     );
 };
