@@ -15,7 +15,7 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 import { AuthContext } from "@/components/AuthProvider";
-import { ArrowBigRight, LogOut } from "lucide-react";
+import { LogOut } from "lucide-react";
 import { jwtDecode } from "jwt-decode";
 
 const Navbar = () => {

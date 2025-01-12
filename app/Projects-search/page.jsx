@@ -58,6 +58,26 @@ const ProjectsSearch = () => {
         }
     };
 
+    const parseRangeValue = (rangeString) => {
+        if (!rangeString) return 0; // Default value for missing ranges
+    
+        // Extract the lower bound of the range
+        const match = rangeString.match(/([\d,\.]+)\s*(million|billion)?/i);
+        if (!match) return 0;
+    
+        let [_, value, unit] = match; // Extract value and unit
+        value = parseFloat(value.replace(/,/g, "")); // Remove commas and convert to a number
+    
+        // Convert units
+        if (unit?.toLowerCase() === "million") {
+          value *= 1_000_000;
+        } else if (unit?.toLowerCase() === "billion") {
+          value *= 1_000_000_000;
+        }
+    
+        return value;
+      };
+
     useEffect(() => {
         if (country) fetchListings(country);
     }, [country]);
@@ -69,25 +89,25 @@ const ProjectsSearch = () => {
             : listings;
 
         // Sorting logic
-        if (sortOption === "investmentAmountAsc") {
+        if (sortOption === "investmentAmountDesc") {
             filteredListings = filteredListings.sort((a, b) => {
-                const amountA = parseFloat(a.minimumInvestment.replace(/[^0-9.-]+/g, ""));
-                const amountB = parseFloat(b.minimumInvestment.replace(/[^0-9.-]+/g, ""));
+                const amountA = parseRangeValue(a.minimumInvestment);
+                const amountB = parseRangeValue(b.minimumInvestment);
                 return amountA - amountB;
             });
-        } else if (sortOption === "investmentAmountDesc") {
+        } else if (sortOption === "investmentAmountAsc") {
             filteredListings = filteredListings.sort((a, b) => {
-                const amountA = parseFloat(a.minimumInvestment.replace(/[^0-9.-]+/g, ""));
-                const amountB = parseFloat(b.minimumInvestment.replace(/[^0-9.-]+/g, ""));
+                const amountA = parseRangeValue(a.minimumInvestment);
+                const amountB = parseRangeValue(b.minimumInvestment);
                 return amountB - amountA;
             });
-        } else if (sortOption === "datePostedAsc") {
+        } else if (sortOption === "datePostedDesc") {
             filteredListings = filteredListings.sort((a, b) => {
                 const dateA = new Date(a.createdAt);
                 const dateB = new Date(b.createdAt);
                 return dateA - dateB;
             });
-        } else if (sortOption === "datePostedDesc") {
+        } else if (sortOption === "datePostedAsc") {
             filteredListings = filteredListings.sort((a, b) => {
                 const dateA = new Date(a.createdAt);
                 const dateB = new Date(b.createdAt);

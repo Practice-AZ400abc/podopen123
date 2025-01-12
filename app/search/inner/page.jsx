@@ -161,6 +161,13 @@ export default function SearchPage() {
     }
   };
 
+  const handleTriggerClick = (e) => {
+    if (!isLoggedIn) {
+      e.preventDefault();  
+      router.push("/sign-in");
+    }
+  }
+
   const paginatedInvestors = filteredInvestors.slice(
     (currentPage - 1) * itemsPerPage,
     currentPage * itemsPerPage
@@ -373,7 +380,10 @@ export default function SearchPage() {
                       </div>
 
                       <Dialog>
-                        <DialogTrigger className="bg-blue-400 flex items-center p-2 text-white justify-center rounded-md">
+                        <DialogTrigger
+                          onClick={(e) => handleTriggerClick(e)}
+                          className="bg-blue-400 flex items-center p-2 text-white justify-center rounded-md"
+                        >
                           <MessageSquare className="w-4 h-4 mr-2" />
                           Message
                         </DialogTrigger>
@@ -442,7 +452,7 @@ export default function SearchPage() {
                               Not Now
                             </Link>
                             <Link
-                              href={!isLoggedIn ? "/sign-in" : "/"}
+                              href={"/"}
                               className="text-white bg-green-500 rounded-sm p-2 hover:bg-green-400"
                             >
                               Get Started

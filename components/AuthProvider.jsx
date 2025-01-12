@@ -29,7 +29,6 @@ export const AuthProvider = ({ children }) => {
       setToken(null);
       setIsLoggedIn(false);
       localStorage.removeItem("token");
-      window.location.reload(false);
     } catch (error) {
       console.error("Error logging out:", error);
     }
