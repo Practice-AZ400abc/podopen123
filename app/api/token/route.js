@@ -7,7 +7,7 @@ const secret = process.env.JWT_SECRET;
 export const POST = async (req) => {
   try {
     const { firebaseUid } = await req.json();
-s
+
     await connectToDB();
 
     const user = await User.findOne({ firebaseUid });
