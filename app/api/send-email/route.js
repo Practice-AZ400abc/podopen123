@@ -24,7 +24,7 @@ export const POST = async (req) => {
     }
 
     const secretKey = process.env.JWT_SECRET;
-    const expiresIn = action === "verify" ? "1h" : "15m";
+    const expiresIn = action === "verify" ? "24h" : "48h";
     const token = jwt.sign({ email, action }, secretKey, { expiresIn });
 
     await sendActionEmail(email, action, token);
