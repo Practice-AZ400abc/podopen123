@@ -58,8 +58,8 @@ export default function Home() {
             Search
           </Button>
         </div>
-        <h1 className="text-2xl md:text-[54px] leading-snug  text-black font-bold">Connect with Investors to Secure Your Golden or EB-5 Visa
-          Funding</h1>
+        <h1 className="text-2xl md:text-[54px] leading-snug  text-black font-bold">Connect with Investors to Secure Your
+        Golden or EB-5 Visa</h1>
 
         <div className="space-y-4 flex items-center flex-col">
 
@@ -68,7 +68,9 @@ export default function Home() {
           </div>
 
           <h1 className="text-2xl font-semibold text-blue-400">
-            Create a listing to get funding for your project from an investor seeking a golden, EB5 Visa<br />
+          Create your Listing - It only takes a few seconds.
+Join our network of successful visa sponsors.
+<br />
           </h1>
           {/* <p className="text-gray-600">
             Search for investors seeking a golden visa or investment visa in the country where you seek funds for your project.

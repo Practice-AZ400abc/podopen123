@@ -17,6 +17,7 @@ import {
 import { AuthContext } from "@/components/AuthProvider";
 import { LogOut } from "lucide-react";
 import { jwtDecode } from "jwt-decode";
+import { Separator } from "./ui/separator";
 
 const Navbar = () => {
   const pathname = usePathname(); // Initialize useRouter
@@ -40,6 +41,8 @@ const Navbar = () => {
   }, [token]);
 
   const toggleLogout = () => setShowLogout((prev) => !prev);
+
+ 
 
   // Close the dropdown when clicking outside
   useEffect(() => {
@@ -140,11 +143,14 @@ const Navbar = () => {
                   <ul className="flex flex-col items-start gap-2 text-black">
                     <Link href="/profile">Profile</Link>
                   </ul>
+                  <Separator />
                   {role === "Visa Sponsor" && (
                     <ul className="flex flex-col items-start gap-2 text-black">
-                      <Link href="/manage-listing">Manage Your Listings </Link>
+                      <Link href="/manage-listing">Manage/Create Your
+                      Listing </Link>
                     </ul>
                   )}
+                  <Separator />
                   <div className="flex gap-2 items-center">
                     <button onClick={logout} className="text-black">
                       Logout

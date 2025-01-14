@@ -1,12 +1,24 @@
 import React from "react";
 import { deleteUser } from "firebase/auth";
-import {auth} from "@/app/firebase/firebaseConfig";
+import { auth } from "@/app/firebase/firebaseConfig";
 import { useRouter } from "next/navigation";
-import {useContext} from "react";
+import { useContext } from "react";
 import { AuthContext } from "./AuthProvider";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog"
+
 
 const DeleteAccountButton = () => {
-  const {logout} = useContext(AuthContext)
+  const { logout } = useContext(AuthContext)
   const router = useRouter();
 
   const handleDeleteAccount = async () => {
@@ -61,12 +73,23 @@ const DeleteAccountButton = () => {
   };
 
   return (
-    <button
-      onClick={handleDeleteAccount}
-      className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600"
-    >
-      Confirm
-    </button>
+    <AlertDialog>
+      <AlertDialogTrigger className="bg-red-500 w-fit px-6 py-2 text-white font-bold rounded-lg hover:bg-red-400">Delete my Profile</AlertDialogTrigger>
+      <AlertDialogContent>
+        <AlertDialogHeader>
+          <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+          <AlertDialogDescription>
+            This action cannot be undone. This will permanently delete your account
+            and remove your data from our servers.
+          </AlertDialogDescription>
+        </AlertDialogHeader>
+        <AlertDialogFooter>
+          <AlertDialogCancel>Cancel</AlertDialogCancel>
+          <AlertDialogAction onClick={handleDeleteAccount}>Continue</AlertDialogAction>
+        </AlertDialogFooter>
+      </AlertDialogContent>
+    </AlertDialog>
+
   );
 };
 

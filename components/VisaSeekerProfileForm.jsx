@@ -248,7 +248,7 @@ const VisaSeekerProfileForm = ({ }) => {
     <div className="container mx-auto px-4 py-6">
       <form
         onSubmit={handleSubmit}
-        className="bg-white p-6 rounded-lg shadow-md flex flex-col gap-6"
+        className="bg-white p-6 rounded-lg  flex flex-col gap-6"
       >
         {/* Avatar Section */}
         <div className="flex items-center flex-col gap-4">
@@ -334,6 +334,9 @@ const VisaSeekerProfileForm = ({ }) => {
               }
               className="bg-gray-50 h-12 p-2 rounded-md border border-gray-300"
             >
+              <option value="" disabled>
+                Select 
+              </option>
               {COUNTRIES.map((country, index) => (
                 <option key={index} value={country}>
                   {country}
@@ -436,8 +439,9 @@ const VisaSeekerProfileForm = ({ }) => {
                 </option>
               ))}
             </select>
+            {errors.relocationCountry && <span style={{ color: 'red' }}>{errors.relocationCountry}</span>}
           </div>
-          {errors.relocationCountry && <span style={{ color: 'red' }}>{errors.relocationCountry}</span>}
+        
 
         </div>
 
@@ -680,13 +684,15 @@ const VisaSeekerProfileForm = ({ }) => {
           </div>
         </section>
         {/* Submit Button */}
-        <button
+       <div className="flex items-center justify-end gap-4">
+       <button
           type="submit"
-          className="mt-4 px-6 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-700"
+          className="px-6 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-700"
         >
           Save Profile
         </button>
         <DeleteAccountButton />
+       </div>
       </form>
     </div>
   );

@@ -102,7 +102,7 @@ const Listings = ({ listing, refreshListings, handleFilterChange, filter }) => {
       case "Expired":
         return "bg-gray-400";
       default:
-        return "bg-red-200";
+        return "bg-red-400";
     }
   };
 

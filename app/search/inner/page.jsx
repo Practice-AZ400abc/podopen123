@@ -163,7 +163,7 @@ export default function SearchPage() {
 
   const handleTriggerClick = (e) => {
     if (!isLoggedIn) {
-      e.preventDefault();  
+      e.preventDefault();
       router.push("/sign-in");
     }
   }
@@ -381,7 +381,7 @@ export default function SearchPage() {
 
                       <Dialog>
                         <DialogTrigger
-                          onClick={(e) => handleTriggerClick(e)}
+
                           className="bg-blue-400 flex items-center p-2 text-white justify-center rounded-md"
                         >
                           <MessageSquare className="w-4 h-4 mr-2" />
@@ -452,6 +452,7 @@ export default function SearchPage() {
                               Not Now
                             </Link>
                             <Link
+                              onClick={(e) => handleTriggerClick(e)}
                               href={"/"}
                               className="text-white bg-green-500 rounded-sm p-2 hover:bg-green-400"
                             >

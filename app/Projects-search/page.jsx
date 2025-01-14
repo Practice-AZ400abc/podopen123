@@ -10,7 +10,7 @@ import {
     SelectTrigger,
     SelectValue,
 } from "@/components/ui/select";
-import { Filter } from "lucide-react";
+import { ArrowBigLeft, ArrowLeft, ArrowRight, Filter } from "lucide-react";
 import ProjectCard from "@/components/ProjectCard";
 import Spinner from "@/components/Spinner";
 
@@ -145,11 +145,11 @@ const ProjectsSearch = () => {
 
     return (
         <div className="flex justify-center flex-col items-center gap-2 w-full">
-            <div className="mt-4 w-[80%] m-auto">
+            <div className="mt-4 w-[50%] m-auto">
                 <div className="border rounded-md p-4 border-blue-400">
-                    <Select value={country} onValueChange={handleCountryChange}>
+                    <Select onValueChange={handleCountryChange}>
                         <SelectTrigger className="h-12">
-                            <SelectValue placeholder="Select country where you need investment" />
+                            <SelectValue placeholder="Search for other countries with visa sponsor" />
                         </SelectTrigger>
                         <SelectContent>
                             {COUNTRIES.map((country) => (
@@ -170,10 +170,7 @@ const ProjectsSearch = () => {
                             <Filter />
                         </div>
                         <div className="mt-4">
-                            <Select
-                                value={selectedIndustry}
-                                onValueChange={handleIndustryChange}
-                            >
+                            <Select onValueChange={handleIndustryChange}>
                                 <SelectTrigger className="h-12">
                                     <SelectValue placeholder="Select Industry" />
                                 </SelectTrigger>
@@ -187,7 +184,7 @@ const ProjectsSearch = () => {
                             </Select>
                         </div>
                         <div className="mt-4">
-                            <Select value={sortOption} onValueChange={handleSortChange}>
+                            <Select onValueChange={handleSortChange}>
                                 <SelectTrigger className="h-12">
                                     <SelectValue placeholder="Sort By" />
                                 </SelectTrigger>
@@ -196,10 +193,10 @@ const ProjectsSearch = () => {
                                         Investment Amount Ascending
                                     </SelectItem>
                                     <SelectItem value="investmentAmountDesc">
-                                    highest to lowest investment amount Low
+                                        highest to lowest investment amount Low
                                     </SelectItem>
                                     <SelectItem value="datePostedAsc">
-                                    Old Listings posted
+                                        Old Listings posted
                                     </SelectItem>
                                     <SelectItem value="datePostedDesc">
                                         Old Listings posted
@@ -209,13 +206,12 @@ const ProjectsSearch = () => {
                         </div>
                     </div>
 
-                    {/* Projects Listings */}
                     <div className="bg-white p-4 rounded-lg w-[70%] mx-auto">
                         <div>
                             <h1 className="text-2xl font-bold text-blue-400">
                                 Projects Listings
                             </h1>
-                            <p>Results: {filtered.length}</p>
+                            <p>Search Results for {country}: {filtered.length}</p>
                         </div>
                         <div className="mt-4 w-full p-4 rounded-lg">
                             {loading ? (
@@ -239,21 +235,23 @@ const ProjectsSearch = () => {
                         {/* Pagination Controls */}
                         <div className="flex justify-between items-center mt-4">
                             <button
-                                className="btn btn-secondary"
+                                className="btn flex items-center gap-2 bg-blue-400 text-white p-2 rounded-md btn-secondary"
                                 disabled={currentPage === 1}
                                 onClick={handlePrevPage}
                             >
+                                <ArrowLeft size={15}/>
                                 Previous
                             </button>
                             <p>
                                 Page {currentPage} of {totalPages}
                             </p>
                             <button
-                                className="btn btn-secondary"
+                                className="btn flex items-center gap-2 bg-blue-400 text-white p-2 rounded-md btn-secondary"
                                 disabled={currentPage === totalPages}
                                 onClick={handleNextPage}
                             >
-                                Next
+                               Next
+                                <ArrowRight size={15}/>
                             </button>
                         </div>
                     </div>

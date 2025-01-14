@@ -37,7 +37,7 @@ const ManageListing = () => {
 
                 <Sheet>
                     <SheetTrigger
-                        className="btn p-3 flex items-center gap-2 rounded-sm bg-black font-bold text-white"
+                        className="btn p-3 flex items-center gap-2 rounded-sm bg-green-400 font-bold text-white"
                         variant="ghost"
                     >
                         <PlusCircleIcon /> Create a Listing
@@ -79,10 +79,10 @@ const ManageListing = () => {
                                     </h1>
                                     <hr />
                                 </div>
-                                <div className="flex items-end justify-end w-full">
+                                <div className="flex items-end justify-end w-full ">
                                     <Link
                                         href={"/create-listing"}
-                                        className="bg-black p-2 text-white rounded-md hover:bg-gray-900"
+                                        className="bg-black text-center p-2 w-full text-white rounded-md hover:bg-gray-900"
                                     >
                                         Get Started
                                     </Link>

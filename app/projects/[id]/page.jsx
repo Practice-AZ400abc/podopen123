@@ -1,10 +1,12 @@
 "use client";
-import { DownloadIcon, Loader, Locate, LocateIcon } from "lucide-react";
+import { DownloadIcon, Loader, LoaderCircle, Locate, LocateIcon, SplineIcon } from "lucide-react";
 import Image from "next/image";
 import { useParams } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { FaLocationArrow } from "react-icons/fa";
+import profile from "@/assets/profile.png";
+
 
 const ProjectPage = () => {
     const [loading, setLoading] = useState(true);
@@ -33,7 +35,9 @@ const ProjectPage = () => {
     }, [id]);
 
     if (loading) {
-        return <Loader size="2rem" />;
+        return <div className="h-screen flex items-center justify-center">
+            <LoaderCircle size="2rem" className="animate-spin"/>
+        </div>;
     }
 
     if (!project) {
@@ -43,9 +47,9 @@ const ProjectPage = () => {
     return (
         <div className="w-full container mx-auto p-4">
             <div className="mt-2 border p-3 rounded-md">
-                <div className="flex items-start gap-4">
+                <div className="flex items-center gap-4">
                     <Image
-                        src={project.author.avatarURL}
+                        src={project.author.avatarURL || profile}
                         alt="Author Profile Image"
                         className="w-20 h-20 object-cover rounded-full"
                         width={200}
@@ -185,7 +189,10 @@ const ProjectPage = () => {
                                 ))}
                             </div>
                         </div>
-                        <p className="text-sm text-gray-500 text-end">Created At: {new Date(project.createdAt).toLocaleDateString()} </p>
+                      <div className="flex gap-4 md:gap-10 flex-wrap items-center justify-end">
+                      <p className="text-sm text-black border p-2 rounded-sm text-end">Published At: {new Date(project.createdAt).toLocaleDateString()} </p>
+                      <p className="text-sm text-black border p-2 rounded-sm text-end">Listing Number: {project._id.slice(0, 5)}</p>
+                      </div>
                     </div>
                 </div>
             </div>

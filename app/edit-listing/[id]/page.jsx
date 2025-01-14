@@ -5,7 +5,7 @@ import ReactSelect from "react-select";
 import { PhoneInput } from "react-international-phone";
 import "react-international-phone/style.css";
 import MediaUpload from "@/components/UploadMedia";
-import { useParams } from "next/navigation"; // Import for dynamic routing
+import { useParams, useRouter } from "next/navigation"; // Import for dynamic routing
 import toast from "react-hot-toast";
 import { Loader } from "lucide-react";
 
@@ -15,6 +15,7 @@ const countryOptions = COUNTRIES.map((country) => ({
 }));
 
 const EditListingForm = () => {
+    const router = useRouter();
     const params = useParams();
     const { id } = params;
     const [formData, setFormData] = useState({});
@@ -83,6 +84,7 @@ const EditListingForm = () => {
 
             toast.success("Listing updated successfully");
             setLoading(false)
+            router.push("/manage-listing")
         } catch (error) {
             console.error(error);
             alert("An error occurred while updating the listing");
