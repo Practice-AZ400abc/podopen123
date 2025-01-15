@@ -53,6 +53,8 @@ export const POST = async (req) => {
 
         const listing = await Listing.create({
             ...body,
+            status: "Published",
+            publishedAt: new Date(),
             author: user._id,
         });
 

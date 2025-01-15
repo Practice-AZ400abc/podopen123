@@ -10,6 +10,7 @@ import toast from "react-hot-toast";
 import { jwtDecode } from "jwt-decode";
 import MediaUpload from "@/components/UploadMedia";
 import { PictureInPicture2 } from "lucide-react";
+import extractPublicIdFromUrl from "@/utils/extractPublicIdFromUrl";
 
 const CreateListing = () => {
     const router = useRouter();
@@ -158,13 +159,35 @@ const CreateListing = () => {
                                                 attachments: [...formData.attachments, url],
                                             });
                                         }}
-                                        onRemove={(url) => {
-                                            setFormData({
-                                                ...formData,
-                                                attachments: formData.attachments.filter(
-                                                    (attachment) => attachment !== url
-                                                ),
-                                            });
+                                        onRemove={async (url) => {
+                                            try {
+                                                const publicId = extractPublicIdFromUrl(url);
+                                                const response = await fetch(
+                                                    `/api/delete-cloudinary?publicId=${publicId}`,
+                                                    {
+                                                        method: "DELETE",
+                                                    }
+                                                );
+
+                                                if (!response.ok) {
+                                                    throw new Error(
+                                                        `Failed to delete file from Cloudinary: ${response.statusText}`
+                                                    );
+                                                }
+
+                                                setFormData({
+                                                    ...formData,
+                                                    attachments: formData.attachments.filter(
+                                                        (attachment) => attachment !== url
+                                                    ),
+                                                });
+                                            } catch (error) {
+                                                console.error(
+                                                    "Error deleting attachment:",
+                                                    error.message
+                                                );
+                                                alert("Failed to delete file. Please try again.");
+                                            }
                                         }}
                                     />
                                 </div>

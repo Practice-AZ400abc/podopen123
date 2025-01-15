@@ -1,6 +1,8 @@
 import Listing from "@/models/listing";
 import { connectToDB } from "@/utils/database";
 import verifyToken from "@/utils/verifyToken";
+import extractPublicIdFromUrl from "@/utils/extractPublicIdFromUrl";
+import deleteFromCloudinary from "@/utils/deleteFromCloudinary";
 
 export const DELETE = async (req, { params }) => {
     try {
@@ -37,6 +39,12 @@ export const DELETE = async (req, { params }) => {
             return new Response(JSON.stringify({ message: "Unauthorized" }), {
                 status: 401,
             });
+        }
+
+        if (listing.attachments && listing.attachments.length > 0) {
+            for (const attachment of listing.attachments) {
+                await deleteFromCloudinary(extractPublicIdFromUrl(attachment));
+            }
         }
 
         await Listing.findByIdAndDelete(id);
@@ -157,4 +165,4 @@ export const GET = async (req, { params }) => {
             status: 500,
         });
     }
-}
+};

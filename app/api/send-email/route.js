@@ -2,6 +2,7 @@ import { sendActionEmail } from "@/utils/email";
 import jwt from "jsonwebtoken";
 import User from "@/models/user";
 import dotenv from "dotenv";
+import crypto from "crypto";
 
 dotenv.config();
 
@@ -23,9 +24,11 @@ export const POST = async (req) => {
       );
     }
 
+    const randomString = crypto.randomBytes(16).toString("hex");
+
     const secretKey = process.env.JWT_SECRET;
     const expiresIn = action === "verify" ? "24h" : "48h";
-    const token = jwt.sign({ email, action }, secretKey, { expiresIn });
+    const token = jwt.sign({ randomString, email, action }, secretKey, { expiresIn });
 
     await sendActionEmail(email, action, token);
 

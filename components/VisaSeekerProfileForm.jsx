@@ -12,19 +12,12 @@ import {
 } from "@/lib/constants";
 import { PhoneInput } from "react-international-phone";
 import "react-international-phone/style.css";
-import ReactSelect from "react-select";
 import toast from "react-hot-toast";
 import { jwtDecode } from "jwt-decode";
 import { useRouter } from "next/navigation";
 import { AuthContext } from "./AuthProvider";
 import { Mail } from "lucide-react";
 import DeleteAccountButton from "./DeleteAccountButton";
-
-// Define options for the countries dropdown
-const countryOptions = COUNTRIES.map((country) => ({
-  value: country,
-  label: country,
-}));
 
 const VisaSeekerProfileForm = ({ }) => {
   const router = useRouter();
@@ -83,13 +76,6 @@ const VisaSeekerProfileForm = ({ }) => {
     comments: "",
     isPublic: false,
   });
-
-  const handleCountriesForVisaChange = (selectedOptions) => {
-    const selectedCountries = selectedOptions
-      ? selectedOptions.map((option) => option.value)
-      : [];
-    setFormData((prev) => ({ ...prev, countriesForVisa: selectedCountries }));
-  };
 
   useEffect(() => {
     const fetchProfile = async () => {

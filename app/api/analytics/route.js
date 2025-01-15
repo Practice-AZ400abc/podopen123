@@ -48,6 +48,7 @@ export const GET = async (req) => {
                 }
             });
         });
+        dailyImpressionsLast30Days.reverse();
 
         return new Response(
             JSON.stringify({

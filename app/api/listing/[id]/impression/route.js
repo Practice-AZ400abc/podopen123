@@ -6,14 +6,28 @@ export const POST = async (req, { params }) => {
     await connectToDB();
 
     try {
-        const today = new Date();
-        const startOfDay = new Date(today.setHours(0, 0, 0, 0));
-        const endOfDay = new Date(today.setHours(23, 59, 59, 999));
+        const todayUTC = new Date();
+        todayUTC.setUTCHours(0, 0, 0, 0);
+        const startOfDayUTC = new Date(todayUTC);
+        todayUTC.setUTCHours(23, 59, 59, 999);
+        const endOfDayUTC = new Date(todayUTC);
+
+        const listing = await Listing.findById(id);
+        if (!listing) {
+            return new Response(JSON.stringify({ error: "Listing not found" }), { status: 404 });
+        }
+
+        const publishedAt = new Date(listing.publishedAt);
+        if (startOfDayUTC < publishedAt) {
+            return new Response(JSON.stringify({ error: "Impressions before publish date" }), {
+                status: 400,
+            });
+        }
 
         const result = await Listing.updateOne(
             {
                 _id: id,
-                "dailyImpressions.date": { $gte: startOfDay, $lte: endOfDay },
+                "dailyImpressions.date": { $gte: startOfDayUTC, $lte: endOfDayUTC },
             },
             {
                 $inc: { impressions: 1, "dailyImpressions.$.impressions": 1 },
@@ -26,7 +40,7 @@ export const POST = async (req, { params }) => {
                 {
                     $inc: { impressions: 1 },
                     $push: {
-                        dailyImpressions: { date: startOfDay, impressions: 1 },
+                        dailyImpressions: { date: startOfDayUTC, impressions: 1 },
                     },
                 }
             );
@@ -37,3 +51,4 @@ export const POST = async (req, { params }) => {
         return new Response(JSON.stringify({ error: error.message }), { status: 500 });
     }
 };
+

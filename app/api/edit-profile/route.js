@@ -1,6 +1,8 @@
 import User from "@/models/user";
 import { connectToDB } from "@/utils/database";
 import verifyToken from "@/utils/verifyToken";
+import extractPublicIdFromUrl from "@/utils/extractPublicIdFromUrl";
+import deleteFromCloudinary from "@/utils/deleteFromCloudinary";
 
 export const PUT = async (req) => {
     try {
@@ -25,6 +27,14 @@ export const PUT = async (req) => {
         const targetUser = await User.findOne({ email });
         if (!targetUser) {
             return new Response(JSON.stringify({ message: "User not found." }), { status: 404 });
+        }
+
+        if (targetUser.avatarURL) {
+            try {
+                await deleteFromCloudinary(extractPublicIdFromUrl(targetUser.avatarURL));
+            } catch (error) {
+                console.error("Error deleting previous avatar from Cloudinary:", error);
+            }
         }
 
         if (targetUser.role === "Visa Sponsor") {

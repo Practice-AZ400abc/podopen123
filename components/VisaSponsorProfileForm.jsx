@@ -29,13 +29,6 @@ import {
 } from "@/components/ui/alert-dialog"
 import DeleteAccountButton from "./DeleteAccountButton";
 
-
-// Define options for the countries dropdown
-const countryOptions = COUNTRIES.map((country) => ({
-  value: country,
-  label: country,
-}));
-
 const VisaSponsorProfileForm = ({ }) => {
   const router = useRouter();
   const [uploading, setUploading] = useState(false);

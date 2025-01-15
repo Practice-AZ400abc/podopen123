@@ -2,6 +2,8 @@ import { connectToDB } from "@/utils/database";
 import User from "@/models/user";
 import Listing from "@/models/listing";
 import verifyToken from "@/utils/verifyToken";
+import extractPublicIdFromUrl from "@/utils/extractPublicIdFromUrl";
+import deleteFromCloudinary from "@/utils/deleteFromCloudinary";
 
 export const GET = async (req) => {
   try {
@@ -79,19 +81,36 @@ export const DELETE = async (req) => {
     const user = verifyToken(req);
 
     if (!user) {
-      return new Response({ message: "Unauthorized" }, { status: 401 });
+      return new Response(JSON.stringify({ message: "Unauthorized" }), {
+        status: 401,
+      });
     }
 
     if (!email) {
       return new Response(
-        JSON.stringify({ message: "Missing firebaseUid or email parameter" }),
+        JSON.stringify({ message: "Missing email parameter" }),
         { status: 400 }
       );
     }
 
     await connectToDB();
 
-    await User.findOneAndDelete({ email: email });
+    const userRecord = await User.findOneAndDelete({ email: email });
+
+    if (userRecord && userRecord.avatar) {
+      await deleteFromCloudinary(extractPublicIdFromUrl(userRecord.avatar));
+    }
+
+    const listings = await Listing.find({ author: user._id });
+
+    for (const listing of listings) {
+      if (listing.attachments && listing.attachments.length > 0) {
+        for (const attachment of listing.attachments) {
+          await deleteFromCloudinary(extractPublicIdFromUrl(attachment));
+        }
+      }
+    }
+
     await Listing.deleteMany({ author: user._id });
 
     return new Response(JSON.stringify({ message: "User deleted" }), {
@@ -104,3 +123,4 @@ export const DELETE = async (req) => {
     });
   }
 };
+

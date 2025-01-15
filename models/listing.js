@@ -70,7 +70,8 @@ const ListingSchema = new Schema(
         },
         publishedAt: {
             type: Date,
-            required: false,
+            required: true,
+            default: null,
         },
         impressions: {
             type: Number,
