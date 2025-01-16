@@ -1,13 +1,15 @@
 "use client";
 
+import { useRouter } from "next/navigation";
 import React, { createContext, useState, useEffect } from "react";
+import toast from "react-hot-toast";
 
 export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [token, setToken] = useState(null);
-
+  const router = useRouter()
   useEffect(() => {
     if (typeof window !== "undefined") {
       const storedToken = localStorage.getItem("token");
@@ -29,6 +31,8 @@ export const AuthProvider = ({ children }) => {
       setToken(null);
       setIsLoggedIn(false);
       localStorage.removeItem("token");
+      router.push("/")
+      toast.success("You have successfully logged out")
     } catch (error) {
       console.error("Error logging out:", error);
     }
