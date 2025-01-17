@@ -177,6 +177,11 @@ const Listings = ({ listing, refreshListings, handleFilterChange, filter }) => {
             </span>
           ))}
         </h1>
+        <div className=" rounded-sm text-gray-600 font-light text-sm">
+          <span className="font-bold text-black">Published at: </span>
+          <h1 className="mt-4"> {new Date(updatedListing.createdAt).toLocaleString()}</h1>
+        </div>
+        
       </div>
       <button
         onClick={() => setShowDetails(!showDetails)}
@@ -228,7 +233,7 @@ const Listings = ({ listing, refreshListings, handleFilterChange, filter }) => {
           </div>
           <div className="mt-4 flex gap-2 flex-col">
             <div className="flex gap-2">
-              <h1 className="font-bold ">Email</h1>
+              <h1 className="font-bold ">Contact email:</h1>
               <span>{updatedListing.contactEmail}</span>
             </div>
           </div>

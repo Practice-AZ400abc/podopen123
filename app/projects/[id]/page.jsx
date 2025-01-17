@@ -6,6 +6,7 @@ import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { FaLocationArrow } from "react-icons/fa";
 import profile from "@/assets/profile.png";
+import Link from "next/link";
 
 
 const ProjectPage = () => {
@@ -47,8 +48,9 @@ const ProjectPage = () => {
     return (
         <div className="w-full container mx-auto p-4">
             <div className="mt-2 border p-3 rounded-md">
-                <div className="flex items-center gap-4">
-                    <Image
+                <div className="flex items-center justify-between">
+                   <div className="flex items-center gap-4">
+                   <Image
                         src={project.author.avatarURL || profile}
                         alt="Author Profile Image"
                         className="w-20 h-20 object-cover rounded-full"
@@ -69,6 +71,8 @@ const ProjectPage = () => {
                             <p className="text-gray-500">{project.countryForInvestment}</p>
                         </div>
                     </div>
+                   </div>
+                <Link href={`/Projects-search?country=${project.countryForInvestment}`} className="underline pr-4">Back</Link>
                 </div>
 
                 {/* Flex box */}
@@ -90,9 +94,9 @@ const ProjectPage = () => {
                             </span>
                         </div>
                         <div className="mt-5 flex items-center gap-4">
-                            <p className="text-bold">Email: </p>
+                            <p className="text-bold">Contact email: </p>
                             <span className="text-sm text-gray-500">
-                                {project.author.email}
+                                {project.contactEmail}
                             </span>
                         </div>
                     </div>

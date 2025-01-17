@@ -138,10 +138,7 @@ export const sendActionEmail = async (email, action, token) => {
               </td>
             </tr>
             <tr>
-              <td style="padding: 40px 30px; width: 100%; text-align: center;">
-                <p style="color: white; font-weight: 600;">Visit your dashboard to view or manage your listings.</p>
-                <a href="${actionUrls.listingCreated}" style="padding: 10px 20px; color: white; background-color: #3b82f6; text-decoration: none; border-radius: 5px;">Go to Dashboard</a>
-              </td>
+             
             </tr>
             <tr>
               <td style="padding: 20px 30px; text-align: center; color: #ffffff;">

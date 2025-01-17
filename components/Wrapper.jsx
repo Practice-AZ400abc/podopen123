@@ -57,6 +57,7 @@ const Wrapper = () => {
             const data = await response.json();
             setListings(data);
             setFilteredListings(data);
+            console.log(data)
         } catch (error) {
             console.error(error);
         } finally {

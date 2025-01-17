@@ -65,7 +65,7 @@ const DeleteAccountButton = () => {
       console.error("Error during account deletion:", error);
 
       if (error.code === "auth/requires-recent-login") {
-        alert("You need to re-authenticate before deleting your account.");
+        alert("");
         // Optionally, handle re-authentication here
       } else {
         alert("An error occurred while deleting your account. Please try again.");

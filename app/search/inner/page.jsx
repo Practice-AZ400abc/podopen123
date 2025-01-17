@@ -466,9 +466,10 @@ export default function SearchPage() {
                 ))}
 
                 {/* Pagination Controls */}
-                <div className="flex justify-center items-center gap-4 mt-6">
+           
+                <div className="  flex justify-between items-center gap-4 mt-6">
                   <button
-                    className="px-3 py-1 bg-gray-200 rounded disabled:opacity-50"
+                    className="px-3 py-1 bg-blue-400  text-white rounded "
                     onClick={() => handlePageChange(currentPage - 1)}
                     disabled={currentPage === 1}
                   >
@@ -478,13 +479,14 @@ export default function SearchPage() {
                     Page {currentPage} of {totalPages}
                   </span>
                   <button
-                    className="px-3 py-1 bg-gray-200 rounded disabled:opacity-50"
+                    className="px-3 py-1 bg-blue-400 text-white rounded "
                     onClick={() => handlePageChange(currentPage + 1)}
                     disabled={currentPage === totalPages}
                   >
                     Next
                   </button>
                 </div>
+      
               </div>
             ) : (
               <p className="text-center">
