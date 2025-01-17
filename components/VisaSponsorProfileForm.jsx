@@ -393,28 +393,13 @@ const VisaSponsorProfileForm = ({ }) => {
         {/* Submit Button */}
         <div className="w-full flex gap-4 items-center justify-end">
           <div className="flex items-center justify-center gap-4">
-            <AlertDialog>
-              <AlertDialogTrigger 
-              className="mt-4 px-6 py-2 bg-red-500 text-white rounded-lg hover:bg-red-700"
-              
-              >Delete</AlertDialogTrigger>
-              <AlertDialogContent>
-                <AlertDialogHeader>
-                  <AlertDialogTitle>! Warning</AlertDialogTitle>
-                  <AlertDialogDescription>
-                    By click continue your profile will be deleted
-                  </AlertDialogDescription>
-                </AlertDialogHeader>
-                <AlertDialogFooter>
-                  <AlertDialogCancel>Cancel</AlertDialogCancel>
-                  <AlertDialogAction> <DeleteAccountButton /> </AlertDialogAction>
-                </AlertDialogFooter>
-              </AlertDialogContent>
-            </AlertDialog>
+         
+         <DeleteAccountButton />
+      
 
             <button
               type="submit"
-              className="mt-4 px-6 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-700"
+              className=" px-6 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-700"
             >
               Save Profile
             </button>

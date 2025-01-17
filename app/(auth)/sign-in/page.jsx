@@ -176,11 +176,13 @@ const SignIn = () => {
 
           <div className="flex flex-col gap-5 w-[90%] m-auto mt-5">
             <button
-              className="flex gap-5 items-center w-[80%] p-3 border rounded-full mx-auto  justify-center"
+              className="flex gap-5 items-center w-[80%] p-3 border bg-blue-500 rounded-full mx-auto  justify-center"
               onClick={() => signInWithSocials(new GoogleAuthProvider())}
             >
-              <FcGoogle />
-              <h1 className="text-black">Continue with Google</h1>
+             <div className="flex items-center justify-center p-2 rounded-full bg-white">
+             <FcGoogle  className=""/>
+             </div>
+              <h1 className="text-white font-bold">Continue with Google</h1>
             </button>
             {/* <button
               className="flex gap-5 items-center w-[80%] p-3 bg-blue-500 text-white rounded-full mx-auto justify-center"

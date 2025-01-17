@@ -127,8 +127,8 @@ const Wrapper = () => {
             </div>
 
             {activeSection === "listings" && (
-                <div className="w-[90%] flex flex-col items-start justify-start gap-5">
-                    <div className="w-[90%] border rounded-md bg-white p-5">
+                <div className="w-full flex flex-col items-start justify-start gap-5">
+                    <div className="w-full border rounded-md bg-white p-5">
                         <div className="flex items-start justify-between">
                             <h1 className="text-4xl font-bold">Your Listings</h1>
                             <div className="w-[200px]">

@@ -15,6 +15,7 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog"
+import toast from "react-hot-toast";
 
 
 const DeleteAccountButton = () => {
@@ -58,7 +59,7 @@ const DeleteAccountButton = () => {
       await deleteUser(user);
       logout();
 
-      alert("Your account and data have been successfully deleted.");
+      toast.success("Your account and data have been successfully deleted.");
       router.push("/"); // Redirect to the home page or a confirmation page
     } catch (error) {
       console.error("Error during account deletion:", error);
@@ -77,19 +78,17 @@ const DeleteAccountButton = () => {
       <AlertDialogTrigger className="bg-red-500 w-fit px-6 py-2 text-white font-bold rounded-lg hover:bg-red-400">Delete my Profile</AlertDialogTrigger>
       <AlertDialogContent>
         <AlertDialogHeader>
-          <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+          <AlertDialogTitle className="text-red-500 text-2xl font-bold">Warning:</AlertDialogTitle>
           <AlertDialogDescription>
-            This action cannot be undone. This will permanently delete your account
-            and remove your data from our servers.
+            By clicking continue your profile and credentials will be deleted from our platform.
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
           <AlertDialogCancel>Cancel</AlertDialogCancel>
-          <AlertDialogAction onClick={handleDeleteAccount}>Continue</AlertDialogAction>
+          <AlertDialogAction onClick={handleDeleteAccount} className="bg-red-500 text-white">Continue</AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>
-
   );
 };
 

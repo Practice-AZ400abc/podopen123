@@ -12,7 +12,7 @@ import {
   FacebookAuthProvider,
 } from "firebase/auth";
 import { auth } from "../../firebase/firebaseConfig";
-import { AuthContext } from "@/components/AuthProvider"; 
+import { AuthContext } from "@/components/AuthProvider";
 import handleSocialAuth from "@/utils/handleSocialAuth";
 import toast from "react-hot-toast";
 import { ArrowLeft, ArrowRight, Loader } from "lucide-react";
@@ -274,9 +274,8 @@ export default function Signup() {
                       ([key, valid], idx) => (
                         <li
                           key={idx}
-                          className={`list-disc text-sm font-bold ${
-                            valid ? "text-green-500" : "text-black"
-                          }`}
+                          className={`list-disc text-sm font-bold ${valid ? "text-green-500" : "text-black"
+                            }`}
                         >
                           {key === "minLength" && "At least 9 characters"}
                           {key === "maxLength" && "Not more than 32 characters"}
@@ -333,11 +332,13 @@ export default function Signup() {
           {selectedForm === "Visa Seeker" && (
             <div className="mt-5 flex flex-col items-center justify-center gap-5">
               <button
-                className="flex gap-5 items-center w-[80%] p-3 border rounded-full mx-auto  justify-center"
+                className="flex gap-5 items-center w-[80%] p-3 border bg-blue-500 rounded-full mx-auto  justify-center"
                 onClick={() => signInWithSocials(new GoogleAuthProvider())}
               >
-                <FcGoogle />
-                <h1 className="text-black">Continue with Google</h1>
+                <div className="flex items-center justify-center p-2 rounded-full bg-white">
+                  <FcGoogle className="" />
+                </div>
+                <h1 className="text-white">Continue with Google</h1>
               </button>
               {/* <button
                 className="flex gap-5 items-center w-[80%] p-3 bg-blue-600 text-white rounded-full mx-auto justify-center"
