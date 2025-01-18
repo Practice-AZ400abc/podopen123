@@ -108,7 +108,14 @@ const SignIn = () => {
     try {
       const result = await handleSocialAuth(provider);
 
-      login(result.token);
+      if (result.error) {
+        return
+      }
+
+      if (result.token !== undefined) {
+        login(result.token);
+      }
+
       if (result.completedProfile) {
         router.push("/");
       } else {
@@ -174,9 +181,9 @@ const SignIn = () => {
               className="flex gap-5 items-center w-[80%] p-3 border bg-blue-500 rounded-full mx-auto  justify-center"
               onClick={() => signInWithSocials(new GoogleAuthProvider())}
             >
-             <div className="flex items-center justify-center p-2 rounded-full bg-white">
-             <FcGoogle  className=""/>
-             </div>
+              <div className="flex items-center justify-center p-2 rounded-full bg-white">
+                <FcGoogle className="" />
+              </div>
               <h1 className="text-white font-bold">Continue with Google</h1>
             </button>
             {/* <button

@@ -21,7 +21,8 @@ import { Separator } from "./ui/separator";
 
 const Navbar = () => {
   const pathname = usePathname(); // Initialize useRouter
-  const { isLoggedIn, logout, token } = useContext(AuthContext);
+  const { isLoggedIn, logout } = useContext(AuthContext);
+  const [token, setToken] = useState(null)
   const [showLogout, setShowLogout] = useState(false);
   const profileRef = useRef(null);
 
@@ -29,6 +30,14 @@ const Navbar = () => {
   const [role, setRole] = useState(null);
   const [firstName, setFirstName] = useState(null);
   const [lastName, setLastName] = useState(null);
+
+  useEffect(() => {
+    const storedToken = localStorage.getItem("token");
+    if (!storedToken) {
+      setToken(null);
+    }
+    setToken(storedToken);
+  }, []);
 
   // Decode the token to get the avatarURL
   useEffect(() => {
@@ -42,7 +51,7 @@ const Navbar = () => {
 
   const toggleLogout = () => setShowLogout((prev) => !prev);
 
- 
+
 
   // Close the dropdown when clicking outside
   useEffect(() => {
@@ -147,7 +156,7 @@ const Navbar = () => {
                   {role === "Visa Sponsor" && (
                     <ul className="flex flex-col items-start gap-2 text-black">
                       <Link href="/manage-listing">Manage/Create Your
-                      Listing </Link>
+                        Listing </Link>
                     </ul>
                   )}
                   <Separator />

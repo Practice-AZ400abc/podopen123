@@ -163,8 +163,14 @@ export default function Signup() {
     try {
       const result = await handleSocialAuth(provider);
 
-      login(result.token);
-      // Check completedProfile status and redirect accordingly
+      if (result.error) {
+        return;
+      }
+
+      if (result.token !== undefined) {
+        login(result.token);
+      }
+
       if (result.completedProfile) {
         router.push("/");
       } else {
