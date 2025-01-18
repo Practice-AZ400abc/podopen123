@@ -60,23 +60,23 @@ const ProjectsSearch = () => {
 
     const parseRangeValue = (rangeString) => {
         if (!rangeString) return 0; // Default value for missing ranges
-    
+
         // Extract the lower bound of the range
         const match = rangeString.match(/([\d,\.]+)\s*(million|billion)?/i);
         if (!match) return 0;
-    
+
         let [_, value, unit] = match; // Extract value and unit
         value = parseFloat(value.replace(/,/g, "")); // Remove commas and convert to a number
-    
+
         // Convert units
         if (unit?.toLowerCase() === "million") {
-          value *= 1_000_000;
+            value *= 1_000_000;
         } else if (unit?.toLowerCase() === "billion") {
-          value *= 1_000_000_000;
+            value *= 1_000_000_000;
         }
-    
+
         return value;
-      };
+    };
 
     useEffect(() => {
         if (country) fetchListings(country);
@@ -233,13 +233,13 @@ const ProjectsSearch = () => {
                             )}
                         </div>
                         {/* Pagination Controls */}
-                        <div className="flex justify-between items-center mt-4">
+                        {(currentListings && currentListings.length > 0) && (<div className="flex justify-between items-center mt-4">
                             <button
                                 className="btn flex items-center gap-2 bg-blue-400 text-white p-2 rounded-md btn-secondary"
                                 disabled={currentPage === 1}
                                 onClick={handlePrevPage}
                             >
-                                <ArrowLeft size={15}/>
+                                <ArrowLeft size={15} />
                                 Previous
                             </button>
                             <p>
@@ -250,10 +250,10 @@ const ProjectsSearch = () => {
                                 disabled={currentPage === totalPages}
                                 onClick={handleNextPage}
                             >
-                               Next
-                                <ArrowRight size={15}/>
+                                Next
+                                <ArrowRight size={15} />
                             </button>
-                        </div>
+                        </div>)}
                     </div>
                 </div>
             </div>
