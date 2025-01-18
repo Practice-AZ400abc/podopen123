@@ -17,8 +17,10 @@ export const POST = async (req, { params }) => {
             return new Response(JSON.stringify({ error: "Listing not found" }), { status: 404 });
         }
 
-        const publishedAt = new Date(listing.publishedAt);
-        if (startOfDayUTC < publishedAt) {
+        const publishedDate = new Date(listing.publishedAt);
+        publishedDate.setUTCHours(0, 0, 0, 0);
+
+        if (publishedDate > startOfDayUTC) {
             return new Response(JSON.stringify({ error: "Impressions before publish date" }), {
                 status: 400,
             });
@@ -51,4 +53,3 @@ export const POST = async (req, { params }) => {
         return new Response(JSON.stringify({ error: error.message }), { status: 500 });
     }
 };
-

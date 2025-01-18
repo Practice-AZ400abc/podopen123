@@ -1,7 +1,14 @@
 "use client";
 
 import * as React from "react";
-import { Bar, BarChart, CartesianGrid, XAxis, Tooltip, ResponsiveContainer } from "recharts";
+import {
+  Line,
+  LineChart,
+  CartesianGrid,
+  XAxis,
+  Tooltip,
+  ResponsiveContainer,
+} from "recharts";
 import {
   Card,
   CardContent,
@@ -11,11 +18,10 @@ import {
 } from "@/components/ui/card";
 import {
   ChartContainer,
-  ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart";
 
-export const description = "An interactive bar chart";
+export const description = "An interactive line chart";
 
 const chartConfig = {
   views: {
@@ -36,7 +42,10 @@ export function Chart({ dailyImpressionsLast30Days }) {
 
   const total = React.useMemo(
     () => ({
-      impressions: dailyImpressionsLast30Days.reduce((acc, curr) => acc + curr.impressions, 0),
+      impressions: dailyImpressionsLast30Days.reduce(
+        (acc, curr) => acc + curr.impressions,
+        0
+      ),
     }),
     [dailyImpressionsLast30Days]
   );
@@ -45,7 +54,7 @@ export function Chart({ dailyImpressionsLast30Days }) {
     <Card className="mt-4">
       <CardHeader className="flex flex-col items-stretch space-y-0 border-b p-0 sm:flex-row">
         <div className="flex flex-1 flex-col justify-center gap-1 px-6 py-5 sm:py-6">
-          <CardTitle>Bar Chart - Interactive</CardTitle>
+          <CardTitle>Total Impressions over the last month</CardTitle>
           <CardDescription>
             Showing total visitors for the last 30 days
           </CardDescription>
@@ -71,7 +80,7 @@ export function Chart({ dailyImpressionsLast30Days }) {
           className="aspect-auto h-[250px] w-full"
         >
           <ResponsiveContainer width="100%" height={300}>
-            <BarChart
+            <LineChart
               data={dailyImpressionsLast30Days}
               margin={{
                 left: 12,
@@ -108,8 +117,14 @@ export function Chart({ dailyImpressionsLast30Days }) {
                   />
                 }
               />
-              <Bar dataKey="impressions" fill={`var(--color-desktop)`} />
-            </BarChart>
+              <Line
+                type="monotone"
+                dataKey="impressions"
+                stroke={`var(--color-desktop)`}
+                strokeWidth={2}
+                dot
+              />
+            </LineChart>
           </ResponsiveContainer>
         </ChartContainer>
       </CardContent>
