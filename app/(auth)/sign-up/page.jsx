@@ -163,11 +163,6 @@ export default function Signup() {
     try {
       const result = await handleSocialAuth(provider);
 
-      if (result.error) {
-        toast.error(result.error);
-        return;
-      }
-
       login(result.token);
       // Check completedProfile status and redirect accordingly
       if (result.completedProfile) {

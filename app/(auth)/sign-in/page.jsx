@@ -108,11 +108,6 @@ const SignIn = () => {
     try {
       const result = await handleSocialAuth(provider);
 
-      if (result.error) {
-        toast.error(result.error);
-        return;
-      }
-
       login(result.token);
       if (result.completedProfile) {
         router.push("/");
