@@ -194,7 +194,7 @@ const ProjectPage = () => {
                             </div>
                         </div>
                       <div className="flex gap-4 md:gap-10 flex-wrap items-center justify-end">
-                      <p className="text-sm text-black border p-2 rounded-sm text-end">Published At: {new Date(project.createdAt).toLocaleDateString()} </p>
+                      <p className="text-sm text-black border p-2 rounded-sm text-end">Published on: {new Date(project.createdAt).toLocaleDateString()} </p>
                       <p className="text-sm text-black border p-2 rounded-sm text-end">Listing Number: {project._id.slice(0, 5)}</p>
                       </div>
                     </div>

@@ -178,7 +178,7 @@ const Listings = ({ listing, refreshListings, handleFilterChange, filter }) => {
           ))}
         </h1>
         <div className=" rounded-sm text-gray-600 font-light text-sm">
-          <span className="font-bold text-black">Published at: </span>
+          <span className="font-bold text-black">Published on: </span>
           <h1 className="mt-4"> {new Date(updatedListing.createdAt).toLocaleString()}</h1>
         </div>
         
