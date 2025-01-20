@@ -70,7 +70,7 @@ export default function Home() {
           <h1 className="text-2xl font-semibold text-blue-400">
             Create your Listing - It only takes a few seconds.
             Join our network of successful visa sponsors.
-            <br />
+     
           </h1>
           {/* <p className="text-gray-600">
             Search for investors seeking a golden visa or investment visa in the country where you seek funds for your project.
@@ -83,12 +83,14 @@ export default function Home() {
               <Button className="bg-green-400 text-white hover:bg-green-500 shadow-sm">Get Started Now !</Button>
             </Link>
           </div>
+          <div className="flex flex-col">
           <span className="text-gray-600 text-sm mt-4 max-w-[400px] m-auto">
             Create your Listing - It only takes a few seconds
           </span>
           <span className="text-gray-600 text-sm mt-4 max-w-[400px] m-auto">
             Join our network of successful visa sponsors.
           </span>
+          </div>
         </div>
 
       </div>
