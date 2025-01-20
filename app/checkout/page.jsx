@@ -11,19 +11,29 @@ const Checkout = () => {
         "enable-funding": "",
         "disable-funding": "paylater,venmo",
         "data-sdk-integration-source": "integrationbuilder_ac",
-        "data-client-token": clientToken,
+        "data-client-token": clientToken, 
         components: "hosted-fields,buttons",
     };
+    
 
     useEffect(() => {
         (async () => {
-            const response = await fetch("/api/paypal-token", {
-                method: "POST",
-            });
-            const { client_token } = await response.json();
-            setClientToken(client_token);
+            try {
+                const response = await fetch("/api/paypal-token", { method: "POST" });
+                const data = await response.json();
+                console.log("Fetched Client Token in Frontend:", data); 
+
+                if (data.client_token) {
+                    setClientToken(data.client_token);
+                } else {
+                    throw new Error("No client token received");
+                }
+            } catch (error) {
+                console.error("Error fetching PayPal client token:", error);
+            }
         })();
     }, []);
+
     return (
         <>
             {clientToken ? (

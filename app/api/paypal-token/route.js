@@ -12,25 +12,28 @@ export async function POST() {
         });
 
         const data = await response.json();
+        console.log("PayPal Access Token Response:", data); 
         if (!data.access_token) {
             throw new Error("Failed to get access token");
         }
-
-        const orderResponse = await fetch("https://api-m.sandbox.paypal.com/v1/billing-agreements/agreement-tokens", {
+        const tokenResponse = await fetch("https://api-m.sandbox.paypal.com/v1/identity/generate-token", {
             method: "POST",
             headers: {
                 Authorization: `Bearer ${data.access_token}`,
                 "Content-Type": "application/json",
             },
-            body: JSON.stringify({
-                description: "Test Agreement",
-                payer: { payment_method: "PAYPAL" },
-            }),
         });
 
-        const orderData = await orderResponse.json();
-        return NextResponse.json({ client_token: orderData.token });
+        const tokenData = await tokenResponse.json();
+        console.log("PayPal Client Token Response:", tokenData); 
+
+        if (!tokenData.client_token) {
+            throw new Error("Failed to get client token");
+        }
+
+        return NextResponse.json({ client_token: tokenData.client_token });
     } catch (error) {
+        console.error("PayPal API Error:", error.message);
         return NextResponse.json({ error: error.message }, { status: 500 });
     }
 }
