@@ -8,7 +8,7 @@ cloudinary.config({
 
 const deleteFromCloudinary = async (publicId) => {
     try {
-        const result = await cloudinary.uploader.destroy(publicId);
+        const result = await cloudinary.api.delete_resources([publicId]);
         return result;
     } catch (error) {
         throw new Error(`Cloudinary deletion failed: ${error.message}`);

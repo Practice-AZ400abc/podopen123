@@ -137,14 +137,6 @@ const UserSchema = new Schema(
     countryLocation: {
       type: String,
     },
-    stripeCustomerId: {
-      type: String,
-      required: false,
-    },
-    stripeSubscriptionId: {
-      type: String,
-      required: false,
-    },
     subscriptionStatus: {
       type: String,
       required: true,
