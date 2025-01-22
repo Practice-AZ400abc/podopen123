@@ -1,5 +1,6 @@
 import { useState, useRef } from "react";
 import styles from "@/app/PaymentForm.module.css";
+import { jwtDecode } from "jwt-decode";
 
 import {
   PayPalHostedFieldsProvider,
@@ -10,20 +11,36 @@ import {
 
 async function createOrderCallback() {
   try {
-    const response = await fetch("/api/orders", {
+    const accessTokenResponse = await fetch("https://api-m.sandbox.paypal.com/v1/oauth2/token", {
+      method: "POST",
+      headers: {
+        Authorization: "Basic " + Buffer.from(`${process.env.PAYPAL_CLIENT_ID}:${process.env.PAYPAL_SECRET}`).toString("base64"),
+        "Content-Type": "application/x-www-form-urlencoded",
+      },
+      body: "grant_type=client_credentials",
+    });
+
+    const accessTokenData = await accessTokenResponse.json();
+    console.log("PayPal Access Token Response:", accessTokenData);
+    if (!accessTokenData.access_token) {
+      throw new Error("Failed to get access token");
+    }
+
+    const response = await fetch("https://api-m.sandbox.paypal.com/v2/checkout/orders", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        "Authorization": `Bearer ${accessTokenData.access_token}`, // Replace with your token logic
       },
-      // use the "body" param to optionally pass additional order information
-      // like product ids and quantities
       body: JSON.stringify({
-        cart: [
-          {
-            id: "YOUR_PRODUCT_ID",
-            quantity: "YOUR_PRODUCT_QUANTITY",
+        "intent": "CAPTURE",
+        "purchase_units": [{
+          "amount": {
+            "currency_code": "USD",
+            "value": "30.00"
           },
-        ],
+          "description": "30 days subscription"
+        }]
       }),
     });
 
@@ -47,59 +64,89 @@ async function createOrderCallback() {
 
 async function onApproveCallback(data, actions) {
   try {
-    const response = await fetch(`/api/orders/${data.orderID}/capture`, {
+    const accessTokenResponse = await fetch("https://api-m.sandbox.paypal.com/v1/oauth2/token", {
+      method: "POST",
+      headers: {
+        "Authorization": "Basic " + Buffer.from(`${process.env.PAYPAL_CLIENT_ID}:${process.env.PAYPAL_SECRET}`).toString("base64"),
+        "Content-Type": "application/x-www-form-urlencoded",
+      },
+      body: "grant_type=client_credentials",
+    });
+
+    const accessTokenData = await accessTokenResponse.json();
+    console.log("PayPal Access Token Response:", accessTokenData);
+    if (!accessTokenData.access_token) {
+      throw new Error("Failed to get access token");
+    }
+
+    const response = await fetch(
+      `https://api-m.sandbox.paypal.com/v2/checkout/orders/${data.orderID}/capture`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${accessTokenData.access_token}`, // Replace with your token logic
+        },
+      }
+    );
+
+    const orderData = await response.json();
+    const transaction =
+      orderData?.purchase_units?.[0]?.payments?.captures?.[0];
+
+    if (!transaction || transaction.status !== "COMPLETED") {
+      throw new Error(
+        `Transaction failed: ${JSON.stringify(orderData, null, 2)}`
+      );
+    }
+
+    // 1. Update user subscription
+    const userId = jwtDecode(localStorage.getItem("token"))._id;
+    const subscriptionResponse = await fetch(`/users/${userId}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        subscriptionStatus: "Active",
+        subscriptionExpiresAt: new Date(
+          Date.now() + 30 * 24 * 60 * 60 * 1000
+        ), // 30 days from now
+      }),
+    });
+
+    if (!subscriptionResponse.ok) {
+      throw new Error(
+        `Failed to update subscription: ${await subscriptionResponse.text()}`
+      );
+    }
+
+    // 2. Retrieve JWT
+    const firebaseUid = jwtDecode(localStorage.getItem("token")).firebaseUid; // Replace with the actual UID
+    const tokenResponse = await fetch(`/token`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
+      body: JSON.stringify({ firebaseUid }),
     });
 
-    const orderData = await response.json();
-    // Three cases to handle:
-    //   (1) Recoverable INSTRUMENT_DECLINED -> call actions.restart()
-    //   (2) Other non-recoverable errors -> Show a failure message
-    //   (3) Successful transaction -> Show confirmation or thank you message
-
-    const transaction =
-      orderData?.purchase_units?.[0]?.payments?.captures?.[0] ||
-      orderData?.purchase_units?.[0]?.payments?.authorizations?.[0];
-    const errorDetail = orderData?.details?.[0];
-
-    // this actions.restart() behavior only applies to the Buttons component
-    if (errorDetail?.issue === "INSTRUMENT_DECLINED" && !data.card && actions) {
-      // (1) Recoverable INSTRUMENT_DECLINED -> call actions.restart()
-      // recoverable state, per https://developer.paypal.com/docs/checkout/standard/customize/handle-funding-failures/
-      return actions.restart();
-    } else if (
-      errorDetail ||
-      !transaction ||
-      transaction.status === "DECLINED"
-    ) {
-      // (2) Other non-recoverable errors -> Show a failure message
-      let errorMessage;
-      if (transaction) {
-        errorMessage = `Transaction ${transaction.status}: ${transaction.id}`;
-      } else if (errorDetail) {
-        errorMessage = `${errorDetail.description} (${orderData.debug_id})`;
-      } else {
-        errorMessage = JSON.stringify(orderData);
-      }
-
-      throw new Error(errorMessage);
-    } else {
-      // (3) Successful transaction -> Show confirmation or thank you message
-      // Or go to another URL:  actions.redirect('thank_you.html');
-      console.log(
-        "Capture result",
-        orderData,
-        JSON.stringify(orderData, null, 2),
+    if (!tokenResponse.ok) {
+      throw new Error(
+        `Failed to retrieve token: ${await tokenResponse.text()}`
       );
-      return `Transaction ${transaction.status}: ${transaction.id}. See console for all available details`;
     }
+
+    const tokenData = await tokenResponse.json();
+
+    console.log("Order captured and API calls successful!", tokenData);
+    return `Transaction ${transaction.status}: ${transaction.id}`;
   } catch (error) {
-    return `Sorry, your transaction could not be processed...${error}`;
+    console.error(error);
+    return `Sorry, your transaction could not be processed...${error.message}`;
   }
 }
+
 
 const SubmitPayment = ({ onHandleMessage }) => {
   // Here declare the variable containing the hostedField instance
@@ -126,7 +173,7 @@ const SubmitPayment = ({ onHandleMessage }) => {
   };
 
   return (
-    <button  onClick={submitHandler} className="btn button btn-primary">
+    <button onClick={submitHandler} className="btn button btn-primary">
       Pay
     </button>
   );
@@ -150,7 +197,8 @@ export const PaymentForm = () => {
         onApprove={async (data) => setMessage(await onApproveCallback(data))}
       />
 
-      <PayPalHostedFieldsProvider createOrder={createOrderCallback}>
+      <PayPalHostedFieldsProvider createOrder={createOrderCallback}
+        onApprove={async (data) => setMessage(await onApproveCallback(data))}>
         <div style={{ marginTop: "4px", marginBottom: "4px" }}>
           <PayPalHostedField
             id="card-number"

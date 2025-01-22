@@ -85,12 +85,11 @@ export const GET = async (req) => {
 
         await connectToDB();
 
-        const expiryDate = new Date();
-        expiryDate.setDate(expiryDate.getDate() - 30);
+        const today = new Date();
 
         await Listing.updateMany(
             {
-                createdAt: { $lte: expiryDate },
+                expiresAt: { $lte: today },
                 status: { $ne: "Expired" }
             },
             { $set: { status: "Expired" } }

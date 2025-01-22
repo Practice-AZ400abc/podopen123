@@ -1,10 +1,19 @@
 import Listing from "@/models/listing";
-import User from "@/models/user"; // Assuming you have a User model
 import { connectToDB } from "@/utils/database";
 
 export const GET = async (req, { params }) => {
     const { id } = await params;
     await connectToDB();
+
+    const today = new Date();
+
+    await Listing.updateMany(
+        {
+            expiresAt: { $lte: today },
+            status: { $ne: "Expired" }
+        },
+        { $set: { status: "Expired" } }
+    );
 
     try {
         const project = await Listing.findById(id).populate('author'); // Populate the author field

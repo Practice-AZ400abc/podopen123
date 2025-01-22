@@ -119,6 +119,7 @@ export const PUT = async (req, { params }) => {
         ) {
             if (!listing.publishedAt) {
                 updateBody.publishedAt = new Date();
+                updateBody.expiresAt = user.subscriptionExpiresAt;
             }
         }
 

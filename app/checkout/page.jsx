@@ -3,6 +3,7 @@ import React from 'react';
 import { PayPalScriptProvider } from "@paypal/react-paypal-js";
 import { useState, useEffect } from "react";
 import { PaymentForm } from '@/components/PaymentForm';
+
 const Checkout = () => {
     const [clientToken, setClientToken] = useState(null);
 
@@ -11,7 +12,7 @@ const Checkout = () => {
         "enable-funding": "",
         "disable-funding": "paylater,venmo",
         "data-sdk-integration-source": "integrationbuilder_ac",
-        "data-client-token": clientToken, 
+        "dataClientToken": clientToken, 
         components: "hosted-fields,buttons",
     };
     
