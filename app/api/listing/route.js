@@ -49,13 +49,16 @@ export const POST = async (req) => {
             );
         }
 
+        if (user.subscriptionStatus === "Active") {
+            body.expiresAt = user.subscriptionExpiresAt;
+            body.publishedAt = new Date();
+        }
+
         await connectToDB();
 
         const listing = await Listing.create({
             ...body,
-            status: "Published",
-            publishedAt: new Date(),
-            author: user._id,
+            status: user.subscriptionStatus === "Active" ? "Published" : "Draft",
         });
 
         return new Response(JSON.stringify(listing), { status: 201 });

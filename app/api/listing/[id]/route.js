@@ -117,10 +117,16 @@ export const PUT = async (req, { params }) => {
                 status: "Published",
             }
         ) {
+            if (user.subscriptionStatus !== "Active") {
+                return new Response(JSON.stringify({ message: "Subscription needed for this action" }), {
+                    status: 403,
+                })
+            }
+
             if (!listing.publishedAt) {
                 updateBody.publishedAt = new Date();
-                updateBody.expiresAt = user.subscriptionExpiresAt;
             }
+            updateBody.expiresAt = user.subscriptionExpiresAt;
         }
 
         const updatedListing = await Listing.findByIdAndUpdate(

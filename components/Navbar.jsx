@@ -51,7 +51,17 @@ const Navbar = () => {
 
   const toggleLogout = () => setShowLogout((prev) => !prev);
 
+  useEffect(() => {
+    const getUser = async () => {
+      await fetch(`/api/users/${jwtDecode(token)._id}`, {
+        method: "GET"
+      })
+    }
 
+    if (token) {
+      getUser();
+    }
+  }, [token])
 
   // Close the dropdown when clicking outside
   useEffect(() => {
