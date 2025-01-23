@@ -37,10 +37,21 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import Image from "next/image";
+import { jwtDecode } from 'jwt-decode';
 
 import { FaExclamationTriangle } from "react-icons/fa";
+import toast from "react-hot-toast";
 
 export default function SearchPage() {
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    const storedToken = localStorage.getItem("token");
+    if (storedToken) {
+      setUser(jwtDecode(storedToken))
+    }
+  }, [])
+
   const { isLoggedIn } = useContext(AuthContext);
   const router = useRouter(); // Use the Next.js router for navigation
   const searchParams = useSearchParams(); // Get query params from the URL
@@ -161,10 +172,28 @@ export default function SearchPage() {
     }
   };
 
-  const handleTriggerClick = (e) => {
-    if (!isLoggedIn) {
-      e.preventDefault();
-      router.push("/sign-in");
+  const handleTriggerClick = async (e, visaSeekerEmail) => {
+    e.preventDefault();
+
+    if (user.subscriptionStatus === "Inactive") {
+      return toast.error("You need to buy a subscription for this action");
+    }
+
+    try {
+      const emailResponse = await fetch("/api/send-email", {
+        method: "POST",
+        body: JSON.stringify({
+          email: visaSeekerEmail,
+          action: "contactedByVisaSponsor",
+          visaSponsorData: user,
+        })
+      })
+
+      if (!emailResponse) {
+        throw new Error("could not send email")
+      }
+    } catch (error) {
+      console.error(error);
     }
   }
 
@@ -452,7 +481,7 @@ export default function SearchPage() {
                               Not Now
                             </Link>
                             <Link
-                              onClick={(e) => handleTriggerClick(e)}
+                              onClick={(e) => handleTriggerClick(e, investor.contactEmail)}
                               href={"/"}
                               className="text-white bg-green-500 rounded-sm p-2 hover:bg-green-400"
                             >
@@ -466,7 +495,7 @@ export default function SearchPage() {
                 ))}
 
                 {/* Pagination Controls */}
-           
+
                 <div className="  flex justify-between items-center gap-4 mt-6">
                   <button
                     className="px-3 py-1 bg-blue-400  text-white rounded "
@@ -486,7 +515,7 @@ export default function SearchPage() {
                     Next
                   </button>
                 </div>
-      
+
               </div>
             ) : (
               <p className="text-center">

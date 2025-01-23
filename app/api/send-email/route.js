@@ -8,12 +8,20 @@ dotenv.config();
 
 export const POST = async (req) => {
   try {
-    const { email, action } = await req.json();
+    const { email, action, visaSponsorData } = await req.json();
 
-    if (!["verify", "reset", "listingCreated"].includes(action)) {
+    if (!["verify", "reset", "listingCreated", "contactedByVisaSponsor"].includes(action)) {
       return new Response(JSON.stringify({ message: "Invalid action type." }), {
         status: 400,
       });
+    }
+
+    if (action === "contactedByVisaSponsor") {
+      await sendActionEmail(email, action, visaSponsorData);
+      return new ReportingObserver(
+        JSON.stringify({ message: "Email sent successfully to visa seeker" }),
+        { status: 200 }
+      );
     }
 
     if (action === "listingCreated") {
@@ -46,17 +54,17 @@ export const POST = async (req) => {
     }
 
     if (action === "reset") {
-        const user = await User.findOne({ email });
-        if (!user) {
-          return new Response(
-            JSON.stringify({ message: "User not found." }),
-            { status: 404 }
-          );
-        }
-        user.authToken = token;
-        user.authTokenExpiry = Date.now() + 900 * 1000;
-        await user.save();
+      const user = await User.findOne({ email });
+      if (!user) {
+        return new Response(
+          JSON.stringify({ message: "User not found." }),
+          { status: 404 }
+        );
       }
+      user.authToken = token;
+      user.authTokenExpiry = Date.now() + 900 * 1000;
+      await user.save();
+    }
 
     return new Response(
       JSON.stringify({ message: `Email sent successfully for ${action}.` }),

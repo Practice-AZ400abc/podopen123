@@ -29,7 +29,7 @@ export const sendEmail = async ({ fromEmail, to, subject, html, attachments }) =
   }
 };
 
-export const sendActionEmail = async (email, action, token) => {
+export const sendActionEmail = async (email, action, token, visaSponsorData) => {
   const baseUrl = process.env.APP_BASE_URL;
   const actionUrls = {
     verify: `${baseUrl}/verify-email?token=${token}`,
@@ -153,6 +153,17 @@ export const sendActionEmail = async (email, action, token) => {
           </table>
         </div>
       `,
+      attachments: [
+        {
+          filename: "Lookvisa.png",
+          path: path.resolve("./app/Lookvisa.png"),
+          cid: "logo",
+        },
+      ],
+    },
+    contactedByVisaSponsor: {
+      subject: "Lookvisa: Your profile was viewed by a visa sponsor",
+      html: `Your profile was viewed by ${visaSponsorData.firstName} ${visaSponsorData.lastName} and they want to contact you, you can contact them through the following email: ${visaSponsorData.contactEmail}`,
       attachments: [
         {
           filename: "Lookvisa.png",
