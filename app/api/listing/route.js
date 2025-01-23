@@ -54,11 +54,13 @@ export const POST = async (req) => {
             body.publishedAt = new Date();
         }
 
+        const publishedListings = await Listing.find({ author: user._id, status: "Published" });
+
         await connectToDB();
 
         const listing = await Listing.create({
             ...body,
-            status: user.subscriptionStatus === "Active" ? "Published" : "Draft",
+            status: (user.subscriptionStatus === "Active" && publishedListings.length === 0) ? "Published" : "Draft",
         });
 
         return new Response(JSON.stringify(listing), { status: 201 });

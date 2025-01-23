@@ -9,7 +9,7 @@ export const GET = async (req, { params }) => {
 
         const today = new Date();
 
-        const user = await user.findById({ id });
+        const user = await User.findById(id);
 
         if (!user) {
             return new Response(JSON.stringify({ message: "user not found" }), {
