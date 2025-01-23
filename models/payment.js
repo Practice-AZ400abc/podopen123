@@ -2,12 +2,12 @@ import { Schema, model, models } from "mongoose";
 
 const PaymentSchema = new Schema(
     {
-        transactionId: {
+        orderId: {
             type: String,
             required: true,
         },
         userId: {
-            type: mongoose.Schema.Types.ObjectId,
+            type: Schema.Types.ObjectId,
             ref: 'User',
             required: true,
         },
@@ -16,10 +16,6 @@ const PaymentSchema = new Schema(
             required: true,
         },
         currency: {
-            type: String,
-            required: true,
-        },
-        status: {
             type: String,
             required: true,
         },

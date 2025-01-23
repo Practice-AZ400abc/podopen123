@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server';
 
 export async function POST() {
     try {
-        const response = await fetch("https://api-m.sandbox.paypal.com/v1/oauth2/token", {
+        const response = await fetch("https://api.sandbox.paypal.com/v1/oauth2/token", {
             method: "POST",
             headers: {
                 Authorization: "Basic " + Buffer.from(`${process.env.PAYPAL_CLIENT_ID}:${process.env.PAYPAL_SECRET}`).toString("base64"),
@@ -31,7 +31,7 @@ export async function POST() {
             throw new Error("Failed to get client token");
         }
 
-        return NextResponse.json({ client_token: tokenData.client_token });
+        return NextResponse.json({ client_token: tokenData.client_token, access_token: data.access_token });
     } catch (error) {
         console.error("PayPal API Error:", error.message);
         return NextResponse.json({ error: error.message }, { status: 500 });

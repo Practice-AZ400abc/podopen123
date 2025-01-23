@@ -11,14 +11,7 @@ import {
 
 async function createOrderCallback() {
   try {
-    const accessTokenResponse = await fetch("https://api-m.sandbox.paypal.com/v1/oauth2/token", {
-      method: "POST",
-      headers: {
-        Authorization: "Basic " + Buffer.from(`${process.env.PAYPAL_CLIENT_ID}:${process.env.PAYPAL_SECRET}`).toString("base64"),
-        "Content-Type": "application/x-www-form-urlencoded",
-      },
-      body: "grant_type=client_credentials",
-    });
+    const accessTokenResponse = await fetch("/api/paypal-token", { method: "POST" });
 
     const accessTokenData = await accessTokenResponse.json();
     console.log("PayPal Access Token Response:", accessTokenData);
@@ -64,14 +57,9 @@ async function createOrderCallback() {
 
 async function onApproveCallback(data, actions) {
   try {
-    const accessTokenResponse = await fetch("https://api-m.sandbox.paypal.com/v1/oauth2/token", {
-      method: "POST",
-      headers: {
-        "Authorization": "Basic " + Buffer.from(`${process.env.PAYPAL_CLIENT_ID}:${process.env.PAYPAL_SECRET}`).toString("base64"),
-        "Content-Type": "application/x-www-form-urlencoded",
-      },
-      body: "grant_type=client_credentials",
-    });
+    const orderId = data.orderID;
+
+    const accessTokenResponse = await fetch("/api/paypal-token", { method: "POST" });
 
     const accessTokenData = await accessTokenResponse.json();
     console.log("PayPal Access Token Response:", accessTokenData);
@@ -80,7 +68,7 @@ async function onApproveCallback(data, actions) {
     }
 
     const response = await fetch(
-      `https://api-m.sandbox.paypal.com/v2/checkout/orders/${data.orderID}/capture`,
+      `https://api-m.sandbox.paypal.com/v2/checkout/orders/${orderId}/capture`,
       {
         method: "POST",
         headers: {
@@ -102,7 +90,7 @@ async function onApproveCallback(data, actions) {
 
     // 1. Update user subscription
     const userId = jwtDecode(localStorage.getItem("token"))._id;
-    const subscriptionResponse = await fetch(`/users/${userId}`, {
+    const subscriptionResponse = await fetch(`/api/users/${userId}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
@@ -123,7 +111,7 @@ async function onApproveCallback(data, actions) {
 
     // 2. Retrieve JWT
     const firebaseUid = jwtDecode(localStorage.getItem("token")).firebaseUid; // Replace with the actual UID
-    const tokenResponse = await fetch(`/token`, {
+    const tokenResponse = await fetch(`/api/token`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -138,6 +126,24 @@ async function onApproveCallback(data, actions) {
     }
 
     const tokenData = await tokenResponse.json();
+
+    localStorage.setItem("token", tokenData.token);
+
+    const paymentResponse = await fetch("/api/payments", {
+      method: "POST",
+      body: JSON.stringify({
+        orderId,
+        userId,
+        amount: "30.00",
+        currency: "USD",
+      })
+    });
+
+    if (!paymentResponse) {
+      throw new Error(
+        `Failed to create payment: ${await paymentResponse.text()}`
+      );
+    }
 
     console.log("Order captured and API calls successful!", tokenData);
     return `Transaction ${transaction.status}: ${transaction.id}`;
@@ -184,6 +190,7 @@ const Message = ({ content }) => {
 };
 
 export const PaymentForm = () => {
+
   const [message, setMessage] = useState("");
   return (
     <div className={styles.form}>

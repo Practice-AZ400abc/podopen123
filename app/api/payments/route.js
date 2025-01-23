@@ -5,14 +5,22 @@ export const POST = async (req) => {
     await connectToDB();
 
     try {
-        const { transactionId, userId, amount, currency, status } = await req.json();
+        const body = await req.json();
 
-        const newPayment = new Payment({
-            transactionId,
+        const {
+            orderId,
             userId,
             amount,
-            currency,
-            status,
+            currency
+        } = body
+
+        console.log(body)
+
+        const newPayment = new Payment({
+            orderId,
+            userId,
+            amount,
+            currency
         });
 
         await newPayment.save();
