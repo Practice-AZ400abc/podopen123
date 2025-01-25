@@ -177,7 +177,7 @@ export default function SearchPage() {
     e.preventDefault();
 
     if (user.subscriptionStatus === "Inactive") {
-      return toast.error("You need to buy a subscription for this action");
+      router.push("/checkout")
     }
 
     try {
