@@ -41,6 +41,7 @@ import { jwtDecode } from 'jwt-decode';
 
 import { FaExclamationTriangle } from "react-icons/fa";
 import toast from "react-hot-toast";
+import Contactform from "@/components/contactform";
 
 export default function SearchPage() {
   const [user, setUser] = useState(null);
@@ -515,7 +516,7 @@ export default function SearchPage() {
                     Next
                   </button>
                 </div>
-
+                <Contactform />
               </div>
             ) : (
               <p className="text-center">
