@@ -75,7 +75,6 @@ const ListingSchema = new Schema(
         },
         expiresAt: {
             type: Date,
-            required: true,
             default: null,
         },
         impressions: {

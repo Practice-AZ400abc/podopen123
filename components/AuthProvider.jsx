@@ -42,38 +42,23 @@ export const AuthProvider = ({ children }) => {
 
   useEffect(() => {
     const checkUserExists = async () => {
-      try {
-        const response = await fetch("/api/users", {
-          body: JSON.stringify({
-            email: jwtDecode(token).email,
+      const getUser = async () => {
+        try {
+          const response = await fetch(`/api/users/${jwtDecode(token)._id}`, {
+            method: "GET",
           })
-        });
-        if (!response.ok) {
-          throw new Error("User not found");
+
+          if (!response) {
+            throw new Error;
+          }
+        } catch (error) {
+          console.log(error)
         }
-      } catch (error) {
-        console.error("Error checking user:", error);
-        logout();
       }
-    }
 
-    const getUser = async () => {
-      try {
-        const response = await fetch(`/api/users/${jwtDecode(token)._id}`, {
-          method: "GET",
-        })
-
-        if (!response) {
-          throw new Error;
-        }
-      } catch (error) {
-        console.log(error)
+      if (token) {
+        getUser();
       }
-    }
-
-    if (token) {
-      checkUserExists();
-      getUser();
     }
   }, [token]);
 
