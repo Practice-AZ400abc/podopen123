@@ -163,7 +163,9 @@ export const sendActionEmail = async (email, action, token, visaSponsorData) => 
     },
     contactedByVisaSponsor: {
       subject: "Lookvisa: Your profile was viewed by a visa sponsor",
-      html: `Your profile was viewed by ${visaSponsorData.firstName} ${visaSponsorData.lastName} and they want to contact you, you can contact them through the following email: ${visaSponsorData.contactEmail}`,
+      html: `
+      <p>Your profile was viewed by a visa sponsor'
+      `,
       attachments: [
         {
           filename: "Lookvisa.png",

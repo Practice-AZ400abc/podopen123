@@ -18,7 +18,7 @@ export const POST = async (req) => {
 
     if (action === "contactedByVisaSponsor") {
       await sendActionEmail(email, action, visaSponsorData);
-      return new ReportingObserver(
+      return new Response(
         JSON.stringify({ message: "Email sent successfully to visa seeker" }),
         { status: 200 }
       );

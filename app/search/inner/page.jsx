@@ -1,25 +1,19 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useContext } from "react";
-import { AuthContext } from "@/components/AuthProvider";
 import { useSearchParams } from "next/navigation"; // To get query params
 import { Card } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import {
-  MessageSquare,
   Filter,
   SearchCheckIcon,
-  CheckIcon,
 } from "lucide-react";
-import PopupImg from "../../Popupimg.jpg";
 import {
   COUNTRIES,
   INDUSTRIES,
   INVESTMENT_RANGES,
   RELOCATION_TIMEFRAMES,
 } from "@/lib/constants";
-import Link from "next/link";
 import {
   Select,
   SelectContent,
@@ -28,20 +22,8 @@ import {
   SelectItem,
 } from "@/components/ui/select";
 import { useRouter } from "next/navigation";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
-import Image from "next/image";
 import { jwtDecode } from 'jwt-decode';
-
-import { FaExclamationTriangle } from "react-icons/fa";
-import toast from "react-hot-toast";
-import Contactform from "@/components/contactform";
+import ContactVisaSeekerButton from "@/components/ContactVisaSeekerButton";
 
 export default function SearchPage() {
   const [user, setUser] = useState(null);
@@ -53,7 +35,6 @@ export default function SearchPage() {
     }
   }, [])
 
-  const { isLoggedIn } = useContext(AuthContext);
   const router = useRouter(); // Use the Next.js router for navigation
   const searchParams = useSearchParams(); // Get query params from the URL
   const country = searchParams.get("country"); // Extract 'country' parameter
@@ -172,36 +153,6 @@ export default function SearchPage() {
       setCurrentPage(page);
     }
   };
-
-  const handleTriggerClick = async (e, visaSeekerEmail) => {
-    e.preventDefault();
-
-    if (user.subscriptionStatus === "Inactive") {
-      router.push("/checkout")
-    }
-
-    try {
-      const emailResponse = await fetch("/api/send-email", {
-        method: "POST",
-        body: JSON.stringify({
-          email: visaSeekerEmail,
-          action: "contactedByVisaSponsor",
-          visaSponsorData: user,
-        })
-      })
-
-      if (!emailResponse) {
-        throw new Error("could not send email")
-      }
-    } catch (error) {
-      console.error(error);
-    }
-  }
-
-  const paginatedInvestors = filteredInvestors.slice(
-    (currentPage - 1) * itemsPerPage,
-    currentPage * itemsPerPage
-  );
 
   return (
     <div className="min-h-screen w-full bg-gray-50">
@@ -409,88 +360,7 @@ export default function SearchPage() {
                         </div>
                       </div>
 
-                      <Dialog>
-                        <DialogTrigger
-
-                          className="bg-blue-400 flex items-center p-2 text-white justify-center rounded-md"
-                        >
-                          <MessageSquare className="w-4 h-4 mr-2" />
-                          Message
-                        </DialogTrigger>
-                        <DialogContent>
-                          <DialogHeader>
-                            <DialogTitle>Connect with investors</DialogTitle>
-                          </DialogHeader>
-                          <hr className="mt-2 mb-2 h-1 bg-gray-300" />
-                          <div className="flex items-center justify-center w-full">
-                            <Image
-                              src={PopupImg}
-                              alt="connect with Invetors"
-                              className="h-[200px] w-[200px] rounded-sm  object-cover"
-                            />
-                          </div>
-                          <DialogDescription>
-                            To contact and connect with investors and see their
-                            profile please get started with a fast, secure,
-                            payment. You’ll also get full access to create a
-                            listing to obtain funding from a visa investor for
-                            your projects.
-                          </DialogDescription>
-
-                          <div className="w-full flex items-center justify-center gap-4 mt-4">
-                            <div className="p-3 border rounded-md w-[60%] flex flex-col gap-4 ">
-                              <div>
-                                <h1 className="text-sm font-semibold">
-                                  30 Days Pass
-                                </h1>
-                                <p className="text-4xl text-blue-400 font-bold">
-                                  {" "}
-                                  $30.00
-                                </p>
-                              </div>
-                              <div className="flex flex-col gap-2">
-                                <div className="flex items-center gap-2">
-                                  <div>
-                                    <CheckIcon size={20} />
-                                  </div>
-                                  <h1 className="text-sm text-gray-500 ">
-                                    Allows you to contact investors for 30 days
-                                    to get funding for your projects
-                                  </h1>
-                                </div>
-                                <div className="flex items-center gap-2">
-                                  <div>
-                                    <CheckIcon size={20} />
-                                  </div>
-                                  <h1 className="text-sm text-gray-500 ">
-                                    Allows you to create a lisLng to get funding
-                                    for your project{" "}
-                                  </h1>
-                                </div>
-                              </div>
-                              <div className="p-2 border flex gap-2 rounded-md bg-gray-100">
-                                <FaExclamationTriangle />
-                                <p className="text-sm uppercase">
-                                  Renew your pass as needed
-                                </p>
-                              </div>
-                            </div>
-                          </div>
-
-                          <div className="w-full flex items-center justify-end gap-4 ">
-                            <Link href={"/"} className="underline">
-                              Not Now
-                            </Link>
-                            <Link
-                              onClick={(e) => handleTriggerClick(e, investor.contactEmail)}
-                              href={"/"}
-                              className="text-white bg-green-500 rounded-sm p-2 hover:bg-green-400"
-                            >
-                              Get Started
-                            </Link>
-                          </div>
-                        </DialogContent>
-                      </Dialog>
+                      <ContactVisaSeekerButton investor={investor} user={user} />
                     </div>
                   </Card>
                 ))}
@@ -516,7 +386,6 @@ export default function SearchPage() {
                     Next
                   </button>
                 </div>
-                <Contactform />
               </div>
             ) : (
               <p className="text-center">

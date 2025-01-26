@@ -49,7 +49,7 @@ export const POST = async (req) => {
             );
         }
 
-        if (user.subscriptionStatus === "Active") {
+        if (user.subscriptionStatus === "Active" && user.completedProfile) {
             body.expiresAt = user.subscriptionExpiresAt;
             body.publishedAt = new Date();
         }
