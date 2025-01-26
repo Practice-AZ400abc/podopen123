@@ -10,7 +10,7 @@ import {
     DialogTrigger,
 } from "@/components/ui/dialog";
 import { MessageSquare, CheckIcon } from 'lucide-react';
-import {FaExclamationTriangle} from 'react-icons/fa';
+import { FaExclamationTriangle } from 'react-icons/fa';
 import Contactform from './contactform';
 import { useContext, useState, useEffect } from "react";
 import { AuthContext } from "@/components/AuthProvider";
@@ -24,6 +24,7 @@ const ContactVisaSeekerButton = ({ investor, user }) => {
 
     useEffect(() => {
         if (user && user.subscriptionStatus === "Active") {
+            console.log("user has active subscription")
             setContactFormVisible(true);
         }
     }, [])
@@ -39,7 +40,12 @@ const ContactVisaSeekerButton = ({ investor, user }) => {
             <DialogContent>
                 {
                     contactFormVisible ? (
-                        <Contactform investor={investor} />
+                        <>
+                            <DialogHeader>
+                                <DialogTitle>Connect with investors</DialogTitle>
+                            </DialogHeader>
+                            <Contactform investor={investor} />
+                        </>
                     ) : (
                         <>
                             <DialogHeader>
@@ -105,7 +111,7 @@ const ContactVisaSeekerButton = ({ investor, user }) => {
                                 <Link href={"/"} className="underline">
                                     Not Now
                                 </Link>
-                                <Link href={isLoggedIn? "/checkout": "/sign-in"}>
+                                <Link href={isLoggedIn ? "/checkout" : "/sign-in"}>
                                     Get Started
                                 </Link>
                             </div>
