@@ -349,7 +349,7 @@ export default function SearchPage() {
                         </div>
                         <div className="flex gap-2">
                           <h1 className="text-sm text-blue-500">
-                            can you provide evidence of liquid assets{" "}
+                            Can you provide evidence of liquid assets{" "}
                           </h1>
                           <p>
                             {" "}

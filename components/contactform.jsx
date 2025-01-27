@@ -36,7 +36,7 @@ const Contactform = ({ investor }) => {
     }
 
     return (
-        <div className="w-50 bg-white border p-2 rounded-md">
+        <div className=" bg-white w-full p-2 rounded-md">
             <h1 className="text-lg">Message Investor</h1>
             <p className="text-slate-500">Please fill these Fields to contact investor</p>
             <form onSubmit={(e) => handleFormSubmission(e)} className="mt-4">
@@ -60,8 +60,9 @@ const Contactform = ({ investor }) => {
                     <div className="flex flex-col ">
                         <label htmlFor="">Notes Field</label>
                         <textarea name="" id=""
-                            className="border p-2 min-w-[500px] rounded-md"
+                            className="border p-2  rounded-md "
                             maxLength={200}
+                            
                             onChange={(e) => (setFormData((prev) => ({ ...prev, additionalNotes: e.target.value })))}></textarea>
                     </div>
                 </div>
