@@ -179,8 +179,8 @@ const SubmitPayment = ({ onHandleMessage }) => {
   };
 
   return (
-    <button onClick={submitHandler} className="btn button btn-primary">
-      Pay
+    <button onClick={submitHandler} className="mt-2 bg-green-400 text-black font-bold hover:bg-green-300 w-full p-4 ">
+      Pay Now
     </button>
   );
 };

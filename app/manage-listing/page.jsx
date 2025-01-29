@@ -34,7 +34,10 @@ const ManageListing = () => {
     }
 
     const completedProfile = getCompletedProfileFromToken();
-
+    if (completedProfile === false) {
+        toast.error("Please complete your profile before creating a listing");
+        
+    }
     const Firstname = getFirstNameFromToken();
 
     return (
