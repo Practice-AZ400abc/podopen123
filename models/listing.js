@@ -70,7 +70,6 @@ const ListingSchema = new Schema(
         },
         publishedAt: {
             type: Date,
-            required: true,
             default: null,
         },
         expiresAt: {

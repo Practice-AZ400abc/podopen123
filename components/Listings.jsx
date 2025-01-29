@@ -23,7 +23,7 @@ import toast from 'react-hot-toast';
 import { Edit2 } from 'lucide-react';
 import Link from 'next/link';
 
-const Listings = ({ listing, refreshListings, handleFilterChange, filter }) => {
+const Listings = ({ listing, refreshListings, handleFilterChange, filter, subscriptionStatus }) => {
   const [token, setToken] = useState(null);
   const [updatedStatus, setUpdatedStatus] = useState(listing.status); // Track status changes
   const [updatedListing, setUpdatedListing] = useState(listing); // Track full listing updates
@@ -133,7 +133,7 @@ const Listings = ({ listing, refreshListings, handleFilterChange, filter }) => {
                   </div>
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="Published">
+                  <SelectItem value="Published" disabled={!subscriptionStatus}>
                     {updatedStatus === "Published" && "✔️ "} Activate Listing
                   </SelectItem>
                   <SelectItem value="Draft">
@@ -150,7 +150,7 @@ const Listings = ({ listing, refreshListings, handleFilterChange, filter }) => {
         </div>
       </div>
       <div className="flex flex-col gap-4">
-    
+
 
         <div className=" rounded-sm text-gray-600 font-light text-sm">
           <span className="font-bold text-black">Title: </span>
@@ -181,7 +181,7 @@ const Listings = ({ listing, refreshListings, handleFilterChange, filter }) => {
           <span className="font-bold text-black">Published on: </span>
           <h1 className="mt-4"> {new Date(updatedListing.createdAt).toLocaleString()}</h1>
         </div>
-        
+
       </div>
       <button
         onClick={() => setShowDetails(!showDetails)}
@@ -239,34 +239,34 @@ const Listings = ({ listing, refreshListings, handleFilterChange, filter }) => {
           </div>
           <div className="flex flex-col gap-2">
             <h1 className="font-bold ">Attachments:</h1>
-          {updatedListing.attachments.map((attachment, index) =>
-            attachment.endsWith(".pdf") ? (
-              <a
-                key={index}
-                href={attachment}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="border rounded-md p-2 bg-gray-100 w-32 h-32 flex items-center justify-center"
-              >
-                <p className="text-gray-500">PDF {index + 1}</p>
-              </a>
-            ) : (
-              <Image
-                key={index}
-                src={attachment}
-                alt={`Attachment ${index + 1}`}
-                width={100}
-                height={100}
-                className="object-cover rounded-md w-32 h-32"
-              />
-            )
-          )}
-        </div>
+            {updatedListing.attachments.map((attachment, index) =>
+              attachment.endsWith(".pdf") ? (
+                <a
+                  key={index}
+                  href={attachment}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="border rounded-md p-2 bg-gray-100 w-32 h-32 flex items-center justify-center"
+                >
+                  <p className="text-gray-500">PDF {index + 1}</p>
+                </a>
+              ) : (
+                <Image
+                  key={index}
+                  src={attachment}
+                  alt={`Attachment ${index + 1}`}
+                  width={100}
+                  height={100}
+                  className="object-cover rounded-md w-32 h-32"
+                />
+              )
+            )}
+          </div>
         </>
       )}
 
       <div className="flex items-end justify-end gap-2 w-full">
-      <Link href={`/edit-listing/${listing._id}`} className="flex items-center gap-2 text-white bg-black p-2 rounded-md">
+        <Link href={`/edit-listing/${listing._id}`} className="flex items-center gap-2 text-white bg-black p-2 rounded-md">
           <Edit2 size={14} />
           Edit Listing
         </Link>
@@ -288,9 +288,10 @@ const Listings = ({ listing, refreshListings, handleFilterChange, filter }) => {
             </DialogHeader>
           </DialogContent>
         </Dialog>
-       
+
         {updatedStatus !== "Published" ? (
           <Button
+            disabled={!subscriptionStatus}
             onClick={() => handleUpdate({ status: "Published" })}
             className="bg-blue-500 text-white"
           >
@@ -304,7 +305,7 @@ const Listings = ({ listing, refreshListings, handleFilterChange, filter }) => {
             Unpublish Listing
           </Button>
         )}
-        
+
       </div>
     </div>
   );

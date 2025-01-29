@@ -6,6 +6,7 @@ import ListingImage from "@/app/ListingImage.png";
 import Image from "next/image";
 import ListingForm from "@/components/ListingForm";
 import PreviewListing from "@/components/PreviewListing";
+import ConfirmationPopup from "@/components/ConfirmationPopup";
 import toast from "react-hot-toast";
 import { jwtDecode } from "jwt-decode";
 import MediaUpload from "@/components/UploadMedia";
@@ -20,6 +21,9 @@ const CreateListing = () => {
         const storedToken = localStorage.getItem("token");
         if (!storedToken) {
             router.push("/sign-in");
+        }
+        if (!jwtDecode(storedToken).completedProfile) {
+            router.push("/profile")
         }
         setToken(storedToken);
     }, []);
@@ -60,39 +64,78 @@ const CreateListing = () => {
         setActiveStep((prev) => Math.max(prev - 1, 1)); // Min 1 step
     };
 
+    const [showPopup, setShowPopup] = useState(false);
+
     const handleSubmit = async () => {
-        console.log(formData);
+        const decodedToken = jwtDecode(token);
+        const subscriptionStatus = decodedToken.subscriptionStatus;
+
+        if (subscriptionStatus === "Active") {
+            try {
+                const res = await fetch("/api/listing", {
+                    method: "POST",
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({ ...formData }),
+                });
+
+                if (!res.ok) throw new Error("Failed to publish listing");
+
+                toast.success("Listing published successfully!");
+                router.push("/manage-listing");
+            } catch (error) {
+                console.error(error);
+                toast.error("Error publishing the listing");
+            }
+        } else {
+            setShowPopup(true); // Show popup for inactive subscription
+        }
+    };
+
+    const handlePay = () => {
+        setShowPopup(false);
+        router.push("/checkout"); // Redirect to checkout
+    };
+
+    const handleSaveDraft = async () => {
+        setShowPopup(false);
 
         try {
             const res = await fetch("/api/listing", {
                 method: "POST",
                 headers: {
                     Authorization: `Bearer ${token}`,
+                    "Content-Type": "application/json",
                 },
-                body: JSON.stringify(formData),
+                body: JSON.stringify({ ...formData }),
             });
 
-            if (!res.ok) {
-                throw new Error("Failed to create listing");
-            }
+            if (!res.ok) throw new Error("Failed to save draft");
 
-            const emailResponse = await fetch("/api/send-email", {
-                method: "POST",
-                body: JSON.stringify({
-                    email,
-                    action: "listingCreated",
-                }),
-            });
-
-            if (!emailResponse.ok) {
-                throw new Error("Failed to send email");
-            }
-
-            toast.success("Listing published successfully!");
+            toast.success("Draft saved successfully!");
             router.push("/manage-listing");
         } catch (error) {
             console.error(error);
-            alert("Error publishing the listing");
+            toast.error("Error saving draft");
+        }
+    };
+
+    const handleCancel = async () => {
+        setShowPopup(false);
+
+        try {
+            for (const url of formData.attachments) {
+                const publicId = extractPublicIdFromUrl(url);
+                await fetch(`/api/delete-cloudinary?publicId=${publicId}`, {
+                    method: "DELETE",
+                });
+            }
+            toast.error("Listing creation canceled and attachments deleted.");
+        } catch (error) {
+            console.error(error);
+            toast.error("Failed to delete attachments.");
         }
     };
 
@@ -239,6 +282,16 @@ const CreateListing = () => {
                     )}
                 </div>
             </div>
+
+            {showPopup && (
+                <ConfirmationPopup
+                    title="Subscription Required"
+                    description="Your subscription is inactive. Please choose an option to proceed:"
+                    onPay={handlePay}
+                    onSaveDraft={handleSaveDraft}
+                    onCancel={handleCancel}
+                />
+            )}
         </div>
     );
 };

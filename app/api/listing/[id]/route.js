@@ -99,8 +99,6 @@ export const PUT = async (req, { params }) => {
 
         const listing = await Listing.findById(id);
 
-        const publishedListings = await Listing.find({ author: user._id, status: "Published" });
-
         if (!listing) {
             return new Response(JSON.stringify({ message: "Listing not found" }), {
                 status: 404,
@@ -128,12 +126,6 @@ export const PUT = async (req, { params }) => {
             if (!user.completedProfile) {
                 return new Response(JSON.stringify({ message: "You need to complete your profile before publishing a listing" }), {
                     status: 400,
-                })
-            }
-
-            if (publishedListings.length > 0) {
-                return new Response(JSON.stringify({ message: "You already have a listing published, you cannot publish more listings right now" }), {
-                    status: 404,
                 })
             }
 

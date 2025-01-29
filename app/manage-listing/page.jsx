@@ -10,6 +10,7 @@ import Wrapper from "@/components/Wrapper";
 
 const ManageListing = () => {
     const [token, setToken] = useState(null);
+
     const router = useRouter();
 
     useEffect(() => {
@@ -25,6 +26,14 @@ const ManageListing = () => {
             return jwtDecode(token).firstName;
         }
     };
+
+    const getCompletedProfileFromToken = () => {
+        if (token) {
+            return jwtDecode(token).completedProfile;
+        }
+    }
+
+    const completedProfile = getCompletedProfileFromToken();
 
     const Firstname = getFirstNameFromToken();
 
@@ -81,7 +90,7 @@ const ManageListing = () => {
                                 </div>
                                 <div className="flex items-end justify-end w-full ">
                                     <Link
-                                        href={"/create-listing"}
+                                        href={completedProfile ? "/create-listing" : "/profile"}
                                         className="bg-black text-center p-2 w-full text-white rounded-md hover:bg-gray-900"
                                     >
                                         Get Started

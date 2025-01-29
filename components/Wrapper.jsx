@@ -19,6 +19,7 @@ import {
 } from "@/components/ui/card";
 import { Chart } from "./Chart";
 import Spinner from "@/components/Spinner";
+import { jwtDecode } from "jwt-decode";
 
 const Wrapper = () => {
     const [token, setToken] = useState(null);
@@ -39,6 +40,17 @@ const Wrapper = () => {
         const storedToken = localStorage.getItem("token");
         setToken(storedToken);
     }, []);
+
+    const getSubscriptionStatus = () => {
+        if (!token) {
+            return false;
+        }
+
+
+        return jwtDecode(token).subscriptionStatus === "Active";
+    }
+
+    const subscriptionStatus = getSubscriptionStatus();
 
     const fetchUserListings = async () => {
         try {
@@ -169,6 +181,7 @@ const Wrapper = () => {
                                     refreshListings={refreshListings}
                                     handleFilterChange={handleFilterChange}
                                     filter={filter}
+                                    subscriptionStatus={subscriptionStatus}
                                 />
                             ))
                         )}
@@ -214,7 +227,7 @@ const Wrapper = () => {
                         </Card>
                     </div>
 
-                    {loading ? <Spinner /> : <Chart dailyImpressionsLast30Days={analytics.dailyImpressionsLast30Days}/>}
+                    {loading ? <Spinner /> : <Chart dailyImpressionsLast30Days={analytics.dailyImpressionsLast30Days} />}
                 </div>
             )}
         </div>
