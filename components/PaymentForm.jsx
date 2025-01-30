@@ -9,12 +9,13 @@ import {
   usePayPalHostedFields,
 } from "@paypal/react-paypal-js";
 
+// if payment is successful, show user a toast message
 async function createOrderCallback() {
   try {
     const accessTokenResponse = await fetch("/api/paypal-token", { method: "POST" });
 
     const accessTokenData = await accessTokenResponse.json();
-    console.log("PayPal Access Token Response:", accessTokenData);
+ 
     if (!accessTokenData.access_token) {
       throw new Error("Failed to get access token");
     }
@@ -23,7 +24,7 @@ async function createOrderCallback() {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "Authorization": `Bearer ${accessTokenData.access_token}`, // Replace with your token logic
+        "Authorization": `Bearer ${accessTokenData.access_token}`, 
       },
       body: JSON.stringify({
         "intent": "CAPTURE",
@@ -36,7 +37,7 @@ async function createOrderCallback() {
         }]
       }),
     });
-
+   
     const orderData = await response.json();
 
     if (orderData.id) {
@@ -179,7 +180,7 @@ const SubmitPayment = ({ onHandleMessage }) => {
   };
 
   return (
-    <button onClick={submitHandler} className="mt-2 bg-green-400 text-black font-bold hover:bg-green-300 w-full p-4 ">
+    <button  onClick={submitHandler} className="mt-2 bg-green-400 text-black font-bold hover:bg-green-300 w-full p-4 ">
       Pay Now
     </button>
   );
@@ -192,6 +193,7 @@ const Message = ({ content }) => {
 export const PaymentForm = () => {
 
   const [message, setMessage] = useState("");
+  
   return (
     <div className={styles.form}>
       <PayPalButtons
@@ -251,10 +253,15 @@ export const PaymentForm = () => {
               className={styles.input}
             />
           </div>
+          {/* make accept terms and condition check box with text */}
+          <label className="text-slate-700 text-sm">
+            <input type="checkbox" className="mr-2" />
+            By pressing “Pay Now” you agree to the terms and conditions from Lookvisa.com and that all sales are fina
+          </label>
           <SubmitPayment onHandleMessage={setMessage} />
         </div>
       </PayPalHostedFieldsProvider>
-      <Message content={message} />
+     
     </div>
   );
 };

@@ -43,15 +43,15 @@ const Checkout = () => {
                 {clientToken ? (
                     <PayPalScriptProvider options={initialOptions} >
                         <div className="flex flex-col gap-4 items-center justify-center w-[700px] bg-white p-8 rounded-lg shadow-lg">
-                            <h1 className='text-[34px] font-bold text-blue-400 text-left'>30 $</h1>
+                            <h1 className='text-[34px] font-bold text-blue-400 text-left'>Checkout - Payment $30</h1>
                             <p className='text-slate-700  text-center max-w-[850px] mt-4'>To contact and connect with investors and see their profile please
                                 get started with a fast, secure, payment. You’ll also get full access to create a listing to
                                 obtain funding from a visa investor for your projects.</p>
-                            <div className='flex flex-row items-center justify-center gap-4 mt-6'>
+                            <div className='flex flex-row  justify-center gap-4 mt-6'>
                                 <CheckCheck size={24} className='text-blue-400 text-4xl' />
                                 <span className='text-slate-700 text-sm'>Allows you to contact investors for 30 days to get funding for your projects</span>
                             </div>
-                            <div className='flex flex-row items-center justify-center gap-4 '>
+                            <div className='flex flex-row  justify-center gap-4 '>
                                 <CheckCheck size={24} className='text-blue-400 text-4xl' />
                                 <span className='text-slate-700 text-sm'>Allows you to create a listing to get funding for your project
                                 </span>
