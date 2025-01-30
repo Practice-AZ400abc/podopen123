@@ -8,6 +8,9 @@ import {
   PayPalButtons,
   usePayPalHostedFields,
 } from "@paypal/react-paypal-js";
+import toast from "react-hot-toast";
+import { Loader2, ShoppingBasket } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 // if payment is successful, show user a toast message
 async function createOrderCallback() {
@@ -156,32 +159,40 @@ async function onApproveCallback(data, actions) {
 
 
 const SubmitPayment = ({ onHandleMessage }) => {
-  // Here declare the variable containing the hostedField instance
   const { cardFields } = usePayPalHostedFields();
   const cardHolderName = useRef(null);
-
+  const [Loading, setLoading] = useState(false);
+  const router = useRouter();
   const submitHandler = () => {
-    if (typeof cardFields.submit !== "function") return; // validate that \`submit()\` exists before using it
-    //if (errorMsg) showErrorMsg(false);
+    if (typeof cardFields.submit !== "function") return;
+    setLoading(true);
     cardFields
       .submit({
-        // The full name as shown in the card and billing addresss
-        // These fields are optional for Sandbox but mandatory for production integration
         cardholderName: cardHolderName?.current?.value,
       })
-      .then(async (data) => onHandleMessage(await onApproveCallback(data)))
+      .then(async (data) => {
+        await onHandleMessage(await onApproveCallback(data));
+        toast.success("Payment successful!");
+        router.push("/Thankyou");
+        setLoading(false);
+      })
       .catch((orderData) => {
         onHandleMessage(
-          `Sorry, your transaction could not be processed...${JSON.stringify(
-            orderData,
-          )}`,
+          `Sorry, your transaction could not be processed...${JSON.stringify(orderData)}`
         );
+        toast.error("Sorry, your transaction could not be processed...");
+        setLoading(false);
       });
   };
 
   return (
-    <button  onClick={submitHandler} className="mt-2 bg-green-400 text-black font-bold hover:bg-green-300 w-full p-4 ">
-      Pay Now
+    <button
+      disabled={Loading}
+      onClick={submitHandler}
+      className="mt-2 bg-green-400 cursor-pointer flex gap-2s items-center justify-center text-black font-bold hover:bg-green-300 w-full p-4"
+    >
+
+      {Loading ? <Loader2 className="animate-spin" /> : <><ShoppingBasket className="mr-4" /> Pay Now</>}
     </button>
   );
 };
