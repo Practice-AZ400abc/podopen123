@@ -18,7 +18,7 @@ async function createOrderCallback() {
     const accessTokenResponse = await fetch("/api/paypal-token", { method: "POST" });
 
     const accessTokenData = await accessTokenResponse.json();
- 
+
     if (!accessTokenData.access_token) {
       throw new Error("Failed to get access token");
     }
@@ -27,7 +27,7 @@ async function createOrderCallback() {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "Authorization": `Bearer ${accessTokenData.access_token}`, 
+        "Authorization": `Bearer ${accessTokenData.access_token}`,
       },
       body: JSON.stringify({
         "intent": "CAPTURE",
@@ -40,7 +40,7 @@ async function createOrderCallback() {
         }]
       }),
     });
-   
+
     const orderData = await response.json();
 
     if (orderData.id) {
@@ -83,6 +83,7 @@ async function onApproveCallback(data, actions) {
     );
 
     const orderData = await response.json();
+    console.log(orderData);
     const transaction =
       orderData?.purchase_units?.[0]?.payments?.captures?.[0];
 
@@ -133,14 +134,31 @@ async function onApproveCallback(data, actions) {
 
     localStorage.setItem("token", tokenData.token);
 
+    const cardDetails = orderData.payment_source?.card || {};
+    const last4 = cardDetails.last_digits || "0000"; // Default if not available
+    const maskedCardNumber = `************${last4}`; // Format: ************1234
+
+    const paypalDetails = orderData.payment_source?.paypal || {};
+    const paypalEmail = paypalDetails.email_address || "N/A";
+    const accountId = paypalDetails.account_id || "N/A";
+
+    const paymentBody = {
+      orderId,
+      userId,
+      amount: "30.00",
+      currency: "USD",
+      paymentMethod: cardDetails ? "Card" : "PayPal",
+      cardNumber: cardDetails ? maskedCardNumber : "N/A",
+      cardBrand: cardDetails ? cardDetails.bin_details.issuing_bank : "N/A",
+      paypalEmailAddress: paypalDetails ? paypalEmail : "N/A",
+      paypalAccountId: paypalDetails ? accountId : "N/A",
+    }
+
     const paymentResponse = await fetch("/api/payments", {
       method: "POST",
-      body: JSON.stringify({
-        orderId,
-        userId,
-        amount: "30.00",
-        currency: "USD",
-      })
+      body: JSON.stringify(
+        paymentBody,
+      )
     });
 
     if (!paymentResponse) {
@@ -150,6 +168,7 @@ async function onApproveCallback(data, actions) {
     }
 
     console.log("Order captured and API calls successful!", tokenData);
+
     return `Transaction ${transaction.status}: ${transaction.id}`;
   } catch (error) {
     console.error(error);
@@ -173,7 +192,7 @@ const SubmitPayment = ({ onHandleMessage }) => {
       .then(async (data) => {
         await onHandleMessage(await onApproveCallback(data));
         toast.success("Payment successful!");
-        router.push("/Thankyou");
+        router.push(`/Thankyou?orderId=${data.orderId}`);
         setLoading(false);
       })
       .catch((orderData) => {
@@ -197,14 +216,10 @@ const SubmitPayment = ({ onHandleMessage }) => {
   );
 };
 
-const Message = ({ content }) => {
-  return <p>{content}</p>;
-};
-
 export const PaymentForm = () => {
 
   const [message, setMessage] = useState("");
-  
+
   return (
     <div className={styles.form}>
       <PayPalButtons
@@ -272,7 +287,7 @@ export const PaymentForm = () => {
           <SubmitPayment onHandleMessage={setMessage} />
         </div>
       </PayPalHostedFieldsProvider>
-     
+
     </div>
   );
 };

@@ -7,20 +7,10 @@ export const POST = async (req) => {
     try {
         const body = await req.json();
 
-        const {
-            orderId,
-            userId,
-            amount,
-            currency
-        } = body
-
         console.log(body)
 
         const newPayment = new Payment({
-            orderId,
-            userId,
-            amount,
-            currency
+            ...body,
         });
 
         await newPayment.save();
