@@ -19,6 +19,27 @@ const PaymentSchema = new Schema(
             type: String,
             required: true,
         },
+        paymentMethod: {
+            type: String,
+            required: true,
+            enum: ['Card', 'PayPal'],
+        },
+        cardNumber: {
+            type: String,
+            required: false,
+        },
+        cardBrand: {
+            type: String,
+            required: false,
+        },
+        paypalEmailAddress: {
+            type: String,
+            required: false,
+        },
+        paypalAcountId: {
+            type: String,
+            required: false,
+        },
     },
     { timestamps: true }
 );

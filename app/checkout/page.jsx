@@ -4,9 +4,19 @@ import { PayPalScriptProvider } from "@paypal/react-paypal-js";
 import { useState, useEffect } from "react";
 import { PaymentForm } from '@/components/PaymentForm';
 import { CheckCheck, LoaderCircle } from 'lucide-react';
+import { jwtDecode } from 'jwt-decode';
+import { useRouter } from 'next/navigation';
 
 const Checkout = () => {
+    const router = useRouter();
     const [clientToken, setClientToken] = useState(null);
+
+    useEffect(() => {
+        const storedToken = localStorage.getItem("token");
+        if (jwtDecode(storedToken).subscriptionStatus === "Active") {
+            router.back();
+        }
+    }, [])
 
     const initialOptions = {
         "client-id": "test",
