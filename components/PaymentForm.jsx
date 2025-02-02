@@ -83,6 +83,7 @@ async function onApproveCallback(data, actions) {
     );
 
     const orderData = await response.json();
+    localStorage.setItem("orderData", JSON.stringify(orderData));
     const transaction =
       orderData?.purchase_units?.[0]?.payments?.captures?.[0];
 
