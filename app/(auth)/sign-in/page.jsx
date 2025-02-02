@@ -23,7 +23,6 @@ const SignIn = () => {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    // Redirect if user is logged in
     if (isLoggedIn) {
       router.push("/");
     }

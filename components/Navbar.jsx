@@ -157,6 +157,10 @@ const Navbar = () => {
                         Listing </Link>
                     </ul>
                   )}
+                   <Separator />
+                   <ul className="flex flex-col items-start gap-2 text-black">
+                    <Link href="/billing">Billing</Link>
+                  </ul>
                   <Separator />
                   <div className="flex gap-2 items-center">
                     <button onClick={logout} className="text-black">
@@ -208,6 +212,9 @@ const Navbar = () => {
                         <Link href="/manage-listing">Manage Your Listings </Link>
                       </ul>
                     )}
+                    <ul className="flex flex-col items-start gap-2 text-black">
+                      <Link href="/billing">Billing</Link>
+                    </ul>
                     <div className="flex gap-2 items-center">
                       <button onClick={logout} className="text-black">
                         Logout

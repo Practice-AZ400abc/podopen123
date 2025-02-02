@@ -123,4 +123,3 @@ export const DELETE = async (req) => {
     });
   }
 };
-
