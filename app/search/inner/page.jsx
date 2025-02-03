@@ -373,9 +373,10 @@ export default function SearchPage() {
                           </p>
                         </div>
                       </div>
-
-                      <Button onClick={() => handleRedirectToProfile(investor)}>View investor profile</Button>
-                      <ContactVisaSeekerButton investor={investor} user={user} />
+                      <div className="flex gap-2 flex-wrap"> 
+                        <Button onClick={() => handleRedirectToProfile(investor)} className = "underline text-blue-400 hover:bg-transparent bg-transparent">View investor profile</Button>
+                        <ContactVisaSeekerButton investor={investor} user={user} />
+                      </div>
                     </div>
                   </Card>
                 ))}

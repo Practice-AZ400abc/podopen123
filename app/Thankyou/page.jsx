@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useParams, useSearchParams } from "next/navigation";
-import { Check } from "lucide-react";
+import { Check, Loader } from "lucide-react";
 import jsPDF from "jspdf";
 
 const Thankyou = () => {
@@ -54,7 +54,7 @@ const Thankyou = () => {
             <div className="bg-green-200 p-4 rounded-full">
                 <Check size={64} className="text-green-400 text-4xl" />
             </div>
-            <h1 className="text-2xl font-semibold">Thank you for your order!</h1>
+            <h1 className="text-2xl font-semibold">Thank you</h1>
 
             {payment ? (
                 <div className="bg-white border p-4 rounded-lg  w-[80%] max-w-md">
@@ -71,7 +71,7 @@ const Thankyou = () => {
                     </button>
                 </div>
             ) : (
-                <p>Loading receipt...</p>
+                <Loader className="animate-spin" />
             )}
         </div>
     );
