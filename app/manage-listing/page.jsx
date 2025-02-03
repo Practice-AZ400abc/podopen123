@@ -7,6 +7,7 @@ import Link from "next/link";
 import { PlusCircleIcon } from "lucide-react";
 import { jwtDecode } from "jwt-decode";
 import Wrapper from "@/components/Wrapper";
+import toast from "react-hot-toast";
 
 const ManageListing = () => {
     const [token, setToken] = useState(null);
@@ -36,8 +37,7 @@ const ManageListing = () => {
     const completedProfile = getCompletedProfileFromToken();
     if (completedProfile === false) {
         toast.error("Please complete your profile before creating a listing");
-        
-    }
+        router.push("/profile");}
     const Firstname = getFirstNameFromToken();
 
     return (

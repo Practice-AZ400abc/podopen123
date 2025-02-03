@@ -304,8 +304,13 @@ const Listings = ({ listing, refreshListings, handleFilterChange, filter, subscr
           >
             Unpublish Listing
           </Button>
+         
         )}
-
+        {
+          !subscriptionStatus && (
+            <Link href={"/checkout"} className="text-red-500 underline">Pay to Publish Listing</Link>
+          )
+        }
       </div>
     </div>
   );
