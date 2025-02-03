@@ -7,7 +7,7 @@ export const GET = async (req, { params }) => {
     await connectToDB();
 
     try {
-        const payment = await Payment.findOne({ userId: id });
+        const payment = await Payment.findOne({ orderId: id });
 
         if (!payment) {
             return new Response(JSON.stringify({ message: 'Payment not found' }), {
