@@ -144,7 +144,7 @@ const Navbar = () => {
               onClick={toggleLogout}
             />
             {showLogout && (
-              <div className="absolute top-[120%] right-0 bg-white text-black border shadow-md px-8 py-2 rounded-md flex flex-col items-center gap-2 w-[230px]">
+              <div className="absolute top-[120%]  right-0 bg-white text-black border shadow-md px-8 py-2 rounded-md flex flex-col items-center gap-2 w-[230px]">
                 <p className="font-bold text-lg">{firstName} {lastName}</p>
                 <div className="flex flex-col gap-2">
                   <ul className="flex flex-col items-start gap-2 text-black">
@@ -152,16 +152,18 @@ const Navbar = () => {
                   </ul>
                   <Separator />
                   {role === "Visa Sponsor" && (
-                    <ul className="flex flex-col items-start gap-2 text-black">
-                      <Link href="/manage-listing">Manage/Create Your
-                        Listing </Link>
-                    </ul>
+                    <>
+                      <ul className="flex flex-col items-start gap-2 text-black">
+                        <Link href="/manage-listing">Manage/Create Your Listing</Link>
+                      </ul>
+                      <Separator />
+                      <ul className="flex flex-col items-start gap-2 text-black">
+                        <Link href="/billing">Billing</Link>
+                      </ul>
+                      <Separator />
+                    </>
                   )}
-                   <Separator />
-                   <ul className="flex flex-col items-start gap-2 text-black">
-                    <Link href="/billing">Billing</Link>
-                  </ul>
-                  <Separator />
+              
                   <div className="flex gap-2 items-center">
                     <button onClick={logout} className="text-black">
                       Logout

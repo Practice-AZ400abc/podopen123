@@ -71,7 +71,7 @@ const Billing = () => {
       <div className="p-4 border rounded-md">
         <CardTitle>Your Plan</CardTitle>
         <CardDescription className="mt-2">
-          You have {activeSubscription ? "an active" : "no active"} subscription.
+          You have {activeSubscription ? "an active" : "no active"} plan.
         </CardDescription>
         <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-4">
           {activeSubscription ?
