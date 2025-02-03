@@ -66,7 +66,6 @@ async function onApproveCallback(data, actions) {
     const accessTokenResponse = await fetch("/api/paypal-token", { method: "POST" });
 
     const accessTokenData = await accessTokenResponse.json();
-    console.log("PayPal Access Token Response:", accessTokenData);
     if (!accessTokenData.access_token) {
       throw new Error("Failed to get access token");
     }
@@ -166,8 +165,6 @@ async function onApproveCallback(data, actions) {
         `Failed to create payment: ${await paymentResponse.text()}`
       );
     }
-
-    console.log("Order captured and API calls successful!", tokenData);
 
     return `Transaction ${transaction.status}: ${transaction.id}`;
   } catch (error) {

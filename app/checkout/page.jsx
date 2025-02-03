@@ -33,7 +33,6 @@ const Checkout = () => {
             try {
                 const response = await fetch("/api/paypal-token", { method: "POST" });
                 const data = await response.json();
-                console.log("Fetched Client Token in Frontend:", data);
 
                 if (data.client_token) {
                     setClientToken(data.client_token);

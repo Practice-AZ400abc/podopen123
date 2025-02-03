@@ -9,7 +9,6 @@ const Thankyou = () => {
     const searchParams = useSearchParams();
     const orderId = searchParams.get("orderId");
 
-    console.log(orderId);
     const [payment, setPayment] = useState(null);
 
     useEffect(() => {

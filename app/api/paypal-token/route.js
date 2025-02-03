@@ -12,7 +12,6 @@ export async function POST() {
         });
 
         const data = await response.json();
-        console.log("PayPal Access Token Response:", data);
         if (!data.access_token) {
             throw new Error("Failed to get access token");
         }
@@ -25,7 +24,6 @@ export async function POST() {
         });
 
         const tokenData = await tokenResponse.json();
-        console.log("PayPal Client Token Response:", tokenData);
 
         if (!tokenData.client_token) {
             throw new Error("Failed to get client token");
