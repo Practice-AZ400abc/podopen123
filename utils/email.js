@@ -186,10 +186,10 @@ export const sendActionEmail = async (email, action, token, visaSponsorData) => 
                     <tr>
                         <td style={{ padding: '40px 30px', width: '100%' }}>
                             <p style={{ color: 'white', fontWeight: '600' }}>Hi, I am interested in your investor profile</p>
-                            <p style={{ color: 'white', fontWeight: '600' }}>First Name: { visaSponsorData.firstname}</p>
-                            <p style={{ color: 'white', fontWeight: '600' }}>Last Name: { visaSponsorData.lastname}</p>
-                            <p style={{ color: 'white', fontWeight: '600' }}>Phone number: { visaSponsorData.phoneNumber}</p>
-                            <p style={{ color: 'white', fontWeight: '600' }}>Comment: { visaSponsorData.comment}</p>
+                            <p style={{ color: 'white', fontWeight: '600' }}>First Name: ${ token.firstName}</p>
+                            <p style={{ color: 'white', fontWeight: '600' }}>Last Name: ${ token.lastName}</p>
+                            <p style={{ color: 'white', fontWeight: '600' }}>Phone number: ${ token.phoneNumber}</p>
+                            <p style={{ color: 'white', fontWeight: '600' }}>Comment: ${ token.additionalComments}</p>
                         </td>
                     </tr>
                     <tr>

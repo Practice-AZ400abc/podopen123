@@ -9,6 +9,7 @@ dotenv.config();
 export const POST = async (req) => {
   try {
     const { email, action, visaSponsorData } = await req.json();
+    console.log(visaSponsorData);
 
     if (!["verify", "reset", "listingCreated", "contactedByVisaSponsor"].includes(action)) {
       return new Response(JSON.stringify({ message: "Invalid action type." }), {
