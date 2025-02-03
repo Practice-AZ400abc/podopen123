@@ -91,7 +91,7 @@ const Billing = () => {
             <TableHeader>
               <TableRow>
                 <TableHead>Transaction ID</TableHead>
-                <TableHead>Purchased at</TableHead>
+                <TableHead>Date of Purchase</TableHead>
                 <TableHead>Expiring Date </TableHead>
                 <TableHead>Payment Method</TableHead>
                 <TableHead>Payment Details</TableHead>
