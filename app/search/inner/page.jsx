@@ -24,6 +24,8 @@ import {
 import { useRouter } from "next/navigation";
 import { jwtDecode } from 'jwt-decode';
 import ContactVisaSeekerButton from "@/components/ContactVisaSeekerButton";
+import { Button } from "@/components/ui/button";
+import toast from "react-hot-toast";
 
 export default function SearchPage() {
   const [user, setUser] = useState(null);
@@ -153,6 +155,18 @@ export default function SearchPage() {
       setCurrentPage(page);
     }
   };
+
+  const handleRedirectToProfile = (investor) => {
+    if (!user) {
+      return toast.error("You need to be logged in to view investor profiles");
+    }
+
+    if (user.subscriptionStatus !== "Active") {
+      return toast.error("You need an active subscription to view investor profiles");
+    }
+
+    router.push(`/SeekerData?id=${investor._id}`);
+  }
 
   return (
     <div className="min-h-screen w-full bg-gray-50">
@@ -360,6 +374,7 @@ export default function SearchPage() {
                         </div>
                       </div>
 
+                      <Button onClick={() => handleRedirectToProfile(investor)}>View investor profile</Button>
                       <ContactVisaSeekerButton investor={investor} user={user} />
                     </div>
                   </Card>
