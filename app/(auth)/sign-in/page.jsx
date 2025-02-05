@@ -17,10 +17,19 @@ const SignIn = () => {
   const { isLoggedIn, login } = useContext(AuthContext); // Access `isLoggedIn` and `login` from context
   const router = useRouter();
 
+  const [redirectPath, setRedirectPath] = useState("/"); // State to store the redirect path
+
   const [email, setEmail] = useState(""); // Email state
   const [error, setError] = useState(""); // State to handle error messages
   const [emailNotVerified, setEmailNotVerified] = useState(false); // State to handle
   const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    const redirectPathInStorage = localStorage.getItem("redirect");
+    if (redirectPathInStorage) {
+      setRedirectPath(redirectPathInStorage);
+    }
+  }, []);
 
   useEffect(() => {
     if (isLoggedIn) {
@@ -136,7 +145,7 @@ const SignIn = () => {
       </div>
       <div className="h-[80vh] max-xl:h-screen flex items-center justify-center">
         <div className="p-5  rounded-lg w-[90%] sm:w-[90%] md:max-w-[400px] lg:max-w-[500px] mx-auto">
-          <h1 className="text-4xl text-black text-center mb-3">Sign in</h1>
+          <h1 className="text-4xl text-black text-center mb-3">Sign in {redirectPath === "/checkout" && "as visa sponsor"} </h1>
           <p className=" mb-4 text-center">Please enter your credentails</p>
           <form onSubmit={validateEmail}>
             <div className="flex flex-col">
@@ -175,7 +184,7 @@ const SignIn = () => {
             <hr className="flex-1 bg-gray-200" />
           </div>
 
-          <div className="flex flex-col gap-5 w-[90%] m-auto mt-5">
+          {redirectPath !== "/checkout" && <div className="flex flex-col gap-5 w-[90%] m-auto mt-5">
             <button
               className="flex gap-5 items-center w-[80%] p-3 border bg-blue-500 rounded-full mx-auto  justify-center"
               onClick={() => signInWithSocials(new GoogleAuthProvider())}
@@ -192,7 +201,7 @@ const SignIn = () => {
               <FaFacebookF />
               <h1>Continue with Facebook</h1>
             </button> */}
-          </div>
+          </div>}
         </div>
 
         {/* Popup for email verification */}

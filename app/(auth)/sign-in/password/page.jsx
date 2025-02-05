@@ -13,12 +13,20 @@ import { Loader } from "lucide-react";
 const EnterPassword = () => {
   const router = useRouter();
   const { isLoggedIn, login } = useContext(AuthContext); // Get the login function and user from context
+  const [redirectPath, setRedirectPath] = useState("/"); // State to store the redirect path
 
   const [email, setEmail] = useState("");
   const [error, setError] = useState("");
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    const redirectPathInStorage = localStorage.getItem("redirect");
+    if (redirectPathInStorage) {
+      setRedirectPath(redirectPathInStorage);
+    }
+  }, []);
 
   useEffect(() => {
     if (isLoggedIn) {
@@ -74,7 +82,7 @@ const EnterPassword = () => {
       if (!user.completedProfile) {
         router.push("/profile");
       } else {
-        router.push("/");
+        router.push(redirectPath);
       }
     } catch (err) {
       setError(err.message);

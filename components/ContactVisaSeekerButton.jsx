@@ -1,4 +1,4 @@
-import { React } from 'react'
+import { React } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import {
@@ -22,12 +22,16 @@ const ContactVisaSeekerButton = ({ investor, user }) => {
 
     const [contactFormVisible, setContactFormVisible] = useState(false);
 
+    if(!isLoggedIn) {
+        localStorage.setItem("redirect", "/checkout");
+    }
+
     useEffect(() => {
         if (user && user.subscriptionStatus === "Active") {
-            console.log("user has active subscription")
+            console.log("user has active subscription");
             setContactFormVisible(true);
         }
-    }, [])
+    }, [user]);
 
     return (
         <Dialog>
@@ -40,12 +44,38 @@ const ContactVisaSeekerButton = ({ investor, user }) => {
             <DialogContent>
                 {
                     contactFormVisible ? (
-                        <>
-                            <DialogHeader>
-                                <DialogTitle>Connect with investors</DialogTitle>
-                            </DialogHeader>
-                            <Contactform investor={investor} />
-                        </>
+                        <div className="flex flex-col md:flex-row gap-6">
+                            {/* Investor Profile Section */}
+                            <div className="w-full md:w-1/3 p-4 border rounded-lg bg-gray-50">
+                                <div className="flex flex-col items-center">
+                                    <Image
+                                        src={investor.avatarURL}
+                                        alt={`${investor.firstName} ${investor.lastName}`}
+                                        width={100}
+                                        height={100}
+                                        className="rounded-full"
+                                    />
+                                    <h2 className="mt-4 text-xl font-semibold">{`${investor.firstName} ${investor.lastName}`}</h2>
+                                </div>
+                                <div className="mt-4 space-y-2">
+                                    <p><strong>Email:</strong> {investor.email}</p>
+                                    <p><strong>Phone:</strong> {investor.phone}</p>
+                                    <p><strong>Company:</strong> {investor.companyName}</p>
+                                    <p><strong>Country:</strong> {investor.countryLocation}</p>
+                                    <p><strong>Industry:</strong> {investor.industryToInvest}</p>
+                                    <p><strong>Investment Amount:</strong> {investor.investmentAmount}</p>
+                                    <p><strong>Countries for Visa:</strong> {investor.countriesForVisa?.join(', ')}</p>
+                                </div>
+                            </div>
+
+                            {/* Contact Form Section */}
+                            <div className="w-full md:w-2/3">
+                                <DialogHeader>
+                                    <DialogTitle>Connect with investors</DialogTitle>
+                                </DialogHeader>
+                                <Contactform investor={investor} />
+                            </div>
+                        </div>
                     ) : (
                         <>
                             <DialogHeader>
@@ -111,7 +141,7 @@ const ContactVisaSeekerButton = ({ investor, user }) => {
                                 <Link href={"/"} className="underline">
                                     Not Now
                                 </Link>
-                                <Link href={isLoggedIn ? "/checkout" : "/sign-in"}>
+                                <Link className="bg-green-600 p-3 rounded-sm" href={isLoggedIn ? "/checkout" : "/sign-in"}>
                                     Get Started
                                 </Link>
                             </div>
