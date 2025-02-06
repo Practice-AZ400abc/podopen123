@@ -178,30 +178,34 @@ const SignIn = () => {
             </div>
           </form>
 
-          <div className="mt-5 flex items-center justify-center">
-            <hr className="flex-1 bg-gray-200" />
-            <h1 className="text-center text-gray-500 text-sm mx-3">or</h1>
-            <hr className="flex-1 bg-gray-200" />
-          </div>
-
-          {redirectPath !== "/checkout" && <div className="flex flex-col gap-5 w-[90%] m-auto mt-5">
-            <button
-              className="flex gap-5 items-center w-[80%] p-3 border bg-blue-500 rounded-full mx-auto  justify-center"
-              onClick={() => signInWithSocials(new GoogleAuthProvider())}
-            >
-              <div className="flex items-center justify-center p-2 rounded-full bg-white">
-                <FcGoogle className="" />
+          {redirectPath !== "/checkout" && (
+            <>
+              <div className="mt-5 flex items-center justify-center">
+                <hr className="flex-1 bg-gray-200" />
+                <h1 className="text-center text-gray-500 text-sm mx-3">or</h1>
+                <hr className="flex-1 bg-gray-200" />
               </div>
-              <h1 className="text-white font-bold">Continue with Google</h1>
-            </button>
-            {/* <button
+
+              <div className="flex flex-col gap-5 w-[90%] m-auto mt-5">
+                <button
+                  className="flex gap-5 items-center w-[80%] p-3 border bg-blue-500 rounded-full mx-auto  justify-center"
+                  onClick={() => signInWithSocials(new GoogleAuthProvider())}
+                >
+                  <div className="flex items-center justify-center p-2 rounded-full bg-white">
+                    <FcGoogle className="" />
+                  </div>
+                  <h1 className="text-white font-bold">Continue with Google</h1>
+                </button>
+                {/* <button
               className="flex gap-5 items-center w-[80%] p-3 bg-blue-500 text-white rounded-full mx-auto justify-center"
               onClick={() => signInWithSocials(new FacebookAuthProvider())}
             >
               <FaFacebookF />
               <h1>Continue with Facebook</h1>
             </button> */}
-          </div>}
+              </div>
+            </>
+          )}
         </div>
 
         {/* Popup for email verification */}

@@ -2,6 +2,7 @@
 
 import "./globals.css";
 import Navbar from "../components/Navbar";
+import Footer from "@/components/Footer"
 import SuspenseProvider from "@/components/SuspenseProvider";
 import { AuthProvider } from "@/components/AuthProvider"; // Ensure the correct path
 import { Toaster } from "react-hot-toast";
@@ -35,6 +36,7 @@ export default function RootLayout({ children }) {
             {/* Conditionally render Navbar */}
             {!noNavbarRoutes.includes(pathname) && <Navbar />}
             {children}
+            {!noNavbarRoutes.includes(pathname) && <Footer />}
           </AuthProvider>
         </ SuspenseProvider >
       </body>

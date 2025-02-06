@@ -18,8 +18,10 @@ import { AuthContext } from "@/components/AuthProvider";
 import { LogOut } from "lucide-react";
 import { jwtDecode } from "jwt-decode";
 import { Separator } from "./ui/separator";
+import { useRouter } from 'next/navigation';
 
 const Navbar = () => {
+  const router = useRouter();
   const pathname = usePathname(); // Initialize useRouter
   const { isLoggedIn, logout } = useContext(AuthContext);
   const [token, setToken] = useState(null)
@@ -35,8 +37,18 @@ const Navbar = () => {
     const storedToken = localStorage.getItem("token");
     if (!storedToken) {
       setToken(null);
+      return;
     }
+
+    if (jwtDecode(storedToken).role === "Admin") {
+      router.push("/admin/home");
+    }
+
     setToken(storedToken);
+    setAvatarURL(jwtDecode(storedToken).avatarURL);
+    setRole(jwtDecode(storedToken).role);
+    setFirstName(jwtDecode(storedToken).firstName);
+    setLastName(jwtDecode(storedToken).lastName);
   }, []);
 
   // Decode the token to get the avatarURL
@@ -163,7 +175,7 @@ const Navbar = () => {
                       <Separator />
                     </>
                   )}
-              
+
                   <div className="flex gap-2 items-center">
                     <button onClick={logout} className="text-black">
                       Logout

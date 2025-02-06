@@ -13,7 +13,6 @@ import {
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { jwtDecode } from 'jwt-decode';
-import Card from "@/components/Card";
 import { CardDescription, CardTitle } from "@/components/ui/card";
 import Link from "next/link";
 import { LoaderCircle } from "lucide-react";

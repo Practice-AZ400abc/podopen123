@@ -156,18 +156,6 @@ export default function SearchPage() {
     }
   };
 
-  const handleRedirectToProfile = (investor) => {
-    if (!user) {
-      return toast.error("You need to be logged in to view investor profiles");
-    }
-
-    if (user.subscriptionStatus !== "Active") {
-      return toast.error("You need an active subscription to view investor profiles");
-    }
-
-    router.push(`/SeekerData?id=${investor._id}`);
-  }
-
   return (
     <div className="min-h-screen w-full bg-gray-50">
       <header className="bg-white border-b">
@@ -373,8 +361,7 @@ export default function SearchPage() {
                           </p>
                         </div>
                       </div>
-                      <div className="flex gap-2 flex-wrap"> 
-                        <Button onClick={() => handleRedirectToProfile(investor)} className = "underline text-blue-400 hover:bg-transparent bg-transparent">View investor profile</Button>
+                      <div className="flex gap-2 flex-wrap">
                         <ContactVisaSeekerButton investor={investor} user={user} />
                       </div>
                     </div>

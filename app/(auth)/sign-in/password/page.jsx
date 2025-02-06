@@ -79,10 +79,15 @@ const EnterPassword = () => {
       toast.success("You are logged in successfully!");
       login(token);
 
+      if (redirectPath !== "/") {
+        localStorage.removeItem("redirect");
+        router.push(redirectPath)
+      }
+
       if (!user.completedProfile) {
         router.push("/profile");
       } else {
-        router.push(redirectPath);
+        router.push("/");
       }
     } catch (err) {
       setError(err.message);
