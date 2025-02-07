@@ -1,6 +1,7 @@
 import verifyToken from "@/utils/verifyToken";
 import { connectToDB } from "@/utils/database";
 import Payment from "@/models/payment";
+import User from "@/models/user";
 
 export const GET = async (req) => {
     const user = verifyToken(req);
@@ -25,7 +26,7 @@ export const GET = async (req) => {
         console.log(payments);
         return new Response(JSON.stringify(payments), { status: 200 });
     } catch (error) {
-        return new Response(JSON.stringify({ message: 'Internal server error' }), {
+        return new Response(JSON.stringify({ message: `Internal server error: ${error.message}` }), {
             status: 500,
         });
     }

@@ -81,11 +81,11 @@ const EnterPassword = () => {
 
       if (redirectPath !== "/") {
         localStorage.removeItem("redirect");
-        router.push(redirectPath)
-      }
-
-      if (!user.completedProfile) {
+        router.push(redirectPath);
+      } else if (!user.completedProfile) {
         router.push("/profile");
+      } else if (user.role === "Admin") {
+        router.push("/admin/home");
       } else {
         router.push("/");
       }
@@ -109,9 +109,7 @@ const EnterPassword = () => {
               </label>
               <div className="w-full relative">
                 <input
-                  className={`text-black rounded-[5px] p-1 mt-2 outline-blue-200 w-full border ${
-                    error ? "outline-red-500" : ""
-                  }`}
+                  className={`text-black rounded-[5px] p-1 mt-2 outline-blue-200 w-full border ${error ? "outline-red-500" : ""}`}
                   maxLength={20}
                   type={passwordVisible ? "text" : "password"}
                   onChange={(e) => {
