@@ -36,7 +36,9 @@ export default function RootLayout({ children }) {
             {/* Conditionally render Navbar */}
             {!noNavbarRoutes.includes(pathname) && <Navbar />}
             {children}
-            {!noNavbarRoutes.includes(pathname) && <Footer />}
+        
+           {!noNavbarRoutes.includes(pathname) && <Footer />}
+          
           </AuthProvider>
         </ SuspenseProvider >
       </body>
