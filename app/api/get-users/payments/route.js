@@ -23,7 +23,6 @@ export const GET = async (req) => {
             return new Response(JSON.stringify({ message: 'Payments not found' }), { status: 404 });
         }
 
-        console.log(payments);
         return new Response(JSON.stringify(payments), { status: 200 });
     } catch (error) {
         return new Response(JSON.stringify({ message: `Internal server error: ${error.message}` }), {
