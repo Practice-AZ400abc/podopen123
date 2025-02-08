@@ -6,7 +6,7 @@ import { FaLinkedin, FaInstagram, FaFacebook, FaEnvelope, FaPhone } from "react-
 
 const Footer = () => {
     return (
-        <footer className=" mx-auto container min-h-[20vh] text-center">
+        <footer className="absolute bottom-0 w-full min-h-[20vh] text-center">
             <div className='bg-gray-100  p-6  flex items-start justify-between'>
                 <div className='flex flex-col items-start gap-2'>
                     <h1 className='text-2xl text-blue-400 font-bold'>Quick Links</h1>
