@@ -7,6 +7,7 @@ import SuspenseProvider from "@/components/SuspenseProvider";
 import { AuthProvider } from "@/components/AuthProvider"; // Ensure the correct path
 import { Toaster } from "react-hot-toast";
 import { usePathname } from "next/navigation"; // Correct way to access current route in app directory
+import CookieConsent from "@/components/CookieConsent";
 
 export default function RootLayout({ children }) {
   const pathname = usePathname();
@@ -36,7 +37,7 @@ export default function RootLayout({ children }) {
             {/* Conditionally render Navbar */}
             {!noNavbarRoutes.includes(pathname) && <Navbar />}
             {children}
-        
+            <CookieConsent />
            {!noNavbarRoutes.includes(pathname) && <Footer />}
           
           </AuthProvider>
