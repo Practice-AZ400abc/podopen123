@@ -32,7 +32,7 @@ export default function Home() {
   };
 
   return (
-    <main className="min-h-screen bg-gray-50 flex flex-col items-center pt-4 px-4">
+    <main className="min-h-full bg-gray-50 flex flex-col items-center pt-4 px-4">
       <div className="w-full max-w-4xl mx-auto text-center space-y-6 mt-6">
         <div className="flex gap-3 bg-white  items-center justify-center   p-3 rounded-md border border-blue-400 shadow-md">
 
@@ -80,16 +80,16 @@ export default function Home() {
         <div className="flex flex-col gap-2">
           <div>
             <Link href={"/sign-up"}>
-              <Button className="bg-green-400 text-white hover:bg-green-500 shadow-sm">Get Started Now !</Button>
+              <Button className="bg-green-600 text-white hover:bg-green-500 shadow-sm">Get Started Now !</Button>
             </Link>
           </div>
           <div className="flex flex-col">
-          <span className="text-gray-600 text-sm mt-4 max-w-[400px] m-auto">
+          {/* <span className="text-gray-600 text-sm mt-4 max-w-[400px] m-auto">
             Create your Listing - It only takes a few seconds
           </span>
           <span className="text-gray-600 text-sm mt-4 max-w-[400px] m-auto">
             Join our network of successful visa sponsors.
-          </span>
+          </span> */}
           </div>
         </div>
 
