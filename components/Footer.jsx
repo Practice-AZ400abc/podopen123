@@ -7,9 +7,9 @@ import { FaLinkedin, FaInstagram, FaFacebook, FaEnvelope, FaPhone } from "react-
 const Footer = () => {
     return (
         <footer className="md:absolute  bottom-0 mt-[200px] w-full min-h-[20vh] text-center">
-            <div className='bg-gray-100  p-6  flex flex-col md:flex-row gap-4 items-start justify-between'>
+            <div className='bg-blue-400  p-6  flex flex-col md:flex-row gap-4 items-start justify-between'>
                 <div className='flex flex-col items-start gap-2'>
-                    <h1 className='text-2xl text-blue-400 font-bold'>Quick Links</h1>
+                    <h1 className='text-2xl text-white font-bold'>Quick Links</h1>
                     <Link href={"/"}>Home</Link>
                     <Link href={"/howItWorks"}>How it Works</Link>
                     <Link href={"/pricing"}>Pricing</Link>
@@ -19,13 +19,13 @@ const Footer = () => {
                 </div>
                 
                 <div className='flex flex-col items-start gap-2'>
-                    <h1 className='text-2xl text-blue-400 font-bold'>Address</h1>
+                    <h1 className='text-2xl text-white font-bold'>Address</h1>
                     <div>
                         <p className='text-start'>23 NE 17th Ter Miami, <br /> Florida, 33132</p>
                     </div>
                 </div>
                 <div className='flex flex-col items-start gap-2'>
-                    <h1 className='text-2xl text-blue-400 font-bold'>Contact</h1>
+                    <h1 className='text-2xl text-white font-bold'>Contact</h1>
                     <div className='flex items-center gap-2'>
                         <Send className='text-sm' size={14} />
                         <p className='text-start'>info@lookvisa.com</p>
@@ -37,7 +37,7 @@ const Footer = () => {
                     
                 </div>
                 <div className='flex flex-col items-start gap-2'>
-                    <h1 className='text-2xl text-blue-400 font-bold'>Socials</h1>
+                    <h1 className='text-2xl text-white font-bold'>Socials</h1>
                 
                     <div className='flex flex-wrap gap-2'>
                         <FaInstagram className='hover:text-blue-300 cursor-pointer'/>
