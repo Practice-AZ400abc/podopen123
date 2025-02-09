@@ -5,6 +5,7 @@ import { jwtDecode } from "jwt-decode";
 import { useRouter } from "next/navigation";
 import Select from "react-select";
 import AdminTable from "@/components/AdminTable";
+import Link from "next/link";
 
 const AdminPage = () => {
     const router = useRouter();
@@ -61,8 +62,23 @@ const AdminPage = () => {
     }
 
     return (
-        <div className="p-4">
-            <h1 className="text-xl font-bold mb-4">Admin Dashboard</h1>
+        <div className="p-4 mx-auto container">
+
+            <ul className="bg-white p-2 flex gap-4  mb-4 border rounded-sm">
+                <li className="text-black ">
+                    <Link href={"/"} className="underline">Admin Dashboard</Link>
+                </li>
+                <li className="text-black ">
+                    <Link href={"/"} className="underline">Setting</Link>
+                </li>
+                <li className="text-black ">
+                    <Link href={"/"} className="underline">Add Blogs</Link>
+                </li>
+            </ul>
+
+
+            <h1 className="text-xl font-bold mb-4 text-blue-400">Dashboard</h1>
+            
             <Select
                 value={{ label: selectedTable, value: selectedTable }}
                 onChange={(selectedOption) => setSelectedTable(selectedOption.value)}
