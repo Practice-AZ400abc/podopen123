@@ -3,10 +3,15 @@
 import { Link2, Phone, Send } from 'lucide-react';
 import Link from 'next/link';
 import { FaLinkedin, FaInstagram, FaFacebook, FaEnvelope, FaPhone } from "react-icons/fa";
+import Instagram from "@/assets/instagram.svg"
+import Facebook from "@/assets/facebook.svg"
+import Linkedin from "@/assets/linkedin.svg"
+
+import Image from 'next/image';
 
 const Footer = () => {
     return (
-        <footer className="md:absolute  bottom-0 mt-[200px] w-full  text-center">
+        <footer className="container mx-auto mt-[200px] w-full  text-center">
             <div className='bg-blue-400  p-6  flex flex-col  md:flex-row gap-4 items-start justify-between'>
                 <div className='flex flex-col items-start gap-2'>
                     <h1 className='text-2xl text-white font-bold'>Quick Links</h1>
@@ -40,9 +45,9 @@ const Footer = () => {
                     <h1 className='text-2xl text-white font-bold'>Socials</h1>
                 
                     <div className='flex flex-wrap gap-2'>
-                        <FaInstagram className='hover:text-blue-300 cursor-pointer'/>
-                        <FaFacebook className='hover:text-blue-300 cursor-pointer'/>
-                        <FaLinkedin className='hover:text-blue-300 cursor-pointer'/> 
+                       <Image src={Instagram} alt='Instagram' className='h-10 w-10 cursor-pointer'/>
+                       <Image src={Facebook} alt='Instagram' className='h-10 w-10 cursor-pointer'/>
+                       <Image src={Linkedin} alt='Instagram' className='h-10 w-10 cursor-pointer'/>
                  </div>
                     
                 </div>
