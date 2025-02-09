@@ -6,8 +6,8 @@ import { FaLinkedin, FaInstagram, FaFacebook, FaEnvelope, FaPhone } from "react-
 
 const Footer = () => {
     return (
-        <footer className="md:absolute  bottom-0 mt-[200px] w-full min-h-[20vh] text-center">
-            <div className='bg-blue-400  p-6  flex flex-col md:flex-row gap-4 items-start justify-between'>
+        <footer className="md:absolute  bottom-0 mt-[200px] w-full  text-center">
+            <div className='bg-blue-400  p-6  flex flex-col  md:flex-row gap-4 items-start justify-between'>
                 <div className='flex flex-col items-start gap-2'>
                     <h1 className='text-2xl text-white font-bold'>Quick Links</h1>
                     <Link href={"/"}>Home</Link>
@@ -47,7 +47,9 @@ const Footer = () => {
                     
                 </div>
             </div>
-            <p className='text-center mt-2'> Copyright © 2025 Lookvisa All rights reserved.</p>
+           <div className='flex items-center justify-center h-[50px] bg-gray-200'>
+           <p className='text-center mt-2'> Copyright © 2025 Lookvisa All rights reserved.</p>
+           </div>
         </footer>
     );
 };
