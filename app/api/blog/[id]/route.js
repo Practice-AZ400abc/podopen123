@@ -1,6 +1,6 @@
 import verifyToken from '@/utils/verifyToken';
 import Blog from '@/models/blog';
-import { connectToDB } from '@utils/database';
+import { connectToDB } from '@/utils/database';
 import extractPublicIdFromUrl from '@/utils/extractPublicIdFromUrl';
 import deleteFromCloudinary from '@/utils/deleteFromCloudinary';
 

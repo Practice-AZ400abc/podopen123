@@ -1,6 +1,6 @@
 import verifyToken from '@/utils/verifyToken';
 import Blog from '@/models/blog';
-import { connectToDB } from '@utils/database';
+import { connectToDB } from '@/utils/database';
 
 export const GET = async (req) => {
     await connectToDB();
