@@ -55,6 +55,13 @@ const SignIn = () => {
 
       const userData = await userResponse.json();
 
+      if (redirectPath === "/chceckout" && userData.role !== "Visa Sponsor") {
+        toast.error("You are not a Visa Sponsor! Please sign in as a Visa Sponsor");
+        setEmail("");
+        setLoading(false);
+        return;
+      }
+
       if (!userResponse.ok) {
         toast.error("Email address is not registered!");
         setEmail("");

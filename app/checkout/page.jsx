@@ -13,7 +13,7 @@ const Checkout = () => {
 
     useEffect(() => {
         const storedToken = localStorage.getItem("token");
-        if (jwtDecode(storedToken).subscriptionStatus === "Active") {
+        if (!storedToken || jwtDecode(storedToken).subscriptionStatus === "Active") {
             router.back();
         }
     }, [])

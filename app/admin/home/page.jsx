@@ -5,7 +5,6 @@ import { jwtDecode } from "jwt-decode";
 import { useRouter } from "next/navigation";
 import Select from "react-select";
 import AdminTable from "@/components/AdminTable";
-import Link from "next/link";
 import { Textarea } from "@/components/ui/textarea";
 
 const AdminPage = () => {
@@ -18,6 +17,67 @@ const AdminPage = () => {
     const [isClient, setIsClient] = useState(false);
     const [activeSection, setActiveSection] = useState("dashboard"); // Track active section
     const itemsPerPage = 20;
+
+    const [blogFormData, setBlogFormData] = useState({
+        title: "",
+        body: "",
+        bannerImg: "",
+    });
+
+    // Function to upload an image to Cloudinary
+    const uploadToCloudinary = async (file) => {
+        try {
+            const formData = new FormData();
+            formData.append("file", file);
+            formData.append("upload_preset", "lookvisa");
+            formData.append("cloud_name", "dqayy79ql");
+
+            const response = await fetch(
+                "https://api.cloudinary.com/v1_1/dqayy79ql/image/upload",
+                { method: "POST", body: formData }
+            );
+
+            const data = await response.json();
+            return data.secure_url; // Cloudinary returns the secure URL of the uploaded image
+        } catch (error) {
+            console.error("Error uploading image to Cloudinary:", error);
+            return null;
+        }
+    };
+
+    // Handles file input change
+    const handleFileChange = async (event) => {
+        const file = event.target.files[0];
+        if (!file) return;
+
+        const uploadedImageUrl = await uploadToCloudinary(file);
+        if (uploadedImageUrl) {
+            setBlogFormData((prev) => ({ ...prev, bannerImg: uploadedImageUrl }));
+        } else {
+            alert("Image upload failed. Please try again.");
+        }
+    };
+
+    const postBlog = async (e) => {
+        e.preventDefault();
+
+        try {
+            const res = await fetch("/api/blog", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${token}`,
+                },
+                body: JSON.stringify(blogFormData),
+            });
+
+            if (!res.ok) {
+                throw new Error("Failed to post blog");
+            }
+        } catch (error) {
+            console.error(error);
+        }
+    }
 
     useEffect(() => {
         setIsClient(true);
@@ -138,20 +198,34 @@ const AdminPage = () => {
             {activeSection === "blogs" && (
                 <div>
                     <h1 className="text-xl font-bold mb-4 text-blue-400">Blogs</h1>
-                    <form className="flex flex-col gap-4">
+                    <form onSubmit={postBlog} className="flex flex-col gap-4">
                         <div className="flex flex-col gap-2 w-full">
                             <label>Title</label>
-                            <input type="text" placeholder="Enter blog title" className="p-2 border rounded-md" />
+                            <input
+                                value={blogFormData.title}
+                                onChange={(e) => setBlogFormData((prev) => ({ ...prev, title: e.target.value }))}
+                                type="text"
+                                placeholder="Enter blog title"
+                                className="p-2 border rounded-md"
+                            />
                         </div>
                         <div className="flex flex-col gap-2 w-full">
                             <label>Description</label>
-                            <Textarea placeholder="Enter blog description" />
+                            <Textarea
+                                value={blogFormData.body}
+                                onChange={(e) => setBlogFormData((prev) => ({ ...prev, body: e.target.value }))}
+                                placeholder="Enter blog description"
+                            />
                         </div>
                         <div className="flex flex-col gap-2 w-full">
                             <label>Cover Image</label>
-                            <input type="file" className="p-2 border rounded-md" />
+                            <input
+                                onChange={handleFileChange}
+                                type="file"
+                                className="p-2 border rounded-md"
+                            />
                         </div>
-                        <button className="w-fit bg-blue-400 p-2 text-white rounded-md">Add Blog</button>
+                        <button type="submit" className="w-fit bg-blue-400 p-2 text-white rounded-md">Add Blog</button>
                     </form>
                 </div>
             )}

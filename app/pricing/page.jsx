@@ -1,9 +1,23 @@
+"use client";
+
 import { Button } from '@/components/ui/button'
 import { CheckCheck } from 'lucide-react'
-import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 import React from 'react'
 
 const Pricing = () => {
+  const router = useRouter();
+
+  const handleRedirect = () => {
+    const token = localStorage.getItem('token');
+    if (token) {
+      router.push('/checkout')
+    } else {
+      localStorage.setItem("redirect", "/checkout");
+      router.push('/sign-in')
+    }
+  }
+
   return (
     <div className='mx-auto container p-3 flex flex-col gap-5 items-center w-full h-full justify-center'>
       <div className='mt-4 flex flex-col items-center justify-center '>
@@ -24,11 +38,9 @@ const Pricing = () => {
           <span className='text-slate-700 text-sm'>Allows you to create a lisVng to get funding for your project
           </span>
         </div>
-        <Link href='/checkout' className='flex items-center justify-center w-full'>
-        <Button className="bg-green-500 hover:bg-green-400 text-center w-full mt-6">
-         Get Started
+        <Button onClick={handleRedirect} className="bg-blue-400 hover:bg-blue-300 text-center w-full mt-6">
+          Get Started
         </Button>
-        </Link>
       </div>
     </div>
   )

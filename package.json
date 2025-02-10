@@ -54,6 +54,7 @@
     "react-intersection-observer": "^9.14.0",
     "react-paypal-js": "^0.0.1-security",
     "react-phone-number-input": "^3.4.10",
+    "react-quill": "^2.0.0",
     "react-remove-scroll": "^2.6.0",
     "react-select": "^5.9.0",
     "recharts": "^2.15.0",
