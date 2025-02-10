@@ -129,7 +129,7 @@ const EnterPassword = () => {
             </div>
             <button
               type="submit"
-              className="flex items-center justify-center text-center w-full p-2 bg-black text-white font-bold rounded-md mt-5"
+              className="flex items-center justify-center text-center w-full p-2 bg-green-500 text-white font-bold rounded-md mt-5"
               disabled={loading}
             >
               {loading ? (

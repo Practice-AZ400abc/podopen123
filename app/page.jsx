@@ -80,7 +80,7 @@ export default function Home() {
         <div className="flex flex-col gap-2">
           <div>
             <Link href={"/sign-up"}>
-              <Button className="bg-green-600 text-white hover:bg-green-500 shadow-sm">Get Started Now !</Button>
+              <Button className="bg-green-500 text-white hover:bg-green-400 shadow-sm">Get Started Now !</Button>
             </Link>
           </div>
           <div className="flex flex-col">
