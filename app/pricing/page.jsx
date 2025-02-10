@@ -12,7 +12,7 @@ const Pricing = () => {
           get started with a fast, secure, payment. You’ll also get full access to create a listing to
           obtain funding from a visa investor for your projects.</p>
       </div>
-      <div className='bg-gray-100 text-start md:w-[400px] p-4 rounded-md flex flex-col  items-start justify-start border'>
+      <div className=' text-start md:w-[400px] p-4 rounded-md flex flex-col  items-start justify-start border'>
         <h3 className='text-black font-bold text-start'> 30 Days Pass</h3>
         <h1 className='text-[34px] font-bold text-blue-400 text-left'>30 $</h1>
         <div className='flex flex-row items-center justify-center gap-4 mt-6'>
@@ -25,7 +25,7 @@ const Pricing = () => {
           </span>
         </div>
         <Link href='/checkout' className='flex items-center justify-center w-full'>
-        <Button className="bg-blue-400 hover:bg-blue-300 text-center w-full mt-6">
+        <Button className="bg-green-500 hover:bg-green-400 text-center w-full mt-6">
          Get Started
         </Button>
         </Link>
