@@ -55,7 +55,7 @@ const SignIn = () => {
 
       const userData = await userResponse.json();
 
-      if (redirectPath === "/chceckout" && userData.role !== "Visa Sponsor") {
+      if (redirectPath === "/checkout" && userData.role !== "Visa Sponsor") {
         toast.error("You are not a Visa Sponsor! Please sign in as a Visa Sponsor");
         setEmail("");
         setLoading(false);
@@ -152,10 +152,10 @@ const SignIn = () => {
       </div>
       <div className="h-[80vh] max-xl:h-screen flex items-start justify-center">
         <div className="p-5 border rounded-lg w-[90%] sm:w-[90%] md:max-w-[400px] lg:max-w-[500px] mx-auto">
-          <h1 className="text-4xl text-black text-center mb-3">Sign in </h1>
+          <h1 className="text-4xl text-black text-center mb-3">Sign in {redirectPath === "/checkout" && "as Visa Sponsor"}</h1>
           <form onSubmit={validateEmail}>
             <div className="flex flex-col">
-              
+
               <input
                 disabled={loading}
                 className="border rounded-[5px] p-2 mt-2 text-black "
@@ -175,7 +175,7 @@ const SignIn = () => {
                 "Continue"
               )}
             </button>
-         
+
           </form>
 
           {redirectPath !== "/checkout" && (
@@ -205,13 +205,13 @@ const SignIn = () => {
             </button> */}
               </div>
               <div className="w-full flex items-center justify-between mt-5">
-              <div className="flex flex-col justify-center w-full items-center gap-3 text-sm text-gray-500">
-                   <h1>Don't have an Account?</h1>
-                    <Link href="/sign-up" className=" border  px-6 border-green-500 text-green-500 hover:text-white  hover:bg-green-600 py-2 ">
-                  Sign up
-                </Link>
+                <div className="flex flex-col justify-center w-full items-center gap-3 text-sm text-gray-500">
+                  <h1>Don't have an Account?</h1>
+                  <Link href="/sign-up" className=" border  px-6 border-green-500 text-green-500 hover:text-white  hover:bg-green-600 py-2 ">
+                    Sign up
+                  </Link>
+                </div>
               </div>
-            </div>
             </>
           )}
         </div>

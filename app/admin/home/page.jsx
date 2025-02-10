@@ -74,8 +74,49 @@ const AdminPage = () => {
             if (!res.ok) {
                 throw new Error("Failed to post blog");
             }
+
+            setBlogFormData({
+                title: "",
+                body: "",
+                bannerImg: "",
+            })
         } catch (error) {
             console.error(error);
+        }
+    }
+
+    const [passwordFormData, setPasswordFormData] = useState({
+        password: "",
+        confirmPassword: "",
+    })
+
+    const updatePassword = async (e) => {
+        e.preventDefault();
+
+        if (passwordFormData.password !== passwordFormData.confirmPassword) {
+            alert("Password and confirm password must match");
+            return;
+        }
+
+        try {
+            const res = await fetch('/api/reset-password', {
+                method: "POST",
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+                body: JSON.stringify(passwordFormData)
+            });
+
+            if (!res.ok) {
+                throw new Error("Failed to update password");
+            }
+
+            setPasswordFormData({
+                password: "",
+                confirmPassword: "",
+            })
+        } catch (error) {
+            console.error(error.message);
         }
     }
 
@@ -180,16 +221,33 @@ const AdminPage = () => {
             {activeSection === "settings" && (
                 <div>
                     <h1 className="text-xl font-bold mb-4 text-blue-400">Settings</h1>
-                    <form className="flex flex-col gap-4">
+                    <form onSubmit={updatePassword} className="flex flex-col gap-4">
                         <div className="flex flex-col gap-2 w-full">
                             <label>New Password</label>
-                            <input type="password" placeholder="Enter new password" className="p-2 border rounded-md" />
+                            <input
+                                value={passwordFormData.password}
+                                onChange={(e) => setPasswordFormData((prev) => ({ ...prev, password: e.target.value }))}
+                                type="password"
+                                placeholder="Enter new password"
+                                className="p-2 border rounded-md"
+                            />
                         </div>
                         <div className="flex flex-col gap-2 w-full">
                             <label>Confirm New Password</label>
-                            <input type="password" placeholder="Confirm new password" className="p-2 border rounded-md" />
+                            <input
+                                value={passwordFormData.confirmPassword}
+                                onChange={(e) => setPasswordFormData((prev) => ({ ...prev, confirmPassword: e.target.value }))}
+                                type="password"
+                                placeholder="Confirm new password"
+                                className="p-2 border rounded-md"
+                            />
                         </div>
-                        <button className="w-fit bg-blue-400 p-2 text-white rounded-md">Set Password</button>
+                        <button
+                            type="submit"
+                            className="w-fit bg-blue-400 p-2 text-white rounded-md"
+                        >
+                            Set Password
+                        </button>
                     </form>
                 </div>
             )}
@@ -225,7 +283,12 @@ const AdminPage = () => {
                                 className="p-2 border rounded-md"
                             />
                         </div>
-                        <button type="submit" className="w-fit bg-blue-400 p-2 text-white rounded-md">Add Blog</button>
+                        <button
+                            type="submit"
+                            className="w-fit bg-blue-400 p-2 text-white rounded-md"
+                        >
+                            Add Blog
+                        </button>
                     </form>
                 </div>
             )}
