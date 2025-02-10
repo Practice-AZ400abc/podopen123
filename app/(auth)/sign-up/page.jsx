@@ -199,8 +199,8 @@ export default function Signup() {
         </Link>
       </div>
 
-      <div className="h-[80vh] flex flex-col items-center justify-center">
-        <div className="p-5  rounded-lg w-[90%] sm:w-[90%] md:max-w-[400px] lg:max-w-[500px] mx-auto">
+      <div className="h-[80vh] flex flex-col items-center justify-start">
+        <div className="p-8  rounded-lg w-[90%] border  sm:w-[90%] md:max-w-[400px] lg:max-w-[500px] mx-auto">
           <h1 className="text-4xl text-black text-left ">Get Started Now</h1>
           <h1 className="text-sm text-black text-left mb-4">
             Enter your credentials to access your account
@@ -228,7 +228,7 @@ export default function Signup() {
                 onChange={() => setSelectedForm("Visa Seeker")}
                 className="mr-2"
               />
-              Visa Seeker
+              Visa Investor
             </label>
           </div>
 
@@ -307,13 +307,16 @@ export default function Signup() {
             </div>
             <button
               type="submit"
-              className="flex items-center justify-center w-full p-2 bg-black text-white font-bold rounded-[5px] mt-5"
+              className="flex items-center justify-center text-center w-full p-2 bg-green-600 hover:bg-green-500 text-white font-bold rounded-[5px] mt-5"
               disabled={loading}
             >
               {loading ? (
                 <Loader className="animate-spin" size={18} />
               ) : (
-                `Sign up as ${selectedForm}`
+                `Sign up as ${
+
+                  selectedForm === "Visa Seeker" ? "Investor" : "Sponsor"
+                }`
               )}
             </button>
             {message && (
@@ -321,25 +324,18 @@ export default function Signup() {
             )}
           </form>
 
-          <div className="w-full flex items-center justify-between mt-5">
-            <div className="flex items-center gap-3 text-sm text-gray-500">
-              <h1>Already have an Account?</h1>
-              <Link href={"/sign-in"} className="text-black underline">
-                Sign in
-              </Link>
-            </div>
-          </div>
+
 
           {selectedForm === "Visa Seeker" && (
             <div className="mt-5 flex flex-col items-center justify-center gap-5">
               <button
-                className="flex gap-5 items-center w-[80%] p-3 border bg-blue-500 rounded-full mx-auto  justify-center"
+                className="flex gap-5 items-center w-[80%] p-1 border bg-blue-500 rounded-sm mx-auto  justify-start"
                 onClick={() => signInWithSocials(new GoogleAuthProvider())}
               >
-                <div className="flex items-center justify-center p-2 rounded-full bg-white">
+                <div className="flex items-center justify-center p-2 rounded-md bg-white">
                   <FcGoogle className="" />
                 </div>
-                <h1 className="text-white">Continue with Google</h1>
+                <h1 className="text-white font-bold ml-14">Continue with Google</h1>
               </button>
               {/* <button
                 className="flex gap-5 items-center w-[80%] p-3 bg-blue-600 text-white rounded-full mx-auto justify-center"
@@ -348,6 +344,14 @@ export default function Signup() {
                 <FaFacebookF />
                 <h1>Continue with Facebook</h1>
               </button> */}
+              <div className="w-full mt-20 flex items-center justify-between ">
+                <div className="flex flex-col justify-center w-full items-center gap-3 text-sm text-gray-500">
+                  <h1>Already have Lookvisa account?</h1>
+                  <Link href={"/sign-in"} className=" border px-6 border-green-500 text-green-500 hover:text-white hover:border-none  hover:bg-green-600 py-2 ">
+                    Sign in
+                  </Link>
+                </div>
+              </div>
             </div>
           )}
         </div>

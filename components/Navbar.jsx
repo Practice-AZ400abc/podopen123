@@ -190,9 +190,9 @@ const Navbar = () => {
           <div className="flex gap-5 items-center max-md:hidden">
             <Link
               href="/sign-up"
-              className="bg-blue-300 hover:bg-blue-300 text-black px-6 py-3 rounded-sm font-bold"
+              className="bg-green-500 hover:bg-green-400 text-black px-6 py-3 rounded-sm font-bold"
             >
-              Sponsor Sign In
+              Sign up
             </Link>
             <Link
               href="/sign-in"
