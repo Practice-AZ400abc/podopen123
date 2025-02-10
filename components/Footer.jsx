@@ -72,7 +72,9 @@ const Footer = () => {
                 
        
             </div>
-            <div className='flex items-center justify-center h-[50px] bg-gray-200'>
+            <hr className=' w-full h-[6px] rounded-full bg-orange-400'/>
+            <div className='flex flex-col items-center justify-center h-[50px] bg-gray-200'>
+            
                 <p className='text-center mt-2'> Copyright © 2025 Lookvisa All rights reserved.</p>
             </div>
         </footer>
