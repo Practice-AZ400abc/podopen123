@@ -23,7 +23,7 @@ const ContactVisaSeekerButton = ({ investor, user }) => {
     const [contactFormVisible, setContactFormVisible] = useState(false);
 
     if(!isLoggedIn) {
-        localStorage.setItem("redirect", "/checkout");
+        sessionStorage.setItem("redirect", "/checkout");
     }
 
     useEffect(() => {

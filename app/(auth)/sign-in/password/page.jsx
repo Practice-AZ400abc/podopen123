@@ -22,7 +22,7 @@ const EnterPassword = () => {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    const redirectPathInStorage = localStorage.getItem("redirect");
+    const redirectPathInStorage = sessionStorage.getItem("redirect");
     if (redirectPathInStorage) {
       setRedirectPath(redirectPathInStorage);
     }
@@ -80,7 +80,7 @@ const EnterPassword = () => {
       login(token);
 
       if (redirectPath !== "/") {
-        localStorage.removeItem("redirect");
+        sessionStorage.removeItem("redirect");
         router.push(redirectPath);
       } else if (!user.completedProfile) {
         router.push("/profile");

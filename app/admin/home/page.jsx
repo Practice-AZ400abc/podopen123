@@ -7,6 +7,10 @@ import Select from "react-select";
 import AdminTable from "@/components/AdminTable";
 import { Textarea } from "@/components/ui/textarea";
 
+import { auth } from "@/app/firebase/firebaseConfig";
+import { updatePassword } from "firebase/auth";
+import { reauthenticateWithCredential, EmailAuthProvider } from "firebase/auth";
+
 const AdminPage = () => {
     const router = useRouter();
     const [selectedTable, setSelectedTable] = useState("payments");
@@ -90,35 +94,31 @@ const AdminPage = () => {
         confirmPassword: "",
     })
 
-    const updatePassword = async (e) => {
+    const updateUserPassword = async (e) => {
         e.preventDefault();
 
         if (passwordFormData.password !== passwordFormData.confirmPassword) {
-            alert("Password and confirm password must match");
+            return alert("Password and confirm password must match");
+        }
+
+        const user = auth.currentUser;
+        if (!user) {
+            alert("No authenticated user found.");
             return;
         }
 
+        const credential = EmailAuthProvider.credential(user.email, prompt("Enter your current password:"));
+
         try {
-            const res = await fetch('/api/reset-password', {
-                method: "POST",
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                },
-                body: JSON.stringify(passwordFormData)
-            });
-
-            if (!res.ok) {
-                throw new Error("Failed to update password");
-            }
-
-            setPasswordFormData({
-                password: "",
-                confirmPassword: "",
-            })
+            await reauthenticateWithCredential(user, credential); // Reauthenticate the user
+            await updatePassword(user, passwordFormData.password);
+            alert("Password updated successfully!");
+            setPasswordFormData({ password: "", confirmPassword: "" });
         } catch (error) {
-            console.error(error.message);
+            console.error("Error updating password:", error);
+            alert(error.message);
         }
-    }
+    };
 
     useEffect(() => {
         setIsClient(true);
@@ -221,7 +221,7 @@ const AdminPage = () => {
             {activeSection === "settings" && (
                 <div>
                     <h1 className="text-xl font-bold mb-4 text-blue-400">Settings</h1>
-                    <form onSubmit={updatePassword} className="flex flex-col gap-4">
+                    <form onSubmit={updateUserPassword} className="flex flex-col gap-4">
                         <div className="flex flex-col gap-2 w-full">
                             <label>New Password</label>
                             <input

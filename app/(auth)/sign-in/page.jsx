@@ -25,7 +25,7 @@ const SignIn = () => {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    const redirectPathInStorage = localStorage.getItem("redirect");
+    const redirectPathInStorage = sessionStorage.getItem("redirect");
     if (redirectPathInStorage) {
       setRedirectPath(redirectPathInStorage);
     }

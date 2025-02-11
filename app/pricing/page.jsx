@@ -13,7 +13,7 @@ const Pricing = () => {
     if (token) {
       router.push('/checkout')
     } else {
-      localStorage.setItem("redirect", "/checkout");
+      sessionStorage.setItem("redirect", "/checkout");
       router.push('/sign-in')
     }
   }
