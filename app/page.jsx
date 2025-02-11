@@ -32,7 +32,7 @@ export default function Home() {
   };
 
   return (
-    <main className="min-h-full bg-gray-50 flex flex-col items-center pt-4 px-4">
+    <main className="min-h-full bg-gray-50 mb-10 flex flex-col items-center pt-4 px-4">
       <div className="w-full max-w-4xl mx-auto text-center space-y-6 mt-6">
         <div className="flex gap-3 bg-white  items-center justify-center   p-3 rounded-md border border-blue-400 shadow-md">
 

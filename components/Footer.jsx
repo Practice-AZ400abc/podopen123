@@ -12,7 +12,7 @@ import Image from 'next/image';
 
 const Footer = () => {
     return (
-        <footer className=" container mx-auto  w-full mt-[20px]  text-center">
+        <footer className=" w-full   text-center">
             <div className='bg-blue-800  p-6  flex flex-col md:flex-row flex-wrap gap-4 items-start justify-evenly'>
 
 
