@@ -38,7 +38,7 @@ const Pricing = () => {
           <span className='text-slate-700 text-sm'>Allows you to create a lisVng to get funding for your project
           </span>
         </div>
-        <Button onClick={handleRedirect} className="bg-blue-400 hover:bg-blue-300 text-center w-full mt-6">
+        <Button onClick={handleRedirect} className="bg-green-500 hover:bg-green-400 text-center w-full mt-6">
           Get Started
         </Button>
       </div>
