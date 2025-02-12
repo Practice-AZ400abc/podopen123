@@ -41,7 +41,8 @@ const ManageListing = () => {
     const Firstname = getFirstNameFromToken();
 
     return (
-        <div className="mx-auto px-3 mt-10 flex flex-col items-center justify-between">
+        <div className="min-h-[100vh]">
+            <div className="mx-auto px-3 mt-10 flex flex-col items-center justify-between">
             <div className=" px-3  container flex  items-center w-[90%] justify-between">
                 <h1 className="text-4xl font-bold">
                     Welcome! <span className="text-blue-400">{Firstname}</span>
@@ -107,6 +108,7 @@ const ManageListing = () => {
             <div className="w-full container flex mt-10 items-start justify-start gap-10">
                 <Wrapper />
             </div>
+        </div>
         </div>
     );
 };

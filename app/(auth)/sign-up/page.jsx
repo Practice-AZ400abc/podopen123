@@ -313,9 +313,7 @@ export default function Signup() {
               {loading ? (
                 <Loader className="animate-spin" size={18} />
               ) : (
-                `Sign up as ${
-
-                  selectedForm === "Visa Seeker" ? "Investor" : "Sponsor"
+                `Sign up as ${selectedForm === "Visa Seeker" ? "Investor" : "Sponsor"
                 }`
               )}
             </button>
@@ -344,25 +342,33 @@ export default function Signup() {
                 <FaFacebookF />
                 <h1>Continue with Facebook</h1>
               </button> */}
-              <div className="w-full mt-20 flex items-center justify-between ">
-                <div className="flex flex-col justify-center w-full items-center gap-3 text-sm text-gray-500">
-                  <h1>Already have Lookvisa account?</h1>
-                  <Link href={"/sign-in"} className=" border px-6 border-green-500 text-green-500 hover:text-white hover:border-none  hover:bg-green-600 py-2 ">
-                    Sign in
-                  </Link>
-                </div>
-              </div>
+ 
             </div>
           )}
         </div>
-        <div>
+
+        
+        <div className="w-full mt-20 flex items-center justify-between ">
+          <div className="flex flex-col justify-center w-full items-center gap-3 text-sm text-gray-500">
+            <h1>Already have Lookvisa {selectedForm === "Visa Seeker" ? "Investor" : "Sponsor"} account?</h1>
+            <Link href={"/sign-in"} className=" border px-6 border-green-500 text-green-500 hover:text-white hover:border-none  hover:bg-green-600 py-2 ">
+              Sign in
+            </Link>
+          </div>
+        </div>
+      
+
+
+
+
+        {/* <div>
           <Link
             href={"/"}
             className="text-left underline flex items-center gap-4"
           >
             <ArrowLeft size={15} /> Back to home
           </Link>
-        </div>
+        </div> */}
       </div>
       {showModal && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">

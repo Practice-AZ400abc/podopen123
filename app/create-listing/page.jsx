@@ -142,20 +142,20 @@ const CreateListing = () => {
     const progressWidth = `${((activeStep - 1) / 3) * 100}%`;
 
     return (
-        <div className="mx-auto container flex flex-col items-center justify-center">
+        <div className="mx-auto container flex flex-col items-center   justify-center">
             {/* Main Content */}
-            <div className="w-full flex h-full overflow-hidden relative transition-all duration-500">
+            <div className="w-full flex h-full overflow-hidden relative   transition-all duration-500">
                 {/* Sliding Container */}
                 <div
-                    className="flex w-full"
+                    className="flex w-full "
                     style={{
                         transform: `translateX(-${(activeStep - 1) * 100}%)`,
                         transition: "transform 0.5s ease-in-out",
                     }}
                 >
                     {/* Step 1 */}
-                    <div className="flex-none w-full h-[70vh] flex items-center justify-between">
-                        <div className="flex gap-2 flex-col">
+                    <div className="flex-none w-full h-[70vh] flex items-center  justify-between">
+                        <div className="flex gap-2 flex-col ">
                             <span className="p-2 border rounded-full w-fit">Step 1</span>
                             <h1 className="text-4xl text-black max-w-[500px]">
                                 Tell us about your project that needs funding from visa investor
@@ -263,7 +263,7 @@ const CreateListing = () => {
                 </div>
 
                 {/* Navigation Buttons */}
-                <div className="w-full flex items-center justify-between mt-6">
+                <div className="w-full flex items-center mb-20 justify-between mt-6">
                     <button
                         onClick={handleBack}
                         className={`underline ${activeStep === 1 ? "invisible" : ""}`}

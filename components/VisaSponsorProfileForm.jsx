@@ -14,7 +14,7 @@ import toast from "react-hot-toast";
 import { jwtDecode } from "jwt-decode";
 import { useRouter } from "next/navigation";
 import { AuthContext } from "./AuthProvider";
-import { ArrowRight, Mail } from "lucide-react";
+import { ArrowRight, Loader2, Mail } from "lucide-react";
 import Link from "next/link";
 import {
   AlertDialog,
@@ -203,7 +203,7 @@ const VisaSponsorProfileForm = ({ }) => {
   };
 
   if (isLoading) {
-    return <div className="flex items-center justify-center">Loading...</div>;
+    return <div className="flex items-center justify-center  min-h-[100vh]"><Loader2 className="animate-spin" /></div>;
   }
 
   return (

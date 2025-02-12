@@ -1,10 +1,11 @@
 "use client"
+import { Loader } from "lucide-react"
 import Image from "next/image"
 import { useEffect, useState } from "react"
 
 const Blogs = () => {
     const [blogs, setBlogs] = useState([])
-
+    const [loading, setLoading] = useState();
     // fetch the blogs
     const fetchBlogs = async () => {
         try {
@@ -33,23 +34,30 @@ const Blogs = () => {
                     </h1>
 
                     {/* Render the blogs */}
-                    <div className="mt-10">
-                        {blogs.map((blog) => (
-                            <div key={blog.id} className="bg-white flex flex-col gap-6 md:flex-row p-6 rounded-lg  mb-6">
-                                <Image
-                                    src={blog.bannerImg}
-                                    alt={blog.title}
-                                    width={400} // Replace with actual width
-                                    height={400} // Replace with actual height
-                                    className="rounded-lg"
-                                />
-                                <div>
-                                <h1 className="text-3xl  font-semibold underline">{blog.title}</h1>
-                                <p>{blog.body}</p>
-                                </div>
+                    {loading ?
+                        <Loader className="animate-spin" />
+                        :
+                        <>
+                            <div className="mt-10">
+                                {blogs.map((blog) => (
+                                    <div key={blog.id} className="bg-white flex flex-col gap-6 md:flex-row p-6 rounded-lg  mb-6">
+                                        <Image
+                                            src={blog.bannerImg}
+                                            alt={blog.title}
+                                            width={400} // Replace with actual width
+                                            height={400} // Replace with actual height
+                                            className="rounded-lg"
+                                        />
+                                        <div>
+                                            <h1 className="text-3xl  font-semibold underline">{blog.title}</h1>
+                                            <p>{blog.body}</p>
+                                        </div>
+                                    </div>
+                                ))}
                             </div>
-                        ))}
-                    </div>
+                        </>
+                    }
+
                 </div>
             </div>
         </>

@@ -16,7 +16,7 @@ import toast from "react-hot-toast";
 import { jwtDecode } from "jwt-decode";
 import { useRouter } from "next/navigation";
 import { AuthContext } from "./AuthProvider";
-import { Mail } from "lucide-react";
+import { Loader2, Mail } from "lucide-react";
 import DeleteAccountButton from "./DeleteAccountButton";
 
 const VisaSeekerProfileForm = ({ }) => {
@@ -227,11 +227,11 @@ const VisaSeekerProfileForm = ({ }) => {
 
 
   if (isLoading) {
-    return <div className="flex items-center justify-center">Loading...</div>;
+    return <div className="flex items-center justify-center  min-h-[100vh]"><Loader2 className="animate-spin" /></div>;
   }
 
   return (
-    <div className="container mx-auto px-4 py-6">
+    <div className="container mx-auto min-h-[100vh] px-4 py-6">
       <form
         onSubmit={handleSubmit}
         className="bg-white p-6 rounded-lg  flex flex-col gap-6"

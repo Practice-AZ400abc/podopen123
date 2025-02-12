@@ -66,7 +66,7 @@ const Billing = () => {
   // const totalAmount = invoices.reduce((sum, invoice) => sum + invoice.amount, 0);
 
   return (
-    <div className="mx-auto container m-4">
+    <div className="mx-auto container m-4 min-h-[100vh] ">
       <div className="p-4 border rounded-md">
         <CardTitle>Your Plan</CardTitle>
         <CardDescription className="mt-2">

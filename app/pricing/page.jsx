@@ -19,8 +19,8 @@ const Pricing = () => {
   }
 
   return (
-    <div className='mx-auto container p-3 flex flex-col gap-5 items-center w-full h-full justify-center'>
-      <div className='mt-4 flex flex-col items-center justify-center '>
+    <div className='mx-auto container p-3 flex flex-col gap-5 min-h-[80vh] items-center w-full h-full justify-center'>
+      <div className='mt-4 flex flex-col items-center justify-center'>
         <h1 className='text-2xl md:text-4xl text-black font-semibold'>Friendly Pricing</h1>
         <p className='text-slate-700  text-center max-w-[850px] mt-4'>To contact and connect with investors and see their profile please
           get started with a fast, secure, payment. You’ll also get full access to create a listing to
