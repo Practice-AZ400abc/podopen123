@@ -160,9 +160,13 @@ const Navbar = () => {
                 <p className="font-bold text-lg">{firstName} {lastName}</p>
                 <div className="flex flex-col gap-2">
                   <ul className="flex flex-col items-start gap-2 text-black">
+
                     <Link href="/profile">Profile</Link>
+                    
                   </ul>
+
                   <Separator />
+
                   {role === "Visa Sponsor" && (
                     <>
                       <ul className="flex flex-col items-start gap-2 text-black">
