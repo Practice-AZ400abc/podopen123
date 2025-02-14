@@ -174,7 +174,7 @@ const Navbar = () => {
                       </ul>
                       <Separator />
                       <ul className="flex flex-col items-start gap-2 text-black">
-                        <Link href="/billing">Billing</Link>
+                        <Link href="/billing">Billing Dashboard</Link>
                       </ul>
                       <Separator />
                     </>

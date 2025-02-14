@@ -73,27 +73,24 @@ const EnterPassword = () => {
 
       if (!response.ok) throw new Error("Failed to generate token.");
 
-      const { token } = await response.json();
+      const { token, role, completedProfile } = await response.json();
       localStorage.setItem("token", token);
       localStorage.removeItem("email");
       toast.success("You are logged in successfully!");
       login(token);
 
-      if (redirectPath !== "/") {
-        sessionStorage.removeItem("redirect");
-        router.push(redirectPath);
-      } else if (!user.completedProfile) {
-        router.push("/profile");
-      } else if (user.role === "Admin") {
-        router.push("/admin/home");
-      } else {
-        router.push("/");
+      if (redirectPath === "/") {
+        if (!completedProfile) {
+          setRedirectPath("/profile")
+        } else if (role === "Admin") {
+          setRedirectPath("/admin/home")
+        }
       }
+
+      return router.replace(redirectPath);
     } catch (err) {
       setError(err.message);
       toast.error("Please enter a valid password");
-    } finally {
-      setLoading(false);
     }
   };
 

@@ -21,7 +21,7 @@ export const sendEmail = async ({ fromEmail, to, subject, html, attachments }) =
       attachments,
     });
 
-    
+
     return info;
   } catch (error) {
     console.error("Error while sending email:", error);
@@ -36,7 +36,7 @@ export const sendActionEmail = async (email, action, token, visaSponsorData) => 
     reset: `${baseUrl}/reset-password?token=${token}`,
     listingCreated: `${baseUrl}/manage-listing`,
   };
- 
+
   const actionDetails = {
     verify: {
       subject: "Lookvisa: Please Verify Your Email Address",
@@ -186,10 +186,15 @@ export const sendActionEmail = async (email, action, token, visaSponsorData) => 
                     <tr>
                         <td style={{ padding: '40px 30px', width: '100%' }}>
                             <p style={{ color: 'white', fontWeight: '600' }}>Hi, I am interested in your investor profile</p>
-                            <p style={{ color: 'white', fontWeight: '600' }}>First Name: ${ token.firstName}</p>
-                            <p style={{ color: 'white', fontWeight: '600' }}>Last Name: ${ token.lastName}</p>
-                            <p style={{ color: 'white', fontWeight: '600' }}>Phone number: ${ token.phoneNumber}</p>
-                            <p style={{ color: 'white', fontWeight: '600' }}>Comment: ${ token.additionalComments}</p>
+                            <p style={{ color: 'white', fontWeight: '600' }}>First Name: ${token.firstName}</p>
+                            <p style={{ color: 'white', fontWeight: '600' }}>Last Name: ${token.lastName}</p>
+                            <p style={{ color: 'white', fontWeight: '600' }}>Phone number: ${token.phoneNumber}</p>
+                            <p style={{ color: 'white', fontWeight: '600' }}>Comment: ${token.additionalNotes}</p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <p>DO NOT REPLY TO THIS EMAIL. You can contact the sponsor directly through <a href="mailto:${token.sponsorEmail}">${token.sponsorEmail}</a></p>
                         </td>
                     </tr>
                     <tr>

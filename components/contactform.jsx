@@ -1,12 +1,13 @@
-import { Loader, Loader2, MessageCircle } from "lucide-react";
+import { Loader2, MessageCircle } from "lucide-react";
 import { PhoneInput } from "react-international-phone";
 import "react-international-phone/style.css";
 import { useState } from 'react';
-import toast, { ToastBar } from "react-hot-toast";
+import toast from "react-hot-toast";
 
-const Contactform = ({ investor }) => {
+const Contactform = ({ investor, user }) => {
     const [Loading, setLoading] = useState(false);
     const [formData, setFormData] = useState({
+        sponsorEmail: user.email,
         firstName: "",
         lastName: "",
         phoneNumber: "",
@@ -35,6 +36,7 @@ const Contactform = ({ investor }) => {
 
             // Reset form fields after successful submission
             setFormData({
+                email: user.email,
                 firstName: "",
                 lastName: "",
                 phoneNumber: "",

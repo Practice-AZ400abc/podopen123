@@ -72,16 +72,16 @@ const Billing = () => {
         <CardDescription className="mt-2">
           You have {activeSubscription ? "an active" : "no active"} plan.
         </CardDescription>
-        <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-4">
-          {activeSubscription ?
-            <Link href="/cancel-subscription">Cancel Plan</Link>
-            : <Link href="/checkout">Buy Plan</Link>}
-        </button>
+        {!activeSubscription &&
+          <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-4">
+            <Link href="/checkout">Buy Plan</Link>
+          </button>
+        }
         <h1 className="text-2xl text-blue-400 p-4">Billing History</h1>
 
-       <div className="w-full flex items-center justify-center">
-       {loading && <LoaderCircle className="animate-spin"/>}
-       </div>
+        <div className="w-full flex items-center justify-center">
+          {loading && <LoaderCircle className="animate-spin" />}
+        </div>
         {error && <p className="text-red-500">{error}</p>}
 
         {!loading && !error && (
@@ -91,7 +91,7 @@ const Billing = () => {
               <TableRow>
                 <TableHead>Transaction ID</TableHead>
                 <TableHead>Date of Purchase</TableHead>
-                <TableHead>Expiring Date </TableHead>
+                <TableHead>Expiration Date </TableHead>
                 <TableHead>Payment Method</TableHead>
                 <TableHead>Payment Details</TableHead>
                 <TableHead className="text-right">Amount</TableHead>

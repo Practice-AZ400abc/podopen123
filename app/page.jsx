@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation"; // Import useRouter for navigation
 
 import { COUNTRIES } from "@/lib/constants";
@@ -21,6 +21,22 @@ import { SearchCheck } from "lucide-react";
 export default function Home() {
   const [selectedCountry, setSelectedCountry] = useState(""); // Track the selected country
   const router = useRouter(); // Use the Next.js router for navigation
+
+  const [redirectPath, setRedirectPath] = useState(null);
+
+  useEffect (() => {
+    const redirectPathInStorage = sessionStorage.getItem("redirect");
+    if (redirectPathInStorage) {
+      setRedirectPath(redirectPathInStorage)
+    }
+  }, [])
+
+  useEffect(() => {
+    if (redirectPath) {
+      sessionStorage.removeItem("redirect");
+      router.push(redirectPath)
+    }
+  }, [redirectPath])
 
   const handleSearch = () => {
     if (selectedCountry) {

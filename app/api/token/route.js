@@ -18,8 +18,10 @@ export const POST = async (req) => {
     const { password, ...userWithoutPassword } = user.toObject();
 
     const token = sign(userWithoutPassword, secret, { expiresIn: "7d" });
+    const role = user.role;
+    const completedProfile = user.completedProfile;
 
-    return new Response(JSON.stringify({ token }), { status: 200 });
+    return new Response(JSON.stringify({ token, role, completedProfile }), { status: 200 });
   } catch (error) {
     console.error("Error generating token:", error);
     return new Response(

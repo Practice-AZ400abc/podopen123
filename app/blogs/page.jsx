@@ -9,13 +9,14 @@ const Blogs = () => {
     // fetch the blogs
     const fetchBlogs = async () => {
         try {
+            setLoading(true);
             const response = await fetch("/api/blog")
             if (!response.ok) {
                 throw new Error("Failed to fetch blogs")
             }
             const data = await response.json()
             setBlogs(data)
-            console.log(data)
+            setLoading(false);
         } catch (error) {
             console.log(error)
         }
@@ -35,12 +36,14 @@ const Blogs = () => {
 
                     {/* Render the blogs */}
                     {loading ?
-                        <Loader className="animate-spin" />
+                        <div className="flex justify-center items-center h-full max-h-full">
+                            <Loader className="animate-spin" />
+                        </div>
                         :
                         <>
                             <div className="mt-10">
                                 {blogs.map((blog) => (
-                                    <div key={blog.id} className="bg-white flex flex-col gap-6 md:flex-row p-6 rounded-lg  mb-6">
+                                    <div key={blog._id} className="bg-white flex flex-col gap-6 md:flex-row p-6 rounded-lg  mb-6">
                                         <Image
                                             src={blog.bannerImg}
                                             alt={blog.title}

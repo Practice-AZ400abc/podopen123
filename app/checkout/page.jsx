@@ -1,19 +1,21 @@
 "use client"
-import React from 'react';
+import { useContext } from 'react';
 import { PayPalScriptProvider } from "@paypal/react-paypal-js";
 import { useState, useEffect } from "react";
 import { PaymentForm } from '@/components/PaymentForm';
 import { CheckCheck, LoaderCircle } from 'lucide-react';
 import { jwtDecode } from 'jwt-decode';
 import { useRouter } from 'next/navigation';
+import { AuthContext, AuthProvider } from '@/components/AuthProvider';
 
 const Checkout = () => {
+    const { isLoggedIn } = useContext(AuthContext);
     const router = useRouter();
     const [clientToken, setClientToken] = useState(null);
 
     useEffect(() => {
         const storedToken = localStorage.getItem("token");
-        if (!storedToken || jwtDecode(storedToken).subscriptionStatus === "Active") {
+        if (!storedToken || jwtDecode(storedToken).subscriptionStatus === "Active" && !isLoggedIn) {
             router.back();
         }
     }, [])
