@@ -67,7 +67,7 @@ const Thankyou = () => {
 
 
     return (
-        <div className="h-[50vh] flex flex-col gap-4 justify-center items-center">
+        <div className="h-[100vh] flex flex-col gap-4 justify-center items-center">
             <div className="bg-green-200 p-4 rounded-full">
                 <Check size={64} className="text-green-400 text-4xl" />
             </div>

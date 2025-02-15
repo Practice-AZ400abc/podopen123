@@ -50,7 +50,7 @@ const ContactVisaSeekerButton = ({ investor, user }) => {
                 Message
             </DialogTrigger>
             <DialogContent className="max-w-5xl max-h-[80vh] overflow-auto">
-            {
+                {
                     contactFormVisible ? (
                         <div className="flex flex-col md:flex-row gap-6">
                             {/* Investor Profile Section */}
