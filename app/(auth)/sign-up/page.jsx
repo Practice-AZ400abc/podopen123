@@ -17,6 +17,7 @@ import handleSocialAuth from "@/utils/handleSocialAuth";
 import toast from "react-hot-toast";
 import { ArrowLeft, ArrowRight, Loader } from "lucide-react";
 import Image from "next/image";
+import PrivacyFooter from "@/components/PrivacyFooter";
 
 export default function Signup() {
   const router = useRouter();
@@ -183,8 +184,8 @@ export default function Signup() {
   };
 
   return (
-    <div className="mx-auto container">
-      <div className="flex w-full justify-between items-center max-md:hidden h-[100px]">
+    <div className="mx-auto container ">
+      <div className="flex w-full justify-between items-center  p-2 h-[100px]">
         <Link
           href={"/"}
           className="underline flex items-center gap-4  text-center p-2"
@@ -199,7 +200,7 @@ export default function Signup() {
         </Link>
       </div>
 
-      <div className="h-[80vh] flex flex-col items-center justify-start">
+      <div className="h-full mb-20 flex flex-col items-center justify-start">
         <div className="p-8  rounded-lg w-[90%] border  sm:w-[90%] md:max-w-[400px] lg:max-w-[500px] mx-auto">
           <h1 className="text-4xl text-black text-left ">Get Started Now</h1>
           <h1 className="text-sm text-black text-left mb-4">
@@ -348,7 +349,7 @@ export default function Signup() {
         </div>
 
 
-        <div className="w-full mt-20 flex items-center justify-between ">
+        <div className="w-full mt-20  flex items-center justify-between ">
           <div className="flex flex-col justify-center w-full items-center gap-3 text-sm text-gray-500">
             <h1>Already have a Lookvisa  {selectedForm === "Visa Seeker" ? "Investor" : "Sponsor"} account?</h1>
             <Link href={"/sign-in"} className=" border px-6 border-green-500 text-green-500 hover:text-white hover:border-none  hover:bg-green-600 py-2 ">
@@ -357,18 +358,6 @@ export default function Signup() {
           </div>
         </div>
 
-
-
-
-
-        {/* <div>
-          <Link
-            href={"/"}
-            className="text-left underline flex items-center gap-4"
-          >
-            <ArrowLeft size={15} /> Back to home
-          </Link>
-        </div> */}
       </div>
       {showModal && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
@@ -390,6 +379,7 @@ export default function Signup() {
           </div>
         </div>
       )}
+      <PrivacyFooter />
     </div>
   );
 }

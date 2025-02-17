@@ -12,6 +12,7 @@ import { Loader } from "lucide-react";
 import Logo from "../../Lookvisa.png";
 import { AuthContext } from "@/components/AuthProvider";
 import Image from "next/image";
+import PrivacyFooter from "@/components/PrivacyFooter";
 
 const SignIn = () => {
   const { isLoggedIn, login } = useContext(AuthContext); // Access `isLoggedIn` and `login` from context
@@ -144,7 +145,7 @@ const SignIn = () => {
 
   return (
     <div className="mx-auto container">
-      <div className="flex w-full justify-between items-center max-md:hidden h-[100px]">
+      <div className="flex w-full justify-between items-center p-2 h-[100px]">
         <Link href={"/"}>
           <Image src={Logo} alt="Lookvisa" width={120} className="" />
         </Link>
@@ -194,7 +195,7 @@ const SignIn = () => {
                   <div className="flex items-center justify-center p-2 rounded-md bg-white">
                     <FcGoogle className="" />
                   </div>
-                  <h1 className="text-white font-bold ml-6">Continue with Google</h1>
+                  <h1 className="text-white font-bold ml-2 md:ml-6">Continue with Google</h1>
                 </button>
 
                 {/* <button
@@ -251,7 +252,9 @@ const SignIn = () => {
           </div>
         )}
       </div>
+      <PrivacyFooter />
     </div>
+
   );
 };
 

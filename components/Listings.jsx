@@ -158,7 +158,7 @@ const Listings = ({ listing, refreshListings, handleFilterChange, filter, subscr
         </div>
         <div className=" rounded-sm text-gray-600 font-light text-sm">
           <span className="font-bold text-black">Listing Number: </span>
-          <p className='mt-4'>{updatedListing._id.slice(0, 5)}</p>
+          <p className='mt-4'>{updatedListing._id.slice(0, 6)}</p>
         </div>
 
         <div className="  rounded-sm text-gray-600 font-light text-sm">
@@ -304,7 +304,7 @@ const Listings = ({ listing, refreshListings, handleFilterChange, filter, subscr
           >
             Unpublish Listing
           </Button>
-         
+
         )}
         {
           !subscriptionStatus && (

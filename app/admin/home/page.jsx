@@ -10,17 +10,20 @@ import { Textarea } from "@/components/ui/textarea";
 import { auth } from "@/app/firebase/firebaseConfig";
 import { updatePassword } from "firebase/auth";
 import { reauthenticateWithCredential, EmailAuthProvider } from "firebase/auth";
+import toast from "react-hot-toast";
+import { Loader2 } from "lucide-react";
 
 const AdminPage = () => {
     const router = useRouter();
     const [selectedTable, setSelectedTable] = useState("payments");
     const [data, setData] = useState([]);
-    const [loading, setLoading] = useState(false);
+    const [loading, setLoading] = useState(true);
     const [token, setToken] = useState(null);
     const [currentPage, setCurrentPage] = useState(1);
     const [isClient, setIsClient] = useState(false);
     const [activeSection, setActiveSection] = useState("dashboard"); // Track active section
     const itemsPerPage = 20;
+
 
     const [blogFormData, setBlogFormData] = useState({
         title: "",
@@ -64,7 +67,7 @@ const AdminPage = () => {
 
     const postBlog = async (e) => {
         e.preventDefault();
-
+        setLoading(true)
         try {
             const res = await fetch("/api/blog", {
                 method: "POST",
@@ -84,8 +87,13 @@ const AdminPage = () => {
                 body: "",
                 bannerImg: "",
             })
+            toast.success("Blog has been updated")
+            setLoading(false)
+
         } catch (error) {
             console.error(error);
+            setLoading(false)
+
         }
     }
 
@@ -96,14 +104,14 @@ const AdminPage = () => {
 
     const updateUserPassword = async (e) => {
         e.preventDefault();
-
+        setLoading(true);
         if (passwordFormData.password !== passwordFormData.confirmPassword) {
             return alert("Password and confirm password must match");
         }
 
         const user = auth.currentUser;
         if (!user) {
-            alert("No authenticated user found.");
+            toast.error("No authenticated user found.");
             return;
         }
 
@@ -112,11 +120,13 @@ const AdminPage = () => {
         try {
             await reauthenticateWithCredential(user, credential); // Reauthenticate the user
             await updatePassword(user, passwordFormData.password);
-            alert("Password updated successfully!");
+            toast.success("Password updated successfully!");
             setPasswordFormData({ password: "", confirmPassword: "" });
+            setLoading(false);
         } catch (error) {
             console.error("Error updating password:", error);
             alert(error.message);
+            setLoading(false);
         }
     };
 
@@ -163,7 +173,7 @@ const AdminPage = () => {
     }
 
     return (
-        <div className="p-4 mx-auto container">
+        <div className="p-4 mx-auto min-h-[100vh] container">
             {/* Navigation */}
             <ul className="bg-white p-2 flex gap-4 mb-4 border rounded-sm">
                 <li className={`text-black cursor-pointer ${activeSection === "dashboard" ? "font-bold" : ""}`} onClick={() => setActiveSection("dashboard")}>
@@ -182,11 +192,12 @@ const AdminPage = () => {
                 <div>
                     <h1 className="text-xl font-bold mb-4 text-blue-400">Dashboard</h1>
                     <Select
+                        className="mb-10"
                         value={{ label: selectedTable, value: selectedTable }}
                         onChange={(selectedOption) => setSelectedTable(selectedOption.value)}
                         options={[
-                            { value: "payments", label: "Payments made" },
-                            { value: "seeker", label: "Visa seekers" },
+                            { value: "payments", label: "Transactions" },
+                            { value: "seeker", label: "Investors" },
                             { value: "sponsor", label: "Visa sponsor" }
                         ]}
                     />
@@ -244,9 +255,9 @@ const AdminPage = () => {
                         </div>
                         <button
                             type="submit"
-                            className="w-fit bg-blue-400 p-2 text-white rounded-md"
+                            className="w-fit bg-blue-400 p-2 font-bold text-white rounded-md"
                         >
-                            Set Password
+                            {loading ? <Loader2 className="animate-spin" /> : "Set Password"}
                         </button>
                     </form>
                 </div>
@@ -287,7 +298,7 @@ const AdminPage = () => {
                             type="submit"
                             className="w-fit bg-blue-400 p-2 text-white rounded-md"
                         >
-                            Add Blog
+                            {loading ? <Loader2 className="animate-spin" /> : "Add blog"}
                         </button>
                     </form>
                 </div>

@@ -27,9 +27,10 @@ const AdminTable = ({ data, table }) => {
                             <tr key={rowIndex}>
                                 {table === "seeker" && (
                                     <>
-                                        <td className="border border-gray-300 px-4 py-2">{row.firstName || "-"}</td>
-                                        <td className="border border-gray-300 px-4 py-2">{row.lastName || "-"}</td>
-                                        <td className="border border-gray-300 px-4 py-2">{row.email || "-"}</td>
+                                        <td className="border border-gray-300 px-4 py-2">{row.userId?.firstName || "-"}</td>
+                                        <td className="border border-gray-300 px-4 py-2">{row.userId?.lastName || "-"}</td>
+                                        <td className="border border-gray-300 px-4 py-2">{row.userId?.email || "-"}</td>
+
                                         <td className="border border-gray-300 px-4 py-2">{new Date(row.createdAt).toLocaleDateString() || "-"}</td>
                                         <td className="border border-gray-300 px-4 py-2">{row.nationality || "-"}</td>
                                     </>
@@ -37,9 +38,9 @@ const AdminTable = ({ data, table }) => {
 
                                 {table === "sponsor" && (
                                     <>
-                                        <td className="border border-gray-300 px-4 py-2">{row.firstName || "-"}</td>
-                                        <td className="border border-gray-300 px-4 py-2">{row.lastName || "-"}</td>
-                                        <td className="border border-gray-300 px-4 py-2">{row.email || "-"}</td>
+                                        <td className="border border-gray-300 px-4 py-2">{row.userId?.firstName || "-"}</td>
+                                        <td className="border border-gray-300 px-4 py-2">{row.userId?.lastName || "-"}</td>
+                                        <td className="border border-gray-300 px-4 py-2">{row.userId?.email || "-"}</td>
                                         <td className="border border-gray-300 px-4 py-2">{new Date(row.createdAt).toLocaleDateString() || "-"}</td>
                                         <td className="border border-gray-300 px-4 py-2">{row.companyName || "-"}</td>
                                     </>
@@ -47,9 +48,9 @@ const AdminTable = ({ data, table }) => {
 
                                 {table === "payments" && row.orderId && (
                                     <>
-                                        <td className="border border-gray-300 px-4 py-2">{row.userId.firstName || "-"}</td>
-                                        <td className="border border-gray-300 px-4 py-2">{row.userId.lastName || "-"}</td>
-                                        <td className="border border-gray-300 px-4 py-2">{row.userId.email || "-"}</td>
+                                        <td className="border border-gray-300 px-4 py-2">{row.userId?.firstName || "-"}</td>
+                                        <td className="border border-gray-300 px-4 py-2">{row.userId?.lastName || "-"}</td>
+                                        <td className="border border-gray-300 px-4 py-2">{row.userId?.email || "-"}</td>
                                         <td className="border border-gray-300 px-4 py-2">{new Date(row.createdAt).toLocaleDateString() || "-"}</td>
                                         <td className="border border-gray-300 px-4 py-2">{row.amount || "-"}</td>
                                         <td className="border border-gray-300 px-4 py-2">{row.orderId || "-"}</td>

@@ -7,7 +7,7 @@ import toast from "react-hot-toast";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 const ResetPassword = () => {
-  
+
   const router = useRouter();
   const searchParams = useSearchParams();
   const [password, setPassword] = useState("");
@@ -92,9 +92,9 @@ const ResetPassword = () => {
 
   return (
     <div className="h-[70vh] flex flex-col items-center justify-center">
-      
+
       <div className="p-5  rounded-lg w-[90%] sm:w-[90%] md:max-w-[400px] lg:max-w-[500px] mx-auto">
-        
+
         <h1 className="text-center font-semibold text-2xl text-black">
           Reset Password
         </h1>
@@ -136,9 +136,8 @@ const ResetPassword = () => {
                       ([key, valid], idx) => (
                         <li
                           key={idx}
-                          className={`list-disc text-sm font-bold ${
-                            valid ? "text-green-500" : "text-black"
-                          }`}
+                          className={`list-disc text-sm font-bold ${valid ? "text-green-500" : "text-black"
+                            }`}
                         >
                           {key === "minLength" && "At least 9 characters"}
                           {key === "maxLength" &&
@@ -159,7 +158,7 @@ const ResetPassword = () => {
               </label>
               <div className="flex w-full items-center relative">
                 <input
-                 maxLength={20}
+                  maxLength={20}
                   className="border w-full text-black rounded-md p-1 mt-2 outline-blue-200"
                   type={showConfirmPassword ? "text" : "password"}
                   value={confirmPassword}
@@ -175,9 +174,8 @@ const ResetPassword = () => {
               </div>
             </div>
             <button
-              className={`flex items-center justify-center text-center w-full p-2 font-bold rounded-md mt-5 text-white ${
-                loading ? "bg-slate-800" : "bg-black"
-              }`}
+              className={`flex items-center justify-center text-center w-full p-2 font-bold rounded-md mt-5 text-white ${loading ? "bg-slate-800" : "bg-black"
+                }`}
               type="submit"
               disabled={loading}
             >

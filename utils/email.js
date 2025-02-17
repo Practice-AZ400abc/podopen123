@@ -46,7 +46,7 @@ export const sendActionEmail = async (email, action, token, visaSponsorData) => 
         <table width="100%" border="0" cellpadding="0" cellspacing="0" style="background-color: #1e293b; border-radius: 8px; overflow: hidden;">
           <tr>
             <td style="padding: 20px; text-align: center; color: #ffffff;">
-              <img src="cid:logo" alt="Lookvisa Logo" style="max-width: 150px; margin-bottom: 20px;" />
+              
               <h1 style="margin: 0; font-size: 24px; font-weight: bold;">Welcome to <span style="color: #60a5fa;">Lookvisa</span></h1>
               <p>Thanks for signing up!</p>
               <hr>
@@ -98,7 +98,7 @@ export const sendActionEmail = async (email, action, token, visaSponsorData) => 
         <table width="100%" border="0" cellpadding="0" cellspacing="0" style="background-color: #1e293b; border-radius: 8px; overflow: hidden;">
           <tr>
             <td style="padding: 20px; text-align: center; color: #ffffff;">
-              <img src="cid:logo" alt="Lookvisa Logo" style="max-width: 150px; margin-bottom: 20px;" />
+           
               <h1 style="margin: 0; font-size: 24px; font-weight: bold;"> <span style="color: #60a5fa;">Lookvisa</span></h1>
               <p>Password Reset</p>
               <hr>
@@ -135,7 +135,7 @@ export const sendActionEmail = async (email, action, token, visaSponsorData) => 
           <table width="100%" border="0" cellpadding="0" cellspacing="0" style="background-color: #1e293b; border-radius: 8px; overflow: hidden;">
             <tr>
               <td style="padding: 20px; text-align: center; color: #ffffff;">
-                <img src="cid:logo" alt="Lookvisa Logo" style="max-width: 150px; margin-bottom: 20px;" />
+               
                 <h1 style="margin: 0; font-size: 24px; font-weight: bold;">Your Listing Has Been Created</h1>
                 <p>Congratulations! Your new listing is live on Lookvisa.</p>
                 <hr>
@@ -178,7 +178,7 @@ export const sendActionEmail = async (email, action, token, visaSponsorData) => 
                     <tr>
                         <td style={{ padding: '20px', textAlign: 'center', color: '#ffffff' }}>
                 
-                            <h1 style={{ margin: '0', fontSize: '24px', fontWeight: 'bold' }}> <span style={{ color: '#60a5fa' }}>LookVisa</span></h1>
+                            <h1 style={{ margin: '0', fontSize: '24px', fontWeight: 'bold', color: #3b82f6 }}>}>LookVisa</span></h1>
                             <p>Your profile was viewed by a visa sponsor</p>
                             <hr />
                         </td>
@@ -186,10 +186,10 @@ export const sendActionEmail = async (email, action, token, visaSponsorData) => 
                     <tr>
                         <td style={{ padding: '40px 30px', width: '100%' }}>
                             <p style={{ color: 'white', fontWeight: '600' }}>Hi, I am interested in your investor profile</p>
-                            <p style={{ color: 'white', fontWeight: '600' }}>First Name: ${token.firstName}</p>
-                            <p style={{ color: 'white', fontWeight: '600' }}>Last Name: ${token.lastName}</p>
-                            <p style={{ color: 'white', fontWeight: '600' }}>Phone number: ${token.phoneNumber}</p>
-                            <p style={{ color: 'white', fontWeight: '600' }}>Comment: ${token.additionalNotes}</p>
+                            <p style={{ color: 'white', fontWeight: '600' }}><b>First Name:<b>  ${token.firstName}</p>
+                            <p style={{ color: 'white', fontWeight: '600' }}><b>Last Name:<b> ${token.lastName}</p>
+                            <p style={{ color: 'white', fontWeight: '600' }}><b>Phone Number:<b> ${token.phoneNumber}</p>
+                            <p style={{ color: 'white', fontWeight: '600' }}><b>Message:<b>: ${token.additionalNotes}</p>
                         </td>
                     </tr>
                     <tr>

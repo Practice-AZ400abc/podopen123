@@ -1,6 +1,17 @@
 import { useState, useRef } from "react";
 import styles from "@/app/PaymentForm.module.css";
 import { jwtDecode } from "jwt-decode";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog"
 
 import {
   PayPalHostedFieldsProvider,
@@ -11,6 +22,8 @@ import {
 import toast from "react-hot-toast";
 import { Loader2, ShoppingBasket } from "lucide-react";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
+import { Button } from "./ui/button";
 
 // if payment is successful, show user a toast message
 async function createOrderCallback() {
@@ -218,73 +231,95 @@ export const PaymentForm = () => {
   const [message, setMessage] = useState("");
 
   return (
-    <div className={styles.form}>
-      <PayPalButtons
-        style={{
-          shape: "rect",
-          layout: "vertical",
-        }}
-        styles={{ marginTop: "4px", marginBottom: "4px" }}
-        createOrder={createOrderCallback}
-        onApprove={async (data) => setMessage(await onApproveCallback(data))}
-      />
+    <div>
+      <div className={styles.form}>
+        <PayPalButtons
+          style={{
+            shape: "rect",
+            layout: "vertical",
+          }}
+          styles={{ marginTop: "4px", marginBottom: "4px" }}
+          createOrder={createOrderCallback}
+          onApprove={async (data) => setMessage(await onApproveCallback(data))}
+        />
 
-      <PayPalHostedFieldsProvider createOrder={createOrderCallback}
-        onApprove={async (data) => setMessage(await onApproveCallback(data))}>
-        <div style={{ marginTop: "4px", marginBottom: "4px" }}>
-          <PayPalHostedField
-            id="card-number"
-            hostedFieldType="number"
-            options={{
-              selector: "#card-number",
-              placeholder: "Card Number",
-            }}
-            className={styles.input}
-          />
-          <div className={styles.container}>
+        <PayPalHostedFieldsProvider createOrder={createOrderCallback}
+          onApprove={async (data) => setMessage(await onApproveCallback(data))}>
+          <div style={{ marginTop: "4px", marginBottom: "4px" }}>
             <PayPalHostedField
-              id="expiration-date"
-              hostedFieldType="expirationDate"
+              id="card-number"
+              hostedFieldType="number"
               options={{
-                selector: "#expiration-date",
-                placeholder: "Expiration Date",
+                selector: "#card-number",
+                placeholder: "Card Number",
               }}
               className={styles.input}
             />
-            <PayPalHostedField
-              id="cvv"
-              hostedFieldType="cvv"
-              options={{
-                selector: "#cvv",
-                placeholder: "CVV",
-              }}
-              className={styles.input}
-            />
-          </div>
-          <div className={styles.container}>
-            <input
-              id="card-holder"
-              type="text"
-              placeholder="Name on Card"
-              className={styles.input}
-            />
+            <div className={styles.container}>
+              <PayPalHostedField
+                id="expiration-date"
+                hostedFieldType="expirationDate"
+                options={{
+                  selector: "#expiration-date",
+                  placeholder: "Expiration Date",
+                }}
+                className={styles.input}
+              />
+              <PayPalHostedField
+                id="cvv"
+                hostedFieldType="cvv"
+                options={{
+                  selector: "#cvv",
+                  placeholder: "CVV",
+                }}
+                className={styles.input}
+              />
+            </div>
+            <div className={styles.container}>
+              <input
+                id="card-holder"
+                type="text"
+                placeholder="Name on Card"
+                className={styles.input}
+              />
 
-            <input
-              id="card-billing-address-country"
-              type="text"
-              placeholder="Country Code"
-              className={styles.input}
-            />
+              <input
+                id="card-billing-address-country"
+                type="text"
+                placeholder="Country Code"
+                className={styles.input}
+              />
+            </div>
+            {/* make accept terms and condition check box with text */}
+            <label className="text-slate-700 text-sm">
+              <input type="checkbox" className="mr-2" />
+              By pressing “Pay Now” you agree to the <Link className="underline" href={"/PrivacyPolicy"}>terms and conditions</Link> from Lookvisa.com and that all sales are fina
+            </label>
+            <SubmitPayment onHandleMessage={setMessage} />
           </div>
-          {/* make accept terms and condition check box with text */}
-          <label className="text-slate-700 text-sm">
-            <input type="checkbox" className="mr-2" />
-            By pressing “Pay Now” you agree to the terms and conditions from Lookvisa.com and that all sales are fina
-          </label>
-          <SubmitPayment onHandleMessage={setMessage} />
-        </div>
-      </PayPalHostedFieldsProvider>
+        </PayPalHostedFieldsProvider>
 
+      </div>
+      <div className="flex z-100000 w-full items-center justify-end">
+        <AlertDialog>
+          <AlertDialogTrigger className=" mt-2 bg-red-400 hover:bg-red-300 cursor-pointer flex gap-2s items-center justify-center text-black font-bold hover:bg-green-300 w-full p-4">Cancel</AlertDialogTrigger>
+          <AlertDialogContent>
+            <AlertDialogHeader>
+              <AlertDialogTitle >Are you absolutely sure?</AlertDialogTitle>
+              <AlertDialogDescription>
+                Are you sure that you want to abandon your purchase
+              </AlertDialogDescription>
+            </AlertDialogHeader>
+            <AlertDialogFooter>
+              <Link href={"/"}>
+                <AlertDialogCancel>Abandon Checkout</AlertDialogCancel>
+              </Link>
+              <AlertDialogAction className="bg-green-500 hover:bg-green-400">Continue Checkout</AlertDialogAction>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialog>
+
+      </div>
     </div>
   );
 };

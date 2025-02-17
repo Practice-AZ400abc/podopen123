@@ -57,10 +57,8 @@ const Thankyou = () => {
 
         // Add footer text
         doc.setFontSize(12);
-        doc.text("Thank you for your Business!", 105, 270, { align: "center" });
-        doc.text("Your credit card statement may show a charge for the merchant", 20, 280);
-        doc.text("“Stellar Technologies, Inc”. For any questions, email info@lookvisa.com", 20, 290);
-
+        doc.text("Note: Your credit card statement may show a charge for the merchant Stellar Technologies, Inc", 105, 270, { align: "center" });
+        doc.text(" For any questions, email info@lookvisa.com.Thank you for your Business! ", 105, 270, { align: "center" });
         doc.save(`receipt_${payment.orderId}.pdf`);
     };
 

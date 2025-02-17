@@ -49,11 +49,11 @@ const Checkout = () => {
 
     return (
         <>
-            <div className='h-screen bg-gray-50 w-full flex justify-center items-center'>
+            <div className='h-full bg-gray-50 w-full flex justify-center items-center'>
 
                 {clientToken ? (
                     <PayPalScriptProvider options={initialOptions} >
-                        <div className="flex flex-col gap-4 items-center justify-center w-[700px] bg-white p-8 rounded-lg shadow-lg">
+                        <div className="flex flex-col gap-4 items-center justify-center w-[700px] mt-20  mb-20 bg-white p-8 rounded-lg shadow-lg">
                             <h1 className='text-[34px] font-bold text-blue-400 text-left'>Checkout - Payment $30</h1>
                             <p className='text-slate-700  text-center max-w-[850px] mt-4'>To contact and connect with investors and see their profile please
                                 get started with a fast, secure, payment. You’ll also get full access to create a listing to
@@ -71,7 +71,9 @@ const Checkout = () => {
                         </div>
                     </PayPalScriptProvider>
                 ) : (
-                    <LoaderCircle className='animate-spin' />
+                    <div className='h-[100vh] flex items-center justify-center'>
+                        <LoaderCircle className='animate-spin' />
+                    </div>
                 )}
 
             </div>

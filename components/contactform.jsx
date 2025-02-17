@@ -4,7 +4,7 @@ import "react-international-phone/style.css";
 import { useState } from 'react';
 import toast from "react-hot-toast";
 
-const Contactform = ({ investor, user }) => {
+const Contactform = ({ investor, user, onClose }) => {
     const [Loading, setLoading] = useState(false);
     const [formData, setFormData] = useState({
         sponsorEmail: user.email,
@@ -20,9 +20,7 @@ const Contactform = ({ investor, user }) => {
         try {
             const sendEmailResponse = await fetch("/api/send-email", {
                 method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
+                headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({
                     email: investor.email,
                     action: "contactedByVisaSponsor",
@@ -30,26 +28,27 @@ const Contactform = ({ investor, user }) => {
                 }),
             });
 
-            if (!sendEmailResponse.ok) {
-                throw new Error("Failed to send email");
-            }
+            if (!sendEmailResponse.ok) throw new Error("Failed to send email");
 
-            // Reset form fields after successful submission
             setFormData({
-                email: user.email,
+                sponsorEmail: user.email,
                 firstName: "",
                 lastName: "",
                 phoneNumber: "",
                 additionalNotes: "",
             });
+
             toast.success("Message sent successfully");
-            setLoading(false);
+
+            // Close dialog only if `onClose` is provided
+            if (onClose) onClose();
         } catch (error) {
-            setLoading(false);
             console.error("Failed to send email:", error);
+            toast.error("Failed to send message");
+        } finally {
+            setLoading(false);
         }
     };
-
     return (
         <div className="bg-white w-full p-2 rounded-md">
             <h1 className="text-lg">Message Investor</h1>
