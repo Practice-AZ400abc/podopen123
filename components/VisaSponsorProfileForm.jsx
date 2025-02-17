@@ -302,7 +302,7 @@ const VisaSponsorProfileForm = ({ }) => {
 
             <div className="w-full flex flex-col gap-2">
               <label className="text-sm font-medium text-gray-700">
-                Role seeking investment
+                Investor Role that you seek
               </label>
               <select
                 value={formData.investmentRole}
@@ -393,9 +393,9 @@ const VisaSponsorProfileForm = ({ }) => {
         {/* Submit Button */}
         <div className="w-full flex gap-4 items-center justify-end">
           <div className="flex items-center justify-center gap-4">
-         
-         <DeleteAccountButton />
-      
+
+            <DeleteAccountButton />
+
 
             <button
               type="submit"
