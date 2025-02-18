@@ -7,6 +7,7 @@ import toast from "react-hot-toast";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import Logo from "@/app/Lookvisa.png"
 import Link from "next/link";
+import Image from "next/image";
 
 const ResetPassword = () => {
 
@@ -93,11 +94,9 @@ const ResetPassword = () => {
   };
 
   return (
-    <div className="h-[70vh] flex flex-col items-center justify-center">
-      <div className="flex p-4 w-full  items-center justify-start">
-        <Link href={"/"}>
-          <img src={Logo} alt="Lookvisa" className="w-20 h-20" />
-        </Link>
+    <div className="mx-auto container min-h-screen">
+      <div className="p-4">
+        <Image src={Logo} alt="logo" width={120} className="w-30 " />
       </div>
       <div className="p-5  rounded-lg w-[90%] sm:w-[90%] md:max-w-[400px] lg:max-w-[500px] mx-auto">
 
