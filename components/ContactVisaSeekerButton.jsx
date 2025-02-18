@@ -45,7 +45,7 @@ const ContactVisaSeekerButton = ({ investor, user }) => {
 
         <div>
             <button onClick={() => setIsOpen(true)} className="bg-blue-500 text-white p-2 rounded-md">
-                Contact Investor
+                Message Investor
             </button>
             <Dialog open={isOpen} onOpenChange={setIsOpen}>
                 <DialogContent className="max-w-6xl max-h-[80vh] overflow-auto">
@@ -109,8 +109,8 @@ const ContactVisaSeekerButton = ({ investor, user }) => {
                                             className="h-[200px] w-[200px] rounded-sm  object-cover"
                                         />
                                     </div>
-                                    <DialogDescription>
-                                        To be able to contact other visa seekers, please login with a visa sponsor account.
+                                    <DialogDescription className="text-center">
+                                        To be able to contact other visa seekers, please <Link href={"/"} className='text-blue-400 underline'>Login</Link> with a visa sponsor account.
                                     </DialogDescription>
                                 </>
                             ) : (
