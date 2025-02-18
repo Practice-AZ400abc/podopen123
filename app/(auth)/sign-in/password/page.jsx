@@ -93,6 +93,7 @@ const EnterPassword = () => {
     } catch (err) {
       setError(err.message);
       toast.error("Please enter a valid password");
+      setLoading(false)
     }
   };
 
@@ -149,7 +150,7 @@ const EnterPassword = () => {
             </div>
             <div className="mt-4 flex items-center justify-end w-full">
               <Link className="text-blue-500 underline" href={"/forget-password"}>
-                Forget Password?
+                Forgot Password?
               </Link>
             </div>
           </div>

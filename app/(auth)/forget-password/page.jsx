@@ -83,7 +83,7 @@ const ForgetPassword = () => {
             </div>
 
             <h1 className="text-center font-semibold text-2xl text-black">
-              Forget Password?
+              Forgot Password?
             </h1>
             <p className="text-center font-semibold text-sm text-black mt-2">
               No worries, we'll send you reset instructions.

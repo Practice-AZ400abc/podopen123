@@ -5,6 +5,8 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { useState, useEffect } from "react";
 import toast from "react-hot-toast";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
+import Logo from "@/app/Lookvisa.png"
+import Link from "next/link";
 
 const ResetPassword = () => {
 
@@ -92,7 +94,11 @@ const ResetPassword = () => {
 
   return (
     <div className="h-[70vh] flex flex-col items-center justify-center">
-
+      <div className="flex p-4 w-full  items-center justify-start">
+        <Link href={"/"}>
+          <img src={Logo} alt="Lookvisa" className="w-20 h-20" />
+        </Link>
+      </div>
       <div className="p-5  rounded-lg w-[90%] sm:w-[90%] md:max-w-[400px] lg:max-w-[500px] mx-auto">
 
         <h1 className="text-center font-semibold text-2xl text-black">
@@ -174,7 +180,7 @@ const ResetPassword = () => {
               </div>
             </div>
             <button
-              className={`flex items-center justify-center text-center w-full p-2 font-bold rounded-md mt-5 text-white ${loading ? "bg-slate-800" : "bg-black"
+              className={`flex items-center justify-center  hover:bg-green-400 text-center w-full p-2 font-bold rounded-md mt-5 text-white ${loading ? "bg-green-500" : "bg-green-500"
                 }`}
               type="submit"
               disabled={loading}

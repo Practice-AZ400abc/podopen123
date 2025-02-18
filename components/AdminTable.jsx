@@ -4,10 +4,11 @@ const AdminTable = ({ data, table }) => {
     const headersMap = {
         seeker: ["First Name", "Last Name", "Email", "Date Joined", "Country of Nationality"],
         sponsor: ["First Name", "Last Name", "Email", "Date Joined", "Company Name"],
-        payments: ["First Name", "Last Name", "Email", "Transaction Date", "Amount", "Order ID"],
+        payments: ["Email", "Transaction Date", "Amount", "Order ID"],
     };
 
     if (!headersMap[table]) return <p>Invalid table type</p>;
+    console.log(data)
 
     return (
         <div className="overflow-x-auto">
@@ -27,9 +28,10 @@ const AdminTable = ({ data, table }) => {
                             <tr key={rowIndex}>
                                 {table === "seeker" && (
                                     <>
-                                        <td className="border border-gray-300 px-4 py-2">{row.userId?.firstName || "-"}</td>
-                                        <td className="border border-gray-300 px-4 py-2">{row.userId?.lastName || "-"}</td>
-                                        <td className="border border-gray-300 px-4 py-2">{row.userId?.email || "-"}</td>
+                                        <td className="border border-gray-300 px-4 py-2">{row.firstName ?? "-"}</td>
+                                        <td className="border border-gray-300 px-4 py-2">{row.lastName ?? "-"}</td>
+                                        <td className="border border-gray-300 px-4 py-2">{row.contactEmail ?? "-"}</td>
+
 
                                         <td className="border border-gray-300 px-4 py-2">{new Date(row.createdAt).toLocaleDateString() || "-"}</td>
                                         <td className="border border-gray-300 px-4 py-2">{row.nationality || "-"}</td>
@@ -38,9 +40,9 @@ const AdminTable = ({ data, table }) => {
 
                                 {table === "sponsor" && (
                                     <>
-                                        <td className="border border-gray-300 px-4 py-2">{row.userId?.firstName || "-"}</td>
-                                        <td className="border border-gray-300 px-4 py-2">{row.userId?.lastName || "-"}</td>
-                                        <td className="border border-gray-300 px-4 py-2">{row.userId?.email || "-"}</td>
+                                        <td className="border border-gray-300 px-4 py-2">{row.firstName || "-"}</td>
+                                        <td className="border border-gray-300 px-4 py-2">{row.lastName || "-"}</td>
+                                        <td className="border border-gray-300 px-4 py-2">{row.contactEmail || "-"}</td>
                                         <td className="border border-gray-300 px-4 py-2">{new Date(row.createdAt).toLocaleDateString() || "-"}</td>
                                         <td className="border border-gray-300 px-4 py-2">{row.companyName || "-"}</td>
                                     </>
@@ -48,8 +50,7 @@ const AdminTable = ({ data, table }) => {
 
                                 {table === "payments" && row.orderId && (
                                     <>
-                                        <td className="border border-gray-300 px-4 py-2">{row.userId?.firstName || "-"}</td>
-                                        <td className="border border-gray-300 px-4 py-2">{row.userId?.lastName || "-"}</td>
+
                                         <td className="border border-gray-300 px-4 py-2">{row.userId?.email || "-"}</td>
                                         <td className="border border-gray-300 px-4 py-2">{new Date(row.createdAt).toLocaleDateString() || "-"}</td>
                                         <td className="border border-gray-300 px-4 py-2">{row.amount || "-"}</td>
