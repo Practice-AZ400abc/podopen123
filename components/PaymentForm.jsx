@@ -293,7 +293,7 @@ export const PaymentForm = () => {
             {/* make accept terms and condition check box with text */}
             <label className="text-slate-700 text-sm">
               <input type="checkbox" className="mr-2" />
-              By pressing “Pay Now” you agree to the <Link className="underline" href={"/PrivacyPolicy"}>terms and conditions</Link> from Lookvisa.com and that all sales are fina
+              By pressing “Pay Now” you agree to the <Link href={"/terms"} className="text-blue-400 underline">terms and conditions</Link> from Lookvisa.com and that all sales are final.
             </label>
             <SubmitPayment onHandleMessage={setMessage} />
           </div>

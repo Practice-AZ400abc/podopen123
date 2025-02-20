@@ -4,6 +4,7 @@ import { CookieIcon } from "lucide-react";
 import { Button } from "./ui/button";
 import { useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
+import Link from "next/link";
 
 export default function CookieConsent({ variant = "default", demo = false, onAcceptCallback = () => { }, onDeclineCallback = () => { } }) {
   const [isOpen, setIsOpen] = useState(false);
@@ -63,7 +64,7 @@ export default function CookieConsent({ variant = "default", demo = false, onAcc
                 <br />
                 <span className="text-xs">By clicking "<span className="font-medium opacity-80">Accept</span>", you agree to our use of cookies.</span>
                 <br />
-                <a href="#" className="text-xs underline">Learn more.</a>
+                <Link href="/PrivacyPolicy" className="text-xs underline">Learn more.</Link>
               </p>
             </div>
             <div className="flex gap-2 p-4 py-5 border-t border-border dark:bg-background/20">

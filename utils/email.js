@@ -178,7 +178,7 @@ export const sendActionEmail = async (email, action, token, visaSponsorData) => 
                     <tr>
                         <td style={{ padding: '20px', textAlign: 'center', color: '#ffffff' }}>
                 
-                            <h1 style={{ margin: '0', fontSize: '24px', fontWeight: 'bold', color: #3b82f6 }}>}>LookVisa</span></h1>
+                              <h1 style="margin: 0; font-size: 24px; font-weight: bold;"><span style="color: #60a5fa;">Lookvisa</span></h1>
                             <p>Your profile was viewed by a visa sponsor</p>
                             <hr />
                         </td>

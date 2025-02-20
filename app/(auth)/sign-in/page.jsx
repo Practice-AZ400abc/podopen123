@@ -153,7 +153,7 @@ const SignIn = () => {
       </div>
       <div className="h-[80vh] max-xl:h-screen flex items-start justify-center">
         <div className="p-5 border rounded-lg w-[90%] sm:w-[90%] md:max-w-[400px] lg:max-w-[500px] mx-auto">
-          <h1 className="text-4xl text-black text-center mb-3">Login to Lookvisa</h1>
+          <h1 className="text-3xl text-black text-center mb-3">Login to Lookvisa</h1>
           <form onSubmit={validateEmail}>
             <div className="flex flex-col">
 
