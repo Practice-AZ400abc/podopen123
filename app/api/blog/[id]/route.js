@@ -4,31 +4,22 @@ import { connectToDB } from '@/utils/database';
 import extractPublicIdFromUrl from '@/utils/extractPublicIdFromUrl';
 import deleteFromCloudinary from '@/utils/deleteFromCloudinary';
 
+
 export const DELETE = async (req, { params }) => {
-    const user = verifyToken(req);
-    const id = await params;
-
-    if (!user || !user.role === "Admin") {
-        return new Response(JSON.stringify({ message: 'Unauthorized' }), { status: 401 });
-    }
-
-    await connectToDB();
-
     try {
-        const blog = await Blog.findByIdAndDelete(id);
+        await connectToDB();
+        const blog = await Blog.findByIdAndDelete(params.id);
 
         if (!blog) {
-            return new Response(JSON.stringify({ message: 'Blog not found' }), { status: 404 });
+            return new Response(JSON.stringify({ message: "Blog not found" }), { status: 404 });
         }
 
-        const publicId = extractPublicIdFromUrl(blog.bannerImg);
-        await deleteFromCloudinary(publicId);
-
-        return new Response(JSON.stringify({ message: 'Blog deleted' }), { status: 200 });
+        return new Response(JSON.stringify({ message: "Blog deleted successfully" }), { status: 200 });
     } catch (error) {
         return new Response(JSON.stringify({ message: error.message }), { status: 500 });
     }
-}
+};
+
 
 export const PUT = async (req, { params }) => {
     const user = verifyToken(req);

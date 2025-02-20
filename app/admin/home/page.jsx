@@ -12,6 +12,7 @@ import { updatePassword } from "firebase/auth";
 import { reauthenticateWithCredential, EmailAuthProvider } from "firebase/auth";
 import toast from "react-hot-toast";
 import { Loader2 } from "lucide-react";
+import Blogs from "@/components/Blogs";
 
 const AdminPage = () => {
     const router = useRouter();
@@ -266,41 +267,44 @@ const AdminPage = () => {
             {/* Blogs Section */}
             {activeSection === "blogs" && (
                 <div>
-                    <h1 className="text-xl font-bold mb-4 text-blue-400">Blogs</h1>
-                    <form onSubmit={postBlog} className="flex flex-col gap-4">
-                        <div className="flex flex-col gap-2 w-full">
-                            <label>Title</label>
-                            <input
-                                value={blogFormData.title}
-                                onChange={(e) => setBlogFormData((prev) => ({ ...prev, title: e.target.value }))}
-                                type="text"
-                                placeholder="Enter blog title"
-                                className="p-2 border rounded-md"
-                            />
-                        </div>
-                        <div className="flex flex-col gap-2 w-full">
-                            <label>Description</label>
-                            <Textarea
-                                value={blogFormData.body}
-                                onChange={(e) => setBlogFormData((prev) => ({ ...prev, body: e.target.value }))}
-                                placeholder="Enter blog description"
-                            />
-                        </div>
-                        <div className="flex flex-col gap-2 w-full">
-                            <label>Cover Image</label>
-                            <input
-                                onChange={handleFileChange}
-                                type="file"
-                                className="p-2 border rounded-md"
-                            />
-                        </div>
-                        <button
-                            type="submit"
-                            className="w-fit bg-blue-400 p-2 text-white rounded-md"
-                        >
-                            {loading ? <Loader2 className="animate-spin" /> : "Add blog"}
-                        </button>
-                    </form>
+                    <div>
+                        <h1 className="text-xl font-bold mb-4 text-blue-400">Blogs</h1>
+                        <form onSubmit={postBlog} className="flex flex-col gap-4">
+                            <div className="flex flex-col gap-2 w-full">
+                                <label>Title</label>
+                                <input
+                                    value={blogFormData.title}
+                                    onChange={(e) => setBlogFormData((prev) => ({ ...prev, title: e.target.value }))}
+                                    type="text"
+                                    placeholder="Enter blog title"
+                                    className="p-2 border rounded-md"
+                                />
+                            </div>
+                            <div className="flex flex-col gap-2 w-full">
+                                <label>Description</label>
+                                <Textarea
+                                    value={blogFormData.body}
+                                    onChange={(e) => setBlogFormData((prev) => ({ ...prev, body: e.target.value }))}
+                                    placeholder="Enter blog description"
+                                />
+                            </div>
+                            <div className="flex flex-col gap-2 w-full">
+                                <label>Cover Image</label>
+                                <input
+                                    onChange={handleFileChange}
+                                    type="file"
+                                    className="p-2 border rounded-md"
+                                />
+                            </div>
+                            <button
+                                type="submit"
+                                className="w-fit bg-blue-400 p-2 text-white rounded-md"
+                            >
+                                {loading ? <Loader2 className="animate-spin" /> : "Add blog"}
+                            </button>
+                        </form>
+                    </div>
+                    <Blogs />
                 </div>
             )}
         </div>
