@@ -23,7 +23,7 @@ export const DELETE = async (req, { params }) => {
 
 export const PUT = async (req, { params }) => {
     const user = verifyToken(req);
-    const id = await params;
+    const { id } = await params;
     const body = await req.json();
 
     if (!user || !user.role === "Admin") {
@@ -35,7 +35,7 @@ export const PUT = async (req, { params }) => {
     try {
         const blog = await Blog.findById(id);
 
-        if (body.bannerImg !== blog.bannerImg) {
+        if (blog.bannerImg && (body.bannerImg !== blog.bannerImg)) {
             const publicId = extractPublicIdFromUrl(blog.bannerImg);
             await deleteFromCloudinary(publicId);
         }

@@ -5,7 +5,7 @@ import Link from "next/link"
 import { useEffect, useState } from "react"
 import toast from "react-hot-toast"
 
-const Blogs = () => {
+const Blogs = ({ onEditButtonClick }) => {
     const [blogs, setBlogs] = useState([])
     const [loading, setLoading] = useState(false); // ✅ Initialize loading state
 
@@ -95,7 +95,7 @@ const Blogs = () => {
                                                 <Trash className="cursor-pointer" />
                                             </button>
 
-                                            <button className="bg-green-400 text-white p-2 rounded-lg">
+                                            <button onClick={() => onEditButtonClick(blog)} className="bg-green-400 text-white p-2 rounded-lg">
                                                 <FileEdit className="cursor-pointer" />
                                             </button>
                                         </div>
