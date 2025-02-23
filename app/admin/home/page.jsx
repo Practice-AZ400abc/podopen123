@@ -32,6 +32,9 @@ const AdminPage = () => {
         bannerImg: "",
     });
 
+    const [blogFormMode, setBlogFormMode] = useState("POST");
+    const [blogId, setBlogId] = useState(null);
+
     // Function to upload an image to Cloudinary
     const uploadToCloudinary = async (file) => {
         try {
@@ -67,11 +70,19 @@ const AdminPage = () => {
     };
 
     const postBlog = async (e) => {
+        let endpoint;
+
+        if (blogFormMode === "POST") {
+            endpoint = "/api/blog";
+        } else if (blogFormMode === "PUT") {
+            endpoint = `/api/blog/${blogId}`
+        }
+
         e.preventDefault();
         setLoading(true)
         try {
-            const res = await fetch("/api/blog", {
-                method: "POST",
+            const res = await fetch(endpoint, {
+                method: blogFormMode,
                 headers: {
                     "Content-Type": "application/json",
                     Authorization: `Bearer ${token}`,
@@ -87,7 +98,9 @@ const AdminPage = () => {
                 title: "",
                 body: "",
                 bannerImg: "",
-            })
+            });
+            setBlogFormMode("POST");
+            setBlogId(null);
             toast.success("Blog has been updated")
             setLoading(false)
 
@@ -96,6 +109,17 @@ const AdminPage = () => {
             setLoading(false)
 
         }
+    }
+
+    const handleEditButtonClick = (blog) => {
+        setBlogFormData({
+            title: blog.title,
+            body: blog.body,
+            bannerImg: blog.bannerImg,
+        });
+
+        setBlogFormMode("PUT");
+        setBlogId(blog._id);
     }
 
     const [passwordFormData, setPasswordFormData] = useState({
@@ -304,7 +328,7 @@ const AdminPage = () => {
                             </button>
                         </form>
                     </div>
-                    <Blogs />
+                    <Blogs onEditButtonClick={handleEditButtonClick} />
                 </div>
             )}
         </div>

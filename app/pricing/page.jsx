@@ -4,6 +4,8 @@ import { Button } from '@/components/ui/button'
 import { CheckCheck } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import React from 'react'
+import { jwtDecode } from 'jwt-decode';
+import toast from 'react-hot-toast';
 
 const Pricing = () => {
   const router = useRouter();
@@ -11,6 +13,9 @@ const Pricing = () => {
   const handleRedirect = () => {
     const token = localStorage.getItem('token');
     if (token) {
+      if (jwtDecode(token).subscriptionStatus === 'Active') {
+        return toast.error("You already have an active subscription");
+      }
       router.push('/checkout')
     } else {
       sessionStorage.setItem("redirect", "/checkout");
