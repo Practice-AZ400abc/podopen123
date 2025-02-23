@@ -178,7 +178,7 @@ const ContactVisaSeekerButton = ({ investor, user }) => {
                                         <Link href={"/"} className="underline">
                                             Not Now
                                         </Link>
-                                        <Link className="bg-green-600 p-3 rounded-sm" href={isLoggedIn ? "/checkout" : "/sign-in"}>
+                                        <Link className="bg-green-600 p-3 text-white rounded-sm" href={isLoggedIn ? "/checkout" : "/sign-in"}>
                                             Get Started
                                         </Link>
                                     </div>
