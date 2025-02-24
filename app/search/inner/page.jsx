@@ -26,6 +26,7 @@ import { jwtDecode } from 'jwt-decode';
 import ContactVisaSeekerButton from "@/components/ContactVisaSeekerButton";
 import { Button } from "@/components/ui/button";
 import toast from "react-hot-toast";
+import Link from "next/link";
 
 export default function SearchPage() {
   const [user, setUser] = useState(null);
@@ -285,87 +286,88 @@ export default function SearchPage() {
             ) : filteredInvestors.length > 0 ? (
               <div className="space-y-4 w-full">
                 {filteredInvestors.map((investor) => (
-                  <Card
-                    key={investor._id}
-                    className="p-4 w-full hover:shadow-md transition-shadow"
-                  >
-                    <div className="flex flex-wrap justify-between items-start w-full">
-                      <div className="grid grid-cols-2 items-center gap-5 ">
-                        <div className="flex gap-2">
-                          <h1 className="text-sm text-blue-500">
-                            Country of Nationality{" "}
-                          </h1>
-                          <p> {investor.nationality}</p>
+                  <Link key={investor._id} href={`/search/inner/${investor._id}`}>
+                    <Card
+                      className="p-4 w-full hover:shadow-md transition-shadow"
+                    >
+                      <div className="flex flex-wrap justify-between items-start w-full">
+                        <div className="grid grid-cols-2 items-center gap-5 ">
+                          <div className="flex gap-2">
+                            <h1 className="text-sm text-blue-500">
+                              Country of Nationality{" "}
+                            </h1>
+                            <p> {investor.nationality}</p>
+                          </div>
+                          <div className="flex gap-2">
+                            <h1 className="text-sm text-blue-500">
+                              Dual Citizenship{" "}
+                            </h1>
+                            <p>
+                              {" "}
+                              {investor.dualCitizenship == true ? "Yes" : "No"}
+                            </p>
+                          </div>
+                          <div className="flex gap-2">
+                            <h1 className="text-sm text-blue-500">
+                              Dual Citizenship{" "}
+                            </h1>
+                            <p>
+                              {" "}
+                              {investor.dualCitizenship == true ? "Yes" : "No"}
+                            </p>
+                          </div>
+                          <div className="flex gap-2">
+                            <h1 className="text-sm text-blue-500">Networth </h1>
+                            <p> {investor.netWorth}</p>
+                          </div>
+                          <div className="flex gap-2">
+                            <h1 className="text-sm text-blue-500">
+                              Liquid Assets{" "}
+                            </h1>
+                            <p> {investor.liquidAssets}</p>
+                          </div>
+                          <div className="flex gap-2">
+                            <h1 className="text-sm text-blue-500">
+                              Industry to invest
+                            </h1>
+                            <p> {investor.industryToInvest}</p>
+                          </div>
+                          <div className="flex gap-2">
+                            <h1 className="text-sm text-blue-500">
+                              Amount willing to invest
+                            </h1>
+                            <p> {investor.investmentAmount}</p>
+                          </div>
+                          <div className="flex gap-2">
+                            <h1 className="text-sm text-blue-500">
+                              Country to Relocate
+                            </h1>
+                            <p> {investor.relocationCountry}</p>
+                          </div>
+                          <div className="flex gap-2">
+                            <h1 className="text-sm text-blue-500">
+                              Time to Relocate
+                            </h1>
+                            <p> {investor.relocationTimeframe}</p>
+                          </div>
+                          <div className="flex gap-2">
+                            <h1 className="text-sm text-blue-500">
+                              Can you provide evidence of liquid assets{" "}
+                            </h1>
+                            <p>
+                              {" "}
+                              {investor.canProvideLiquidityEvidence == true
+                                ? "Yes"
+                                : "No"}
+                            </p>
+                          </div>
                         </div>
-                        <div className="flex gap-2">
-                          <h1 className="text-sm text-blue-500">
-                            Dual Citizenship{" "}
-                          </h1>
-                          <p>
-                            {" "}
-                            {investor.dualCitizenship == true ? "Yes" : "No"}
-                          </p>
-                        </div>
-                        <div className="flex gap-2">
-                          <h1 className="text-sm text-blue-500">
-                            Dual Citizenship{" "}
-                          </h1>
-                          <p>
-                            {" "}
-                            {investor.dualCitizenship == true ? "Yes" : "No"}
-                          </p>
-                        </div>
-                        <div className="flex gap-2">
-                          <h1 className="text-sm text-blue-500">Networth </h1>
-                          <p> {investor.netWorth}</p>
-                        </div>
-                        <div className="flex gap-2">
-                          <h1 className="text-sm text-blue-500">
-                            Liquid Assets{" "}
-                          </h1>
-                          <p> {investor.liquidAssets}</p>
-                        </div>
-                        <div className="flex gap-2">
-                          <h1 className="text-sm text-blue-500">
-                            Industry to invest
-                          </h1>
-                          <p> {investor.industryToInvest}</p>
-                        </div>
-                        <div className="flex gap-2">
-                          <h1 className="text-sm text-blue-500">
-                            Amount willing to invest
-                          </h1>
-                          <p> {investor.investmentAmount}</p>
-                        </div>
-                        <div className="flex gap-2">
-                          <h1 className="text-sm text-blue-500">
-                            Country to Relocate
-                          </h1>
-                          <p> {investor.relocationCountry}</p>
-                        </div>
-                        <div className="flex gap-2">
-                          <h1 className="text-sm text-blue-500">
-                            Time to Relocate
-                          </h1>
-                          <p> {investor.relocationTimeframe}</p>
-                        </div>
-                        <div className="flex gap-2">
-                          <h1 className="text-sm text-blue-500">
-                            Can you provide evidence of liquid assets{" "}
-                          </h1>
-                          <p>
-                            {" "}
-                            {investor.canProvideLiquidityEvidence == true
-                              ? "Yes"
-                              : "No"}
-                          </p>
+                        <div className="flex gap-2 flex-wrap">
+                          <ContactVisaSeekerButton investor={investor} user={user} />
                         </div>
                       </div>
-                      <div className="flex gap-2 flex-wrap">
-                        <ContactVisaSeekerButton investor={investor} user={user} />
-                      </div>
-                    </div>
-                  </Card>
+                    </Card>
+                  </Link>
                 ))}
 
                 {/* Pagination Controls */}

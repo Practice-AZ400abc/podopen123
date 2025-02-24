@@ -3,17 +3,6 @@ import { connectToDB } from '@/utils/database';
 import User from '@/models/user';
 
 export const GET = async (req, { params }) => {
-    const user = verifyToken(req);
-
-    if (!user) {
-        console.log("Unauthorized");
-        return new Response({ error: "Unauthorized" }, { status: 401 });
-    }
-
-    if (user.subscriptionStatus !== "Active") {
-        console.log("Subscription not active");
-        return new Response({ error: "Unauthorized" }, { status: 401 });
-    }
 
     const { id } = await params;
 
