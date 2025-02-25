@@ -16,7 +16,7 @@ const Checkout = () => {
     const [investorId, setInvestorId] = useState(null);
 
     useEffect(() => {
-        const storedInvestorId = sessionStorage.getItem("investorId");
+        const storedInvestorId = sessionStorage.getItem("seekerId");
 
         if (storedInvestorId) {
             setInvestorId(storedInvestorId);
@@ -30,8 +30,8 @@ const Checkout = () => {
         }
 
         if (jwtDecode(storedToken).subscriptionStatus === "Active") {
-            if (sessionStorage.getItem("seekerId")) {
-                return router.push(`/search/inner/${sessionStorage.getItem("seekerId")}`);
+            if (investorId) {
+                return router.push(`/search/inner/investorId`);
             } else {
                 return router.back();
             }
@@ -85,7 +85,7 @@ const Checkout = () => {
                                 <span className='text-slate-700 text-sm'>Allows you to create a listing to get funding for your project
                                 </span>
                             </div>
-                            <PaymentForm investorId={investorId} />
+                            <PaymentForm />
                         </div>
                     </PayPalScriptProvider>
                 ) : (

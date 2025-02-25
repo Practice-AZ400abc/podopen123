@@ -286,7 +286,7 @@ export default function SearchPage() {
             ) : filteredInvestors.length > 0 ? (
               <div className="space-y-4 w-full">
                 {filteredInvestors.map((investor) => (
-                  <Link key={investor._id} href={`/search/inner/${investor._id}`}>
+                  <div key={investor._id}>
                     <Card
                       className="p-4 w-full hover:shadow-md transition-shadow"
                     >
@@ -367,7 +367,7 @@ export default function SearchPage() {
                         </div>
                       </div>
                     </Card>
-                  </Link>
+                  </div>
                 ))}
 
                 {/* Pagination Controls */}

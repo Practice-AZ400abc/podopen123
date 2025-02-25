@@ -186,7 +186,7 @@ async function onApproveCallback(data, actions) {
 }
 
 
-const SubmitPayment = ({ onHandleMessage }) => {
+const SubmitPayment = ({ onHandleMessage, investorId }) => {
   const { cardFields } = usePayPalHostedFields();
   const cardHolderName = useRef(null);
   const [Loading, setLoading] = useState(false);
@@ -298,7 +298,7 @@ export const PaymentForm = ({ investorId }) => {
               <input type="checkbox" className="mr-2" />
               By pressing “Pay Now” you agree to the <Link href={"/terms"} className="text-blue-400 underline">terms and conditions</Link> from Lookvisa.com and that all sales are final.
             </label>
-            <SubmitPayment onHandleMessage={setMessage} />
+            <SubmitPayment investorId={investorId} onHandleMessage={setMessage} />
           </div>
         </PayPalHostedFieldsProvider>
 

@@ -1,12 +1,13 @@
 
 "use client"
 import { useEffect, useState } from "react";
-import { useSearchParams } from "next/navigation";
+import { useSearchParams, useRouter } from "next/navigation";
 import { Check, Loader } from "lucide-react";
 import jsPDF from "jspdf";
 import Logo from '@/app/Lookvisa.png'; // Import Image
 
 const Thankyou = () => {
+    const router = useRouter();
     const searchParams = useSearchParams();
     const orderId = searchParams.get("orderId");
 
@@ -35,6 +36,14 @@ const Thankyou = () => {
 
         convertToBase64();
     }, [orderId]);
+
+    useEffect(() => {
+        const investorId = sessionStorage.getItem("seekerId")
+
+        if (investorId) {
+            router.push(`/search/inner/${investorId}`);
+        }
+    }, [])
 
     const downloadReceipt = () => {
         if (!payment || !logoBase64) return;
