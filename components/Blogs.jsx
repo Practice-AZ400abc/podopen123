@@ -1,7 +1,6 @@
 "use client"
-import { Delete, DeleteIcon, FileEdit, Loader, Trash } from "lucide-react"
+import { FileEdit, Loader, Trash } from "lucide-react"
 import Image from "next/image"
-import Link from "next/link"
 import { useEffect, useState } from "react"
 import toast from "react-hot-toast"
 

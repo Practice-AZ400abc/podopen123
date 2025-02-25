@@ -58,8 +58,9 @@ export const PUT = async (req, { params }) => {
 
 export const GET = async (req, { params }) => {
     try {
+        const { id } = await params
         await connectToDB();
-        const blog = await Blog.findById(params.id);
+        const blog = await Blog.findById(id);
 
         if (!blog) {
             return new Response(JSON.stringify({ message: "Blog not found" }), { status: 404 });

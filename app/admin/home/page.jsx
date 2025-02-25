@@ -103,7 +103,6 @@ const AdminPage = () => {
             setBlogId(null);
             toast.success("Blog has been updated")
             setLoading(false)
-
         } catch (error) {
             console.error(error);
             setLoading(false)
