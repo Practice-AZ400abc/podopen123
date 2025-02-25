@@ -69,6 +69,8 @@ const AdminPage = () => {
         }
     };
 
+    const [blogsUpdated, setBlogsUpdated] = useState(false); // State to track blog updates
+
     const postBlog = async (e) => {
         let endpoint;
 
@@ -79,7 +81,7 @@ const AdminPage = () => {
         }
 
         e.preventDefault();
-        setLoading(true)
+        setLoading(true);
         try {
             const res = await fetch(endpoint, {
                 method: blogFormMode,
@@ -99,16 +101,19 @@ const AdminPage = () => {
                 body: "",
                 bannerImg: "",
             });
+
             setBlogFormMode("POST");
             setBlogId(null);
-            toast.success("Blog has been updated")
-            setLoading(false)
+            toast.success("Blog has been updated");
+            setLoading(false);
+
+            setBlogsUpdated(prev => !prev); // Toggle to trigger re-render of Blogs component
         } catch (error) {
             console.error(error);
-            setLoading(false)
-
+            setLoading(false);
         }
-    }
+    };
+
 
     const handleEditButtonClick = (blog) => {
         setBlogFormData({
@@ -327,7 +332,7 @@ const AdminPage = () => {
                             </button>
                         </form>
                     </div>
-                    <Blogs onEditButtonClick={handleEditButtonClick} />
+                    <Blogs key={blogsUpdated} onEditButtonClick={handleEditButtonClick} />
                 </div>
             )}
         </div>
