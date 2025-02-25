@@ -13,10 +13,28 @@ const Checkout = () => {
     const router = useRouter();
     const [clientToken, setClientToken] = useState(null);
 
+    const [investorId, setInvestorId] = useState(null);
+
+    useEffect(() => {
+        const storedInvestorId = sessionStorage.getItem("investorId");
+
+        if (storedInvestorId) {
+            setInvestorId(storedInvestorId);
+        }
+    }, [])
+
     useEffect(() => {
         const storedToken = localStorage.getItem("token");
-        if (!storedToken || jwtDecode(storedToken).subscriptionStatus === "Active" && !isLoggedIn) {
-            router.back();
+        if (!storedToken || !isLoggedIn) {
+            return router.back();
+        }
+
+        if (jwtDecode(storedToken).subscriptionStatus === "Active") {
+            if (sessionStorage.getItem("seekerId")) {
+                return router.push(`/search/inner/${sessionStorage.getItem("seekerId")}`);
+            } else {
+                return router.back();
+            }
         }
     }, [])
 
@@ -67,7 +85,7 @@ const Checkout = () => {
                                 <span className='text-slate-700 text-sm'>Allows you to create a listing to get funding for your project
                                 </span>
                             </div>
-                            <PaymentForm />
+                            <PaymentForm investorId={investorId} />
                         </div>
                     </PayPalScriptProvider>
                 ) : (

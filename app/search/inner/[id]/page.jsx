@@ -1,12 +1,28 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import InvestorProfile from "@/components/InvestorProfile";
+import { jwtDecode } from "jwt-decode";
 
 const Page = () => {
+    const router = useRouter();
     const [investorData, setInvestorData] = useState(null);
     const { id } = useParams(); // Import from next/navigation
+
+    const [user, setUser] = useState(null);
+
+    useEffect(() => {
+        const token = localStorage.getItem("token");
+        if (!token) {
+            router.back();
+        }
+
+        const user = jwtDecode(token);
+        setUser(user);
+
+        sessionStorage.removeItem("seekerId");
+    }, [])
 
     useEffect(() => {
         if (!id) return;
@@ -36,7 +52,7 @@ const Page = () => {
 
     return (
         <div className="min-h-screen  p-4 mx-auto container">
-            <InvestorProfile investorData={investorData} />
+            <InvestorProfile investor={investorData} user={user} />
         </div>
     );
 };

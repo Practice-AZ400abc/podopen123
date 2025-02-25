@@ -23,7 +23,6 @@ import toast from "react-hot-toast";
 import { Loader2, ShoppingBasket } from "lucide-react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { Button } from "./ui/button";
 
 // if payment is successful, show user a toast message
 async function createOrderCallback() {
@@ -202,7 +201,11 @@ const SubmitPayment = ({ onHandleMessage }) => {
       .then(async (data) => {
         await onHandleMessage(await onApproveCallback(data));
         toast.success("Payment successful!");
-        router.push(`/Thankyou?orderId=${data.orderId}`);
+        if (investorId) {
+          return router.push(`/search/inner/${investorId}`);
+        } else {
+          return router.push(`/Thankyou?orderId=${data.orderId}`);
+        }
         setLoading(false);
       })
       .catch((orderData) => {
@@ -226,7 +229,7 @@ const SubmitPayment = ({ onHandleMessage }) => {
   );
 };
 
-export const PaymentForm = () => {
+export const PaymentForm = ({ investorId }) => {
 
   const [message, setMessage] = useState("");
 

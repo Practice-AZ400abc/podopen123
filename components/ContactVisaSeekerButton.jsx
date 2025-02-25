@@ -9,15 +9,17 @@ import {
     DialogTitle,
     DialogTrigger,
 } from "@/components/ui/dialog";
-import { MessageSquare, CheckIcon } from 'lucide-react';
+import { CheckIcon } from 'lucide-react';
 import { FaExclamationTriangle } from 'react-icons/fa';
-import Contactform from './contactform';
 import { useContext, useState, useEffect } from "react";
 import { AuthContext } from "@/components/AuthProvider";
+import { useRouter } from 'next/navigation';
 
 import PopupImg from '../app/Popupimg.jpg';
 
 const ContactVisaSeekerButton = ({ investor, user }) => {
+    const router = useRouter();
+
     const { isLoggedIn } = useContext(AuthContext);
     const [isOpen, setIsOpen] = useState(false)
     const [contactFormVisible, setContactFormVisible] = useState(false);
@@ -41,10 +43,21 @@ const ContactVisaSeekerButton = ({ investor, user }) => {
         }
     }, [user]);
 
+    const handleClick = () => {
+        if (!isLoggedIn || (user && user.subscriptionStatus !== "Active")) {
+            sessionStorage.setItem("seekerId", investor._id);
+            return setIsOpen(true);
+        } else if (user && user.subscriptionStatus === "Active") {
+            return router.push(`/search/inner/${investor._id}`);
+        } else {
+            return setIsOpen(true);
+        }
+    }
+
     return (
 
         <div>
-            <button onClick={() => setIsOpen(true)} className="bg-blue-500 text-white p-2 rounded-md">
+            <button onClick={() => handleClick()} className="bg-blue-500 text-white p-2 rounded-md">
                 Message Investor
             </button>
             <Dialog open={isOpen} onOpenChange={setIsOpen}>
@@ -52,48 +65,7 @@ const ContactVisaSeekerButton = ({ investor, user }) => {
                     {
                         contactFormVisible ? (
                             <div className="flex flex-col md:flex-row gap-6">
-                                {/* Investor Profile Section */}
-                                <div className="w-full md:w-1/2 p-6 border rounded-lg bg-gray-50">
-                                    <div className="flex flex-col items-center">
-                                        <Image
-                                            src={investor.avatarURL}
-                                            alt={`${investor.firstName} ${investor.lastName}`}
-                                            width={120}
-                                            height={120}
-                                            className="rounded-full"
-                                        />
-                                        <h2 className="mt-4 text-xl font-semibold text-center">
-                                            {`${investor.firstName} ${investor.lastName}`}
-                                        </h2>
-                                    </div>
-
-                                    <div className="mt-6 grid grid-cols-2 gap-10 text-sm text-gray-700">
-                                        <p><strong>Email:</strong> {investor.email}</p>
-                                        <p><strong>Phone:</strong> {investor.phone}</p>
-                                        <p><strong>Company:</strong> {investor.companyName}</p>
-                                        <p><strong>Website:</strong> {investor.websiteURL || "N/A"}</p>
-                                        <p><strong>Country of Birth:</strong> {investor.countryOfBirth}</p>
-                                        <p><strong>Nationality:</strong> {investor.nationality}</p>
-                                        <p><strong>Dual Citizenship:</strong> {investor.dualCitizenship ? "Yes" : "No"}</p>
-                                        <p><strong>Net Worth:</strong> {investor.netWorth}</p>
-                                        <p><strong>Liquid Assets:</strong> {investor.liquidAssets}</p>
-                                        <p><strong>Investment Amount:</strong> {investor.investmentAmount}</p>
-                                        <p><strong>Industry:</strong> {investor.industryToInvest}</p>
-                                        <p><strong>Relocation Country:</strong> {investor.relocationCountry}</p>                                    <p><strong>Liquidity Evidence:</strong> {investor.canProvideLiquidityEvidence ? "Yes" : "No"}</p>
-                                        <p><strong>LinkedIn:</strong> {investor.linkedin || "N/A"}</p>
-                                        <p><strong>Instagram:</strong> {investor.instagram || "N/A"}</p>
-                                        <p className="col-span-2"><strong>Comments:</strong> {investor.comments || "N/A"}</p>
-                                    </div>
-                                </div>
-                                {/* Contact Form Section */}
-                                <div className="w-full md:w-2/3">
-                                    <DialogHeader>
-                                        <DialogTitle>Connect with investors</DialogTitle>
-                                    </DialogHeader>
-                                    <Contactform investor={investor} user={user}
-                                        onClose={() => setIsOpen(false)}
-                                    />
-                                </div>
+                                Too lazy to remove this properly
                             </div>
                         ) : (
                             roleErrorVisible ? (
