@@ -66,7 +66,7 @@ const Footer = () => {
                     <div className='flex gap-2'>
                         <Image src={Instagram} alt='Instagram' className='h-10 w-10 cursor-pointer' />
                         <Image src={Facebook} alt='Instagram' className='h-10 w-10 cursor-pointer' />
-                        <Image src={Linkedin} alt='Instagram' className='h-10 w-10 cursor-pointer' />
+                        <Link href='https://www.linkedin.com/company/lookvisa/' target='_blank'><Image src={Linkedin} alt='Instagram' className='h-10 w-10 cursor-pointer' /></Link>
                     </div>
                 </div>
 

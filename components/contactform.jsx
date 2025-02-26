@@ -1,10 +1,10 @@
-import { Loader2, MessageCircle } from "lucide-react";
+import { CalendarCheck, Loader2, MessageCircle, X } from "lucide-react";
 import { PhoneInput } from "react-international-phone";
 import "react-international-phone/style.css";
 import { useState } from 'react';
 import toast from "react-hot-toast";
 
-const Contactform = ({ investor, user, onClose }) => {
+const Contactform = ({ investor, user, onClose, setShowContactForm }) => {
     const [Loading, setLoading] = useState(false);
     const [formData, setFormData] = useState({
         sponsorEmail: user.email,
@@ -49,10 +49,18 @@ const Contactform = ({ investor, user, onClose }) => {
             setLoading(false);
         }
     };
+
+    const handleCancelForm = () => {
+         setShowContactForm(false);
+    };
     return (
-        <div className="bg-white absolute top-20 mt-10 w-full p-2 rounded-md">
-            <h1 className="text-lg">Message Investor</h1>
-            <p className="text-slate-500">Please fill these fields to contact the investor</p>
+        <div className="bg-white absolute top-20 shadow-md  max-w-[500px] mt-10 w-full p-2 rounded-md">
+            <div className="flex justify-between items-center">
+                <div>
+                    <h1 className="text-lg bg-black p-2 text-blue-400 text-center rounded-sm">Contact Form: Message Investor</h1>
+                </div>
+                <X onClick={handleCancelForm} className="bg-blue-400 rounded-md cursor-pointer hover:bg-blue-300"/>
+            </div>
             <form onSubmit={(e) => handleFormSubmission(e)} className="mt-4">
                 <div className="flex flex-col space-y-4">
                     <div className="flex flex-col ">

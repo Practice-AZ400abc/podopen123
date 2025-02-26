@@ -104,9 +104,10 @@ const Billing = () => {
 
     doc.setFontSize(12);
     doc.text(
-      "Note: Your credit card statement may show a charge for the merchant 'Stellar Technologies, Inc'. For any questions, email info@lookvisa.com. Thank you for your business!",
+      "Thanks for your business ! Any questions email us at info@lookvisa.com",
       105, 270, { align: "center" }
     );
+  
 
     doc.save(`receipt_${payment.orderId}.pdf`);
   };

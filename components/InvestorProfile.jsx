@@ -34,7 +34,7 @@ const InvestorProfile = ({ investor, user }) => {
                 )}
                 <div className="flex flex-col">
                     <h1 className="text-2xl font-bold">{investor.firstName}</h1>
-                    <p className="text-lg text-gray-500">{investor.email}</p>
+                    <p className="text-lg text-gray-500">{investor.contactEmail}</p>
                 </div>
             </div>
 
@@ -42,7 +42,13 @@ const InvestorProfile = ({ investor, user }) => {
                 <h1 className="text-2xl font-bold">Details</h1>
                 <div className="flex flex-wrap justify-between items-start mt-10 w-full">
                     <div className="grid grid-cols-2 items-center gap-5">
+                        <DetailRow label="Firstname" value={investor.firstName} />
+                        <DetailRow label="Lastname" value={investor.lastName} />
+
+                        <DetailRow label="Company Name" value={investor.companyName} />
                         <DetailRow label="Country of Nationality" value={investor.nationality} />
+                        <DetailRow label="Liquid Assets" value={investor.liquidAssets} />
+
                         <DetailRow label="Dual Citizenship" value={investor.dualCitizenship ? "Yes" : "No"} />
                         <DetailRow label="Networth" value={investor.netWorth} />
                         <DetailRow label="Liquid Assets" value={investor.liquidAssets} />
@@ -58,9 +64,34 @@ const InvestorProfile = ({ investor, user }) => {
 
 
                 </div>
+              
+            </div>
+            <div className="flex flex-col p-2 max-w-[800px] mt-10 mx-auto">
+                <h1 className="text-lg text-blue-400  w-fit p-2 rounded-md font-bold">Contact Details</h1>
+                <div className="flex flex-wrap justify-between items-start mt-10 w-full">
+                    <div className="grid grid-cols-2 items-center gap-5">
+                        <DetailRow label="Contact Email" value={investor.contactEmail} />
+                        <DetailRow label="Contact Phone" value={investor.phone} />
+                        <DetailRow label="Telegram" value={investor.telegram} />
+                        <DetailRow label="Whatsapp" value={investor.whatsapp} />
+                    </div>
+
+
+                </div>
+             
+            </div>
+            <div className="flex flex-col p-2 max-w-[800px] mt-10 mx-auto">
+                <h1 className="text-lg text-blue-400  w-fit p-2 rounded-md font-bold">Social Details</h1>
+                <div className="flex flex-wrap justify-between items-start mt-10 w-full">
+                    <div className="grid grid-cols-2 items-center gap-5">
+                        <DetailRow label="Website URL" value={investor.websiteURL} />
+                        <DetailRow label="Linkedin" value={investor.linkedin} />
+                        <DetailRow label="Instagram" value={investor.instagram} />
+                    </div>
+                 </div>
                 <div className=" mt-10  flex gap-2 flex-wrap">
                     <Button onClick={handleContactClick}>Contact Investor</Button>
-                    {showContactForm && <Contactform investor={investor} user={user} />}
+                    {showContactForm && <Contactform investor={investor} setShowContactForm={setShowContactForm} user={user} />}
                 </div>
             </div>
         </div>

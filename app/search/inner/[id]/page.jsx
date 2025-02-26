@@ -33,7 +33,6 @@ const Page = () => {
                 if (!response.ok) throw new Error("Failed to fetch data");
                 const data = await response.json();
                 setInvestorData(data);
-                console.log("Investor data:", data);
             } catch (error) {
                 console.error("Error fetching investor data:", error);
             }

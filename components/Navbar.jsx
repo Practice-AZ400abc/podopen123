@@ -162,7 +162,7 @@ const Navbar = () => {
                   <ul className="flex flex-col items-start gap-2 text-black">
 
                     <Link href="/profile">Profile</Link>
-                    
+
                   </ul>
 
                   <Separator />
@@ -281,6 +281,12 @@ const Navbar = () => {
                   className={isActive("/blogs") ? "underline font-bold" : ""}
                 >
                   Blogs
+                </Link>
+                <Link
+                  href="/OurStory"
+                  className={isActive("/blogs") ? "underline font-bold" : ""}
+                >
+                  Our Story
                 </Link>
                 <Link
                   href="/PrivacyPolicy"
