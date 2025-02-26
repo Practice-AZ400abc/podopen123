@@ -3,6 +3,7 @@
 import Image from "next/image";
 import React from "react";
 import Contactform from './contactform';
+import { Button } from "./ui/button";
 
 const InvestorProfile = ({ investor, user }) => {
     if (!investor) {
@@ -12,6 +13,12 @@ const InvestorProfile = ({ investor, user }) => {
             </div>
         );
     }
+
+    const [showContactForm, setShowContactForm] = React.useState(false);
+
+    const handleContactClick = () => {
+        setShowContactForm(true);
+    };
 
     return (
         <div className="bg-gray-50 rounded-lg p-4">
@@ -49,9 +56,11 @@ const InvestorProfile = ({ investor, user }) => {
                         />
                     </div>
 
-                    <div className="flex gap-2 flex-wrap">
-                        <Contactform investor={investor} user={user} />
-                    </div>
+
+                </div>
+                <div className=" mt-10  flex gap-2 flex-wrap">
+                    <Button onClick={handleContactClick}>Contact Investor</Button>
+                    {showContactForm && <Contactform investor={investor} user={user} />}
                 </div>
             </div>
         </div>

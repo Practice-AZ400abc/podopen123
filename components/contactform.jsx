@@ -50,7 +50,7 @@ const Contactform = ({ investor, user, onClose }) => {
         }
     };
     return (
-        <div className="bg-white w-full p-2 rounded-md">
+        <div className="bg-white absolute top-20 mt-10 w-full p-2 rounded-md">
             <h1 className="text-lg">Message Investor</h1>
             <p className="text-slate-500">Please fill these fields to contact the investor</p>
             <form onSubmit={(e) => handleFormSubmission(e)} className="mt-4">
