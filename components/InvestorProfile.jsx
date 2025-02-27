@@ -1,7 +1,7 @@
 "use client"; // Ensure this runs only on the client side
 
 import Image from "next/image";
-import React from "react";
+import React, { useState } from "react";
 import Contactform from './contactform';
 import { Button } from "./ui/button";
 
@@ -14,7 +14,7 @@ const InvestorProfile = ({ investor, user }) => {
         );
     }
 
-    const [showContactForm, setShowContactForm] = React.useState(false);
+    const [showContactForm, setShowContactForm] = useState(false);
 
     const handleContactClick = () => {
         setShowContactForm(true);
