@@ -6,6 +6,8 @@ import Contactform from './contactform';
 import { Button } from "./ui/button";
 
 const InvestorProfile = ({ investor, user }) => {
+    const [showContactForm, setShowContactForm] = useState(false);
+
     if (!investor) {
         return (
             <div className="min-h-screen flex items-center justify-center">
@@ -14,11 +16,10 @@ const InvestorProfile = ({ investor, user }) => {
         );
     }
 
-    const [showContactForm, setShowContactForm] = useState(false);
-
     const handleContactClick = () => {
         setShowContactForm(true);
     };
+
 
     return (
         <div className="bg-gray-50 rounded-lg p-4">
