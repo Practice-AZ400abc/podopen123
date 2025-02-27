@@ -311,13 +311,20 @@ const Navbar = () => {
                     Logout
                   </button>
                 ) : (
+                  <div className="flex flex-col gap-5 items-center ">
+                  <Link
+                    href="/sign-up"
+                    className="bg-green-500 w-full text-center hover:bg-green-400 text-white px-6 py-3 rounded-sm font-bold"
+                  >
+                    Sign up
+                  </Link>
                   <Link
                     href="/sign-in"
-                    className={`text-blue-400 font-bold text-[18px] ${isActive("/sign-in") ? "underline" : ""
-                      }`}
+                    className="bg-blue-300 w-full text-center hover:bg-blue-300 text-black px-6 py-3 rounded-sm font-bold"
                   >
-                    Log in
+                    Login
                   </Link>
+                </div>
                 )}
               </ul>
             </SheetContent>
