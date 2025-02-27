@@ -20,8 +20,9 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog"
 import toast from 'react-hot-toast';
-import { Edit2 } from 'lucide-react';
+import { Edit2, Phone } from 'lucide-react';
 import Link from 'next/link';
+import { FaTelegram, FaWhatsapp } from 'react-icons/fa';
 
 const Listings = ({ listing, refreshListings, handleFilterChange, filter, subscriptionStatus }) => {
   const [token, setToken] = useState(null);
@@ -185,7 +186,7 @@ const Listings = ({ listing, refreshListings, handleFilterChange, filter, subscr
       </div>
       <button
         onClick={() => setShowDetails(!showDetails)}
-        className="underline text-black p-2 rounded-md mt-4"
+        className="underline text-blue-400 font-bold p-2 rounded-md mt-4"
       >
         {showDetails ? "See Less" : "See More"}
       </button>
@@ -214,19 +215,29 @@ const Listings = ({ listing, refreshListings, handleFilterChange, filter, subscr
             </h1>
           </div>
           <div className="mt-4 flex gap-2 flex-col">
-            <div className="flex gap-4">
+            <div className="flex bg-gray-50 p-2 rounded-md  flex-col gap-4">
+              <h1 className='text-black font-bold'>Contact Details</h1>
               <div className="flex gap-2">
-                <span className="font-bold ">Telegram:</span>
+             <div className='flex gap-2 items-center'>
+             <FaTelegram />
+             <span className="font-bold ">Telegram:</span>
+             </div>
                 <span>{updatedListing.telegram}</span>
               </div>
               <div className="flex gap-2">
+                <div className='flex gap-2 items-center'>
+                <Phone size={13} />
                 <span className="font-bold ">
                   Contact Phone Number:
                 </span>
+                </div>
                 <span>{updatedListing.phone}</span>
               </div>
               <div className="flex gap-2">
-                <span className="font-bold text-green-400">Whatsapp:</span>
+               <div className='flex gap-2 items-center'>
+                <FaWhatsapp />
+               <span className="font-bold ">Whatsapp:</span>
+               </div>
                 <span>{updatedListing.whatsapp}</span>
               </div>
             </div>
