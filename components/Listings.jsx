@@ -19,6 +19,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog"
+import { motion } from "framer-motion";
 import toast from 'react-hot-toast';
 import { Edit2, Phone } from 'lucide-react';
 import Link from 'next/link';
@@ -184,60 +185,59 @@ const Listings = ({ listing, refreshListings, handleFilterChange, filter, subscr
         </div>
 
       </div>
-      <button
-        onClick={() => setShowDetails(!showDetails)}
-        className="underline text-blue-400 font-bold p-2 rounded-md mt-4"
+
+     
+      <motion.div
+        initial={{ opacity: 0, height: 0 }}
+        animate={showDetails ? { opacity: 1, height: "auto" } : { opacity: 0, height: 0 }}
+        exit={{ opacity: 0, height: 0 }}
+        transition={{ duration: 0.5, ease: "easeInOut" }}
+        className="overflow-hidden"
       >
-        {showDetails ? "See Less" : "See More"}
-      </button>
-
-      {showDetails && (
-        <>
-          <div className="mt-4 flex gap-2 flex-col">
-            <h1 className="mt-2 font-bold">
-              Country where investment is needed: {" "}
-              <span className="text-blue-500 uppercase p-2 m-2 rounded-sm text-sm font-bold">
-                {updatedListing.countryForInvestment}
-
-              </span>
-            </h1>
-            <h1 className="mt-2 font-bold">
-              Industry of Investment: {" "}
-              <span className="text-blue-500 uppercase p-2 m-2 rounded-sm text-sm font-bold">
-                {updatedListing.investmentIndustry}
-              </span>
-            </h1>
-            <h1 className="mt-2 font-bold">
-              Minimum Investment: {" "}
-              <span className="text-blue-500 uppercase p-2 m-2 rounded-sm text-sm font-bold">
-                {updatedListing.minimumInvestment}
-              </span>
-            </h1>
-          </div>
-          <div className="mt-4 flex gap-2 flex-col">
+        <div className="mt-4 flex gap-2 flex-col">
+          <h1 className="mt-2 font-bold">
+            Country where investment is needed:{" "}
+            <span className="text-blue-500 uppercase p-2 m-2 rounded-sm text-sm font-bold">
+              {updatedListing.countryForInvestment}
+            </span>
+          </h1>
+          <h1 className="mt-2 font-bold">
+            Industry of Investment:{" "}
+            <span className="text-blue-500 uppercase p-2 m-2 rounded-sm text-sm font-bold">
+              {updatedListing.investmentIndustry}
+            </span>
+          </h1>
+          <h1 className="mt-2 font-bold">
+            Minimum Investment:{" "}
+            <span className="text-blue-500 uppercase p-2 m-2 rounded-sm text-sm font-bold">
+              {updatedListing.minimumInvestment}
+            </span>
+          </h1>
+        </div>
+        <div className="mt-4 flex gap-2 flex-col">
             <div className="flex bg-gray-50 p-2 rounded-md  flex-col gap-4">
               <h1 className='text-black font-bold'>Contact Details</h1>
               <div className="flex gap-2">
-             <div className='flex gap-2 items-center'>
-             <FaTelegram />
-             <span className="font-bold ">Telegram:</span>
-             </div>
+                <div className='flex gap-2 items-center'>
+                  <FaTelegram />
+                  <span className="font-bold ">Telegram:</span>
+                </div>
                 <span>{updatedListing.telegram}</span>
               </div>
               <div className="flex gap-2">
                 <div className='flex gap-2 items-center'>
-                <Phone size={13} />
-                <span className="font-bold ">
-                  Contact Phone Number:
-                </span>
+                  <Phone size={13} />
+                  <span className="font-bold ">
+                    Contact Phone Number:
+                  </span>
                 </div>
                 <span>{updatedListing.phone}</span>
               </div>
               <div className="flex gap-2">
-               <div className='flex gap-2 items-center'>
-                <FaWhatsapp />
-               <span className="font-bold ">Whatsapp:</span>
-               </div>
+                <div className='flex gap-2 items-center'>
+                  <FaWhatsapp />
+                  <span className="font-bold ">Whatsapp:</span>
+                </div>
                 <span>{updatedListing.whatsapp}</span>
               </div>
             </div>
@@ -273,8 +273,14 @@ const Listings = ({ listing, refreshListings, handleFilterChange, filter, subscr
               )
             )}
           </div>
-        </>
-      )}
+      </motion.div>
+      <button
+        onClick={() => setShowDetails(!showDetails)}
+        className=" text-white hover:bg-blue-200 translate-x-0 bg-blue-400 w-full font-bold p-2 rounded-md mt-4"
+      >
+        {showDetails ? "See Less" : "See More"}
+      </button>
+
 
       <div className="flex items-end justify-end gap-2 w-full">
         <Link href={`/edit-listing/${listing._id}`} className="flex items-center gap-2 text-white bg-black p-2 rounded-md">
