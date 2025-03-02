@@ -596,19 +596,12 @@ const VisaSeekerProfileForm = ({ }) => {
             {errors.canProvideLiquidityEvidence && <span style={{ color: 'red' }}>{errors.canProvideLiquidityEvidence}</span>}
           </div>
           <div className="flex items-center gap-2">
-            <input
-              type="checkbox"
+            <Switch
               checked={formData.isPublic}
-              onChange={(e) =>
-                setFormData((prev) => ({ ...prev, isPublic: e.target.checked }))
+              onCheckedChange={(checked) =>
+                setFormData((prev) => ({ ...prev, isPublic: checked }))
               }
-              className="h-5 w-5 cursor-pointer"
             />
-            <Switch 
-            checked={formData.isPublic}
-              onChange={(e) =>
-                setFormData((prev) => ({ ...prev, isPublic: e.target.checked }))
-              }/>
             <label className="text-sm font-medium">* Make Profile Public for searching </label>
           </div>
         </div>
