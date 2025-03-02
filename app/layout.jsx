@@ -26,7 +26,7 @@ export default function RootLayout({ children }) {
         <meta content=" With LookVisa, you can search for investment projects and opportunities to obtain an immigrant investor visa. With tools for uploading investor profile, listed investment projects and more, you can find an investment visa." property="og:description" />
         <meta property="og:description" content="LOOKVISA is the easiest way to find an immigrant visa and streamline and find an immigrant investor to fund your projects and investment opportunities." />
         <meta name="twitter:description" content=" LOOKVISA is the easiest way to find an immigrant visa and streamline and find an immigrant investor for your projects and investment opportunities." />
-
+       
 
         <title> Lookvisa – Find Projects Seeking Funding for investment, Golden and EB5 visas</title>
       </head>

@@ -18,6 +18,7 @@ import { useRouter } from "next/navigation";
 import { AuthContext } from "./AuthProvider";
 import { Loader2, Mail } from "lucide-react";
 import DeleteAccountButton from "./DeleteAccountButton";
+import { Switch } from "@/components/ui/switch"
 
 const VisaSeekerProfileForm = ({ }) => {
   const router = useRouter();
@@ -321,7 +322,7 @@ const VisaSeekerProfileForm = ({ }) => {
               className="bg-gray-50 h-12 p-2 rounded-md border border-gray-300"
             >
               <option value="" disabled>
-                Select 
+                Select
               </option>
               {COUNTRIES.map((country, index) => (
                 <option key={index} value={country}>
@@ -427,7 +428,7 @@ const VisaSeekerProfileForm = ({ }) => {
             </select>
             {errors.relocationCountry && <span style={{ color: 'red' }}>{errors.relocationCountry}</span>}
           </div>
-        
+
 
         </div>
 
@@ -572,8 +573,8 @@ const VisaSeekerProfileForm = ({ }) => {
               htmlFor="canProvideLiquidityEvidence"
               className="cursor-pointer"
             >
-             * Can you provide evidence of
-             liquidity?
+              * Can you provide evidence of
+              liquidity?
             </label>
           </div>
           <div className="flex items-center gap-2">
@@ -595,7 +596,7 @@ const VisaSeekerProfileForm = ({ }) => {
             {errors.canProvideLiquidityEvidence && <span style={{ color: 'red' }}>{errors.canProvideLiquidityEvidence}</span>}
           </div>
           <div className="flex items-center gap-2">
-          <input
+            <input
               type="checkbox"
               checked={formData.isPublic}
               onChange={(e) =>
@@ -603,6 +604,11 @@ const VisaSeekerProfileForm = ({ }) => {
               }
               className="h-5 w-5 cursor-pointer"
             />
+            <Switch 
+            checked={formData.isPublic}
+              onChange={(e) =>
+                setFormData((prev) => ({ ...prev, isPublic: e.target.checked }))
+              }/>
             <label className="text-sm font-medium">* Make Profile Public for searching </label>
           </div>
         </div>
@@ -670,15 +676,15 @@ const VisaSeekerProfileForm = ({ }) => {
           </div>
         </section>
         {/* Submit Button */}
-       <div className="flex items-center justify-end gap-4">
-       <button
-          type="submit"
-          className="px-6 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-700"
-        >
-          Save Profile
-        </button>
-        <DeleteAccountButton />
-       </div>
+        <div className="flex items-center justify-end gap-4">
+          <button
+            type="submit"
+            className="px-6 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-700"
+          >
+            Save Profile
+          </button>
+          <DeleteAccountButton />
+        </div>
       </form>
     </div>
   );
