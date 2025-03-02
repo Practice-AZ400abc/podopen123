@@ -23,6 +23,7 @@ const InvestorProfile = ({ investor, user }) => {
 
     return (
         <div className="bg-gray-50 rounded-lg p-4">
+            <div className="flex w-full justify-between items-center">
             <div className="flex items-center gap-4">
                 {investor.avatarURL && (
                     <Image
@@ -38,10 +39,14 @@ const InvestorProfile = ({ investor, user }) => {
                     <p className="text-lg text-gray-500">{investor.contactEmail}</p>
                 </div>
             </div>
-
-            <div className="flex flex-col p-2 max-w-[800px] mt-10 mx-auto">
+            <div className=" mt-10  flex gap-2 flex-wrap">
+                <Button onClick={handleContactClick}>Contact Investor</Button>
+                {showContactForm && <Contactform investor={investor} setShowContactForm={setShowContactForm} user={user} />}
+            </div>
+            </div>
+            <div className="flex flex-col p-2 max-w-[800px] mt-4 mx-auto">
                 <h1 className="text-2xl font-bold">Details</h1>
-                <div className="flex flex-wrap justify-between items-start mt-10 w-full">
+                <div className="flex flex-wrap justify-between items-start mt-4 w-full">
                     <div className="grid grid-cols-2 items-center gap-5">
                         <DetailRow label="Firstname" value={investor.firstName} />
                         <DetailRow label="Lastname" value={investor.lastName} />
@@ -65,11 +70,11 @@ const InvestorProfile = ({ investor, user }) => {
 
 
                 </div>
-              
+
             </div>
-            <div className="flex flex-col p-2 max-w-[800px] mt-10 mx-auto">
-                <h1 className="text-lg text-blue-400  w-fit p-2 rounded-md font-bold">Contact Details</h1>
-                <div className="flex flex-wrap justify-between items-start mt-10 w-full">
+            <div className="flex flex-col p-2 max-w-[800px] mt-4 mx-auto">
+                <h1 className="text-lg   w-fit  rounded-md font-bold">Contact Details</h1>
+                <div className="flex flex-wrap justify-between items-start mt-4 w-full">
                     <div className="grid grid-cols-2 items-center gap-5">
                         <DetailRow label="Contact Email" value={investor.contactEmail} />
                         <DetailRow label="Contact Phone" value={investor.phone} />
@@ -79,21 +84,18 @@ const InvestorProfile = ({ investor, user }) => {
 
 
                 </div>
-             
+
             </div>
-            <div className="flex flex-col p-2 max-w-[800px] mt-10 mx-auto">
-                <h1 className="text-lg text-blue-400  w-fit p-2 rounded-md font-bold">Social Details</h1>
-                <div className="flex flex-wrap justify-between items-start mt-10 w-full">
+            <div className="flex flex-col p-2 max-w-[800px] mt-4 mx-auto">
+                <h1 className="text-lg   w-fit  rounded-md font-bold">Social Details</h1>
+                <div className="flex flex-wrap justify-between items-start mt-4 w-full">
                     <div className="grid grid-cols-2 items-center gap-5">
                         <DetailRow label="Website URL" value={investor.websiteURL} />
                         <DetailRow label="Linkedin" value={investor.linkedin} />
                         <DetailRow label="Instagram" value={investor.instagram} />
                     </div>
-                 </div>
-                <div className=" mt-10  flex gap-2 flex-wrap">
-                    <Button onClick={handleContactClick}>Contact Investor</Button>
-                    {showContactForm && <Contactform investor={investor} setShowContactForm={setShowContactForm} user={user} />}
                 </div>
+
             </div>
         </div>
     );
