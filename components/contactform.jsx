@@ -54,7 +54,7 @@ const Contactform = ({ investor, user, onClose, setShowContactForm }) => {
          setShowContactForm(false);
     };
     return (
-        <div className="bg-white absolute top-20 shadow-md  max-w-[500px] mt-10 w-full p-2 rounded-md">
+        <div className="bg-white absolute top-1/2 left-1/2 shadow-md max-w-[500px] w-full p-2 rounded-md transform -translate-x-1/2 -translate-y-1/2">
             <div className="flex justify-between items-center">
                 <div>
                     <h1 className="text-lg bg-black p-2 text-blue-400 text-center rounded-sm">Contact Form: Message Investor</h1>

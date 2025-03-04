@@ -7,6 +7,7 @@ import Image from "next/image";
 import Link from "next/link";
 import profile from "../assets/profile.png";
 import { RiMenuLine } from "react-icons/ri";
+import { IoMdArrowDropdown } from "react-icons/io";
 import {
   Sheet,
   SheetContent,
@@ -15,7 +16,7 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 import { AuthContext } from "@/components/AuthProvider";
-import { LogOut } from "lucide-react";
+import { ArrowDownNarrowWide, LogOut } from "lucide-react";
 import { jwtDecode } from "jwt-decode";
 import { Separator } from "./ui/separator";
 import { useRouter } from 'next/navigation';
@@ -145,19 +146,27 @@ const Navbar = () => {
         {isLoggedIn ? (
           <div
             ref={profileRef}
-            className="relative flex gap-5 items-center max-md:hidden"
+            className="relative flex gap-5 cursor-pointer items-center max-md:hidden"
+            onClick={toggleLogout}
+            
           >
+            <div className="flex items-center gap-2">
             <Image
               src={avatarURL || profile}
               alt="Profile"
               className="rounded-full h-10 w-10 object-cover cursor-pointer"
               width={40}
               height={40}
-              onClick={toggleLogout}
+            
             />
+              {
+                firstName ? <p className="text-black">{firstName}</p> : <p className="text-black">Profile</p>
+              }
+              <IoMdArrowDropdown size={25} className="text-blue-300"/>
+          </div>
             {showLogout && (
               <div className="absolute top-[120%]  right-0 bg-white text-black border shadow-md px-8 py-2 rounded-md flex flex-col items-center gap-2 w-[230px]">
-                <p className="font-bold text-lg">{firstName} {lastName}</p>
+              
                 <div className="flex flex-col gap-2">
                   <ul className="flex flex-col items-start gap-2 text-black">
 

@@ -40,7 +40,7 @@ const InvestorProfile = ({ investor, user }) => {
                 </div>
             </div>
             <div className=" mt-10  flex gap-2 flex-wrap">
-                <Button onClick={handleContactClick}>Contact Investor</Button>
+                <Button className="bg-green-400 text-black hover:text-white hover:bg-green-300" onClick={handleContactClick}>Contact Investor</Button>
                 {showContactForm && <Contactform investor={investor} setShowContactForm={setShowContactForm} user={user} />}
             </div>
             </div>

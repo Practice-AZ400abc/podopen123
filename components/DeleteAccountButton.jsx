@@ -80,7 +80,7 @@ const DeleteAccountButton = () => {
         <AlertDialogHeader>
           <AlertDialogTitle className="text-red-500 text-2xl font-bold">Warning:</AlertDialogTitle>
           <AlertDialogDescription>
-            By clicking continue your profile and credentials will be deleted from our platform.
+          By clicking continue your profile and credentials will be deleted from our platform. Any payments you have made on this platform will be deleted and are non-refundable.
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>

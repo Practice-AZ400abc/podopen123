@@ -15,7 +15,7 @@ import { auth } from "../../firebase/firebaseConfig";
 import { AuthContext } from "@/components/AuthProvider";
 import handleSocialAuth from "@/utils/handleSocialAuth";
 import toast from "react-hot-toast";
-import { ArrowLeft, ArrowRight, Loader } from "lucide-react";
+import { ArrowLeft, ArrowRight, Loader, User } from "lucide-react";
 import Image from "next/image";
 import PrivacyFooter from "@/components/PrivacyFooter";
 
@@ -202,37 +202,62 @@ export default function Signup() {
 
       <div className="h-full mb-20 flex flex-col items-center justify-start">
         <div className="p-8  rounded-lg w-[90%] border  sm:w-[90%] md:max-w-[400px] lg:max-w-[500px] mx-auto">
-          <h1 className="text-4xl text-black text-left ">Get Started Now</h1>
-          <h1 className="text-sm text-black text-left mb-4">
+          <h1 className="text-4xl text-blue-400 text-center ">Get Started Now</h1>
+          <h1 className="text-sm text-black text-center mb-4">
             Enter your credentials to access your account
           </h1>
 
-          <h1 className="text-sm text-black text-center mb-2">Are you a ?</h1>
+
+
           <div className="flex justify-center gap-4 mb-2 text-black">
-            <label className="flex items-center">
+            <label
+              className={`flex flex-col items-center border p-4 rounded-[5px] cursor-pointer ${selectedForm === "Visa Sponsor"
+                ? "border-blue-500 text-blue-500"
+                : "border-gray-300"
+                }`}
+            >
               <input
                 type="radio"
                 name="role"
                 value="Visa Sponsor"
                 checked={selectedForm === "Visa Sponsor"}
                 onChange={() => setSelectedForm("Visa Sponsor")}
-                className="mr-2"
+                className="hidden"
               />
-              Visa Sponsor
+              <div className="flex items-center">
+                <User
+                  size={20}
+                  className={`mr-1 ${selectedForm === "Visa Sponsor" ? "text-blue-500" : "text-black"
+                    }`}
+                />
+                Visa Sponsor
+              </div>
             </label>
-            <label className="flex items-center">
+
+            <label
+              className={`flex flex-col items-center border p-4 rounded-[5px] cursor-pointer ${selectedForm === "Visa Seeker"
+                ? "border-blue-500 text-blue-500"
+                : "border-gray-300"
+                }`}
+            >
               <input
                 type="radio"
                 name="role"
                 value="Visa Seeker"
                 checked={selectedForm === "Visa Seeker"}
                 onChange={() => setSelectedForm("Visa Seeker")}
-                className="mr-2"
+                className="hidden"
               />
-              Visa Investor
+              <div className="flex items-center">
+                <User
+                  size={20}
+                  className={`mr-1 ${selectedForm === "Visa Seeker" ? "text-blue-500" : "text-black"
+                    }`}
+                />
+                Visa Seeker
+              </div>
             </label>
           </div>
-
           <form onSubmit={handleRegister}>
             {/* Email and Password Fields */}
             <div className="flex flex-col">
@@ -306,6 +331,11 @@ export default function Signup() {
                 onChange={(e) => setConfirmPassword(e.target.value)}
               />
             </div>
+            <div className="flex  mt-2 items-center justify-start gap-2 text-sm text-gray-500">
+                <input type="checkbox" checked/>
+                <h1>By signing up to our plaporm you agree to our
+                <Link className="underline text-black font-semibold" href={"/terms"}> terms of service</Link> and data privacy <Link className="underline text-black font-semibold" href={"/PrivacyPolicy"}> privacy </Link></h1>
+             </div>
             <button
               type="submit"
               className="flex items-center justify-center text-center w-full p-2 bg-green-600 hover:bg-green-500 text-white font-bold rounded-[5px] mt-5"
@@ -336,17 +366,9 @@ export default function Signup() {
                 </div>
                 <h1 className="text-white font-bold ml-14">Continue with Google</h1>
               </button>
-              {/* <button
-                className="flex gap-5 items-center w-[80%] p-3 bg-blue-600 text-white rounded-full mx-auto justify-center"
-                onClick={() => signInWithSocials(new FacebookAuthProvider())}
-              >
-                <FaFacebookF />
-                <h1>Continue with Facebook</h1>
-              </button> */}
-
             </div>
-          )}
-        </div>
+            )}
+          </div>
 
 
         <div className="w-full mt-20  flex items-center justify-between ">

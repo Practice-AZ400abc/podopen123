@@ -265,7 +265,19 @@ const VisaSeekerProfileForm = ({ }) => {
             onChange={handleFileChange}
           />
         </div>
+        <div className="flex items-center gap-4 w-full justify-center">
+          <p className="text-[12px]">Private – Not searchable</p>
+          <Switch
+            checked={formData.isPublic}
+            onCheckedChange={(checked) =>
+              setFormData((prev) => ({ ...prev, isPublic: checked }))
+            }
+            className="data-[state=checked]:bg-blue-400 data-[state=unchecked]:bg-gray-300"
+          />
 
+          <p className="text-[12px]">Public-Searchable</p>
+
+        </div>
         {/* Personal Information */}
         <section className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <InputField
@@ -595,15 +607,7 @@ const VisaSeekerProfileForm = ({ }) => {
             </label>
             {errors.canProvideLiquidityEvidence && <span style={{ color: 'red' }}>{errors.canProvideLiquidityEvidence}</span>}
           </div>
-          <div className="flex items-center gap-2">
-            <Switch
-              checked={formData.isPublic}
-              onCheckedChange={(checked) =>
-                setFormData((prev) => ({ ...prev, isPublic: checked }))
-              }
-            />
-            <label className="text-sm font-medium">* Make Profile Public for searching </label>
-          </div>
+         
         </div>
         {/* Additional Comments */}
         <textarea
