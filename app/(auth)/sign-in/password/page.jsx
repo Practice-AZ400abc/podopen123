@@ -9,19 +9,21 @@ import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 import { AuthContext } from "@/components/AuthProvider";
 import { Loader } from "lucide-react";
-import Logo from "@/app/Lookvisa.png"
+import Logo from "@/app/Lookvisa.png";
 import Image from "next/image";
 import PrivacyFooter from "@/components/PrivacyFooter";
+
 const EnterPassword = () => {
   const router = useRouter();
-  const { isLoggedIn, login } = useContext(AuthContext); // Get the login function and user from context
-  const [redirectPath, setRedirectPath] = useState("/"); // State to store the redirect path
-
+  const { isLoggedIn, login } = useContext(AuthContext);
+  const [redirectPath, setRedirectPath] = useState("/");
   const [email, setEmail] = useState("");
   const [error, setError] = useState("");
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
+  const [attempts, setAttempts] = useState(0);
+  const maxAttempts = 5;
 
   useEffect(() => {
     const redirectPathInStorage = sessionStorage.getItem("redirect");
@@ -32,12 +34,12 @@ const EnterPassword = () => {
 
   useEffect(() => {
     if (isLoggedIn) {
-      router.push("/"); // If already logged in, redirect to home
+      router.push("/");
     }
   }, [isLoggedIn, router]);
 
   useEffect(() => {
-    const storedEmail = localStorage.getItem("email");
+    const storedEmail = sessionStorage.getItem("email");
     if (!storedEmail) {
       router.push("/sign-in");
     }
@@ -55,55 +57,54 @@ const EnterPassword = () => {
       toast.error("Password is required");
       return;
     }
+    if (attempts >= maxAttempts) {
+      toast.error("Too many failed attempts. Try again later.");
+      return;
+    }
 
     setLoading(true);
     try {
-      const userCredential = await signInWithEmailAndPassword(
-        auth,
-        email,
-        password
-      );
+      const userCredential = await signInWithEmailAndPassword(auth, email, password);
       const user = userCredential.user;
 
       const response = await fetch("/api/token", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          firebaseUid: user.uid,
-        }),
+        body: JSON.stringify({ firebaseUid: user.uid }),
       });
 
       if (!response.ok) throw new Error("Failed to generate token.");
 
       const { token, role, completedProfile } = await response.json();
       localStorage.setItem("token", token);
-      localStorage.removeItem("email");
+      sessionStorage.removeItem("email");
       toast.success("You are logged in successfully!");
       login(token);
 
       if (redirectPath === "/") {
         if (!completedProfile) {
-          setRedirectPath("/profile")
+          setRedirectPath("/profile");
         } else if (role === "Admin") {
-          setRedirectPath("/admin/home")
+          setRedirectPath("/admin/home");
         }
       }
 
-      return router.replace(redirectPath);
+      router.replace(redirectPath);
     } catch (err) {
+      setAttempts((prev) => prev + 1);
       setError(err.message);
       toast.error("Please enter a valid password");
-      setLoading(false)
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
     <>
-
       <div className="mx-auto container min-h-screen">
-        <div className="flex p-4 w-full  items-center justify-start">
+        <div className="flex p-4 w-full items-center justify-start">
           <Link href={"/"}>
-            <Image src={Logo} alt="Lookvisa" width={120} className="" />
+            <Image src={Logo} alt="Lookvisa" width={120} />
           </Link>
         </div>
         <div className="min-h-[70vh] flex flex-col items-center justify-center">
@@ -117,19 +118,23 @@ const EnterPassword = () => {
                   </label>
                   <div className="w-full relative">
                     <input
-                      className={`text-black rounded-[5px] p-1 mt-2 outline-blue-200 w-full border ${error ? "outline-red-500" : ""}`}
+                      className={`text-black rounded-[5px] p-1 mt-2 outline-blue-200 w-full border ${
+                        error ? "outline-red-500" : ""
+                      }`}
                       maxLength={20}
                       type={passwordVisible ? "text" : "password"}
                       onChange={(e) => {
                         setPassword(e.target.value);
                         setError("");
                       }}
+                      disabled={attempts >= maxAttempts}
                       required
                     />
                     <button
                       type="button"
                       onClick={togglePasswordVisibility}
                       className="absolute right-3 top-4 text-sm font-semibold text-black"
+                      disabled={attempts >= maxAttempts}
                     >
                       {passwordVisible ? <FaEye /> : <FaEyeSlash />}
                     </button>
@@ -137,16 +142,17 @@ const EnterPassword = () => {
                 </div>
                 <button
                   type="submit"
-                  className="flex items-center justify-center text-center w-full p-2 bg-green-500 text-white font-bold rounded-md mt-5"
-                  disabled={loading}
+                  className="flex items-center justify-center text-center w-full p-2 bg-green-500 text-white font-bold rounded-md mt-5 disabled:bg-gray-400"
+                  disabled={loading || attempts >= maxAttempts}
                 >
-                  {loading ? (
-                    <Loader className="animate-spin" size={18} />
-                  ) : (
-                    "Sign in"
-                  )}
+                  {loading ? <Loader className="animate-spin" size={18} /> : "Sign in"}
                 </button>
               </form>
+              {attempts >= maxAttempts && (
+                <p className="text-red-500 text-sm mt-2">
+                  Too many failed attempts. Try again later.
+                </p>
+              )}
             </div>
             <div className="mt-4 flex items-center justify-end w-full">
               <Link className="text-blue-500 underline" href={"/forget-password"}>
@@ -155,7 +161,6 @@ const EnterPassword = () => {
             </div>
           </div>
         </div>
-
       </div>
       <PrivacyFooter />
     </>

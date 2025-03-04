@@ -86,7 +86,7 @@ const SignIn = () => {
       }
 
       // If the email is verified, proceed to the password reset page
-      localStorage.setItem("email", email);
+      sessionStorage.setItem("email", email);
       setLoading(false);
       router.push("/sign-in/password");
     } catch (err) {
