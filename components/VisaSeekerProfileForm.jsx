@@ -272,7 +272,7 @@ const VisaSeekerProfileForm = ({ }) => {
             onCheckedChange={(checked) =>
               setFormData((prev) => ({ ...prev, isPublic: checked }))
             }
-            className="data-[state=checked]:bg-blue-400 data-[state=unchecked]:bg-gray-300"
+            className="data-[state=checked]:bg-green-400 data-[state=unchecked]:bg-gray-300"
           />
 
           <p className="text-[12px]">Public-Searchable</p>
