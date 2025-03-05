@@ -8,14 +8,9 @@ import { Button } from "./ui/button";
 const InvestorProfile = ({ investor, user }) => {
     const [showContactForm, setShowContactForm] = useState(false);
 
-    if (!investor) {
-        return (
-            <div className="min-h-screen flex items-center justify-center">
-                Loading...
-            </div>
-        );
-    }
+    if (!investor) return null;
 
+    
     const handleContactClick = () => {
         setShowContactForm(true);
     };
