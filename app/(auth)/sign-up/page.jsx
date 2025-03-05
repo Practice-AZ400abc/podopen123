@@ -241,7 +241,7 @@ export default function Signup() {
             </label>
 
             <label
-              className={`flex flex-col items-center border p-4 rounded-[5px] cursor-pointer ${selectedForm === "Visa Seeker"
+              className={`flex relative flex-col items-center border p-4 rounded-[5px] cursor-pointer ${selectedForm === "Visa Seeker"
                 ? "border-blue-500 text-blue-500"
                 : "border-gray-300"
                 }`}
