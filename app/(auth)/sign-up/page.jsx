@@ -211,7 +211,7 @@ export default function Signup() {
 
           <div className="flex justify-center gap-4 mb-2 text-black">
             <label
-              className={`flex flex-col items-center border p-4 rounded-[5px] cursor-pointer ${selectedForm === "Visa Sponsor"
+              className={`flex flex-col relative items-center border p-4 rounded-[5px] cursor-pointer ${selectedForm === "Visa Sponsor"
                 ? "border-blue-500 text-blue-500"
                 : "border-gray-300"
                 }`}
@@ -222,7 +222,7 @@ export default function Signup() {
                 value="Visa Sponsor"
                 checked={selectedForm === "Visa Sponsor"}
                 onChange={() => setSelectedForm("Visa Sponsor")}
-                className="hidden"
+                className="absolute left-4"
               />
               <div className="flex items-center">
                 <User
@@ -231,6 +231,12 @@ export default function Signup() {
                     }`}
                 />
                 Visa Sponsor
+              </div>
+              <div className="p-2 border  rounded-md mt-2 text-xs text-gray-500">
+                <p>I’m a Visa Sponsor I need
+                  investments for my projects
+                  and seeking funds from
+                  investors</p>
               </div>
             </label>
 
@@ -246,7 +252,7 @@ export default function Signup() {
                 value="Visa Seeker"
                 checked={selectedForm === "Visa Seeker"}
                 onChange={() => setSelectedForm("Visa Seeker")}
-                className="hidden"
+                className="absolute left-4"
               />
               <div className="flex items-center">
                 <User
@@ -254,7 +260,12 @@ export default function Signup() {
                   className={`mr-1 ${selectedForm === "Visa Seeker" ? "text-blue-500" : "text-black"
                     }`}
                 />
-                Visa Seeker
+                Investor
+              </div>
+              <div className="p-2 border  rounded-md mt-2 text-xs text-gray-500">
+                <p>I am a visa investor I am
+                  seeking an investor visa, or
+                  E2, EB5 visa or Golden visa.</p>
               </div>
             </label>
           </div>
@@ -332,10 +343,10 @@ export default function Signup() {
               />
             </div>
             <div className="flex  mt-2 items-center justify-start gap-2 text-sm text-gray-500">
-                <input type="checkbox" checked/>
-                <h1>By signing up to our plaporm you agree to our
-                <Link className="underline text-black font-semibold" href={"/terms"}> terms of service</Link> and data privacy <Link className="underline text-black font-semibold" href={"/PrivacyPolicy"}> privacy </Link></h1>
-             </div>
+              <input type="checkbox" checked />
+              <h1>By signing up to our plaTForm you agree to our
+                <Link className="underline text-black font-semibold" href={"/terms"}> terms of service</Link> and  <Link className="underline text-black font-semibold" href={"/PrivacyPolicy"}>data privacy</Link>.</h1>
+            </div>
             <button
               type="submit"
               className="flex items-center justify-center text-center w-full p-2 bg-green-600 hover:bg-green-500 text-white font-bold rounded-[5px] mt-5"
@@ -367,8 +378,8 @@ export default function Signup() {
                 <h1 className="text-white font-bold ml-14">Continue with Google</h1>
               </button>
             </div>
-            )}
-          </div>
+          )}
+        </div>
 
 
         <div className="w-full mt-20  flex items-center justify-between ">
