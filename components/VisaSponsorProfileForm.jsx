@@ -16,25 +16,38 @@ import { useRouter } from "next/navigation";
 import { AuthContext } from "./AuthProvider";
 import { ArrowRight, Loader2, Mail } from "lucide-react";
 import Link from "next/link";
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger,
-} from "@/components/ui/alert-dialog"
 import DeleteAccountButton from "./DeleteAccountButton";
 
 const VisaSponsorProfileForm = ({ }) => {
+  const [isFormDirty, setIsFormDirty] = useState(false);
   const router = useRouter();
   const [uploading, setUploading] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [token, setToken] = useState(null);
   const { login } = useContext(AuthContext);
+
+  useEffect(() => {
+    const handleBeforeUnload = (event) => {
+      if (isFormDirty) {
+        event.preventDefault();
+        event.returnValue = "You have unsaved changes. Are you sure you want to leave?";
+      }
+    };
+
+    const handleRouteChange = (url) => {
+      if (isFormDirty && !window.confirm("You have unsaved changes. Do you want to leave?")) {
+        router.events.emit("routeChangeError");
+        throw "Route change aborted.";
+      }
+    };
+
+    window.addEventListener("beforeunload", handleBeforeUnload);
+    router.events.on("routeChangeStart", handleRouteChange);
+    return () => {
+      window.removeEventListener("beforeunload", handleBeforeUnload);
+      router.events.off("routeChangeStart", handleRouteChange);
+    };
+  }, [isFormDirty]);
 
   useEffect(() => {
     const storedToken = localStorage.getItem("token");
@@ -237,7 +250,12 @@ const VisaSponsorProfileForm = ({ }) => {
             id="avatarUpload"
             accept="image/*"
             className="hidden"
-            onChange={handleFileChange}
+            onChange={
+              () => {
+                setIsFormDirty(true);
+                handleFileChange();
+              }
+            }
           />
         </div>
 
@@ -249,8 +267,9 @@ const VisaSponsorProfileForm = ({ }) => {
               id="firstName"
               value={formData.firstName}
               errors={errors.firstName}
-              onChange={(e) =>
-                setFormData((prev) => ({ ...prev, firstName: e.target.value }))
+              onChange={(e) =>{
+                setIsFormDirty(true);
+                setFormData((prev) => ({ ...prev, firstName: e.target.value }))}
               }
             />
             <InputField
@@ -258,19 +277,21 @@ const VisaSponsorProfileForm = ({ }) => {
               id="lastName"
               value={formData.lastName}
               error={errors.lastName}
-              onChange={(e) =>
-                setFormData((prev) => ({ ...prev, lastName: e.target.value }))
+              onChange={(e) =>{
+                setIsFormDirty(true);
+                setFormData((prev) => ({ ...prev, lastName: e.target.value }))}
               }
             />
             <InputField
               label="Company Name"
               id="companyName"
               value={formData.companyName}
-              onChange={(e) =>
+              onChange={(e) =>{
+                setIsFormDirty(true);
                 setFormData((prev) => ({
                   ...prev,
                   companyName: e.target.value,
-                }))
+                }))}
               }
             />
 
@@ -281,11 +302,12 @@ const VisaSponsorProfileForm = ({ }) => {
 
               <select
                 value={formData.countryLocation}
-                onChange={(e) =>
+                onChange={(e) =>{
+                  setIsFormDirty(true);
                   setFormData((prev) => ({
                     ...prev,
                     countryLocation: e.target.value,
-                  }))
+                  }))}
                 }
                 className="bg-gray-50 h-12 p-2 rounded-md border border-gray-300"
               >
@@ -306,11 +328,12 @@ const VisaSponsorProfileForm = ({ }) => {
               </label>
               <select
                 value={formData.investmentRole}
-                onChange={(e) =>
+                onChange={(e) =>{
+                  setIsFormDirty(true);
                   setFormData((prev) => ({
                     ...prev,
                     investmentRole: e.target.value,
-                  }))
+                  }))}
                 }
                 className="bg-gray-50 h-12 p-2 rounded-md border border-gray-300"
               >
@@ -334,12 +357,12 @@ const VisaSponsorProfileForm = ({ }) => {
                 style={{ width: "100%" }}
                 defaultCountry="ua"
                 value={formData.telegram}
-                onChange={(value) =>
+                onChange={(value) =>{
+                setIsFormDirty(true);
                   setFormData((prev) => ({
                     ...prev,
                     telegram: value, // Use the value directly
-                  }))
-
+                  }))}
                 }
               />
             </div>
@@ -348,11 +371,12 @@ const VisaSponsorProfileForm = ({ }) => {
               <PhoneInput
                 defaultCountry="ua"
                 value={formData.whatsapp}
-                onChange={(value) =>
+                onChange={(value) =>{
+                  setIsFormDirty(true);
                   setFormData((prev) => ({
                     ...prev,
                     whatsapp: value, // Use the value directly
-                  }))
+                  }))}
                 }
               />
             </div>
@@ -361,11 +385,12 @@ const VisaSponsorProfileForm = ({ }) => {
               <PhoneInput
                 defaultCountry="ua"
                 value={formData.phone}
-                onChange={(value) =>
+                onChange={(value) =>{
+                  setIsFormDirty(true);
                   setFormData((prev) => ({
                     ...prev,
                     phone: value, // Use the value directly
-                  }))
+                  }))}
                 }
               />
               {errors.phone && (
@@ -380,11 +405,12 @@ const VisaSponsorProfileForm = ({ }) => {
                 id="contactEmail"
                 errors={errors.contactEmail}
                 value={formData.contactEmail}
-                onChange={(e) =>
+                onChange={(e) =>{
+                  setIsFormDirty(true);
                   setFormData((prev) => ({
                     ...prev,
                     contactEmail: e.target.value,
-                  }))
+                  }))}
                 }
               />
             </div>

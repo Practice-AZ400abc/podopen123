@@ -21,11 +21,35 @@ import DeleteAccountButton from "./DeleteAccountButton";
 import { Switch } from "@/components/ui/switch"
 
 const VisaSeekerProfileForm = ({ }) => {
+  const [isFormDirty, setIsFormDirty] = useState(false);
   const router = useRouter();
   const [uploading, setUploading] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [token, setToken] = useState(null);
   const { login } = useContext(AuthContext);
+
+  useEffect(() => {
+    const handleBeforeUnload = (event) => {
+      if (isFormDirty) {
+        event.preventDefault();
+        event.returnValue = "You have unsaved changes. Are you sure you want to leave?";
+      }
+    };
+
+    const handleRouteChange = (url) => {
+      if (isFormDirty && !window.confirm("You have unsaved changes. Do you want to leave?")) {
+        router.events.emit("routeChangeError");
+        throw "Route change aborted.";
+      }
+    };
+
+    window.addEventListener("beforeunload", handleBeforeUnload);
+    router.events.on("routeChangeStart", handleRouteChange);
+    return () => {
+      window.removeEventListener("beforeunload", handleBeforeUnload);
+      router.events.off("routeChangeStart", handleRouteChange);
+    };
+  }, [isFormDirty]);
 
   useEffect(() => {
     const storedToken = localStorage.getItem("token");
@@ -262,7 +286,11 @@ const VisaSeekerProfileForm = ({ }) => {
             id="avatarUpload"
             accept="image/*"
             className="hidden"
-            onChange={handleFileChange}
+            onChange={() => {
+              setIsFormDirty(true);
+              handleFileChange();
+            }
+            }
           />
         </div>
         <div className="flex items-center gap-4 w-full justify-center">
@@ -285,8 +313,10 @@ const VisaSeekerProfileForm = ({ }) => {
             id="firstName"
             value={formData.firstName}
             errors={errors.firstName}
-            onChange={(e) =>
+            onChange={(e) => {
+              setIsFormDirty(true);
               setFormData((prev) => ({ ...prev, firstName: e.target.value }))
+            }
             }
           />
           <InputField
@@ -294,27 +324,33 @@ const VisaSeekerProfileForm = ({ }) => {
             id="lastName"
             value={formData.lastName}
             error={errors.lastName}
-            onChange={(e) =>
+            onChange={(e) => {
+              setIsFormDirty(true);
               setFormData((prev) => ({ ...prev, lastName: e.target.value }))
+            }
             }
           />
           <InputField
             label="Company Name"
             id="companyName"
             value={formData.companyName}
-            onChange={(e) =>
+            onChange={(e) => {
+              setIsFormDirty(true);
               setFormData((prev) => ({
                 ...prev,
                 companyName: e.target.value,
               }))
+            }
             }
           />
           <InputField
             label="Website URL"
             id="websiteURL"
             value={formData.websiteURL}
-            onChange={(e) =>
+            onChange={(e) => {
+              setIsFormDirty(true);
               setFormData((prev) => ({ ...prev, websiteURL: e.target.value }))
+            }
             }
           />
 
@@ -325,11 +361,13 @@ const VisaSeekerProfileForm = ({ }) => {
 
             <select
               value={formData.countryOfBirth}
-              onChange={(e) =>
+              onChange={(e) => {
+                setIsFormDirty(true);
                 setFormData((prev) => ({
                   ...prev,
                   countryOfBirth: e.target.value,
                 }))
+              }
               }
               className="bg-gray-50 h-12 p-2 rounded-md border border-gray-300"
             >
@@ -352,11 +390,13 @@ const VisaSeekerProfileForm = ({ }) => {
 
             <select
               value={formData.nationality}
-              onChange={(e) =>
+              onChange={(e) => {
+                setIsFormDirty(true);
                 setFormData((prev) => ({
                   ...prev,
                   nationality: e.target.value,
                 }))
+              }
               }
               className="bg-gray-50 h-12 p-2 rounded-md border border-gray-300"
             >
@@ -379,11 +419,13 @@ const VisaSeekerProfileForm = ({ }) => {
             </label>
             <select
               value={formData.relocationTimeframe}
-              onChange={(e) =>
+              onChange={(e) => {
+                setIsFormDirty(true);
                 setFormData((prev) => ({
                   ...prev,
                   relocationTimeframe: e.target.value,
                 }))
+              }
               }
               className="bg-gray-50 h-12 w-full p-2 rounded-md border border-gray-300"
             >
@@ -421,11 +463,13 @@ const VisaSeekerProfileForm = ({ }) => {
             </label>
             <select
               value={formData.relocationCountry}
-              onChange={(e) =>
+              onChange={(e) => {
+                setIsFormDirty(true);
                 setFormData((prev) => ({
                   ...prev,
                   relocationCountry: e.target.value,
                 }))
+              }
               }
               className="bg-gray-50 h-12 w-full p-2 rounded-md border border-gray-300"
             >
@@ -452,8 +496,10 @@ const VisaSeekerProfileForm = ({ }) => {
             </label>
             <select
               value={formData.netWorth}
-              onChange={(e) =>
+              onChange={(e) => {
+                setIsFormDirty(true);
                 setFormData((prev) => ({ ...prev, netWorth: e.target.value }))
+              }
               }
               className="bg-gray-50 h-12 p-2 rounded-md border border-gray-300"
             >
@@ -473,11 +519,13 @@ const VisaSeekerProfileForm = ({ }) => {
             </label>
             <select
               value={formData.liquidAssets}
-              onChange={(e) =>
+              onChange={(e) => {
+                setIsFormDirty(true);
                 setFormData((prev) => ({
                   ...prev,
                   liquidAssets: e.target.value,
                 }))
+              }
               }
               className="bg-gray-50 h-12 p-2 rounded-md border border-gray-300"
             >
@@ -499,11 +547,13 @@ const VisaSeekerProfileForm = ({ }) => {
             </label>
             <select
               value={formData.industryToInvest}
-              onChange={(e) =>
+              onChange={(e) => {
+                setIsFormDirty(true);
                 setFormData((prev) => ({
                   ...prev,
                   industryToInvest: e.target.value,
                 }))
+              }
               }
               className="bg-gray-50 h-12 p-2 rounded-md border border-gray-300"
             >
@@ -525,11 +575,13 @@ const VisaSeekerProfileForm = ({ }) => {
             </label>
             <select
               value={formData.investmentAmount}
-              onChange={(e) =>
+              onChange={(e) => {
+                setIsFormDirty(true);
                 setFormData((prev) => ({
                   ...prev,
                   investmentAmount: e.target.value,
                 }))
+              }
               }
               className="bg-gray-50 h-12 p-2 rounded-md border border-gray-300"
             >
@@ -553,16 +605,20 @@ const VisaSeekerProfileForm = ({ }) => {
             label="Instagram Profile"
             id="instagram"
             value={formData.instagram}
-            onChange={(e) =>
+            onChange={(e) => {
+              setIsFormDirty(true);
               setFormData((prev) => ({ ...prev, instagram: e.target.value }))
+            }
             }
           />
           <InputField
             label="LinkedIn Profile"
             id="linkedin"
             value={formData.linkedin}
-            onChange={(e) =>
+            onChange={(e) => {
+              setIsFormDirty(true);
               setFormData((prev) => ({ ...prev, linkedin: e.target.value }))
+            }
             }
           />
         </section>
@@ -573,11 +629,13 @@ const VisaSeekerProfileForm = ({ }) => {
               type="checkbox"
               id="canProvideLiquidityEvidence"
               checked={formData.canProvideLiquidityEvidence}
-              onChange={(e) =>
+              onChange={(e) => {
+                setIsFormDirty(true);
                 setFormData((prev) => ({
                   ...prev,
                   canProvideLiquidityEvidence: e.target.checked,
                 }))
+              }
               }
               className="h-5 w-5 cursor-pointer"
             />
@@ -594,11 +652,13 @@ const VisaSeekerProfileForm = ({ }) => {
               type="checkbox"
               id="dualCitizenship"
               checked={formData.dualCitizenship}
-              onChange={(e) =>
+              onChange={(e) => {
+                setIsFormDirty(true);
                 setFormData((prev) => ({
                   ...prev,
                   dualCitizenship: e.target.checked,
                 }))
+              }
               }
               className="h-5 w-5 cursor-pointer"
             />
@@ -607,15 +667,17 @@ const VisaSeekerProfileForm = ({ }) => {
             </label>
             {errors.canProvideLiquidityEvidence && <span style={{ color: 'red' }}>{errors.canProvideLiquidityEvidence}</span>}
           </div>
-         
+
         </div>
         {/* Additional Comments */}
         <textarea
           className="min-h-[200px] p-2 bg-gray-50 rounded-lg border border-gray-300"
           placeholder="Add comments or notes..."
           value={formData.comments}
-          onChange={(e) =>
+          onChange={(e) => {
+            setIsFormDirty(true);
             setFormData((prev) => ({ ...prev, comments: e.target.value }))
+          }
           }
         ></textarea>
         {/* Contact Info */}
@@ -625,11 +687,13 @@ const VisaSeekerProfileForm = ({ }) => {
             <PhoneInput
               defaultCountry="ua"
               value={formData.telegram}
-              onChange={(value) =>
+              onChange={(value) => {
+                setIsFormDirty(true);
                 setFormData((prev) => ({
                   ...prev,
                   telegram: value, // Use the value directly
                 }))
+              }
               }
             />
           </div>
@@ -638,11 +702,13 @@ const VisaSeekerProfileForm = ({ }) => {
             <PhoneInput
               defaultCountry="ua"
               value={formData.whatsapp}
-              onChange={(value) =>
+              onChange={(value) => {
+                setIsFormDirty(true);
                 setFormData((prev) => ({
                   ...prev,
                   whatsapp: value, // Use the value directly
                 }))
+              }
               }
             />
           </div>
@@ -651,11 +717,13 @@ const VisaSeekerProfileForm = ({ }) => {
             <PhoneInput
               defaultCountry="ua"
               value={formData.phone}
-              onChange={(value) =>
+              onChange={(value) => {
+                setIsFormDirty(true);
                 setFormData((prev) => ({
                   ...prev,
                   phone: value, // Use the value directly
                 }))
+              }
               }
             />
           </div>
@@ -666,8 +734,10 @@ const VisaSeekerProfileForm = ({ }) => {
               id="contactEmail"
               errors={errors.contactEmail}
               value={formData.contactEmail}
-              onChange={(e) =>
+              onChange={(e) => {
+                setIsFormDirty(true);
                 setFormData((prev) => ({ ...prev, contactEmail: e.target.value }))
+              }
               }
             />
           </div>

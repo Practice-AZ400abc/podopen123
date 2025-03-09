@@ -45,6 +45,11 @@ const UserSchema = new Schema(
     authTokenExpiry: {
       type: Date,
     },
+    isLocked: {
+      type: Boolean,
+      required: false,
+      default: false,
+    },
 
     // Shared fields for both roles
     avatarURL: {

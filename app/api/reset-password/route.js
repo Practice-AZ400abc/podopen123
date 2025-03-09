@@ -35,6 +35,7 @@ export const POST = async (req) => {
 
     dbUser.authToken = null;
     dbUser.authTokenExpiry = null;
+    dbUser.isLocked = false;
 
     await dbUser.save();
 
