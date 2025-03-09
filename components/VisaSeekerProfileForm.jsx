@@ -14,15 +14,16 @@ import { PhoneInput } from "react-international-phone";
 import "react-international-phone/style.css";
 import toast from "react-hot-toast";
 import { jwtDecode } from "jwt-decode";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { AuthContext } from "./AuthProvider";
 import { Loader2, Mail } from "lucide-react";
 import DeleteAccountButton from "./DeleteAccountButton";
-import { Switch } from "@/components/ui/switch"
+import { Switch } from "@/components/ui/switch";
 
 const VisaSeekerProfileForm = ({ }) => {
   const [isFormDirty, setIsFormDirty] = useState(false);
   const router = useRouter();
+  const pathname = usePathname();
   const [uploading, setUploading] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [token, setToken] = useState(null);
@@ -36,20 +37,22 @@ const VisaSeekerProfileForm = ({ }) => {
       }
     };
 
+    window.addEventListener("beforeunload", handleBeforeUnload);
+
+    return () => {
+      window.removeEventListener("beforeunload", handleBeforeUnload);
+    };
+  }, [isFormDirty]);
+
+  useEffect(() => {
     const handleRouteChange = (url) => {
-      if (isFormDirty && !window.confirm("You have unsaved changes. Do you want to leave?")) {
-        router.events.emit("routeChangeError");
-        throw "Route change aborted.";
+      if (isFormDirty && !window.confirm("You have unsaved changes. Do you really want to leave?")) {
+        router.push(pathname);
       }
     };
 
-    window.addEventListener("beforeunload", handleBeforeUnload);
-    router.events.on("routeChangeStart", handleRouteChange);
-    return () => {
-      window.removeEventListener("beforeunload", handleBeforeUnload);
-      router.events.off("routeChangeStart", handleRouteChange);
-    };
-  }, [isFormDirty]);
+    handleRouteChange(); // Check immediately when path changes
+  }, [pathname]); // Runs when the URL path changes
 
   useEffect(() => {
     const storedToken = localStorage.getItem("token");
@@ -241,6 +244,8 @@ const VisaSeekerProfileForm = ({ }) => {
 
       const { token: newToken } = await tokenResponse.json();
       login(newToken); // Update the token in AuthContext
+
+      setIsFormDirty(false);
 
       toast.success("Your profile has been successfully updated.");
       router.push("/");
@@ -748,7 +753,7 @@ const VisaSeekerProfileForm = ({ }) => {
             type="submit"
             className="px-6 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-700"
           >
-            { isLoading ? <Loader2 className="animate-spin" /> : "Save" }
+            {isLoading ? <Loader2 className="animate-spin" /> : "Save"}
           </button>
           <DeleteAccountButton />
         </div>

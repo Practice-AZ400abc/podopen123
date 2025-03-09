@@ -12,7 +12,7 @@ import { PhoneInput } from "react-international-phone";
 import "react-international-phone/style.css";
 import toast from "react-hot-toast";
 import { jwtDecode } from "jwt-decode";
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 import { AuthContext } from "./AuthProvider";
 import { ArrowRight, Loader2, Mail } from "lucide-react";
 import Link from "next/link";
@@ -21,6 +21,7 @@ import DeleteAccountButton from "./DeleteAccountButton";
 const VisaSponsorProfileForm = ({ }) => {
   const [isFormDirty, setIsFormDirty] = useState(false);
   const router = useRouter();
+  const pathname = usePathname();
   const [uploading, setUploading] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [token, setToken] = useState(null);
@@ -34,20 +35,22 @@ const VisaSponsorProfileForm = ({ }) => {
       }
     };
 
+    window.addEventListener("beforeunload", handleBeforeUnload);
+
+    return () => {
+      window.removeEventListener("beforeunload", handleBeforeUnload);
+    };
+  }, [isFormDirty]);
+
+  useEffect(() => {
     const handleRouteChange = (url) => {
-      if (isFormDirty && !window.confirm("You have unsaved changes. Do you want to leave?")) {
-        router.events.emit("routeChangeError");
-        throw "Route change aborted.";
+      if (isFormDirty && !window.confirm("You have unsaved changes. Do you really want to leave?")) {
+        router.push(pathname);
       }
     };
 
-    window.addEventListener("beforeunload", handleBeforeUnload);
-    router.events.on("routeChangeStart", handleRouteChange);
-    return () => {
-      window.removeEventListener("beforeunload", handleBeforeUnload);
-      router.events.off("routeChangeStart", handleRouteChange);
-    };
-  }, [isFormDirty]);
+    handleRouteChange(); // Check immediately when path changes
+  }, [pathname]); // Runs when the URL path changes
 
   useEffect(() => {
     const storedToken = localStorage.getItem("token");
@@ -207,6 +210,8 @@ const VisaSponsorProfileForm = ({ }) => {
       const { token: newToken } = await tokenResponse.json();
       login(newToken); // Update the token in AuthContext
 
+      setIsFormDirty(false);
+
       toast.success("Your profile has been successfully updated.");
       router.push("/");
     } catch (error) {
@@ -267,9 +272,10 @@ const VisaSponsorProfileForm = ({ }) => {
               id="firstName"
               value={formData.firstName}
               errors={errors.firstName}
-              onChange={(e) =>{
+              onChange={(e) => {
                 setIsFormDirty(true);
-                setFormData((prev) => ({ ...prev, firstName: e.target.value }))}
+                setFormData((prev) => ({ ...prev, firstName: e.target.value }))
+              }
               }
             />
             <InputField
@@ -277,21 +283,23 @@ const VisaSponsorProfileForm = ({ }) => {
               id="lastName"
               value={formData.lastName}
               error={errors.lastName}
-              onChange={(e) =>{
+              onChange={(e) => {
                 setIsFormDirty(true);
-                setFormData((prev) => ({ ...prev, lastName: e.target.value }))}
+                setFormData((prev) => ({ ...prev, lastName: e.target.value }))
+              }
               }
             />
             <InputField
               label="Company Name"
               id="companyName"
               value={formData.companyName}
-              onChange={(e) =>{
+              onChange={(e) => {
                 setIsFormDirty(true);
                 setFormData((prev) => ({
                   ...prev,
                   companyName: e.target.value,
-                }))}
+                }))
+              }
               }
             />
 
@@ -302,12 +310,13 @@ const VisaSponsorProfileForm = ({ }) => {
 
               <select
                 value={formData.countryLocation}
-                onChange={(e) =>{
+                onChange={(e) => {
                   setIsFormDirty(true);
                   setFormData((prev) => ({
                     ...prev,
                     countryLocation: e.target.value,
-                  }))}
+                  }))
+                }
                 }
                 className="bg-gray-50 h-12 p-2 rounded-md border border-gray-300"
               >
@@ -328,12 +337,13 @@ const VisaSponsorProfileForm = ({ }) => {
               </label>
               <select
                 value={formData.investmentRole}
-                onChange={(e) =>{
+                onChange={(e) => {
                   setIsFormDirty(true);
                   setFormData((prev) => ({
                     ...prev,
                     investmentRole: e.target.value,
-                  }))}
+                  }))
+                }
                 }
                 className="bg-gray-50 h-12 p-2 rounded-md border border-gray-300"
               >
@@ -357,12 +367,13 @@ const VisaSponsorProfileForm = ({ }) => {
                 style={{ width: "100%" }}
                 defaultCountry="ua"
                 value={formData.telegram}
-                onChange={(value) =>{
-                setIsFormDirty(true);
+                onChange={(value) => {
+                  setIsFormDirty(true);
                   setFormData((prev) => ({
                     ...prev,
                     telegram: value, // Use the value directly
-                  }))}
+                  }))
+                }
                 }
               />
             </div>
@@ -371,12 +382,13 @@ const VisaSponsorProfileForm = ({ }) => {
               <PhoneInput
                 defaultCountry="ua"
                 value={formData.whatsapp}
-                onChange={(value) =>{
+                onChange={(value) => {
                   setIsFormDirty(true);
                   setFormData((prev) => ({
                     ...prev,
                     whatsapp: value, // Use the value directly
-                  }))}
+                  }))
+                }
                 }
               />
             </div>
@@ -385,12 +397,13 @@ const VisaSponsorProfileForm = ({ }) => {
               <PhoneInput
                 defaultCountry="ua"
                 value={formData.phone}
-                onChange={(value) =>{
+                onChange={(value) => {
                   setIsFormDirty(true);
                   setFormData((prev) => ({
                     ...prev,
                     phone: value, // Use the value directly
-                  }))}
+                  }))
+                }
                 }
               />
               {errors.phone && (
@@ -405,12 +418,13 @@ const VisaSponsorProfileForm = ({ }) => {
                 id="contactEmail"
                 errors={errors.contactEmail}
                 value={formData.contactEmail}
-                onChange={(e) =>{
+                onChange={(e) => {
                   setIsFormDirty(true);
                   setFormData((prev) => ({
                     ...prev,
                     contactEmail: e.target.value,
-                  }))}
+                  }))
+                }
                 }
               />
             </div>
