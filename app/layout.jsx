@@ -8,7 +8,7 @@ import { AuthProvider } from "@/components/AuthProvider";
 import { Toaster } from "react-hot-toast";
 import { usePathname } from "next/navigation";
 import CookieConsent from "@/components/CookieConsent";
-import Script from "next/script";
+import { GoogleAnalytics } from '@next/third-parties/google'
 
 export default function RootLayout({ children }) {
   const pathname = usePathname();
@@ -31,7 +31,7 @@ export default function RootLayout({ children }) {
         <title>Lookvisa – Find Projects Seeking Funding for investment, Golden and EB5 visas</title>
 
         {/* Google Analytics */}
-        <Script
+        {/* <Script
           strategy="afterInteractive"
           src="https://www.googletagmanager.com/gtag/js?id=G-XCB8H8JXLK" //testing measurement id
         />
@@ -48,7 +48,7 @@ export default function RootLayout({ children }) {
               });
             `,
           }}
-        />
+        /> */}
       </head>
       <body className="antialiased">
         <SuspenseProvider>
@@ -62,6 +62,7 @@ export default function RootLayout({ children }) {
           </AuthProvider>
         </SuspenseProvider>
       </body>
+      <GoogleAnalytics gaId="G-XCB8H8JXLK" />
     </html>
   );
 }
