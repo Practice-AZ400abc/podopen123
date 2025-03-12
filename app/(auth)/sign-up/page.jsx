@@ -382,7 +382,7 @@ export default function Signup() {
         </div>
 
 
-        <div className="w-full mt-20  flex items-center justify-between ">
+        <div className="w-full mt-5  flex items-center justify-between ">
           <div className="flex flex-col justify-center w-full items-center gap-3 text-sm text-gray-500">
             <h1>Already have a Lookvisa  {selectedForm === "Visa Seeker" ? "Investor" : "Sponsor"} account?</h1>
             <Link href={"/sign-in"} className=" border px-6 border-green-500 text-green-500 hover:text-white hover:border-none  hover:bg-green-600 py-2 ">

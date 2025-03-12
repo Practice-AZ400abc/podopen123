@@ -293,7 +293,7 @@ const Navbar = () => {
                 </Link>
                 <Link
                   href="/OurStory"
-                  className={isActive("/blogs") ? "underline font-bold" : ""}
+                  className={isActive("/OurStory") ? "underline font-bold" : ""}
                 >
                   Our Story
                 </Link>
