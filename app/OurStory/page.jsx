@@ -7,12 +7,12 @@ import Image from 'next/image'
 import { AlertCircle, Globe, ReceiptIcon, Settings } from 'lucide-react'
 
 const OurStory = () => {
-  
   return (
-    <div className="mx-auto container"   >
-      <div className='flex h-[70vh] flex-col md:flex-row items-center justify-between rounded-md w-full mt-10'>
-        <div className=' rounded-md p-4  max-w-[700px] text-black '>
-          <h1 className='text-green-400 font-bold '>
+    <div className="mx-auto container px-4 py-8">
+      {/* First Section */}
+      <div className='flex min-h-[600px] flex-col md:flex-row items-center justify-between gap-8 w-full'>
+        <div className='rounded-md p-4 max-w-[700px] text-black'>
+          <h1 className='text-green-400 font-bold'>
             Our Story
           </h1>
           <h1 className='text-2xl text-black font-bold md:text-[45px] leading-[50px]'>
@@ -31,16 +31,30 @@ const OurStory = () => {
             </li>
           </ul>
         </div>
-        <div>
-          <Image width={700} height={800} src={Illustration} alt="" />
+        <div className='w-full md:w-1/2'>
+          <Image 
+            width={700} 
+            height={800} 
+            src={Illustration} 
+            alt="Our Story Illustration"
+            className='w-full h-auto object-contain' 
+          />
         </div>
       </div>
-      <div className='flex md:h-[70vh] flex-col md:flex-row items-center justify-between rounded-md w-full mt-10'>
-        <div>
-          <Image width={700} height={800} src={Growth} alt="" />
+
+      {/* Second Section */}
+      <div className='flex min-h-[600px] flex-col md:flex-row items-center justify-between gap-8 w-full mt-16'>
+        <div className='w-full md:w-1/2 order-2 md:order-1'>
+          <Image 
+            width={700} 
+            height={800} 
+            src={Growth} 
+            alt="Growth Illustration"
+            className='w-full h-auto object-contain' 
+          />
         </div>
-        <div className=' rounded-md p-4  max-w-[700px] text-black '>
-          <h1 className='text-green-400 font-bold '>
+        <div className='rounded-md p-4 max-w-[700px] text-black order-1 md:order-2'>
+          <h1 className='text-green-400 font-bold'>
             What do we do for you at LookVisa?
           </h1>
           <h1 className='text-2xl text-black font-bold md:text-[45px] leading-[50px]'>
