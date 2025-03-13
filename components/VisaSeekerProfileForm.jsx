@@ -299,6 +299,7 @@ const VisaSeekerProfileForm = ({ }) => {
             }
           />
         </div>
+      
         <div className="flex items-center gap-4 w-full justify-center">
           <p className="text-[12px]">Private – Not searchable</p>
           <Switch
@@ -312,6 +313,12 @@ const VisaSeekerProfileForm = ({ }) => {
           <p className="text-[12px]">Public-Searchable</p>
 
         </div>
+        <button
+            type="submit"
+            className="px-6 py-2 bg-blue-500 w-fit text-white rounded-lg hover:bg-blue-700"
+          >
+            {isLoading ? <Loader2 className="animate-spin" /> : "Save"}
+          </button>
         {/* Personal Information */}
         <section className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <InputField
