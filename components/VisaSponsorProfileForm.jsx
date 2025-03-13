@@ -256,9 +256,9 @@ const VisaSponsorProfileForm = ({ }) => {
             accept="image/*"
             className="hidden"
             onChange={
-              () => {
+              (event) => {
                 setIsFormDirty(true);
-                handleFileChange();
+                handleFileChange(event);
               }
             }
           />

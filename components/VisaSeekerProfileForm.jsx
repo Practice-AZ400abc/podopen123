@@ -291,10 +291,11 @@ const VisaSeekerProfileForm = ({ }) => {
             id="avatarUpload"
             accept="image/*"
             className="hidden"
-            onChange={() => {
-              setIsFormDirty(true);
-              handleFileChange();
-            }
+            onChange={
+              (event) => {
+                setIsFormDirty(true);
+                handleFileChange(event);
+              }
             }
           />
         </div>
