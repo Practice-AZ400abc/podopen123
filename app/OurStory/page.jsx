@@ -114,7 +114,7 @@ const OurStory = () => {
 
 
 {/* makig Difference  */}
-<div className='flex h-[70vh] flex-col md:flex-row items-center justify-between rounded-md w-full mt-10'>
+<div className='flex h-full flex-col md:flex-row items-center justify-between rounded-md w-full mt-10'>
         <div className=' rounded-md p-4  max-w-[700px] text-black '>
           <h1 className='text-green-400 font-bold '>
     
