@@ -56,7 +56,8 @@ const EnterPassword = () => {
         if (user.isLocked) {
           setIsLocked(true);
           // toast.error("Your account is locked. Please reset your password.");
-          setError("Your account is locked. Please reset your password.");
+          setError("Your account is locked due to multiple password attempts for your security. Please reset your password");
+          router.push("/forget-password")
         }
       } catch (error) {
         console.error(error);
@@ -81,6 +82,7 @@ const EnterPassword = () => {
     }
     if (attempts >= maxAttempts) {
       toast.error("Too many failed attempts. Try again later.");
+      router.push("/forget-password");
       return;
     }
 
@@ -123,6 +125,7 @@ const EnterPassword = () => {
           }).then(() => {
             setIsLocked(true);
             toast.error("Your account has been locked due to too many failed attempts.");
+            router.push("/forget-password");
           });
         }
         return newAttempts;
@@ -170,7 +173,7 @@ const EnterPassword = () => {
                       {passwordVisible ? <FaEye /> : <FaEyeSlash />}
                     </button>
                   </div>
-                  {isLocked && <p className="text-red-500 text-sm mt-2">Your account is locked. Please contact support.</p>}
+                  {isLocked && <p className="text-red-500 text-sm mt-2">Your account has been locked due to too many failed attempts.</p>}
                 </div>
                 <button
                   type="submit"

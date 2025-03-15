@@ -102,7 +102,7 @@ const VisaSeekerProfileForm = ({ }) => {
     instagram: "",
     linkedin: "",
     comments: "",
-    isPublic: false,
+    isPublic: true,
   });
 
   useEffect(() => {
@@ -177,7 +177,7 @@ const VisaSeekerProfileForm = ({ }) => {
       return data.secure_url; // Cloudinary returns the secure URL of the uploaded image
     } catch (error) {
       console.error("Error uploading image to Cloudinary:", error);
-      return null;
+      return null; 
     } finally {
       setUploading(false);
     }
@@ -301,17 +301,15 @@ const VisaSeekerProfileForm = ({ }) => {
         </div>
       
         <div className="flex items-center gap-4 w-full justify-center">
-          <p className="text-[12px]">Private – Not searchable</p>
+          <p className="text-[14px]"> * Profile Visibility</p>
           <Switch
             checked={formData.isPublic}
             onCheckedChange={(checked) =>
               setFormData((prev) => ({ ...prev, isPublic: checked }))
             }
-            className="data-[state=checked]:bg-green-400 data-[state=unchecked]:bg-gray-300"
+            className="data-[state=checked]:bg-green-400 data-[state=unchecked]:bg-gray-300  "
           />
-
-          <p className="text-[12px]">Public-Searchable</p>
-
+          <p className="text-[14px]">Public-Searchable</p>
         </div>
         <button
             type="submit"
