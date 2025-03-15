@@ -29,14 +29,14 @@ const Checkout = () => {
             return router.back();
         }
 
-        if (jwtDecode(storedToken).subscriptionStatus === "Active") {
+        if (jwtDecode(storedToken).subscriptionStatus === "Active" && investorId) {
             if (investorId) {
-                return router.push(`/search/inner/investorId`);
+                return router.push(`/search/inner/${investorId}`);
             } else {
                 return router.back();
             }
         }
-    }, [])
+    }, [investorId])
 
     const initialOptions = {
         "client-id": "test",
