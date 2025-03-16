@@ -73,7 +73,7 @@ export const POST = async (req) => {
     );
   } catch (error) {
     console.error("Failed to send email:", error);
-    return new Response(JSON.stringify(error), {
+    return new Response(JSON.stringify({message: error.message}), {
       status: 500,
     });
   }
