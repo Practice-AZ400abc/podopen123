@@ -6,7 +6,7 @@ import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../../../firebase/firebaseConfig";
 import { useRouter } from "next/navigation";
-import toast from "react-hot-toast";
+import toast, { ToastBar } from "react-hot-toast";
 import { AuthContext } from "@/components/AuthProvider";
 import { Loader } from "lucide-react";
 import Logo from "@/app/Lookvisa.png";
@@ -82,6 +82,7 @@ const EnterPassword = () => {
     }
     if (attempts >= maxAttempts) {
       toast.error("Too many failed attempts. Try again later.");
+      toast.error("Your account has been locked due to too many failed attempts.");
       router.push("/forget-password");
       return;
     }
@@ -124,7 +125,6 @@ const EnterPassword = () => {
             body: JSON.stringify({ email }),
           }).then(() => {
             setIsLocked(true);
-            toast.error("Your account has been locked due to too many failed attempts.");
             router.push("/forget-password");
           });
         }

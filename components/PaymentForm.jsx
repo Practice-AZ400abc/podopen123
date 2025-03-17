@@ -35,7 +35,7 @@ async function createOrderCallback() {
       throw new Error("Failed to get access token");
     }
 
-    const response = await fetch("https://api-m.paypal.com/v2/checkout/orders", {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_PAYPAL_API_URL}/v2/checkout/orders`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -83,12 +83,12 @@ async function onApproveCallback(data, actions) {
     }
 
     const response = await fetch(
-      `https://api-m.sandbox.paypal.com/v2/checkout/orders/${orderId}/capture`,
+      `${process.env.NEXT_PUBLIC_PAYPAL_API_URL}/v2/checkout/orders/${orderId}/capture`,
       {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          "Authorization": `Bearer ${accessTokenData.access_token}`, // Replace with your token logic
+          "Authorization": `Bearer ${accessTokenData.access_token}`,
         },
       }
     );

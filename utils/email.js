@@ -3,12 +3,26 @@ import path from "path";
 
 const transporter = nodemailer.createTransport({
   host: process.env.EMAIL_HOST,
-  port: process.env.EMAIL_PORT,
-  secure: process.env.EMAIL_PORT === "465",
+  port: parseInt(process.env.EMAIL_PORT),
+  secure: false, // Use TLS
   auth: {
     user: process.env.EMAIL_USER,
     pass: process.env.EMAIL_PASS,
   },
+  tls: {
+    // Required for Zoho
+    ciphers: 'SSLv3',
+    rejectUnauthorized: false
+  }
+});
+
+// Add this for debugging
+transporter.verify(function(error, success) {
+  if (error) {
+    console.log("Server connection failed:", error);
+  } else {
+    console.log("Server is ready to take our messages");
+  }
 });
 
 export const sendEmail = async ({ fromEmail, to, subject, html, attachments }) => {
