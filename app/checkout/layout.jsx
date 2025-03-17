@@ -1,15 +1,21 @@
-import React from 'react';
+'use client';
 
-export const metadata = {
-    title: "LookVisa – Payment checkout",
-description: "LookVisa, is a platform that connects individuals seeking a golden visa, EB5 visa, investor visa with projects that require funding",
-keywords: "investment visa, lookvisa, visa sponsor, golden visa, investment opportunities, citizenship investment, foreign investor, immigrant investor, project funding, search engine platform for immigrant investment visas",
-};
+import React from 'react';
+import { PayPalScriptProvider } from "@paypal/react-paypal-js";
 
 const Layout = ({ children }) => {
     return (
         <>
-            {children}
+            <PayPalScriptProvider
+                options={{
+                    "client-id": process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID,
+                    components: "buttons,hosted-fields",
+                    intent: "capture",
+                    "data-client-token": process.env.NEXT_PUBLIC_PAYPAL_CLIENT_TOKEN,
+                }}
+            >
+               {children}
+            </PayPalScriptProvider>
         </>
     );
 }

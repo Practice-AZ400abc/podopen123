@@ -46,7 +46,7 @@ async function createOrderCallback() {
         "purchase_units": [{
           "amount": {
             "currency_code": "USD",
-            "value": "30.00"
+            "value": "1.00"
           },
           "description": "30 days subscription"
         }]

@@ -6,7 +6,7 @@ import { PaymentForm } from '@/components/PaymentForm';
 import { CheckCheck, LoaderCircle } from 'lucide-react';
 import { jwtDecode } from 'jwt-decode';
 import { useRouter } from 'next/navigation';
-import { AuthContext, AuthProvider } from '@/components/AuthProvider';
+import { AuthContext } from '@/components/AuthProvider';
 
 const Checkout = () => {
     const { isLoggedIn } = useContext(AuthContext);
