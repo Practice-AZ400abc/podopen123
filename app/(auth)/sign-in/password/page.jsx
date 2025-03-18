@@ -81,7 +81,7 @@ const EnterPassword = () => {
       return;
     }
     if (attempts >= maxAttempts) {
-      toast.error("Too many failed attempts. Try again later.");
+      toast.error("Too many failed attempts. Your account has been locked for your security. Please reset your password in order to regain account access. Thanks.");
       toast.error("Your account has been locked due to too many failed attempts.");
       router.push("/forget-password");
       return;

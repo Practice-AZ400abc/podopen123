@@ -33,7 +33,7 @@ const Pricing = () => {
       </div>
       <div className=' text-start md:w-[400px] p-4 rounded-md flex flex-col  items-start justify-start border'>
         <h3 className='text-black font-bold text-start'> 30 Days Pass</h3>
-        <h1 className='text-[34px] font-bold text-blue-400 text-left'>30 $</h1>
+        <h1 className='text-[34px] font-bold text-blue-400 text-left'>$30</h1>
         <div className='flex flex-row items-center justify-center gap-4 mt-6'>
           <CheckCheck size={24} className='text-blue-400 text-4xl' />
           <span className='text-slate-700 text-sm'>Allows you to contact investors for 30 days to get funding for your projects</span>
