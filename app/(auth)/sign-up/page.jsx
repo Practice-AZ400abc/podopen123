@@ -55,8 +55,20 @@ export default function Signup() {
 
   const isPasswordValid = Object.values(passwordValidation).every((v) => v);
 
+  // Add this to your existing state declarations
+  const [acceptedTerms, setAcceptedTerms] = useState(false);
+  const [termsError, setTermsError] = useState(false);
+  
+  // Update the handleRegister function
   const handleRegister = async (e) => {
     e.preventDefault();
+    setTermsError(false);
+  
+    if (!acceptedTerms) {
+      setTermsError(true);
+      toast.error("Please accept the terms and conditions to continue");
+      return;
+    }
 
     // Basic validations
     if (!email || !password || !confirmPassword) {
@@ -342,21 +354,34 @@ export default function Signup() {
                 onChange={(e) => setConfirmPassword(e.target.value)}
               />
             </div>
-            <div className="flex  mt-2 items-center justify-start gap-2 text-sm text-gray-500">
-              <input type="checkbox" checked />
-              <h1>By signing up to our platform you agree to our
-                <Link className="underline text-black font-semibold" href={"/terms"}> terms of service</Link> and  <Link className="underline text-black font-semibold" href={"/PrivacyPolicy"}>data privacy</Link>.</h1>
+            <div className={`flex mt-2 items-center justify-start gap-2 text-sm ${termsError ? 'bg-red-50 p-2 rounded-md border border-red-300' : ''}`}>
+              <input
+                type="checkbox"
+                id="terms"
+                checked={acceptedTerms}
+                onChange={(e) => {
+                  setAcceptedTerms(e.target.checked);
+                  if (e.target.checked) setTermsError(false);
+                }}
+                className={`w-4 h-4 cursor-pointer ${termsError ? 'ring-2 ring-red-500' : ''}`}
+              />
+              <label htmlFor="terms" className={`cursor-pointer ${termsError ? 'text-red-600' : 'text-gray-500'}`}>
+                By signing up to our platform you agree to our
+                <Link className="underline text-black font-semibold" href={"/terms"}> terms of service</Link> and  
+                <Link className="underline text-black font-semibold" href={"/PrivacyPolicy"}> data privacy</Link>.
+              </label>
             </div>
+
+          
             <button
               type="submit"
-              className="flex items-center justify-center text-center w-full p-2 bg-green-600 hover:bg-green-500 text-white font-bold rounded-[5px] mt-5"
-              disabled={loading}
+              className="flex items-center justify-center text-center w-full p-2 bg-green-600 hover:bg-green-500 text-white font-bold rounded-[5px] mt-5 disabled:opacity-50 disabled:cursor-not-allowed"
+              disabled={loading || !acceptedTerms}
             >
               {loading ? (
                 <Loader className="animate-spin" size={18} />
               ) : (
-                `Sign up as ${selectedForm === "Visa Seeker" ? "Investor" : "Sponsor"
-                }`
+                `Sign up as ${selectedForm === "Visa Seeker" ? "Investor" : "Sponsor"}`
               )}
             </button>
             {message && (
