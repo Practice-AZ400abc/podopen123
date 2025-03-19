@@ -344,7 +344,7 @@ export default function Signup() {
             </div>
             <div className="flex  mt-2 items-center justify-start gap-2 text-sm text-gray-500">
               <input type="checkbox" checked />
-              <h1>By signing up to our plaTForm you agree to our
+              <h1>By signing up to our platform you agree to our
                 <Link className="underline text-black font-semibold" href={"/terms"}> terms of service</Link> and  <Link className="underline text-black font-semibold" href={"/PrivacyPolicy"}>data privacy</Link>.</h1>
             </div>
             <button

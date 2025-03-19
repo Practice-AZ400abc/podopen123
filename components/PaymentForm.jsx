@@ -230,85 +230,104 @@ const SubmitPayment = ({ onHandleMessage, investorId }) => {
 };
 
 export const PaymentForm = ({ investorId }) => {
-
   const [message, setMessage] = useState("");
 
   return (
-    <div>
-      <div className={styles.form}>
-        <PayPalButtons
-          style={{
-            shape: "rect",
-            layout: "vertical",
-          }}
-          styles={{ marginTop: "4px", marginBottom: "4px" }}
-          createOrder={createOrderCallback}
-          onApprove={async (data) => setMessage(await onApproveCallback(data))}
-        />
-
-        <PayPalHostedFieldsProvider createOrder={createOrderCallback}
-          onApprove={async (data) => setMessage(await onApproveCallback(data))}>
-          <div style={{ marginTop: "4px", marginBottom: "4px" }}>
-            <PayPalHostedField
-              id="card-number"
-              hostedFieldType="number"
-              options={{
-                selector: "#card-number",
-                placeholder: "Card Number",
+    <div className="w-full max-w-2xl mx-auto p-2">
+      <div className="bg-white rounded-2xl">
+        <div className="space-y-2">
+          <h2 className="text-2xl font-bold text-slate-800 mb-6">Payment Details</h2>
+          
+          {/* PayPal Button */}
+          <div className="bg-slate-50 p-6 rounded-xl transition-all hover:shadow-md">
+            <h4 className="text-slate-700 font-semibold mb-4">Pay with PayPal</h4>
+            <PayPalButtons
+              style={{
+                shape: "rect",
+                layout: "vertical",
+                color: "blue"
               }}
-              className={styles.input}
+              createOrder={createOrderCallback}
+              onApprove={async (data) => setMessage(await onApproveCallback(data))}
             />
-            <div className={styles.container}>
-              <PayPalHostedField
-                id="expiration-date"
-                hostedFieldType="expirationDate"
-                options={{
-                  selector: "#expiration-date",
-                  placeholder: "Expiration Date",
-                }}
-                className={styles.input}
-              />
-              <PayPalHostedField
-                id="cvv"
-                hostedFieldType="cvv"
-                options={{
-                  selector: "#cvv",
-                  placeholder: "CVV",
-                }}
-                className={styles.input}
-              />
-            </div>
-            <div className={styles.container}>
-              <input
-                id="card-holder"
-                type="text"
-                placeholder="Name on Card"
-                className={styles.input}
-              />
-
-              <input
-                id="card-billing-address-country"
-                type="text"
-                placeholder="Country Code"
-                className={styles.input}
-              />
-            </div>
-            {/* make accept terms and condition check box with text */}
-            <label className="text-slate-700 text-sm">
-              <input type="checkbox" className="mr-2" />
-              By pressing “Pay Now” you agree to the <Link href={"/terms"} className="text-blue-400 underline">terms and conditions</Link> from Lookvisa.com and that all sales are final.
-            </label>
-            <SubmitPayment investorId={investorId} onHandleMessage={setMessage} />
           </div>
-        </PayPalHostedFieldsProvider>
 
+          {/* Credit Card Form */}
+          <div className="bg-slate-50 p-6 rounded-xl space-y-4 transition-all hover:shadow-md">
+            <h4 className="text-slate-700 font-semibold mb-4">Pay with Credit Card</h4>
+            <PayPalHostedFieldsProvider createOrder={createOrderCallback}
+              onApprove={async (data) => setMessage(await onApproveCallback(data))}>
+              <div className="space-y-4">
+                <PayPalHostedField
+                  id="card-number"
+                  hostedFieldType="number"
+                  options={{
+                    selector: "#card-number",
+                    placeholder: "Card Number",
+                  }}
+                  className="w-full p-4 rounded-lg border border-slate-200 focus:ring-2 focus:ring-emerald-500 transition-all"
+                />
+                <div className="grid grid-cols-2 gap-4">
+                  <PayPalHostedField
+                    id="expiration-date"
+                    hostedFieldType="expirationDate"
+                    options={{
+                      selector: "#expiration-date",
+                      placeholder: "Expiration Date",
+                    }}
+                    className="w-full p-4 rounded-lg border border-slate-200 focus:ring-2 focus:ring-emerald-500 transition-all"
+                  />
+                  <PayPalHostedField
+                    id="cvv"
+                    hostedFieldType="cvv"
+                    options={{
+                      selector: "#cvv",
+                      placeholder: "CVV",
+                    }}
+                    className="w-full p-4 rounded-lg border border-slate-200 focus:ring-2 focus:ring-emerald-500 transition-all"
+                  />
+                </div>
+                <div className="grid grid-cols-2 gap-4">
+                  <input
+                    id="card-holder"
+                    type="text"
+                    placeholder="Name on Card"
+                    className="w-full p-4 rounded-lg border border-slate-200 focus:ring-2 focus:ring-emerald-500 transition-all"
+                  />
+                  <input
+                    id="card-billing-address-country"
+                    type="text"
+                    placeholder="Country Code"
+                    className="w-full p-4 rounded-lg border border-slate-200 focus:ring-2 focus:ring-emerald-500 transition-all"
+                  />
+                </div>
+
+                {/* Terms Checkbox */}
+                <label className="block p-4 bg-white rounded-lg border border-slate-200 transition-all hover:border-emerald-500">
+                  <div className="flex items-center space-x-3">
+                    <input type="checkbox" className="w-5 h-5 rounded border-slate-300 text-emerald-600 focus:ring-emerald-500" />
+                    <span className="text-slate-600">
+                      By pressing "Pay Now" you agree to the <Link href={"/terms"} className="text-emerald-600 hover:text-emerald-700 underline">terms and conditions</Link>
+                    </span>
+                  </div>
+                </label>
+
+                <SubmitPayment investorId={investorId} onHandleMessage={setMessage} />
+              </div>
+            </PayPalHostedFieldsProvider>
+          </div>
+        </div>
       </div>
-      <div className="flex z-100000 w-full items-center justify-end">
+
+      {/* Cancel Dialog */}
+      <div className="mt-6">
         <AlertDialog>
-          <AlertDialogTrigger className=" mt-2 bg-red-400 hover:bg-red-300 cursor-pointer flex gap-2s items-center justify-center text-black font-bold hover:bg-green-300 w-full p-4">Cancel</AlertDialogTrigger>
+          <AlertDialogTrigger className="w-full p-4 bg-red-100 text-red-600 rounded-xl font-semibold hover:bg-red-200 transition-all transform hover:scale-[1.01]">
+            Cancel Purchase
+          </AlertDialogTrigger>
           <AlertDialogContent>
             <AlertDialogHeader>
-              <AlertDialogTitle >Are you absolutely sure?</AlertDialogTitle>
+              <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
               <AlertDialogDescription>
                 Are you sure that you want to abandon your purchase
               </AlertDialogDescription>
@@ -321,7 +340,6 @@ export const PaymentForm = ({ investorId }) => {
             </AlertDialogFooter>
           </AlertDialogContent>
         </AlertDialog>
-
       </div>
     </div>
   );

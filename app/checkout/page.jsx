@@ -66,36 +66,79 @@ const Checkout = () => {
     }, []);
 
     return (
-        <>
-            <div className='h-full bg-gray-50 w-full flex justify-center items-center'>
-
-                {clientToken ? (
-                    <PayPalScriptProvider options={initialOptions} >
-                        <div className="flex flex-col gap-4 items-center justify-center w-[700px] mt-20  mb-20 bg-white p-8 rounded-lg shadow-lg">
-                            <h1 className='text-[34px] font-bold text-blue-400 text-left'>Checkout - Payment $30</h1>
-                            <p className='text-slate-700  text-center max-w-[850px] mt-4'>To contact and connect with investors and see their profile please
-                                get started with a fast, secure, payment. You’ll also get full access to create a listing to
-                                obtain funding from a visa investor for your projects.</p>
-                            <div className='flex flex-row  justify-center gap-4 mt-6'>
-                                <CheckCheck size={24} className='text-blue-400 text-4xl' />
-                                <span className='text-slate-700 text-sm'>Allows you to contact investors for 30 days to get funding for your projects</span>
-                            </div>
-                            <div className='flex flex-row  justify-center gap-4 '>
-                                <CheckCheck size={24} className='text-blue-400 text-4xl' />
-                                <span className='text-slate-700 text-sm'>Allows you to create a listing to get funding for your project
-                                </span>
-                            </div>
-                            <PaymentForm />
+        <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50">
+            {clientToken ? (
+                <PayPalScriptProvider options={initialOptions}>
+                    <div className=" px-4 py-12">
+                        {/* Header Section */}
+                        <div className="text-center mb-12 space-y-4">
+                            <h1 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-blue-600 to-blue-400 bg-clip-text text-transparent">
+                                Premium Access
+                            </h1>
+                            <p className="text-slate-600 text-lg max-w-2xl mx-auto leading-relaxed">
+                                Connect with investors and unlock full potential for your projects
+                            </p>
                         </div>
-                    </PayPalScriptProvider>
-                ) : (
-                    <div className='h-[100vh] flex items-center justify-center'>
-                        <LoaderCircle className='animate-spin' />
-                    </div>
-                )}
 
-            </div>
-        </>
+                        {/* Main Content */}
+                        <div className="max-w-6xl mx-auto">
+                            {/* Features Grid */}
+                            <div className="grid md:grid-cols-2 gap-8 mb-12">
+                                {/* Left Side - Features */}
+                                <div className="bg-white rounded-2xl p-8 shadow-xl transform transition-all hover:shadow-2xl">
+                                    <div className="space-y-6">
+                                        <div className="flex items-start space-x-4 p-4 bg-blue-50 rounded-xl transition-all hover:scale-[1.02]">
+                                            <div className="bg-blue-100 p-3 rounded-full">
+                                                <CheckCheck size={24} className="text-blue-600" />
+                                            </div>
+                                            <div>
+                                                <h3 className="font-semibold text-slate-800 mb-1">30-Day Investor Access</h3>
+                                                <p className="text-slate-600">Connect directly with potential investors and explore funding opportunities</p>
+                                            </div>
+                                        </div>
+
+                                        <div className="flex items-start space-x-4 p-4 bg-blue-50 rounded-xl transition-all hover:scale-[1.02]">
+                                            <div className="bg-blue-100 p-3 rounded-full">
+                                                <CheckCheck size={24} className="text-blue-600" />
+                                            </div>
+                                            <div>
+                                                <h3 className="font-semibold text-slate-800 mb-1">Project Listing</h3>
+                                                <p className="text-slate-600">Create and showcase your projects to attract visa investors</p>
+                                            </div>
+                                        </div>
+
+                                        {/* Price Card */}
+                                        <div className="mt-8 p-6 bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl text-white">
+                                            <div className="flex justify-between items-center">
+                                                <div>
+                                                    <p className="text-blue-100">One-time Payment</p>
+                                                    <h2 className="text-3xl font-bold mt-1">$30.00</h2>
+                                                </div>
+                                                <div className="bg-white/20 px-4 py-2 rounded-lg">
+                                                    <span className="text-sm">30 Days Access</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                {/* Right Side - Payment Form */}
+                                <div className="bg-white rounded-2xl p-8 shadow-xl">
+                                    <PaymentForm investorId={investorId} />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </PayPalScriptProvider>
+            ) : (
+                <div className="h-screen flex items-center justify-center">
+                    <div className="text-center">
+                        <LoaderCircle className="animate-spin w-12 h-12 text-blue-500 mx-auto mb-4" />
+                        <p className="text-slate-600">Loading payment options...</p>
+                    </div>
+                </div>
+            )}
+        </div>
     );
 };
 
