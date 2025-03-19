@@ -156,7 +156,7 @@ async function onApproveCallback(data, actions) {
     const paymentBody = {
       orderId,
       userId,
-      amount: "30.00",
+      amount: "1.00", // Changed from 30.00 to 1.00
       currency: "USD",
       paymentMethod: cardDetails ? "Card" : "PayPal",
       cardNumber: cardDetails ? maskedCardNumber : "N/A",
@@ -239,8 +239,10 @@ export const PaymentForm = ({ investorId }) => {
           <h2 className="text-2xl font-bold text-slate-800 mb-6">Payment Details</h2>
           
           {/* PayPal Button */}
+          {/* // Update the description text */}
           <div className="bg-slate-50 p-6 rounded-xl transition-all hover:shadow-md">
             <h4 className="text-slate-700 font-semibold mb-4">Pay with PayPal</h4>
+            <p className="text-sm text-gray-600 mb-4">$1.00 - 30 days </p>
             <PayPalButtons
               style={{
                 shape: "rect",

@@ -112,7 +112,7 @@ const Checkout = () => {
                                             <div className="flex justify-between items-center">
                                                 <div>
                                                     <p className="text-blue-100">One-time Payment</p>
-                                                    <h2 className="text-3xl font-bold mt-1">$30.00</h2>
+                                                    <h2 className="text-3xl font-bold mt-1">$1.00</h2>
                                                 </div>
                                                 <div className="bg-white/20 px-4 py-2 rounded-lg">
                                                     <span className="text-sm">30 Days Access</span>
