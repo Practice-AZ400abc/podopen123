@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server';
 
 export async function POST() {
     try {
-        const response = await fetch("https://api.paypal.com/v1/oauth2/token", {
+        const response = await fetch("https://api-m.paypal.com/v1/oauth2/token", {
             method: "POST",
             headers: {
                 Authorization: "Basic " + Buffer.from(`${process.env.PAYPAL_CLIENT_ID}:${process.env.PAYPAL_SECRET}`).toString("base64"),
