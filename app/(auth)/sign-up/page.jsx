@@ -23,7 +23,7 @@ export default function Signup() {
   const router = useRouter();
   const { isLoggedIn, login } = useContext(AuthContext); // Access isLoggedIn
 
-  const [selectedForm, setSelectedForm] = useState("Visa Sponsor");
+  const [selectedForm, setSelectedForm] = useState("Host");
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -223,7 +223,7 @@ export default function Signup() {
 
           <div className="flex justify-center gap-4 mb-2 text-black">
             <label
-              className={`flex flex-col relative items-center border p-4 rounded-[5px] cursor-pointer ${selectedForm === "Visa Sponsor"
+              className={`flex flex-col relative items-center border p-4 rounded-[5px] cursor-pointer ${selectedForm === "Host"
                 ? "border-blue-500 text-blue-500"
                 : "border-gray-300"
                 }`}
@@ -231,29 +231,26 @@ export default function Signup() {
               <input
                 type="radio"
                 name="role"
-                value="Visa Sponsor"
-                checked={selectedForm === "Visa Sponsor"}
-                onChange={() => setSelectedForm("Visa Sponsor")}
+                value="Host"
+                checked={selectedForm === "Host"}
+                onChange={() => setSelectedForm("Host")}
                 className="absolute left-4"
               />
               <div className="flex items-center">
                 <User
                   size={20}
-                  className={`mr-1 ${selectedForm === "Visa Sponsor" ? "text-blue-500" : "text-black"
+                  className={`mr-1 ${selectedForm === "Host" ? "text-blue-500" : "text-black"
                     }`}
                 />
-                Visa Sponsor
+                Host
               </div>
               <div className="p-2 border  rounded-md mt-2 text-xs text-gray-500">
-                <p>I’m a Visa Sponsor I need
-                  investments for my projects
-                  and seeking funds from
-                  investors</p>
+                <p>I’m a Host I need sponsors, experts, sell tickets/spaces for my event.</p>
               </div>
             </label>
 
             <label
-              className={`flex relative flex-col items-center border p-4 rounded-[5px] cursor-pointer ${selectedForm === "Visa Seeker"
+              className={`flex relative flex-col items-center border p-4 rounded-[5px] cursor-pointer ${selectedForm === "Expert"
                 ? "border-blue-500 text-blue-500"
                 : "border-gray-300"
                 }`}
@@ -261,23 +258,21 @@ export default function Signup() {
               <input
                 type="radio"
                 name="role"
-                value="Visa Seeker"
-                checked={selectedForm === "Visa Seeker"}
-                onChange={() => setSelectedForm("Visa Seeker")}
+                value="Expert"
+                checked={selectedForm === "Expert"}
+                onChange={() => setSelectedForm("Expert")}
                 className="absolute left-4"
               />
               <div className="flex items-center">
                 <User
                   size={20}
-                  className={`mr-1 ${selectedForm === "Visa Seeker" ? "text-blue-500" : "text-black"
+                  className={`mr-1 ${selectedForm === "Expert" ? "text-blue-500" : "text-black"
                     }`}
                 />
-                Investor
+                Expert
               </div>
               <div className="p-2 border  rounded-md mt-2 text-xs text-gray-500">
-                <p>I am a visa investor I am
-                  seeking an investor visa, or
-                  E2, EB5 visa or Golden visa.</p>
+                <p>I am an expert I seek events that offer paid speaking engagements.</p>
               </div>
             </label>
           </div>
@@ -381,7 +376,7 @@ export default function Signup() {
               {loading ? (
                 <Loader className="animate-spin" size={18} />
               ) : (
-                `Sign up as ${selectedForm === "Visa Seeker" ? "Investor" : "Sponsor"}`
+                `Sign up as ${selectedForm === "Expert" ? "Expert" : "Host"}`
               )}
             </button>
             {message && (
@@ -391,7 +386,7 @@ export default function Signup() {
 
 
 
-          {selectedForm === "Visa Seeker" && (
+          {selectedForm === "Expert" && (
             <div className="mt-5 flex flex-col items-center justify-center gap-5">
               <button
                 className="flex gap-5 items-center w-[80%] p-1 border bg-blue-500 rounded-sm mx-auto  justify-start"
@@ -409,7 +404,7 @@ export default function Signup() {
 
         <div className="w-full mt-5  flex items-center justify-between ">
           <div className="flex flex-col justify-center w-full items-center gap-3 text-sm text-gray-500">
-            <h1>Already have a Lookvisa  {selectedForm === "Visa Seeker" ? "Investor" : "Sponsor"} account?</h1>
+            <h1>Already have a Lookvisa  {selectedForm === "Expert" ? "Expert" : "Host"} account?</h1>
             <Link href={"/sign-in"} className=" border px-6 border-green-500 text-green-500 hover:text-white hover:border-none  hover:bg-green-600 py-2 ">
               Sign in
             </Link>
